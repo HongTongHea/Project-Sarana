@@ -52,20 +52,20 @@ class UserController extends Controller
 
         if ($request->hasFile('profile_picture')) {
             if ($user->profile_picture) {
-                Storage::delete('public/' . $user->profile_picture);
+                Storage::delete('public/' . $user->profile_picture); // Correctly deleting the old profile picture
             }
             $user->profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
         }
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return redirect()->route('dashboard')->with('success', 'Profile updated successfully'); // Redirect to dashboard
     }
 
     public function destroy(User $user)
     {
         if ($user->profile_picture) {
-            Storage::delete('public/iamges' . $user->profile_picture);
+            Storage::delete('public/images/' . $user->profile_picture); // Correct path
         }
         $user->delete();
 

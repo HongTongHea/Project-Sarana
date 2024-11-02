@@ -55,8 +55,8 @@
                                 {{-- <p class="mt-3">Role: {{ ucfirst($user->role) }}</p> --}}
                         </span>
                         <div class="avatar">
-                            @if (Auth::user()->profile_picture)
-                                <img src="{{ Storage::url(Auth::user()->profile_picture) }}" alt="Profile Picture"
+                            @if (Auth::user()->picture_url)
+                                <img src="{{ Storage::url(Auth::user()->picture_url) }}" alt="Profile Picture"
                                     class="avatar-img  rounded-5 oject-fit-cover object-center" width="100%">
                             @endif
                         </div>
@@ -70,8 +70,8 @@
 
                                     <div class="avatar">
                                         @if (Auth::check())
-                                            @if (Auth::user()->profile_picture)
-                                                <img src="{{ Storage::url(Auth::user()->profile_picture) }}"
+                                            @if (Auth::user()->picture_url)
+                                                <img src="{{ Storage::url(Auth::user()->picture_url) }}"
                                                     alt="Profile Picture" class="avatar-img rounded-5"
                                                     width="100">
                                             @endif

@@ -10,51 +10,46 @@
 </head>
 
 <body>
+
     <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card rounded-0">
-                    <div class="card-header">Register</div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <div class="col-12 col-md-6 form-group">
-                                    <label>Name</label>
-                                    <input type="text" name="name" class="form-control">
-                                </div>
-                                <div class="col-12 col-md-6 form-group">
-                                    <label>Email</label>
-                                    <input type="email" name="email" class="form-control">
-                                </div>
-                                <div class="col-12  form-group">
-                                    <label>Password</label>
-                                    <input type="password" name="password" class="form-control">
-                                </div>
-                                <div class="col-12 form-group">
-                                    <label>Confirm Password</label>
-                                    <input type="password" name="password_confirmation" class="form-control">
-                                </div>
-                                <div class="col-12  form-group">
-                                    <label>Profile Picture</label>
-                                    <input type="file" name="profile_picture" class="form-control">
-                                </div>
-                                <div class="col-12 form-group">
-                                    <label>Role</label>
-                                    <select name="role" class="form-control">
-                                        <option value="admin">Admin</option>
-                                        <option value="customer">Customer</option>
-                                        <option value="salesperson">Salesperson</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-3">Register</button>
-                        </form>
+        <div class="card rounded-0 w-50 mx-auto">
+            <div class="card-header">
+                Register
+            </div>
+            <div class="card-body">
+                <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="name" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" name="password_confirmation" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select class="form-control" name="role" required>
+                            <option value="admin">Admin</option>
+                            <option value="customer">Customer</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Register</button>
+                </form>
             </div>
         </div>
+
     </div>
+
 </body>
 
 </html>

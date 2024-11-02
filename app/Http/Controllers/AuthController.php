@@ -17,9 +17,7 @@ class AuthController extends Controller
 
     public function viewUsers()
     {
-
         $users = User::all();
-
         return view('users.index', compact('users'));
     }
 
@@ -28,8 +26,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            return redirect()->route('dashboard')->with('success', 'Welcome, ' . $user->name);
+            return redirect()->route('dashboard')->with('success', 'Welcome, ' . Auth::user()->name);
         }
 
         return back()->withErrors([
@@ -49,25 +46,42 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
-            'profile_picture' => 'image|nullable|max:1999',
+            // Optionally validate role if it's part of the registration form
+            'role' => 'required|in:admin,customer,staff', // Adjust according to your needs
         ]);
-
-        $profilePicturePath = null;
-
-        if ($request->hasFile('profile_picture')) {
-            $profilePicturePath = $request->file('profile_picture')->store('profile_pictures', 'public');
-        }
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'profile_picture' => $profilePicturePath,
-            'role' => $request->role,
+            'role' => $request->role ?? 'customer', // Default role if not provided
         ]);
 
         return redirect()->route('login')->with('success', 'Registration successful, please login');
     }
+
+
+    public function updateProfilePicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        $user = Auth::user();
+
+        // Delete the old picture if it exists
+        if ($user->picture_url) {
+            Storage::disk('public')->delete($user->picture_url);
+        }
+
+        // Store the new picture
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $user->picture_url = $path;
+        $user->save();
+
+        return redirect()->route('users.show', $user->id)->with('success', 'Profile picture updated successfully.');
+    }
+
 
     public function logout()
     {
