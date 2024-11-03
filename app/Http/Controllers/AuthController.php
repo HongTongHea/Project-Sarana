@@ -12,8 +12,18 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        return response()
+            ->view('auth.login')
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
+
+
 
     public function viewUsers()
     {
@@ -21,44 +31,19 @@ class AuthController extends Controller
         return view('users.index', compact('users'));
     }
 
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard')->with('success', 'Welcome, ' . Auth::user()->name);
+            return redirect()->route('dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-            'password' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email', 'password');
+        return back()->withErrors(['email' => 'Invalid credentials.']);
     }
 
-    public function showRegisterForm()
-    {
-        return view('auth.register');
-    }
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
-            // Optionally validate role if it's part of the registration form
-            'role' => 'required|in:admin,customer,staff', // Adjust according to your needs
-        ]);
-
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role ?? 'customer', // Default role if not provided
-        ]);
-
-        return redirect()->route('login')->with('success', 'Registration successful, please login');
-    }
 
 
     public function updateProfilePicture(Request $request)
@@ -69,7 +54,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        // Delete the old picture if it exists
+
         if ($user->picture_url) {
             Storage::disk('public')->delete($user->picture_url);
         }
@@ -82,10 +67,12 @@ class AuthController extends Controller
         return redirect()->route('users.show', $user->id)->with('success', 'Profile picture updated successfully.');
     }
 
-
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 }

@@ -49,8 +49,6 @@
 
                     </tr>
             </table>
-
-            <a href="{{ route('users.index') }}" class="btn btn-primary float-start btn-sm float-end m-1">Back</a>
             <button type="submit" class="btn btn-primary btn-sm float-end m-1">Save</button>
             </form>
         </div>

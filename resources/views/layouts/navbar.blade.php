@@ -90,8 +90,8 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('users.index') }}"><i class="fa-solid fa-gear"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('login') }}"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
-                                <a class="dropdown-item" href="{{ route('register') }}"><i class="bi bi-r-circle"></i> Register</a>
+                                {{-- <a class="dropdown-item" href="{{ route('login') }}"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a> --}}
+                                {{-- <a class="dropdown-item" href="{{ route('register') }}"><i class="bi bi-r-circle"></i> Register</a> --}}
                                 <form action="{{ route('logout') }}" method="POST" class="">
                                     @csrf
                                     <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i> Logout</button>
