@@ -1,95 +1,184 @@
 @extends('layouts.app')
-
 @section('title', 'Users Data')
-
 @section('content')
-    <div class="card rounded-0">
-        <div class="card-body">
-            <div class="row m-2 align-items-center">
-                <div class="col-8 p-0">
-                    <h1>User Data</h1>
-                </div>
-                <div class="col-4">
-                    <div class="row align-items-center">
+    <div class="container mt-2">
+        <div class="row">
+            <div class="container p-4 ">
+                <div class="card rounded-0 ">
+                    <div class="card-body ">
+                        <h1>{{ isset($user) ? 'Edit User' : 'Create New User' }}</h1>
 
-                        <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                            <div class="input-group rounded-5">
-                                <div class="input-group-prepend">
-                                    <button type="submit" class="btn btn-search pe-1">
-                                        <i class="fa fa-search search-icon"></i>
-                                    </button>
+                        <form action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}"
+                            method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @if (isset($user))
+                                @method('PUT')
+                            @endif
+
+                            <div class="row">
+                                <div class="form-group col-12 col-md-6 ps-4">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control"
+                                        value="{{ old('name', isset($user) ? $user->name : '') }}" required>
                                 </div>
-                                <input type="text" id="search" placeholder="Search ..." class="form-control" />
+
+                                <div class="form-group col-12 col-md-6 ps-4">
+                                    <label for="email">Email
+                                        @if ($errors->has('email'))
+                                            <label class="text-danger mt-1">{{ $errors->first('email') }}</label>
+                                        @endif
+                                    </label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        value="{{ old('email', isset($user) ? $user->email : '') }}" required>
+                                </div>
+
+                                <div class="form-group col-12 col-md-6 ps-4">
+                                    <label for="password">Password
+                                        @if ($errors->has('password'))
+                                            <label class="text-danger mt-1">{{ $errors->first('password') }}</label>
+                                        @endif
+                                    </label>
+                                    <input type="password" name="password" id="password" class="form-control"
+                                        {{ isset($user) ? '' : 'required' }}>
+
+                                </div>
+
+                                <div class="form-group col-12 col-md-6 ps-4">
+                                    <label for="password_confirmation">Confirm Password
+                                        @if ($errors->has('password_confirmation'))
+                                            <label class="text-danger mt-1">{{ $errors->first('password_confirmation') }}
+                                            </label>
+                                        @endif
+                                    </label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation"
+                                        class="form-control" {{ isset($user) ? '' : 'required' }}>
+
+                                </div>
+
+
+                                <div class="form-group col-12 col-md-6 ps-4">
+                                    <label for="role">Role</label>
+                                    <select name="role" id="role" class="form-control" required>
+                                        <option value="">Select Role</option>
+                                        <option value="admin"
+                                            {{ old('role', isset($user) && $user->role == 'admin' ? 'selected' : '') }}>
+                                            Admin</option>
+                                        <option value="customer"
+                                            {{ old('role', isset($user) && $user->role == 'customer' ? 'selected' : '') }}>
+                                            Customer</option>
+                                        <option value="staff"
+                                            {{ old('role', isset($user) && $user->role == 'staff' ? 'selected' : '') }}>
+                                            Staff</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-12 col-md-6 ps-4">
+                                    <label for="picture_url">Profile Picture</label>
+                                    <input type="file" name="picture_url" class="form-control">
+                                </div>
                             </div>
-                        </nav>
+
+                            <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">
+                                {{ isset($user) ? 'Update' : 'Save' }}
+                            </button>
+                            @if (isset($user))
+                                <a href="{{ route('users.index') }}"
+                                    class="btn btn-secondary btn-sm float-end m-1 rounded-5">Cancel</a>
+                            @endif
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="card rounded-0">
+                    <div class="card-body">
+                        <div class="row m-2 align-items-center">
+                            <div class="col-8 p-0">
+                                <h1>User Data</h1>
+                            </div>
+                            <div class="col-4">
+                                <div class="row align-items-center">
+                                    <nav
+                                        class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                                        <div class="input-group rounded-5">
+                                            <div class="input-group-prepend">
+                                                <button type="submit" class="btn btn-search pe-1">
+                                                    <i class="fa fa-search search-icon"></i>
+                                                </button>
+                                            </div>
+                                            <input type="text" id="search" placeholder="Search ..."
+                                                class="form-control" />
+                                        </div>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mt-3 w-100" id="Table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Profile</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                    @foreach ($users as $index => $user)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>
+                                                @if ($user->picture_url)
+                                                    <img src="{{ asset('storage/' . $user->picture_url) }}"
+                                                        alt="{{ $user->name }}"
+                                                        class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
+                                                        width="100">
+                                                @else
+                                                    No picture
+                                                @endif
+                                            </td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ ucfirst($user->role) }}</td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-warning btn-sm dropdown-toggle rounded-5" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="{{ route('users.show', $user->id) }}"
+                                                                class="dropdown-item">User Detail</a></li>
+                                                        <li><a href="{{ route('users.index', ['edit' => $user->id]) }}"
+                                                                class="dropdown-item">Edit</a></li>
+                                                        <li>
+                                                            <form action="{{ route('users.destroy', $user->id) }}"
+                                                                method="POST" style="display:inline;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item"
+                                                                    onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination buttons -->
+                        <div class="d-flex justify-content-Start ">
+                            <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark" onclick="prevPage()" disabled><i
+                                    class="fa-solid fa-angle-left"></i> Previous</button>
+                            <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark" onclick="nextPage()">Next <i
+                                    class="fa-solid fa-angle-right"></i></button>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            {{-- @if (session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif --}}
-
-            <table class="table table-responsive table-sm table-hover mt-3" id="Table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Profile</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Created At</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $loop->index + 1 }}</td>
-                            <td>
-                                @if ($user->profile_picture)
-                                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}"
-                                        class="avatar-img avatar-lg  rounded-5 oject-fit-cover object-center "
-                                        width="100">
-                                @else
-                                    No picture
-                                @endif
-                            </td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ ucfirst($user->role) }}</td>
-
-                            <td>{{ $user->created_at }}</td>
-                            <td>
-                                <div class="dropdown ">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        Action
-                                    </button>
-                                    <ul class="dropdown-menu">
-
-                                        <li> <a href="{{ route('users.show', $user->id) }}" class="dropdown-item">User
-                                                Detail</a>
-                                        </li>
-                                        <li> <a href="{{ route('users.edit', $user->id) }}" class="dropdown-item">Edit</a>
-                                        </li>
-                                        <li>
-                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="dropdown-item"
-                                                    onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
-
 @endsection

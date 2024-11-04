@@ -25,7 +25,8 @@
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
                 <div class="row">
                     <div class="col-12">
-                        <i class="fa-regular fa-calendar-days"></i> <strong class="text-center fs-6" id="date"></strong>
+                        <i class="fa-regular fa-calendar-days"></i> <strong class="text-center fs-6"
+                            id="date"></strong>
                     </div>
                     <div class="col-12">
                         <i class="fa-regular fa-clock"></i> <strong class="text-center fs-6" id="time"></strong>
@@ -58,6 +59,8 @@
                             @if (Auth::user()->picture_url)
                                 <img src="{{ Storage::url(Auth::user()->picture_url) }}" alt="Profile Picture"
                                     class="avatar-img  rounded-5 oject-fit-cover object-center" width="100%">
+                            @else
+                                No picture
                             @endif
                         </div>
                         @endif
@@ -72,30 +75,51 @@
                                         @if (Auth::check())
                                             @if (Auth::user()->picture_url)
                                                 <img src="{{ Storage::url(Auth::user()->picture_url) }}"
-                                                    alt="Profile Picture" class="avatar-img rounded-5"
-                                                    width="100">
+                                                    alt="Profile Picture" class="avatar-img rounded-5" width="100">
+                                            @else
+                                                No picture
                                             @endif
 
                                     </div>
                                     <div class="u-text">
                                         <h6>{{ Auth::user()->name }}</h6>
                                         <p class="text-muted">Role: {{ ucfirst(Auth::user()->role) }}</p>
-                                        <a href="{{ route('users.show', Auth::user()->id) }}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                        <p class="text-muted">Email: {{ Auth::user()->email }}</p>
+                                        <a href="{{ route('users.show', Auth::user()->id) }}"
+                                            class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                     </div>
                                     @endif
                                 </div>
                             </li>
                             <li>
+                                @if (Auth::user()->role == 'admin')
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('users.index') }}"><i
+                                            class="fa-solid fa-gear"></i> Account Setting</a>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST" class="">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i>
+                                            Logout</button>
+                                    </form>
+                                @elseif (Auth::user()->role == 'customer')
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST" class="">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i>
+                                            Logout</button>
+                                    </form>
+                                @elseif (Auth::user()->role == 'staff')
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST" class="">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i>
+                                            Logout</button>
+                                    </form>
+                                @endif
 
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('users.index') }}"><i class="fa-solid fa-gear"></i> Account Setting</a>
-                                <div class="dropdown-divider"></div>
-                                {{-- <a class="dropdown-item" href="{{ route('login') }}"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a> --}}
-                                {{-- <a class="dropdown-item" href="{{ route('register') }}"><i class="bi bi-r-circle"></i> Register</a> --}}
-                                <form action="{{ route('logout') }}" method="POST" class="">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i> Logout</button>
-                                </form>
                             </li>
                         </div>
                     </ul>

@@ -1,3 +1,43 @@
+const rowsPerPage = 5; // Number of rows per page
+let currentPage = 1;
+const tableBody = document.getElementById("tableBody");
+const rows = tableBody.querySelectorAll("tr");
+const totalRows = rows.length;
+const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+function displayPage(page) {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    rows.forEach((row, index) => {
+        row.style.display = (index >= start && index < end) ? "" : "none";
+    });
+
+    // Disable buttons based on the current page
+    document.getElementById("prevBtn").disabled = page === 1;
+    document.getElementById("nextBtn").disabled = page === totalPages;
+}
+
+function nextPage() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        displayPage(currentPage);
+    }
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        displayPage(currentPage);
+    }
+}
+
+// Initial display
+displayPage(currentPage);
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     if (successMessage) {
         Swal.fire({

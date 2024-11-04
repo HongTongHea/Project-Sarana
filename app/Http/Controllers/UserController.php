@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -7,26 +8,69 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
+
 {
+
+
     public function dashboard()
     {
-        $user = auth()->user();
-        return view('dashboard', compact('user'));
+        // Fetch all users from the database
+        $users = User::all();
+
+        // Pass users data to the dashboard view
+        return view('dashboard', compact('users'));
+    }
+
+    public function index(Request $request)
+    {
+        $users = User::all();
+
+        // Check if `edit` parameter is present to load the user data for editing
+        $user = null;
+        if ($request->has('edit')) {
+            $user = User::find($request->input('edit'));
+        }
+
+        return view('users.index', compact('users', 'user'));
+    }
+
+
+
+
+    public function create()
+    {
+        return view('users.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:8',
+            'role' => 'required|in:admin,customer,staff',
+            'picture_url' => 'image|nullable|max:1999',
+        ]);
+
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->role = $validatedData['role'];
+        $user->password = Hash::make($validatedData['password']);
+
+        if ($request->hasFile('picture_url')) {
+            $user->picture_url = $request->file('picture_url')->store('picture_url', 'public');
+        }
+
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
     public function show($id)
     {
-        // Find the user by ID
         $user = User::findOrFail($id);
-
-        // Return the view with the user data
         return view('users.show', compact('user'));
-    }
-
-    public function index()
-    {
-        $users = User::all();
-        return view('users.index', compact('users'));
     }
 
     public function edit(User $user)
@@ -37,35 +81,37 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|confirmed',
-            'profile_picture' => 'image|nullable|max:1999',
+            'password' => 'nullable|confirmed|min:8',
+            'role' => 'required|in:admin,customer,staff',
+            'picture_url' => 'image|nullable|max:1999',
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role = $request->role;
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 
-        if ($request->hasFile('profile_picture')) {
-            if ($user->profile_picture) {
-                Storage::delete('public/' . $user->profile_picture); // Correctly deleting the old profile picture
+        if ($request->hasFile('picture_url')) {
+            if ($user->picture_url) {
+                Storage::delete('public/' . $user->picture_url);
             }
-            $user->profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->picture_url = $request->file('picture_url')->store('picture_url', 'public');
         }
 
         $user->save();
 
-        return redirect()->route('dashboard')->with('success', 'Profile updated successfully'); // Redirect to dashboard
+        return redirect()->route('users.index')->with('success', 'Profile updated successfully');
     }
 
     public function destroy(User $user)
     {
-        if ($user->profile_picture) {
-            Storage::delete('public/images/' . $user->profile_picture); // Correct path
+        if ($user->picture_url) {
+            Storage::delete('public/' . $user->picture_url);
         }
         $user->delete();
 

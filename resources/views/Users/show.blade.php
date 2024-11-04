@@ -24,9 +24,9 @@
                                     required onchange="displayFileName()">
 
                                 <!-- Custom button to trigger file input -->
-                                <button type="button" class="btn btn-sm rounded-2 border border-1 border-dark "
+                                <button type="button" class="btn btn-sm rounded-4 border border-1 border-dark "
                                     onclick="document.getElementById('profilePicture').click()">
-                                    Upload New Picture
+                                    Upload Picture
                                 </button>
 
                             </div>
@@ -49,7 +49,8 @@
 
                     </tr>
             </table>
-            <button type="submit" class="btn btn-primary btn-sm float-end m-1">Save</button>
+            <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">Save</button>
+            <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm float-end m-1 rounded-5">Back</a>
             </form>
         </div>
     </div>

@@ -44,8 +44,6 @@ class AuthController extends Controller
     }
 
 
-
-
     public function updateProfilePicture(Request $request)
     {
         $request->validate([

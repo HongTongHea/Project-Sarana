@@ -111,7 +111,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="widgets.html">
+                        <a href="{{ route('users.index') }}">
                             <i class="fa-solid fa-user-gear"></i>
                             <p>User</p>
                         </a>
