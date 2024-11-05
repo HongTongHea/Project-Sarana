@@ -39,13 +39,13 @@
                         <h4 class="text-section">Components</h4>
                     </li>
                     <li class="nav-item">
-                        <a href="">
+                        <a href="{{route('categories.index')}}">
                             <i class="fas fa-layer-group"></i>
                             <p>Categories</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="">
+                        <a href="{{route('products.index')}}">
                             <i class="fa-brands fa-product-hunt"></i>
                             <p>Products</p>
                         </a>

@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 
 
@@ -25,3 +27,8 @@ Route::resource('users', UserController::class);
 
 
 Route::resource('customers', CustomerController::class);
+
+Route::resource('categories', CategoryController::class);
+
+Route::resource('products', ProductController::class);
+
