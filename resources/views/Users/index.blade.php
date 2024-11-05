@@ -4,7 +4,7 @@
     <div class="container mt-2">
         <div class="row">
             <div class="container p-4 ">
-                <div class="card rounded-0 ">
+                <div class="card">
                     <div class="card-body ">
                         <h1>{{ isset($user) ? 'Edit User' : 'Create New User' }}</h1>
 
@@ -90,7 +90,7 @@
                     </div>
                 </div>
 
-                <div class="card rounded-0">
+                <div class="card">
                     <div class="card-body">
                         <div class="row m-2 align-items-center">
                             <div class="col-8 p-0">
@@ -143,8 +143,9 @@
                                             <td>{{ ucfirst($user->role) }}</td>
                                             <td>
                                                 <div class="dropdown">
-                                                    <button class="btn btn-warning btn-sm dropdown-toggle rounded-5" type="button"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                                                    <button class="btn btn-warning btn-sm dropdown-toggle rounded-5"
+                                                        type="button" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">Action</button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="{{ route('users.show', $user->id) }}"
                                                                 class="dropdown-item">User Detail</a></li>
@@ -170,10 +171,10 @@
 
                         <!-- Pagination buttons -->
                         <div class="d-flex justify-content-Start ">
-                            <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark" onclick="prevPage()" disabled><i
-                                    class="fa-solid fa-angle-left"></i> Previous</button>
-                            <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark" onclick="nextPage()">Next <i
-                                    class="fa-solid fa-angle-right"></i></button>
+                            <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
+                                onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
+                            <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
+                                onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
                         </div>
 
                     </div>

@@ -3,7 +3,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
             <a href="index.html" class="logo">
-                <img src="/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+                <img src="/assets/img/logo2.png" alt="" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -24,11 +24,9 @@
         <div class="container-fluid">
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="p-3">
                         <i class="fa-regular fa-calendar-days"></i> <strong class="text-center fs-6"
                             id="date"></strong>
-                    </div>
-                    <div class="col-12">
                         <i class="fa-regular fa-clock"></i> <strong class="text-center fs-6" id="time"></strong>
                     </div>
                 </div>
@@ -104,14 +102,12 @@
                                     </form>
                                 @elseif (Auth::user()->role == 'customer')
                                     <div class="dropdown-divider"></div>
-                                    <div class="dropdown-divider"></div>
                                     <form action="{{ route('logout') }}" method="POST" class="">
                                         @csrf
                                         <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i>
                                             Logout</button>
                                     </form>
                                 @elseif (Auth::user()->role == 'staff')
-                                    <div class="dropdown-divider"></div>
                                     <div class="dropdown-divider"></div>
                                     <form action="{{ route('logout') }}" method="POST" class="">
                                         @csrf

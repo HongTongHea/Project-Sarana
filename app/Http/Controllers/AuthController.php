@@ -23,8 +23,6 @@ class AuthController extends Controller
             ->header('Expires', '0');
     }
 
-
-
     public function viewUsers()
     {
         $users = User::all();
@@ -37,10 +35,9 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('success', 'Login successful.');
         }
-
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+        return back()->withErrors(['email' => 'Invalid email or password.']);
     }
 
 
@@ -71,6 +68,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Successfully logged out.');
     }
 }

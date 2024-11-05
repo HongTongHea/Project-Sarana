@@ -2,8 +2,10 @@
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
-                <img src="/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+            <a href="index.html" class="logo text-primary ms-2 ">
+                <i class="fa-solid fa-store"></i>
+                <h6 class="text-uppercase mt-2 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">Clothes <span class="text-warning">Store</span> 
+                </h6>
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
