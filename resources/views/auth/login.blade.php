@@ -10,22 +10,23 @@
     <title>Login Page</title>
 </head>
 
-<body style="background-color: #fff5f5d8">
+<body style="background-color: #ffffffc4">
 
     <div class="container" style="padding-top: 100px">
         <div class="d-flex justify-content-center align-items-center p-0">
-            <img src="/assets/img/logo2.png" alt="" width="14%">
-         
+            <img src="/assets/img/logo4.png" alt="" width="14%">
+
         </div>
 
         <div class="d-flex justify-content-center align-items-center">
 
-            <div class="card shadow rounded-0 bg-dark text-white text-center" style="width: 400px; padding: 20px">
+            <div class="card shadow rounded-2  text-center  text-light bg-dark" style="width: 400px; padding: 20px">
                 <div class="card-body">
-                    <h3>Login</h3>
+                    <h3 class="fw-bold">Login</h3>
                     <span>Please login to start your system</span>
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
+
                         @if ($errors->has('email'))
                             <label class="text-danger mt-1">{{ $errors->first('email') }}</label>
                         @elseif (session('success'))
@@ -33,23 +34,34 @@
                         @endif
 
                         <div class="form-group mt-4 position-relative">
-                            <input type="email" class="form-control  bg-dark text-white rounded-0" id="email"
+                            <input type="email" class="form-control rounded-3  text-light bg-dark" id="email"
                                 placeholder="Email" name="email" required>
                             <div
                                 class="icon position-absolute top-0  end-0 bottom-0 m-auto d-flex justify-content-center align-items-center p-3">
                                 <i class="fa-solid fa-envelope"></i>
                             </div>
                         </div>
+
                         <div class="form-group mt-4 position-relative">
-                            <input type="password" class="form-control  bg-dark text-white rounded-0" id="password"
+                            <input type="password" class="form-control rounded-3  text-light bg-dark" id="password"
                                 placeholder="Password" name="password" required>
                             <div
                                 class="icon position-absolute top-0  end-0 bottom-0 m-auto d-flex justify-content-center align-items-center p-3">
                                 <i class="fa-solid fa-lock"></i>
                             </div>
                         </div>
+
                         <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary rounded-0 w-100 mt-2 ">Login</button>
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="col-6 pe-4 ">
+                                    <input type="checkbox" id="remember" name="remember" class="form-check-input p-2">
+                                    <label for="remember" class="form-check-label ">Remember Me</label>
+                                </div>
+                                <div class="col-6">
+                                    <button type="submit"
+                                        class="btn btn-primary rounded-5  mt-2  fw-bold float-end w-75">Login</button>
+                                </div>
+                            </div>
                         </div>
                     </form>
 
@@ -59,6 +71,21 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rememberCheckbox = document.getElementById("remember");
+
+            // Load saved checkbox state on page load
+            if (localStorage.getItem("rememberMe") === "true") {
+                rememberCheckbox.checked = true;
+            }
+
+            // Save checkbox state to localStorage when toggled
+            rememberCheckbox.addEventListener("change", function() {
+                localStorage.setItem("rememberMe", rememberCheckbox.checked);
+            });
+        });
+    </script>
 </body>
 
 </html>

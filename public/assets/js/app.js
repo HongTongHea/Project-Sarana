@@ -10,7 +10,7 @@ function displayPage(page) {
     const end = start + rowsPerPage;
 
     rows.forEach((row, index) => {
-        row.style.display = (index >= start && index < end) ? "" : "none";
+        row.style.display = index >= start && index < end ? "" : "none";
     });
 
     // Disable buttons based on the current page
@@ -35,9 +35,6 @@ function prevPage() {
 // Initial display
 displayPage(currentPage);
 
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
     if (successMessage) {
         Swal.fire({
@@ -58,25 +55,77 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// document.getElementById("search").addEventListener("keyup", function () {
+//     let filter = this.value.toUpperCase();
+//     let tables = document.querySelectorAll(".search-table"); // Select all tables with the class "search-table"
+
+//     // Loop through each table and apply search functionality
+//     tables.forEach((table) => {
+//         let rows = table.querySelector("tbody").rows;
+
+//         for (let i = 0; i < rows.length; i++) {
+//             let cells = rows[i].cells;
+//             let match = false;
+
+//             // Check each cell in the row
+//             for (let j = 0; j < cells.length; j++) {
+//                 let cellContent = cells[j].textContent || cells[j].innerText;
+//                 if (cellContent.toUpperCase().indexOf(filter) > -1) {
+//                     match = true;
+//                     break;
+//                 }
+//             }
+
+//             // Show or hide the row based on match result
+//             rows[i].style.display = match ? "" : "none";
+//         }
+//     });
+// });
+
 document.getElementById("search").addEventListener("keyup", function () {
     let filter = this.value.toUpperCase();
-    let rows = document.querySelector("#Table tbody").rows;
+    let tables = document.querySelectorAll(".search-table"); // Select all tables with the class "search-table"
 
-    for (let i = 0; i < rows.length; i++) {
-        let name = rows[i].cells[1].textContent.toUpperCase();
-        let email = rows[i].cells[2].textContent.toUpperCase();
-        let role = rows[i].cells[3].textContent.toUpperCase();
-        let phone = rows[i].cells[4].textContent.toUpperCase();
+    // Loop through each table and apply search functionality
+    tables.forEach((table) => {
+        let rows = table.querySelector("tbody").rows;
+        let found = false; // Flag to track if any row is visible
 
-        if (
-            name.indexOf(filter) > -1 ||
-            email.indexOf(filter) > -1 ||
-            role.indexOf(filter) > -1 ||
-            phone.indexOf(filter) > -1
-        ) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
+        for (let i = 0; i < rows.length; i++) {
+            let cells = rows[i].cells;
+            let match = false;
+
+            // Check each cell in the row
+            for (let j = 0; j < cells.length; j++) {
+                let cellContent = cells[j].textContent || cells[j].innerText;
+                if (cellContent.toUpperCase().indexOf(filter) > -1) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Show or hide the row based on match result
+            rows[i].style.display = match ? "" : "none";
+            if (match) found = true; // If a row is found, set found to true
         }
-    }
+
+        // Handle "No results found" message
+        let noResultRow = table.querySelector(".no-results");
+        if (!found) {
+            // If no visible rows, show "No results found" row
+            if (!noResultRow) {
+                noResultRow = document.createElement("tr");
+                noResultRow.classList.add("no-results");
+                let cell = document.createElement("td");
+                cell.colSpan = table.querySelector("thead tr").children.length;
+                cell.textContent = "No results found";
+                noResultRow.appendChild(cell);
+                table.querySelector("tbody").appendChild(noResultRow);
+            }
+            noResultRow.style.display = "";
+        } else if (noResultRow) {
+            // Hide "No results found" row if there are visible rows
+            noResultRow.style.display = "none";
+        }
+    });
 });

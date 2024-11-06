@@ -49,10 +49,8 @@
 
                     </tr>
             </table>
-            @if (Auth::user()->role == 'staff')
                 <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">Save</button>
                 <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm float-end m-1 rounded-5">Back</a>
-            @endif
             </form>
         </div>
     </div>

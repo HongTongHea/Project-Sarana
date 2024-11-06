@@ -10,12 +10,18 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $categories = Category::all(); // Fetch all categories
+        $category = null;
+
+        if ($request->has('edit')) {
+            $category = Category::find($request->edit); // Find category to edit
+        }
+
+        return view('categories.index', compact('categories', 'category'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -33,8 +39,8 @@ class CategoryController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'name' => ['required','string','max:255'],
-            'description' => ['required','string'],
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
         ]);
 
         Category::create($validatedData);
@@ -67,8 +73,8 @@ class CategoryController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'name' => ['required','string','max:255'],
-            'description' => ['required','string'],
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
         ]);
 
         $category->update($validatedData);
@@ -81,9 +87,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
         $category->delete();
-
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 }

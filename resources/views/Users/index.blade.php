@@ -3,11 +3,14 @@
 @section('content')
     <div class="container mt-2">
         <div class="row">
-            <div class="container p-4 ">
+            <div class="container p-4">
                 <div class="card">
                     <div class="card-body ">
                         <h1>{{ isset($user) ? 'Edit User' : 'Create New User' }}</h1>
-
+                        @if (isset($user) && $user->picture_url)
+                            <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
+                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center m-3" width="100%">
+                        @endif
                         <form action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
@@ -72,10 +75,13 @@
                                     </select>
                                 </div>
 
+                      
                                 <div class="form-group col-12 col-md-6 ps-4">
                                     <label for="picture_url">Profile Picture</label>
                                     <input type="file" name="picture_url" class="form-control">
                                 </div>
+
+
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">
@@ -98,28 +104,21 @@
                             </div>
                             <div class="col-4">
                                 <div class="row align-items-center">
-                                    <nav
-                                        class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                                        <div class="input-group rounded-5">
-                                            <div class="input-group-prepend">
-                                                <button type="submit" class="btn btn-search pe-1">
-                                                    <i class="fa fa-search search-icon"></i>
-                                                </button>
-                                            </div>
-                                            <input type="text" id="search" placeholder="Search ..."
-                                                class="form-control" />
-                                        </div>
-                                    </nav>
+                                    <div class="input-group rounded-5">
+                                        <input type="text" id="search" placeholder="Search ..."
+                                            class="form-control rounded-4 border position-relative" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-sm table-hover mt-3 w-100" id="Table">
+                            <table class="table table-sm table-hover mt-3  search-table" id="UserTableData">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Profile</th>
+                                        <th>Name</th>
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>Actions</th>
@@ -139,6 +138,7 @@
                                                     No picture
                                                 @endif
                                             </td>
+                                            <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ ucfirst($user->role) }}</td>
                                             <td>

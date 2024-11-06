@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Management Category List')
+@section('title', 'Management Product')
 @section('content')
 
 <div class="container mt-5">

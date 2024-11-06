@@ -2,9 +2,10 @@
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo text-primary ms-2 ">
-                <i class="fa-solid fa-store"></i>
-                <h6 class="text-uppercase mt-2 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">Clothes <span class="text-warning">Store</span> 
+            <a href="index.html" class="logo text-primary ">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand" height="30">
+                <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">Clothes
+                    <span class="text-warning">Store</span>
                 </h6>
             </a>
             <div class="nav-toggle">
@@ -39,13 +40,13 @@
                         <h4 class="text-section">Components</h4>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('categories.index')}}">
+                        <a href="{{ route('categories.index') }}">
                             <i class="fas fa-layer-group"></i>
                             <p>Categories</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('products.index')}}">
+                        <a href="{{ route('products.index') }}">
                             <i class="fa-brands fa-product-hunt"></i>
                             <p>Products</p>
                         </a>
@@ -195,13 +196,13 @@
                         <h4 class="text-section">Components</h4>
                     </li>
                     <li class="nav-item">
-                        <a href="">
+                        <a href="{{ route('categories.index') }}">
                             <i class="fas fa-layer-group"></i>
                             <p>Categories</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="">
+                        <a href="{{ route('products.index') }}">
                             <i class="fa-brands fa-product-hunt"></i>
                             <p>Products</p>
                         </a>
