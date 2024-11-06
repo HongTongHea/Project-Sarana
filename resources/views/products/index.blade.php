@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="row m-2 align-items-center">
                     <div class="col-8 p-0">
-                        <h1>User Data</h1>
+                        <h1>Product Data</h1>
                         <a href="{{ route('products.create') }}" class="btn btn-primary mb-3 btn-sm rounded-5">Add New
                             Product</a>
                     </div>
@@ -32,7 +32,7 @@
                                 <th>Size</th>
                                 <th>Stock Quantity</th>
                                 <th>Category</th>
-                                <th>Image URL</th>
+                                <th>Image</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -57,9 +57,11 @@
                                         @endif
                                     </td>
 
+
                                     <td>
-                                        <div class="dropdown"> <button class="btn btn-warning rounded-5 btn-sm dropdown-toggle"
-                                                type="button" data-bs-toggle="dropdown" aria-expanded="false"> Action
+                                        <div class="dropdown"> <button
+                                                class="btn btn-warning rounded-5 btn-sm dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"> Action
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('products.show', $product->id) }}"

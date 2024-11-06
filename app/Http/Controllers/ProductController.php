@@ -30,16 +30,17 @@ class ProductController extends Controller
             'size' => 'required|in:XS,S,M,L,XL,XXL',
             'stock_quantity' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'file' => 'nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:1999',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:1999',
         ]);
 
         $product = new Product($request->all());
 
-        if ($request->hasFile('file')) {
-            $product->picture_url = $request->file('file')->store('uploads', 'public');
+        if ($request->hasFile('picture_url')) {
+            $product->picture_url = $request->file('picture_url')->store('picture_url', 'public');
         }
 
         $product->save();
+
 
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -76,7 +77,7 @@ class ProductController extends Controller
             if ($product->picture_url) {
                 Storage::delete('public/' . $product->picture_url);
             }
-            $product->picture_url = $request->file('file')->store('uploads', 'public');
+            $product->picture_url = $request->file('file')->store('picture_url', 'public');
         }
 
         $product->save();
