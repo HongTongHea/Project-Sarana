@@ -7,6 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
 
 
 
@@ -25,3 +27,21 @@ Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
+<<<<<<< HEAD
+=======
+
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+Route::get('/orders/{order}/items', [OrderController::class, 'showItems'])->name('orders.items');
+
+
+
+
+Route::resource('orders', OrderController::class);
+
+Route::get('/order-items', [OrderItemController::class, 'index'])->name('orderItems.index');
+>>>>>>> 3309ada57ce8a40086af11c32b81c57cb5649d60

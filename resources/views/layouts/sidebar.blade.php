@@ -2,10 +2,16 @@
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
+<<<<<<< HEAD
             <a href="index.html" class="logo text-primary ">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand" height="30">
                 <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">Clothes
                     <span class="text-warning">Store</span>
+=======
+            <a href="index.html" class="logo text-primary ms-2 ">
+                <i class="fa-solid fa-store"></i>
+                <h6 class="text-uppercase mt-2 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">Clothes <span class="text-warning">Store</span>
+>>>>>>> 3309ada57ce8a40086af11c32b81c57cb5649d60
                 </h6>
             </a>
             <div class="nav-toggle">
@@ -93,12 +99,12 @@
                         <div class="collapse" id="base2">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="">
+                                    <a href="{{route('orders.index')}}">
                                         <span class="sub-item">Order List</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <a href="{{ route('orderItems.index') }}">
                                         <span class="sub-item">Order Items</span>
                                     </a>
                                 </li>
@@ -155,12 +161,12 @@
                         <div class="collapse" id="base2">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="">
+                                    <a href="{{route('orders.index')}}">
                                         <span class="sub-item">Order List</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <a href="{{ route('orders.items', $order->id) }}">
                                         <span class="sub-item">Order Items</span>
                                     </a>
                                 </li>
