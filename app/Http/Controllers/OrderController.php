@@ -83,6 +83,7 @@ class OrderController extends Controller
         $order->load('orderItems.product');
         return view('orders.show', compact('order'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container mt-5">
+<div class="container mt-3">
     <h2>Create New Product</h2>
     
     @if ($errors->any())
@@ -63,12 +63,12 @@
             </select>
         </div>
 
-        <div class="form-group col-12 col-md-6 ps-4">
+        <div class="mb-3">
             <label for="picture_url">Product Image:</label>
-            <input type="file" name="picture_url" id="picture_url" accept="image/*">
+            <input type="file" class="form-control" name="picture_url" id="picture_url" accept="image/*">
         </div>
 
-        <button type="submit" class="btn btn-primary">Create Product</button>
+        <button type="submit" class="btn btn-primary btn-sm">Create Product</button>
     </form>
 </div>
 

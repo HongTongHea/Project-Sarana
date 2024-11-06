@@ -22,25 +22,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
 });
 
-
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('categories', CategoryController::class);
+
 Route::resource('products', ProductController::class);
 
-
-Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
-Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
-Route::get('/orders/{order}/items', [OrderController::class, 'showItems'])->name('orders.items');
-
-
-
-
 Route::resource('orders', OrderController::class);
-
 Route::get('/order-items', [OrderItemController::class, 'index'])->name('orderItems.index');
-

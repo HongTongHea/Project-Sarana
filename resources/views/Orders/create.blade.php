@@ -116,8 +116,8 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary mt-3">Create Order</button>
-                <a href="{{ route('orders.index') }}" class="btn btn-secondary mt-3">Cancel</a>
+                <button type="submit" class="btn btn-primary mt-3 btn-sm">Create Order</button>
+                <a href="{{ route('orders.index') }}" class="btn btn-secondary mt-3 btn-sm">Cancel</a>
             </form>
         </div>
     </div>

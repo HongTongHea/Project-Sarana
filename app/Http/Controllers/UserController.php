@@ -85,7 +85,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|confirmed|min:8',
             'role' => 'required|in:admin,customer,staff',
-            'picture_url' => 'image|nullable|max:1999',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:1999',
         ]);
 
         $user->name = $request->name;
