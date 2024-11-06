@@ -27,8 +27,7 @@ Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
-<<<<<<< HEAD
-=======
+
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
@@ -44,4 +43,4 @@ Route::get('/orders/{order}/items', [OrderController::class, 'showItems'])->name
 Route::resource('orders', OrderController::class);
 
 Route::get('/order-items', [OrderItemController::class, 'index'])->name('orderItems.index');
->>>>>>> 3309ada57ce8a40086af11c32b81c57cb5649d60
+
