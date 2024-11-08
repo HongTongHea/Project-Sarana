@@ -1,12 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Users Data')
 @section('content')
-    <div class="container mt-2">
+    <div class="container">
         <div class="row">
-            <div class="container p-4">
+            <div class="container p-4 pt-0">
+                <h1 class="m-3">{{ isset($user) ? 'Edit User' : 'Create New User' }}</h1>
                 <div class="card">
                     <div class="card-body ">
-                        <h1>{{ isset($user) ? 'Edit User' : 'Create New User' }}</h1>
+                     
                         @if (isset($user) && $user->picture_url)
                             <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
                                 class="avatar-img avatar-lg rounded-5 object-fit-cover object-center m-3" width="100%">
@@ -167,16 +168,13 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-Start ">
+                                <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
+                                    onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
+                                <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
+                                    onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
+                            </div>
                         </div>
-
-                        <!-- Pagination buttons -->
-                        <div class="d-flex justify-content-Start ">
-                            <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                                onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
-                            <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                                onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                        </div>
-
                     </div>
                 </div>
             </div>

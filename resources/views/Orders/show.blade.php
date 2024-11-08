@@ -1,60 +1,86 @@
 @extends('layouts.app')
 
-@section('title', 'Order Details')
-
 @section('content')
-    <div class="card rounded-0">
-        <div class="card-body">
-            <h1>Order Details</h1>
-
-            <!-- Order Information -->
-            <div class="card mt-4 rounded-0 w-75 bg-dark text-white">
-                <div class="card-header">
-                    <h3>Order #{{ $order->id }}</h3>
+    <div class="container mt-2">
+        <div class="invoice-container mb-2" style="width: 80%; margin: auto; border: 1px solid #ddd; padding: 20px;">
+            <h2 class="text-center">Order Invoice</h2>
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <h4>Customer Information</h4>
+                    <p><strong>Name:</strong> {{ $order->customer->first_name . ' ' . $order->customer->last_name }}</p>
+                    <p><strong>Email:</strong> {{ $order->customer->email }}</p>
+                    <p><strong>Address:</strong> {{ $order->customer->address }}</p>
                 </div>
-                <div class="card-body">
-                    <p><strong>Customer:</strong> {{ $order->customer->first_name }} {{ $order->customer->last_name }}</p>
+                <div style="text-align: right;">
+                    <h4>Order Details</h4>
+                    <p><strong>Order ID:</strong> {{ $order->id }}</p>
+                    <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y') }}</p>
                     <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
-                    <p><strong>Payment Status:</strong> {{ ucfirst($order->payment_status) }}</p>
-                    <p><strong>Total Price:</strong> ${{ number_format($order->total_price, 2) }}</p>
-                    <p><strong>Created At:</strong> {{ $order->created_at->format('d-m-Y H:i') }}</p>
-                    <p><strong>Updated At:</strong> {{ $order->updated_at->format('d-m-Y H:i') }}</p>
-
-                    <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{{ route('orders.index') }}" class="btn btn-secondary btn-sm">Back to List</a>
-
-                    <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="d-inline-block">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
                 </div>
             </div>
 
-            <!-- Order Items -->
-            <h4 class="mt-4">Order Items</h4>
-            <table class="table table-dark table-hover table-bordered mt-3">
-                <thead>
+            <table class="table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+                <thead style="background-color: #f5f5f5;">
                     <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Product</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->items ?? [] as $item)
                     <tr>
-                        <td>{{ $item->product->name ?? 'N/A' }}</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>${{ number_format($item->price, 2) }}</td>
-                        <td>${{ number_format($item->quantity * $item->price, 2) }}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">{{ $order->product->name }}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->price, 2) }}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">{{ $order->quantity }}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->total_price, 2) }}</td>
                     </tr>
-                @endforeach
-                    
-
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"
+                            style="padding: 8px; text-align: right; font-weight: bold; border: 1px solid #ddd;">
+                            Grand Total</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->total_price, 2) }}</td>
+                    </tr>
+                </tfoot>
             </table>
+
+            <div style="margin-top: 20px;">
+                <h4>Payment Status: {{ ucfirst($order->payment_status) }}</h4>
+            </div>
+
+            <div class="text-center" style="margin-top: 30px;">
+                <button onclick="window.print();" class="btn btn-primary">Print Invoice</button>
+            </div>
         </div>
     </div>
+
+
+    <style>
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .invoice-container,
+            .invoice-container * {
+                visibility: visible;
+            }
+
+            .invoice-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                margin: 0;
+            }
+
+            .btn {
+                display: none;
+            }
+        }
+    </style>
 @endsection

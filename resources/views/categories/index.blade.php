@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Management Category')
 @section('content')
-    <div class="container mt-3">
+    <div class="container">
+        <h1 class="m-3">{{ isset($category) ? 'Edit Category' : 'Create New Category' }}</h1>
         <div class="container p-2">
             <div class="card">
                 <div class="card-body">
-
                     <div class="row d-flex justify-content-center align-item-center">
                         <div class="col-6">
-                            <h1>{{ isset($category) ? 'Edit Category' : 'Create New Category' }}</h1>
+                          
                             <form
                                 action="{{ isset($category) ? route('categories.update', $category->id) : route('categories.store') }}"
                                 method="POST" enctype="multipart/form-data">

@@ -98,7 +98,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('orderItems.index') }}">
+                                    <a href="">
                                         <span class="sub-item">Order Items</span>
                                     </a>
                                 </li>

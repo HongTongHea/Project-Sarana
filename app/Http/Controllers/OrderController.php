@@ -5,148 +5,90 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Models\Product;
-use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-        $orders = Order::with('customer')->paginate(10);
+        $orders = Order::all();
         return view('orders.index', compact('orders'));
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
         $customers = Customer::all();
         $products = Product::all();
-
         return view('orders.create', compact('customers', 'products'));
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-          // Validate the request data
-        $validated = $request->validate([
+        // Validate incoming request
+        $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'status' => 'required|in:pending,completed,canceled',
             'payment_status' => 'required|in:paid,unpaid',
-            'total_price' => 'required|numeric|min:0',
-            'product_id.*' => 'required|exists:products,id',
-            'quantity.*' => 'required|integer|min:1',
-            'price.*' => 'required|numeric|min:0',]);
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+        ]);
 
+        // Calculate total price based on quantity and price
+        $validatedData['total_price'] = $validatedData['quantity'] * $validatedData['price'];
 
-            // Create a new order
+        // Create new order with calculated total price
+        Order::create($validatedData);
 
-            $order = Order::create([
-                'customer_id' => $validated['customer_id'],
-                'status' => $validated['status'],
-                'payment_status' => $validated['payment_status'],
-                'total_price' => array_sum(array_map(function ($quantity, $price) {
-                    return $quantity * $price;
-                }, $validated['quantity'], $validated['price']))
-            ]);
-             // Create order items
-        foreach ($validated['product_id'] as $index => $productId) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $productId,
-                'quantity' => $validated['quantity'][$index],
-                'price' => $validated['price'][$index],
-            ]);
-        }
-
-        return redirect()->route('orders.index')->with('success', 'Order created successfully');
+        return redirect()->route('orders.index')->with('success', 'Order created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
+
+    public function show($id)
     {
-        //
-        $order->load('orderItems.product');
+        $order = Order::findOrFail($id);
         return view('orders.show', compact('order'));
     }
-    
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
+    public function edit($id)
     {
-        //
+        $order = Order::findOrFail($id);
         $customers = Customer::all();
         $products = Product::all();
-        $order->load('orderItems');
         return view('orders.edit', compact('order', 'customers', 'products'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, $id)
     {
-        //
-        $validated = $request->validate([
-            'customer_id' => 'required|exists:customers,id',
-            'status' => 'required|in:pending,completed,canceled',
-            'payment_status' => 'required|in:paid,unpaid',
-            'product_id' => 'required|array',
-            'product_id.*' => 'required|exists:products,id',
-            'quantity' => 'required|array',
-            'quantity.*' => 'required|integer|min:1',
-            'price' => 'required|array',
-            'price.*' => 'required|numeric|min:0',
+        $order = Order::findOrFail($id);
+
+        // Validate incoming request
+        $validatedData = $request->validate([
+            'status' => 'in:pending,completed,canceled',
+            'payment_status' => 'in:paid,unpaid',
+            'quantity' => 'integer|min:1',
+            'price' => 'numeric|min:0',
         ]);
 
-        $order->update([
-            'customer_id' => $validated['customer_id'],
-            'status' => $validated['status'],
-            'payment_status' => $validated['payment_status'],
-            'total_price' => array_sum(array_map(function ($quantity, $price) {
-                return $quantity * $price;
-            }, $validated['quantity'], $validated['price']))
-        ]);
-
-        // Delete old items and add new ones
-        $order->orderItems()->delete();
-        foreach ($validated['product_id'] as $index => $productId) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $productId,
-                'quantity' => $validated['quantity'][$index],
-                'price' => $validated['price'][$index],
-            ]);
+        // Calculate total price based on quantity and price
+        if (isset($validatedData['quantity']) && isset($validatedData['price'])) {
+            $validatedData['total_price'] = $validatedData['quantity'] * $validatedData['price'];
+        } else {
+            $validatedData['total_price'] = $order->quantity * $order->price; // keep the current total if no change
         }
 
-        return redirect()->route('orders.index')->with('success', 'Order updated successfully');
+        // Update the order with new data
+        $order->update($validatedData);
 
+        return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
+
+    public function destroy($id)
     {
-        //
-        $order->orderItems()->delete();
+        $order = Order::findOrFail($id);
         $order->delete();
-        return redirect()->route('orders.index')->with('success', 'Order deleted successfully');
+
+        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
     }
 }

@@ -3,12 +3,13 @@
 @section('content')
 
     <div class="container mt-3">
+        <h1 class="m-3">Product Data</h1>
         <div class="card">
             <div class="card-body">
                 <div class="row m-2 align-items-center">
                     <div class="col-8 p-0">
-                        <h1>Product Data</h1>
-                        <a href="{{ route('products.create') }}" class="btn btn-primary mb-3 btn-sm rounded-5">Add New
+                       
+                        <a href="{{ route('products.create') }}" class="btn btn-primary mb-3 btn-sm rounded-5"><i class="fa-solid fa-circle-plus"></i> New
                             Product</a>
                     </div>
                     <div class="col-4">
@@ -49,9 +50,8 @@
                                     <td>
                                         @if ($product->picture_url)
                                             <img src="{{ asset('storage/' . $product->picture_url) }}"
-                                                alt="{{ $product->name }}"
-                                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
-                                                width="100">
+                                                alt="{{ $product->name }}" class="object-fit-cover object-center"
+                                                width="50">
                                         @else
                                             No picture
                                         @endif
@@ -84,12 +84,13 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="d-flex justify-content-Start ">
-                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
-                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
+
+                    <div class="d-flex justify-content-Start ">
+                        <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
+                            onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
+                        <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
+                            onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
