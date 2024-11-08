@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');  // Foreign key to Products table
             $table->enum('status', ['pending', 'completed', 'canceled']);
             $table->decimal('total_price', 10, 2);
+            $table->integer('quantity');
+            $table->decimal('price', 10, 2);
             $table->enum('payment_status', ['paid', 'unpaid']);
             $table->timestamps();
 

@@ -108,7 +108,7 @@
 
 
                     <li class="nav-item">
-                        <a href="widgets.html">
+                        <a href="">
                             <i class="fa-solid fa-file-invoice-dollar"></i>
                             <p>Payments</p>
                         </a>

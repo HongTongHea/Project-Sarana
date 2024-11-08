@@ -11,8 +11,9 @@
             <div class="card-body">
                 <div class="row m-2 align-items-center">
                     <div class="col-8 p-0">
-                       
-                        <a href="{{ route('orders.create') }}" class="btn btn-primary btn-sm rounded-5"><i class="fa-solid fa-circle-plus"></i> New Order</a>
+
+                        <a href="{{ route('orders.create') }}" class="btn btn-primary btn-sm rounded-5"><i
+                                class="fa-solid fa-circle-plus"></i> New Order</a>
                     </div>
                     <div class="col-4">
                         <div class="row align-items-center">
@@ -50,9 +51,10 @@
                                     <td>{{ $order->price }}</td>
                                     <td>{{ $order->total_price }}</td>
                                     <td>
-                                        <div class="dropdown"> <button
-                                                class="btn btn-warning rounded-5 btn-sm dropdown-toggle" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false"> Action
+                                        <div class="dropdown">
+                                            <button class="btn btn-warning rounded-5 btn-sm dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Action
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
@@ -72,9 +74,17 @@
                                                             onclick="return confirm('Are you sure?')">Delete</button>
                                                     </form>
                                                 </li>
+                                                <!-- Conditional Make Payment Button -->
+                                                @if ($order->status == 'completed' && $order->payment_status == 'unpaid')
+                                                    <li>
+                                                        <a href="{{ route('payments.create', $order->id) }}"
+                                                            class="dropdown-item text-success">Make Payment</a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>

@@ -8,6 +8,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
+
 
 
 
@@ -31,3 +33,5 @@ Route::resource('orders', OrderController::class);
 
 Route::resource('orders', OrderController::class)->middleware(['auth']);
 
+Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
+Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');
