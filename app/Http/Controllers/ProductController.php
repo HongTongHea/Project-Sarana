@@ -25,7 +25,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'price' => 'required|numeric',
             'size' => 'required|in:XS,S,M,L,XL,XXL',
             'stock_quantity' => 'required|integer',
@@ -63,7 +63,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
+            'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
             'size' => 'sometimes|required|in:XS,S,M,L,XL,XXL',
             'stock_quantity' => 'sometimes|required|integer',

@@ -73,7 +73,7 @@
 
                 <div class="form-group mb-2">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="description" class="form-control" id="description" rows="4" required>{{ old('description') }}</textarea>
+                    <textarea name="description" class="form-control" id="description" rows="4">{{ old('description') }}</textarea>
                 </div>
 
             </div>

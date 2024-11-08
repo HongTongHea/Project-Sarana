@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->decimal('price', 8, 2); // Adjust precision and scale as needed
             $table->enum('size', ['XS', 'S', 'M', 'L', 'XL', 'XXL']); // Define allowed sizes
             $table->integer('stock_quantity');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Foreign key to categories
-            $table->string('picture_url')->nullbool();
+            $table->string('picture_url')->nullable();
             $table->timestamps();
         });
     }

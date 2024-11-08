@@ -68,7 +68,7 @@
 
                 <div class="form-group  mb-3">
                     <label for="description">Description</label>
-                    <textarea name="description" class="form-control" rows="4" required>{{ $product->description }}</textarea>
+                    <textarea name="description" class="form-control" rows="4">{{ $product->description }}</textarea>
                 </div>
 
                

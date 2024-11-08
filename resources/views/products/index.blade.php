@@ -26,7 +26,7 @@
                     <table class="table table-hover search-table" id="ProdcutTableData">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Price</th>
@@ -43,7 +43,7 @@
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->description }}</td>
-                                    <td>{{ number_format($product->price, 2) }}</td>
+                                    <td>${{ number_format($product->price, 2) }}</td>
                                     <td>{{ $product->size }}</td>
                                     <td>{{ $product->stock_quantity }}</td>
                                     <td>{{ $product->category->name ?? 'N/A' }}</td> <!-- Display category name or N/A -->

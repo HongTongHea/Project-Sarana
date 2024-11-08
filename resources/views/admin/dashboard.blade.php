@@ -12,7 +12,7 @@
         @else
             <h5>Staff Dashboard</h5>
         @endif
-        <div class="card rounded-0 mt-4">
+        <div class="card">
             <div class="card-body">
                 <div class="row m-2 align-items-center">
                     <div class="col-8 p-0">
@@ -20,27 +20,21 @@
                     </div>
                     <div class="col-4">
                         <div class="row align-items-center">
-                            <nav
-                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                                <div class="input-group rounded-5">
-                                    <div class="input-group-prepend">
-                                        <button type="submit" class="btn btn-search pe-1">
-                                            <i class="fa fa-search search-icon"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" id="search" placeholder="Search ..." class="form-control" />
-                                </div>
-                            </nav>
+                            <div class="input-group rounded-5">
+                                <input type="text" id="search" placeholder="Search ..."
+                                    class="form-control rounded-4 border position-relative" />
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover mt-3 w-100" id="Table">
+                    <table class="table table-sm table-hover mt-3  search-table" id="UserTableData">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Profile</th>
+                                <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>Actions</th>
@@ -60,20 +54,22 @@
                                             No picture
                                         @endif
                                     </td>
+                                    <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ ucfirst($user->role) }}</td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-warning btn-sm dropdown-toggle rounded-5" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">Action</button>
+                                            <button class="btn btn-warning btn-sm dropdown-toggle rounded-5"
+                                                type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false">Action</button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('users.show', $user->id) }}"
                                                         class="dropdown-item">User Detail</a></li>
                                                 <li><a href="{{ route('users.index', ['edit' => $user->id]) }}"
                                                         class="dropdown-item">Edit</a></li>
                                                 <li>
-                                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                                        style="display:inline;">
+                                                    <form action="{{ route('users.destroy', $user->id) }}"
+                                                        method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="dropdown-item"
@@ -87,16 +83,13 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-Start ">
+                        <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
+                            onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
+                        <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
+                            onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
+                    </div>
                 </div>
-
-                <!-- Pagination buttons -->
-                <div class="d-flex justify-content-Start ">
-                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
-                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                </div>
-
             </div>
         </div>
     </div>

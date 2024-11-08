@@ -6,44 +6,56 @@
         <div class="container p-2">
             <div class="card">
                 <div class="card-body">
-                    <div class="row d-flex justify-content-center align-item-center">
-                        <div class="col-6">
-                          
-                            <form
-                                action="{{ isset($category) ? route('categories.update', $category->id) : route('categories.store') }}"
-                                method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @if (isset($category))
-                                    @method('PUT')
-                                @endif
-                                <div class="row d-flex flex-column">
-                                    <div class="col-10 mb-3">
+
+                    <form
+                        action="{{ isset($category) ? route('categories.update', $category->id) : route('categories.store') }}"
+                        method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @if (isset($category))
+                            @method('PUT')
+                        @endif
+                        <div class="row m-1 align-item-center border rounded-2">
+                            <div class="form-group col-12 col-md-6 p-2">
+                                <div class="row">
+                                    <div class="form-group col-12 col-md-10 mb-3 ps-4">
                                         <label for="name">Name</label>
                                         <input type="text" name="name" id="name" class="form-control"
                                             value="{{ old('name', isset($category) ? $category->name : '') }}" required>
                                     </div>
-                                    <div class="col-10 mb-3">
+                                    <div class="form-group col-12 col-md-10  ps-4">
                                         <label class="form-label">Description</label>
-                                        <textarea name="description" class="form-control pb-5" required>{{ old('description', isset($category) ? $category->description : '') }}</textarea>
+                                        <textarea name="description" class="form-control" rows="7" required>{{ old('description', isset($category) ? $category->description : '') }}</textarea>
                                     </div>
-                                    <div class="col-10">
-                                        <button type="submit" class="btn btn-primary btn-sm rounded-5">
-                                            {{ isset($category) ? 'Update' : 'Save' }}
-                                        </button>
-                                        @if (isset($category))
-                                            <a href="{{ route('categories.index') }}"
-                                                class="btn btn-secondary btn-sm  m-1 rounded-5">Cancel</a>
-                                        @endif
-                                    </div>
+
                                 </div>
-                            </form>
+                            </div>
+
+
+                            <div class="col-12 col-md-6">
+                                <img src="/assets/img/2663787.jpg" alt="" width="85%">
+                            </div>
+
+
                         </div>
-                        <div class="col-6">
-                            <img src="/assets/img/2663787.jpg" alt="" width="80%">
-                        </div>
+                        <div class="float-end mt-1 m-1">
+
+                        <button type="submit" class="btn btn-primary btn-sm rounded-5 ">
+                            {{ isset($category) ? 'Update' : 'Save' }}
+                        </button>
+                        @if (isset($category))
+                            <a href="{{ route('categories.index') }}"
+                                class="btn btn-secondary btn-sm  m-1 rounded-5">Cancel</a>
+                        @endif
+                        
                     </div>
-                    <hr>
-                    <div class="row m-2 mt-4 align-items-center">
+                    </form>
+
+
+
+
+                    <div class="row m-1 mt-5 align-items-center w-100">
+                        
+                    <hr class="mt-2 ">
                         <div class="col-8 p-0">
                             <h1>Category Data</h1>
                         </div>
@@ -56,8 +68,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="crad">
-                        <div class="card-body">
+                    
                             <div class="table-responsive">
                                 <table class="table table-hover search-table" id="CategoryTableData">
                                     <thead>
@@ -108,8 +119,6 @@
                                         onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

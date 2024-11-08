@@ -7,84 +7,92 @@
                 <h1 class="m-3">{{ isset($user) ? 'Edit User' : 'Create New User' }}</h1>
                 <div class="card">
                     <div class="card-body ">
-                     
-                        @if (isset($user) && $user->picture_url)
-                            <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
-                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center m-3" width="100%">
-                        @endif
+
+
                         <form action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             @if (isset($user))
                                 @method('PUT')
                             @endif
+                            @if (isset($user) && $user->picture_url)
+                                <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
+                                    class="avatar-img avatar-lg rounded-5 object-fit-cover object-center m-3 mt-0 mb-2"
+                                    width="100%">
+                            @endif
+                            <div class="row m-1 align-items-center border rounded-3 border-info">
+                                <div class="form-group col-12 col-md-6 ps-2">
 
-                            <div class="row">
-                                <div class="form-group col-12 col-md-6 ps-4">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control"
-                                        value="{{ old('name', isset($user) ? $user->name : '') }}" required>
-                                </div>
+                                    <div class="row">
+                                        <div class="form-group  col-12 col-md-6 ps-4">
+                                            <label for="name">Name</label>
+                                            <input type="text" name="name" id="name" class="form-control"
+                                                value="{{ old('name', isset($user) ? $user->name : '') }}" required>
+                                        </div>
 
-                                <div class="form-group col-12 col-md-6 ps-4">
-                                    <label for="email">Email
-                                        @if ($errors->has('email'))
-                                            <label class="text-danger mt-1">{{ $errors->first('email') }}</label>
-                                        @endif
-                                    </label>
-                                    <input type="email" name="email" id="email" class="form-control"
-                                        value="{{ old('email', isset($user) ? $user->email : '') }}" required>
-                                </div>
-
-                                <div class="form-group col-12 col-md-6 ps-4">
-                                    <label for="password">Password
-                                        @if ($errors->has('password'))
-                                            <label class="text-danger mt-1">{{ $errors->first('password') }}</label>
-                                        @endif
-                                    </label>
-                                    <input type="password" name="password" id="password" class="form-control"
-                                        {{ isset($user) ? '' : 'required' }}>
-
-                                </div>
-
-                                <div class="form-group col-12 col-md-6 ps-4">
-                                    <label for="password_confirmation">Confirm Password
-                                        @if ($errors->has('password_confirmation'))
-                                            <label class="text-danger mt-1">{{ $errors->first('password_confirmation') }}
+                                        <div class="form-group col-12 col-md-6 ps-4">
+                                            <label for="email">Email
+                                                @if ($errors->has('email'))
+                                                    <label class="text-danger mt-1">{{ $errors->first('email') }}</label>
+                                                @endif
                                             </label>
-                                        @endif
-                                    </label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control" {{ isset($user) ? '' : 'required' }}>
+                                            <input type="email" name="email" id="email" class="form-control"
+                                                value="{{ old('email', isset($user) ? $user->email : '') }}" required>
+                                        </div>
 
+                                        <div class="form-group col-12 col-md-6 ps-4">
+                                            <label for="password">Password
+                                                @if ($errors->has('password'))
+                                                    <label class="text-danger mt-1">{{ $errors->first('password') }}</label>
+                                                @endif
+                                            </label>
+                                            <input type="password" name="password" id="password" class="form-control"
+                                                {{ isset($user) ? '' : 'required' }}>
+
+                                        </div>
+
+                                        <div class="form-group col-12 col-md-6 ps-4">
+                                            <label for="password_confirmation">Confirm Password
+                                                @if ($errors->has('password_confirmation'))
+                                                    <label
+                                                        class="text-danger mt-1">{{ $errors->first('password_confirmation') }}
+                                                    </label>
+                                                @endif
+                                            </label>
+                                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                                class="form-control" {{ isset($user) ? '' : 'required' }}>
+
+                                        </div>
+
+
+                                        <div class="form-group col-12 col-md-6 ps-4">
+                                            <label for="role">Role</label>
+                                            <select name="role" id="role" class="form-control" required>
+                                                <option value="">Select Role</option>
+                                                <option value="admin"
+                                                    {{ old('role', isset($user) && $user->role == 'admin' ? 'selected' : '') }}>
+                                                    Admin</option>
+                                                <option value="customer"
+                                                    {{ old('role', isset($user) && $user->role == 'customer' ? 'selected' : '') }}>
+                                                    Customer</option>
+                                                <option value="staff"
+                                                    {{ old('role', isset($user) && $user->role == 'staff' ? 'selected' : '') }}>
+                                                    Staff</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group col-12 col-md-6 ps-4">
+                                            <label for="picture_url">Profile Picture</label>
+                                            <input type="file" name="picture_url" class="form-control">
+                                        </div>
+
+                                    </div>
                                 </div>
-
-
                                 <div class="form-group col-12 col-md-6 ps-4">
-                                    <label for="role">Role</label>
-                                    <select name="role" id="role" class="form-control" required>
-                                        <option value="">Select Role</option>
-                                        <option value="admin"
-                                            {{ old('role', isset($user) && $user->role == 'admin' ? 'selected' : '') }}>
-                                            Admin</option>
-                                        <option value="customer"
-                                            {{ old('role', isset($user) && $user->role == 'customer' ? 'selected' : '') }}>
-                                            Customer</option>
-                                        <option value="staff"
-                                            {{ old('role', isset($user) && $user->role == 'staff' ? 'selected' : '') }}>
-                                            Staff</option>
-                                    </select>
+                                    <img src="/assets/img/user data.png" alt="" width="100%">
                                 </div>
-
-                      
-                                <div class="form-group col-12 col-md-6 ps-4">
-                                    <label for="picture_url">Profile Picture</label>
-                                    <input type="file" name="picture_url" class="form-control">
-                                </div>
-
-
                             </div>
-
                             <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">
                                 {{ isset($user) ? 'Update' : 'Save' }}
                             </button>
@@ -180,4 +188,5 @@
             </div>
         </div>
     </div>
+
 @endsection
