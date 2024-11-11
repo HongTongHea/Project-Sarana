@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mt-3">
-        <h2 class="m-3">Create New Order</h2>
+        <h3 class="m-3">Create New Order</h3>
         <div class="card">
             <div class="card-body">
 
@@ -65,8 +65,10 @@
                             <input type="text" name="total_price" id="total_price" class="form-control" readonly>
                         </div>
                     </div>
-                    <a href="{{ route('orders.index') }}" class="btn btn-secondary mt-3 btn-sm rounded-5 float-end">Cancel</a>
-                    <button type="submit" class="btn btn-primary mt-3 btn-sm rounded-5 float-end me-1">Create Order</button>
+                    <a href="{{ route('orders.index') }}"
+                        class="btn btn-secondary mt-3 btn-sm rounded-5 float-end">Cancel</a>
+                    <button type="submit" class="btn btn-primary mt-3 btn-sm rounded-5 float-end me-1">Create
+                        Order</button>
                 </form>
             </div>
         </div>

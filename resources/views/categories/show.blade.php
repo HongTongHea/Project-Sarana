@@ -5,7 +5,7 @@
 @section('content')
     <div class="card rounded-0">
         <div class="card-body">
-            <h1>Category Details</h1>
+            <h3>Category Details</h3>
 
             <div class="card mt-4 rounded-0 w-50 bg-dark text-white">
                 <div class="card-header">

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mt-3">
-        <h1 class="m-3">Upadate Product</h1>
+        <h3 class="m-3">Upadate Product</h3>
 
         {{-- @if ($errors->any())
             <div class="alert alert-danger">
@@ -47,8 +47,15 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="stock_quantity">Stock Quantity</label>
-                            <input type="number" name="stock_quantity" class="form-control"
-                                value="{{ $product->stock_quantity }}" required>
+                            <select name="stock_quantity" id="stock_quantity" class="form-select    ">
+                                <option value="">Select Stock Quantity</option>
+                                @foreach ($stocks as $stock)
+                                    <option value="{{ $stock->id }}"
+                                        {{ $product->stock_quantity == $stock->id ? 'selected' : '' }}>
+                                        {{ $stock->stock_quantity }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group col-12 col-md-6 mb-3">

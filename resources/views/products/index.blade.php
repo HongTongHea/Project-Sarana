@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Management Product')
+@section('title', 'Products Data')
 @section('content')
 
     <div class="container mt-3">
-        <h1 class="m-3">Product Data</h1>
+        <h3 class="m-3">Product Data</h3>
         <div class="card">
             <div class="card-body">
                 <div class="row m-2 align-items-center">

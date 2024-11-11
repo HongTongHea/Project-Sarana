@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mt-3">
-        <h2 class="m-3">Add New Product</h2>
+        <h3 class="m-3">Add New Product</h3>
         <div class="card">
             <div class="card-body">
                 {{-- @if ($errors->any())
@@ -64,8 +64,17 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="stock_quantity" class="form-label">Stock Quantity</label>
-                            <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
-                                value="{{ old('stock_quantity') }}" required>
+                            <select name="stock_quantity" id="stock_quantity" class="form-select">
+                                <option value="">Select Stock Quantity</option>
+                                @foreach ($stocks as $stock)
+                                    <option value="{{ $stock->id }}"
+                                        {{ old('stock_quantity') == $stock->id ? 'selected' : '' }}>
+                                        {{ $stock->stock_quantity }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            {{-- <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
+                                value="{{ old('stock_quantity') }}" required> --}}
                         </div>
 
                         <div class="form-group col-12 col-md-6 mb-3">

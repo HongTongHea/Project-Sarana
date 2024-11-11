@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mt-3">
-        <h2 class="m-3">Update Customer</h2>
+        <h3 class="m-3">Update Customer</h3>
         <div class="card">
             <div class="card-body">
 

@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="container p-4 pt-0">
-                <h1 class="m-3">{{ isset($user) ? 'Edit User' : 'Create New User' }}</h1>
+                <h3 class="m-3">{{ isset($user) ? 'Update User' : 'Create New User' }}</h3>
                 <div class="card">
                     <div class="card-body ">
 
@@ -109,7 +109,7 @@
                     <div class="card-body">
                         <div class="row m-2 align-items-center">
                             <div class="col-8 p-0">
-                                <h1>User Data</h1>
+                                <h2 class="m-3">User Data</h2>
                             </div>
                             <div class="col-4">
                                 <div class="row align-items-center">
@@ -159,7 +159,7 @@
                                                         <li><a href="{{ route('users.show', $user->id) }}"
                                                                 class="dropdown-item">User Detail</a></li>
                                                         <li><a href="{{ route('users.index', ['edit' => $user->id]) }}"
-                                                                class="dropdown-item">Edit</a></li>
+                                                                class="dropdown-item">Update</a></li>
                                                         <li>
                                                             <form action="{{ route('users.destroy', $user->id) }}"
                                                                 method="POST" style="display:inline;">

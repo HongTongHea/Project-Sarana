@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Customers')
+@section('title', 'Customers Data')
 
 @section('content')
     <div class="container mt-2">
-        <h1 class="m-3">Customer Data</h1>
+        <h3 class="m-3">Customer Data</h3>
         <div class="card">
             <div class="card-body">
 

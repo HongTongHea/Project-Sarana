@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mt-3">
-        <h2 class="m-3">Edit Order</h2>
+        <h3 class="m-3">Edit Order</h3>
         <div class="card">
             <div class="card-body">
                 <form action="{{ route('orders.update', $order->id) }}" method="POST">

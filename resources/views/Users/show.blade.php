@@ -37,6 +37,7 @@
                             <h4 class="mb-4">Email: {{ $user->email }}</h4>
                             <h4 class="mb-4">Role: {{ ucfirst($user->role) }}</h4>
                             <h4 class="mb-4">Created At: {{ $user->created_at }}</h4>
+                            <h4 class="mb-4">Updated At: {{ $user->updated_at }}</h4>
                      
                     </div>
 

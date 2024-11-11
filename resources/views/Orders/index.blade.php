@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container mt-2">
-        <h1 class="m-3">Orders Data</h1>
+        <h3 class="m-3">Orders Data</h3>
         <div class="card">
             <div class="card-body">
                 <div class="row m-2 align-items-center">
@@ -51,9 +51,15 @@
                                     <td>{{ $order->price }}</td>
                                     <td>{{ $order->total_price }}</td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-warning rounded-5 btn-sm dropdown-toggle" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                        <div class="dropdown align-items-center d-flex">
+
+                                            @if ($order->status == 'completed' && $order->payment_status == 'unpaid')
+                                                <a href="{{ route('payments.create', $order->id) }}"
+                                                    class="btn btn-sm btn-primary text-white rounded-5 ">Payment</a>
+                                            @endif
+
+                                            <button class="btn btn-warning rounded-5 btn-sm dropdown-toggle ms-1"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Action
                                             </button>
                                             <ul class="dropdown-menu">
@@ -75,14 +81,11 @@
                                                     </form>
                                                 </li>
                                                 <!-- Conditional Make Payment Button -->
-                                                @if ($order->status == 'completed' && $order->payment_status == 'unpaid')
-                                                    <li>
-                                                        <a href="{{ route('payments.create', $order->id) }}"
-                                                            class="dropdown-item text-success">Make Payment</a>
-                                                    </li>
-                                                @endif
+
                                             </ul>
+
                                         </div>
+
                                     </td>
 
                                 </tr>

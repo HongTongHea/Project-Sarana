@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Management Category')
+@section('title', 'Categories Data')
 @section('content')
     <div class="container">
-        <h1 class="m-3">{{ isset($category) ? 'Update Category' : 'Create New Category' }}</h1>
+        <h3 class="m-3">{{ isset($category) ? 'Update Category' : 'Create New Category' }}</h3>
         <div class="container p-2">
             <div class="card">
                 <div class="card-body">
@@ -57,7 +57,7 @@
                         
                     <hr class="mt-2 ">
                         <div class="col-8 p-0">
-                            <h1>Category Data</h1>
+                            <h3 class="m-3">Category Data</h3>
                         </div>
                         <div class="col-4">
                             <div class="row align-items-center">
@@ -93,7 +93,7 @@
                                                         <ul class="dropdown-menu">
 
                                                             <li><a href="{{ route('categories.index', ['edit' => $category->id]) }}"
-                                                                    class="dropdown-item">Edit</a></li>
+                                                                    class="dropdown-item">Update</a></li>
                                                             <li>
                                                                 <form
                                                                     action="{{ route('categories.destroy', $category->id) }}"

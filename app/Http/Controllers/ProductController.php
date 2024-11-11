@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -18,7 +19,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('products.create', compact('categories'));
+        $stocks = Stock::all();
+        return view('products.create', compact('categories', 'stocks'));
     }
 
     public function store(Request $request)
@@ -55,7 +57,8 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
-        return view('products.edit', compact('product', 'categories'));
+        $stocks = Stock::all();
+        return view('products.edit', compact('product', 'categories', 'stocks'));
     }
 
 

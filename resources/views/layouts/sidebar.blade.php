@@ -46,6 +46,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('stocks.index') }}">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <p>Stocks</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('products.index') }}">
                             <i class="fa-brands fa-product-hunt"></i>
                             <p>Products</p>
@@ -110,12 +116,12 @@
 
 
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="">
                             <i class="fa-solid fa-file-invoice-dollar"></i>
                             <p>Payments</p>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a href="{{ route('users.index') }}">
                             <i class="fa-solid fa-user-gear"></i>
