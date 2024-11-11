@@ -34,15 +34,17 @@ class OrderController extends Controller
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
         ]);
-
+    
         // Calculate total price based on quantity and price
-        $validatedData['total_price'] = $validatedData['quantity'] * $validatedData['price'];
-
+        $totalPrice = $request->input('quantity') * $request->input('price');
+        $validatedData['total_price'] = $totalPrice;
+    
         // Create new order with calculated total price
         Order::create($validatedData);
-
+    
         return redirect()->route('orders.index')->with('success', 'Order created successfully.');
     }
+    
 
 
     public function show($id)
@@ -65,6 +67,7 @@ class OrderController extends Controller
 
         // Validate incoming request
         $validatedData = $request->validate([
+            'customer_id' => 'exists:customers,id',
             'status' => 'in:pending,completed,canceled',
             'payment_status' => 'in:paid,unpaid',
             'quantity' => 'integer|min:1',

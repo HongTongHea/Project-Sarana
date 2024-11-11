@@ -27,7 +27,7 @@
                     <h1><strong>Description:</strong> {{ $product->description }}</h1>
                 </div>
             </div>
-            <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm float-end m-1 rounded-5">Cancel</a>
+            <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm float-end m-1 rounded-5">Back</a>
         </div>
     </div>
 

@@ -41,7 +41,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('categories.index') }}">
-                            <i class="fas fa-layer-group"></i>
+                            <i class="fa-solid fa-box-archive"></i>
                             <p>Categories</p>
                         </a>
                     </li>
@@ -63,6 +63,29 @@
                             <p>Staffs</p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#base2">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <p>Orders</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="base2">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('orders.index') }}">
+                                        <span class="sub-item">Order Data</span>
+                                    </a>
+                                </li>
+                                {{-- <li>
+                                    <a href="">
+                                        <span class="sub-item">Order Items</span>
+                                    </a>
+                                </li> --}}
+                            </ul>
+                        </div>
+                    </li>
+
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base1">
                             <i class="fa-solid fa-money-check-dollar"></i>
@@ -84,27 +107,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#base2">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            <p>Orders</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="base2">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="{{ route('orders.index') }}">
-                                        <span class="sub-item">Order List</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <span class="sub-item">Order Items</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+
 
 
                     <li class="nav-item">
@@ -159,11 +162,11 @@
                                         <span class="sub-item">Order List</span>
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="{{ route('orders.items', $order->id) }}">
                                         <span class="sub-item">Order Items</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </li>

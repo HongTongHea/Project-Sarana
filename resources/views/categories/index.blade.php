@@ -2,7 +2,7 @@
 @section('title', 'Management Category')
 @section('content')
     <div class="container">
-        <h1 class="m-3">{{ isset($category) ? 'Edit Category' : 'Create New Category' }}</h1>
+        <h1 class="m-3">{{ isset($category) ? 'Update Category' : 'Create New Category' }}</h1>
         <div class="container p-2">
             <div class="card">
                 <div class="card-body">

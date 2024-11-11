@@ -1,15 +1,18 @@
 @extends('layouts.app')
 
+@section('title', 'Order Invoice')
+
 @section('content')
-    <div class="container m-2">
         <div class="invoice-container" id="invoice" style="width: 80%; margin: auto; border: 1px solid #ddd; padding: 20px;">
-            <h2 class="text-center">Order Invoice</h2>
+            <img src="{{ asset('assets/img/logo4.png') }}" alt="" style="width: 150px;" class="mb-2">
+        
+            <h2 class="text-center fw-bold text-uppercase">Order Invoice</h2>
 
             <!-- Order and Customer Information -->
             <div style="display: flex; justify-content: space-between;">
                 <div>
                     <h4>Customer Information</h4>
-                    <p><strong>Name:</strong> {{ $order->customer->name }}</p>
+                    <p><strong>Name:</strong> {{ $order->customer->first_name }} {{ $order->customer->last_name }}</p>
                     <p><strong>Email:</strong> {{ $order->customer->email }}</p>
                     <p><strong>Address:</strong> {{ $order->customer->address }}</p>
                 </div>
@@ -22,7 +25,7 @@
             </div>
 
             <!-- Order Item Table -->
-            <table class="table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+            <table class="table table-responsive" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
                 <thead style="background-color: #f5f5f5;">
                     <tr>
                         <th style="padding: 8px; border: 1px solid #ddd;">Product</th>

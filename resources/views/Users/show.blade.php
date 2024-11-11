@@ -6,14 +6,15 @@
     <div class="card rounded-0 shadow ">
         <div class="card-body">
             <h1>User Details</h1>
-            <table class="table table-responsive table-sm table-hover border">
-                <form action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data">
+            <div class="border p-3">
+                <form action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data"
+                    class="d-flex flex-column p-2">
                     @csrf
-                    <tr>
-                        <th>
+                    <div class="row ">
+                        <div class="col-12 col-md-6">
                             @if ($user->picture_url)
                                 <img src="{{ asset('storage/' . $user->picture_url) }}" alt="{{ $user->name }}"
-                                    class="avatar-img avatar-lg rounded-5 object-fit-cover object-center" width="100%">
+                                    class="object-fit-cover object-center" width="20%">
                             @else
                                 No picture available <img src="{{ asset('storage/' . $user->profile_picture) }}"
                                     alt="">
@@ -30,30 +31,25 @@
                                 </button>
 
                             </div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Name: {{ $user->name }}</th>
+                        </div>
+                 
+                            <h4 class="mb-4 mt-4" id="fileName">Name: {{ $user->name }}</h4>
+                            <h4 class="mb-4">Email: {{ $user->email }}</h4>
+                            <h4 class="mb-4">Role: {{ ucfirst($user->role) }}</h4>
+                            <h4 class="mb-4">Created At: {{ $user->created_at }}</h4>
+                     
+                    </div>
 
-                    </tr>
-                    <tr>
-                        <th>Email: {{ $user->email }}</th>
-                    </tr>
-                    <tr>
-                        <th>Role: {{ ucfirst($user->role) }}</th>
 
-                    </tr>
 
-                    <tr>
-                        <th>Created At: {{ $user->created_at }}</th>
 
-                    </tr>
-            </table>
-                <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">Save</button>
-                <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm float-end m-1 rounded-5">Back</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">Save</button>
+            <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm float-end m-1 rounded-5">Back</a>
             </form>
         </div>
     </div>
+
 
     <script>
         function displayFileName() {

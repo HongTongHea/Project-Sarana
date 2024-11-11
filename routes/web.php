@@ -31,7 +31,5 @@ Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
 
-Route::resource('orders', OrderController::class)->middleware(['auth']);
-
 Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
 Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');

@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
-@section('content')
-<h2>Process Payment for Order #{{ $order->id }}</h2>
+@section('title', 'Create Payment')
 
+@section('content')
+<div class="card">
+    <div class="card-body">
+        <h2>Process Payment for Order No: {{ $order->id }}</h2>
+        
 <form action="{{ route('payments.store', $order->id) }}" method="POST">
     @csrf
     <div class="form-group">
@@ -19,6 +23,10 @@
         <input type="text" name="amount" id="amount" class="form-control" value="{{ $order->total_price }}" readonly>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit Payment</button>
+    <button type="submit" class="btn btn-primary btn-sm rounded-5">Submit Payment</button>
 </form>
+    </div>
+</div>
+
+
 @endsection
