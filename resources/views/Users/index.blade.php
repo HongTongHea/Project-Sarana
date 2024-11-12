@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Users Data')
 @section('content')
-    <div class="container">
+    <div class="container" data-aos="fade-down" data-aos-duration="1000">
         <div class="row">
             <div class="container p-4 pt-0">
                 <h3 class="m-3">{{ isset($user) ? 'Update User' : 'Create New User' }}</h3>
@@ -67,7 +67,7 @@
 
                                         <div class="form-group col-12 col-md-6 ps-4">
                                             <label for="role">Role</label>
-                                            <select name="role" id="role" class="form-control" required>
+                                            <select name="role" id="role" class="form-control form-select" required>
                                                 <option value="">Select Role</option>
                                                 <option value="admin"
                                                     {{ old('role', isset($user) && $user->role == 'admin' ? 'selected' : '') }}>
@@ -176,7 +176,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="d-flex justify-content-Start ">
+                            <div class="d-flex justify-content-Start mb-3">
                                 <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
                                     onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
                                 <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"

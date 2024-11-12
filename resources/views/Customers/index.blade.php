@@ -3,7 +3,7 @@
 @section('title', 'Customers Data')
 
 @section('content')
-    <div class="container mt-2">
+    <div class="container mt-2" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">Customer Data</h3>
         <div class="card">
             <div class="card-body">
@@ -31,6 +31,7 @@
                                 <th>No</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Gender</th>
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Address</th>
@@ -43,6 +44,7 @@
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $customer->first_name }}</td>
                                     <td>{{ $customer->last_name }}</td>
+                                    <td>{{ $customer->gender }}</td>
                                     <td>{{ $customer->email }}</td>
                                     <td>{{ $customer->phone }}</td>
                                     <td>{{ $customer->address }}</td>
@@ -76,7 +78,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-Start ">
+                <div class="d-flex justify-content-Start mb-3 ">
                     <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
                         onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
                     <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"

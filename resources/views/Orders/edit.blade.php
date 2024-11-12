@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-3">
+    <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">Edit Order</h3>
         <div class="card">
             <div class="card-body">
@@ -13,7 +13,7 @@
 
                         <div class="form-group col-12 col-md-6">
                             <label for="customer_id">Customer</label>
-                            <select name="customer_id" id="customer_id" class="form-control" required>
+                            <select name="customer_id" id="customer_id" class="form-control form-select" required>
                                 <option value="">Select a customer</option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}"
@@ -26,7 +26,7 @@
 
                         <div class="form-group col-12 col-md-6">
                             <label for="product_id">Product</label>
-                            <select name="product_id" id="product_id" class="form-control" required>
+                            <select name="product_id" id="product_id" class="form-control form-select" required>
                                 <option value="">Select a product</option>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}"
@@ -39,7 +39,7 @@
 
                         <div class="form-group col-12 col-md-6">
                             <label for="status">Status</label>
-                            <select name="status" id="status" class="form-control" required>
+                            <select name="status" id="status" class="form-control form-select" required>
                                 <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed
                                 </option>
@@ -50,7 +50,7 @@
 
                         <div class="form-group col-12 col-md-6">
                             <label for="payment_status">Payment Status</label>
-                            <select name="payment_status" id="payment_status" class="form-control" required>
+                            <select name="payment_status" id="payment_status" class="form-control form-select" required>
                                 <option value="unpaid" {{ $order->payment_status == 'unpaid' ? 'selected' : '' }}>Unpaid
                                 </option>
                                 <option value="paid" {{ $order->payment_status == 'paid' ? 'selected' : '' }}>Paid

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Categories Data')
 @section('content')
-    <div class="container">
+    <div class="container" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">{{ isset($category) ? 'Update Category' : 'Create New Category' }}</h3>
         <div class="container p-2">
             <div class="card">
@@ -39,23 +39,23 @@
                         </div>
                         <div class="float-end mt-1 m-1">
 
-                        <button type="submit" class="btn btn-primary btn-sm rounded-5 ">
-                            {{ isset($category) ? 'Update' : 'Save' }}
-                        </button>
-                        @if (isset($category))
-                            <a href="{{ route('categories.index') }}"
-                                class="btn btn-secondary btn-sm  m-1 rounded-5">Cancel</a>
-                        @endif
-                        
-                    </div>
+                            <button type="submit" class="btn btn-primary btn-sm rounded-5 ">
+                                {{ isset($category) ? 'Update' : 'Save' }}
+                            </button>
+                            @if (isset($category))
+                                <a href="{{ route('categories.index') }}"
+                                    class="btn btn-secondary btn-sm  m-1 rounded-5">Cancel</a>
+                            @endif
+
+                        </div>
                     </form>
 
 
 
 
                     <div class="row m-1 mt-5 align-items-center w-100">
-                        
-                    <hr class="mt-2 ">
+
+                        <hr class="mt-2 ">
                         <div class="col-8 p-0">
                             <h3 class="m-3">Category Data</h3>
                         </div>
@@ -68,57 +68,49 @@
                             </div>
                         </div>
                     </div>
-                    
-                            <div class="table-responsive">
-                                <table class="table table-hover search-table" id="CategoryTableData">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
-                                        @foreach ($categories as $index => $category)
-                                            <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $category->name }}</td>
-                                                <td>{{ $category->description }}</td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-warning btn-sm dropdown-toggle rounded-5"
-                                                            type="button" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">Action</button>
-                                                        <ul class="dropdown-menu">
 
-                                                            <li><a href="{{ route('categories.index', ['edit' => $category->id]) }}"
-                                                                    class="dropdown-item">Update</a></li>
-                                                            <li>
-                                                                <form
-                                                                    action="{{ route('categories.destroy', $category->id) }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item"
-                                                                        onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                                                </form>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="d-flex justify-content-Start ">
-                                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i>
-                                        Previous</button>
-                                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                                </div>
-                            </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover search-table" id="CategoryTableData">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                @foreach ($categories as $index => $category)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $category->name }}</td>
+                                        <td>{{ $category->description }}</td>
+                                        <td>
+                                            <a href="{{ route('categories.index', ['edit' => $category->id]) }}"
+                                                class="btn btn-primary btn-sm rounded-5"><i
+                                                    class="fa-solid fa-pen-to-square"></i></a>
+
+                                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm rounded-5"
+                                                    onclick="return confirm('Are you sure you want to delete this user?')"><i
+                                                        class="fa-regular fa-trash-can"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-Start mb-3">
+                            <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
+                                onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i>
+                                Previous</button>
+                            <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
+                                onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

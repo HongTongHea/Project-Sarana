@@ -8,6 +8,7 @@
     <link rel="icon" href="/assets/img/logo.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Fonts and icons -->
     <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -60,6 +61,7 @@
 
         <!-- End Custom template -->
     </div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!--   Core JS Files   -->
     <script src="/assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="/assets/js/core/popper.min.js"></script>
@@ -93,6 +95,9 @@
     <script src="/assets/js/setting-demo.js"></script>
     <script src="/assets/js/demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        AOS.init();
+    </script>
     <script>
         let successMessage = @json(session('success'));
         let errorMessage = @json(session('error'));

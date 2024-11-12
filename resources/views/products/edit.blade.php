@@ -3,7 +3,7 @@
 @section('title', 'Update Product')
 
 @section('content')
-    <div class="container mt-3">
+    <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">Upadate Product</h3>
 
         {{-- @if ($errors->any())
@@ -35,7 +35,7 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="size">Size</label>
-                            <select name="size" class="form-control" required>
+                            <select name="size" class="form-control form-select" required>
                                 <option value="XS" {{ $product->size == 'XS' ? 'selected' : '' }}>XS</option>
                                 <option value="S" {{ $product->size == 'S' ? 'selected' : '' }}>S</option>
                                 <option value="M" {{ $product->size == 'M' ? 'selected' : '' }}>M</option>
@@ -47,7 +47,7 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="stock_quantity">Stock Quantity</label>
-                            <select name="stock_quantity" id="stock_quantity" class="form-select    ">
+                            <select name="stock_quantity" id="stock_quantity" class="form-select form-control">
                                 <option value="">Select Stock Quantity</option>
                                 @foreach ($stocks as $stock)
                                     <option value="{{ $stock->id }}"
@@ -60,7 +60,7 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="category_id">Category</label>
-                            <select name="category_id" class="form-control" required>
+                            <select name="category_id" class="form-control form-select" required>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         {{ $product->category_id == $category->id ? 'selected' : '' }}>

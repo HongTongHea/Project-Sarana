@@ -3,7 +3,7 @@
 @section('title', 'Add New Product')
 
 @section('content')
-    <div class="container mt-3">
+    <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">Add New Product</h3>
         <div class="card">
             <div class="card-body">
@@ -36,7 +36,7 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="size" class="form-label">Size</label>
-                            <select name="size" class="form-select" id="size" required>
+                            <select name="size" class="form-select form-control" id="size" required>
                                 <option value="">Select Size</option>
                                 <option value="XS" {{ old('size') == 'XS' ? 'selected' : '' }}>XS</option>
                                 <option value="S" {{ old('size') == 'S' ? 'selected' : '' }}>S</option>
@@ -50,7 +50,7 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="category_id" class="form-label">Category</label>
-                            <select name="category_id" class="form-select" id="category_id" required>
+                            <select name="category_id" class="form-select form-control" id="category_id" required>
                                 <option value="">Select Category</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -64,7 +64,7 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="stock_quantity" class="form-label">Stock Quantity</label>
-                            <select name="stock_quantity" id="stock_quantity" class="form-select">
+                            <select name="stock_quantity" id="stock_quantity" class="form-select form-control">
                                 <option value="">Select Stock Quantity</option>
                                 @foreach ($stocks as $stock)
                                     <option value="{{ $stock->id }}"
@@ -73,8 +73,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            {{-- <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
-                                value="{{ old('stock_quantity') }}" required> --}}
+                 
                         </div>
 
                         <div class="form-group col-12 col-md-6 mb-3">

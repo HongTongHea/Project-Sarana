@@ -3,7 +3,7 @@
 @section('title', 'Update Customer')
 
 @section('content')
-    <div class="container mt-3">
+    <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">Update Customer</h3>
         <div class="card">
             <div class="card-body">
@@ -34,6 +34,16 @@
                             <label for="last_name">Last Name</label>
                             <input type="text" class="form-control" id="last_name" name="last_name"
                                 value="{{ $customer->last_name }}" required>
+                        </div>
+
+                        <div class="form-group col-12 col-md-6">
+                            <label for="gender">Gender</label>
+                            <select type="text" class="form-select form-control" id="gender" name="gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male" {{ $customer->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                <option value="Female" {{ $customer->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                            </select>
+
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label for="email">Email</label>

@@ -83,11 +83,6 @@
                                         <span class="sub-item">Order Data</span>
                                     </a>
                                 </li>
-                                {{-- <li>
-                                    <a href="">
-                                        <span class="sub-item">Order Items</span>
-                                    </a>
-                                </li> --}}
                             </ul>
                         </div>
                     </li>
@@ -168,21 +163,9 @@
                                         <span class="sub-item">Order List</span>
                                     </a>
                                 </li>
-                                {{-- <li>
-                                    <a href="{{ route('orders.items', $order->id) }}">
-                                        <span class="sub-item">Order Items</span>
-                                    </a>
-                                </li> --}}
+                           
                             </ul>
                         </div>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a href="widgets.html">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
-                            <p>Payments</p>
-                        </a>
                     </li>
                 </ul>
             </div>
@@ -211,6 +194,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('stocks.index') }}">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <p>Stocks</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('products.index') }}">
                             <i class="fa-brands fa-product-hunt"></i>
                             <p>Products</p>
@@ -227,6 +216,22 @@
                             <i class="fa-solid fa-address-card"></i>
                             <p>Staffs</p>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#base2">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <p>Orders</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="base2">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('orders.index') }}">
+                                        <span class="sub-item">Order Data</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base1">
@@ -249,13 +254,6 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="widgets.html">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
-                            <p>Payments</p>
-                        </a>
-                    </li>
-
                 </ul>
             </div>
         </div>
