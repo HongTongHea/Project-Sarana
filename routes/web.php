@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\StaffController;   
 
 
 
@@ -33,6 +34,7 @@ Route::resource('categories', CategoryController::class);
 Route::resource('stocks', StockController::class);
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
+Route::resource('staffs', StaffController::class);
 
 
 

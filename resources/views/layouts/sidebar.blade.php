@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('customers.index') }}">
+                        <a href="{{ route('staffs.index') }}">
                             <i class="fa-solid fa-address-card"></i>
                             <p>Staffs</p>
                         </a>

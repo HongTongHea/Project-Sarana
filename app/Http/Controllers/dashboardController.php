@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Category;
 
+
 use Illuminate\Support\Facades\Auth;
 
 class dashboardController extends Controller
@@ -27,9 +28,9 @@ class dashboardController extends Controller
             $products = Product::all();
             $stocks = Stock::all();
             $categories = Category::all();
+            $staffs = Staff::all();
 
-            return view('admin.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories'));
-
+            return view('admin.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories', 'staffs'));
         } elseif ($user->isCustomer()) {
 
             $users = User::all();
@@ -38,9 +39,9 @@ class dashboardController extends Controller
             $products = Product::all();
             $stocks = Stock::all();
             $categories = Category::all();
-            
-            return view('customer.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories'));
+            $staffs = Staff::all();
 
+            return view('customer.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories', 'staffs'));
         } elseif ($user->isStaff()) {
 
             $users = User::all();
@@ -49,8 +50,9 @@ class dashboardController extends Controller
             $products = Product::all();
             $stocks = Stock::all();
             $categories = Category::all();
+            $staffs = Staff::all();
 
-            return view('staff.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories'));
+            return view('staff.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories', 'staffs'));
         }
 
         // Optionally, handle cases where the role does not match

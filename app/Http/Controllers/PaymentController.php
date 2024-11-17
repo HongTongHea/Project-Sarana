@@ -20,7 +20,7 @@ class PaymentController extends Controller
     public function store(Request $request, Order $order)
     {
         $request->validate([
-            'payment_method' => 'required|in:credit_card,paypal,bank_transfer',
+            'payment_method' => 'required|in:credit_card,aba,paypal,bank_transfer,cash',
             'amount' => 'required|numeric|min:0'
         ]);
 

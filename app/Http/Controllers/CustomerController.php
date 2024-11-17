@@ -34,6 +34,7 @@ class CustomerController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'gender' => 'required|in:Male,Female',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:15',
             'address' => 'required|string',
@@ -67,6 +68,7 @@ class CustomerController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'gender' => 'required|in:Male,Female',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:15',
             'address' => 'required|string',

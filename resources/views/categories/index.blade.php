@@ -14,7 +14,7 @@
                         @if (isset($category))
                             @method('PUT')
                         @endif
-                        <div class="row m-1 align-item-center border rounded-2">
+                        <div class="row m-1 align-item-center border rounded-2 border-info">
                             <div class="form-group col-12 col-md-6 p-2">
                                 <div class="row">
                                     <div class="form-group col-12 col-md-10 mb-3 ps-4">
