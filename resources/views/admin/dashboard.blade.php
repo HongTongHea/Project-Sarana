@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Dashboard')
 
 @section('content')
     <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
                     <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-                    <a href="{{ route('customers.create') }}" class="btn btn-primary btn-round">Add Staff</a>
+                    <a href="{{ route('customers.create') }}" class="btn btn-primary btn-round">Add Customer</a>
                 </div>
             </div>
         @endif
@@ -85,13 +85,13 @@
                         <div class="row align-items-center">
                             <div class="col-icon">
                                 <div class="icon-big text-center icon-success bubble-shadow-small">
-                                    <i class="fas fa-luggage-cart"></i>
+                                    <i class="fa-solid fa-dollar-sign"></i>
                                 </div>
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
                                     <p class="card-category">Sales</p>
-                                    <h4 class="card-title">$ 1,345</h4>
+                                    <h4 class="card-title">${{ $sales->sum('total_price') }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -197,14 +197,14 @@
         </div>
         <div class="row">
             @if (Auth::user()->role === 'admin')
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-12">
                     <div class="card mt-3 mx-2">
                         <div class="card-body">
                             <div class="row m-2 align-items-center">
-                                <div class="col-6 p-0">
+                                <div class="col-8 p-0">
                                     <h3 class="m-3">User Data</h3>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="row align-items-center">
                                         <div class="input-group rounded-5">
                                             <input type="text" id="search" placeholder="Search ..."
@@ -218,18 +218,17 @@
                                 <table class="table table-sm table-hover mt-3  search-table" id="UserTableData">
                                     <thead>
                                         <tr>
-
                                             <th>Profile</th>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Actions</th>
                                         </tr>
+
                                     </thead>
                                     <tbody id="tableBody">
                                         @foreach ($users as $index => $user)
                                             <tr>
-
                                                 <td>
                                                     @if ($user->picture_url)
                                                         <img src="{{ asset('storage/' . $user->picture_url) }}"
@@ -280,14 +279,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-12">
                     <div class="card mt-3 mx-2">
                         <div class="card-body">
                             <div class="row m-2 align-items-center">
-                                <div class="col-6 p-0">
-                                    <h3 class="m-3">Customer Data</h3>
+                                <div class="col-8 p-0">
+                                    <h3 class="m-3">User Data</h3>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="row align-items-center">
                                         <div class="input-group rounded-5">
                                             <input type="text" id="search" placeholder="Search ..."
@@ -297,7 +296,7 @@
                                 </div>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-sm table-hover mt-3 search-table" id="Table">
+                                <table class="table table-sm table-hover mt-3 search-table" id="CustomerTableData">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -307,7 +306,7 @@
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>Address</th>
-                                            <th>Actions</th>
+
                                         </tr>
                                     </thead>
                                     <tbody id="tableBody">
@@ -320,47 +319,12 @@
                                                 <td>{{ $customer->email }}</td>
                                                 <td>{{ $customer->phone }}</td>
                                                 <td>{{ $customer->address }}</td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-warning rounded-5 dropdown-toggle btn-sm"
-                                                            type="button" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                            Action
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item"
-                                                                    href="{{ route('customers.show', $customer->id) }}">Veiw
-                                                                    Detail</a>
-                                                            </li>
-                                                            <li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="{{ route('customers.edit', $customer->id) }}">Edit</a>
-                                                            </li>
-                                                            <li>
-                                                                <form
-                                                                    action="{{ route('customers.destroy', $customer->id) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="dropdown-item">Delete</button>
-                                                                </form>
-                                                            </li>
 
-                                                        </ul>
-                                                    </div>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <div class="d-flex justify-content-Start mb-3">
-                                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i>
-                                        Previous</button>
-                                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -393,7 +357,7 @@
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>Address</th>
-                                            <th>Actions</th>
+
                                         </tr>
                                     </thead>
                                     <tbody id="tableBody">
@@ -406,36 +370,7 @@
                                                 <td>{{ $customer->email }}</td>
                                                 <td>{{ $customer->phone }}</td>
                                                 <td>{{ $customer->address }}</td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-warning rounded-5 dropdown-toggle btn-sm"
-                                                            type="button" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                            Action
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item"
-                                                                    href="{{ route('customers.show', $customer->id) }}">Veiw
-                                                                    Detail</a>
-                                                            </li>
-                                                            <li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="{{ route('customers.edit', $customer->id) }}">Edit</a>
-                                                            </li>
-                                                            <li>
-                                                                <form
-                                                                    action="{{ route('customers.destroy', $customer->id) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="dropdown-item">Delete</button>
-                                                                </form>
-                                                            </li>
 
-                                                        </ul>
-                                                    </div>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -451,80 +386,59 @@
                         </div>
                     </div>
                 </div>
-            @endif
-            {{-- <div class="col-12 col-md-6">
-                <div class="card mt-3 mx-2">
-                    <div class="card-body">
-                        <div class="row m-2 align-items-center">
-                            <div class="col-6 p-0">
-                                <h3 class="m-3">Customer Data</h3>
-                            </div>
-                            <div class="col-6">
-                                <div class="row align-items-center">
-                                    <div class="input-group rounded-5">
-                                        <input type="text" id="search" placeholder="Search ..."
-                                            class="form-control rounded-4 border position-relative" />
+            @elseif (Auth::user()->role === 'staff')
+                <div class="col-12 col-md-12">
+                    <div class="card mt-3 mx-2">
+                        <div class="card-body">
+                            <div class="row m-2 align-items-center">
+                                <div class="col-8 p-0">
+                                    <h3 class="m-3">Staffs Data</h3>
+                                </div>
+                                <div class="col-4">
+                                    <div class="row align-items-center">
+                                        <div class="input-group rounded-5">
+                                            <input type="text" id="search" placeholder="Search ..."
+                                                class="form-control rounded-4 border position-relative" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Gender</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableBody">
-                                    @foreach ($customers as $customer)
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover mt-3 search-table" id="Table">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $customer->first_name }}</td>
-                                            <td>{{ $customer->last_name }}</td>
-                                            <td>{{ $customer->gender }}</td>
-                                            <td>{{ $customer->email }}</td>
-                                            <td>{{ $customer->phone }}</td>
-                                            <td>{{ $customer->address }}</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-warning rounded-5 dropdown-toggle btn-sm"
-                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Action
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item"
-                                                                href="{{ route('customers.show', $customer->id) }}">Veiw
-                                                                Detail</a>
-                                                        </li>
-                                                        <li>
-                                                        <li><a class="dropdown-item"
-                                                                href="{{ route('customers.edit', $customer->id) }}">Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <form action="{{ route('customers.destroy', $customer->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="dropdown-item">Delete</button>
-                                                            </form>
-                                                        </li>
+                                            <th>No</th>
+                                            <th>Staff Name</th>
+                                            <th>Position</th>
+                                            <th>Department</th>
+                                            <th>Salary</th>
+                                            <th>Date Hired</th>
+                                            <th>Status</th>
 
-                                                    </ul>
-                                                </div>
-                                            </td>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="d-flex justify-content-Start mb-3">
+                                    </thead>
+                                    <tbody id="tableBody">
+                                        @foreach ($staffs as $staff)
+                                            <tr>
+                                                <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ $staff->user->name }}</td>
+                                                <td>{{ $staff->position }}</td>
+                                                <td>{{ $staff->department }}</td>
+                                                <td>{{ $staff->salary }}</td>
+                                                <td>{{ $staff->date_hired }}</td>
+                                                <td>
+                                                    @if (strtolower($staff->status) === 'active')
+                                                        <span class="badge bg-success">Active</span>
+                                                    @else
+                                                        <span class="badge bg-danger">Inactive</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-Start mb-3 ">
                                 <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
                                     onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
                                 <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
@@ -533,7 +447,7 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            @endif
 
         </div>
 

@@ -69,7 +69,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
             'size' => 'sometimes|required|in:XS,S,M,L,XL,XXL',
-            'stock_quantity' => 'sometimes|required|integer',
+            'stock_quantity' => 'required|integer',
             'category_id' => 'sometimes|required|exists:categories,id',
             'file' => 'nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:1999',
         ]);

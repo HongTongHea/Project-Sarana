@@ -10,13 +10,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StockController;
-use App\Http\Controllers\StaffController;   
-
-
-
-
-
-
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\SaleController;
 
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
 Route::post('/', [AuthController::class, 'login'])->middleware('guest');
@@ -35,8 +30,13 @@ Route::resource('stocks', StockController::class);
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
 Route::resource('staffs', StaffController::class);
+Route::resource('sales', SaleController::class);
+
+
+
 
 
 
 Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
 Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');
+Route::get('sales/report', [SaleController::class, 'report'])->name('sales.report');

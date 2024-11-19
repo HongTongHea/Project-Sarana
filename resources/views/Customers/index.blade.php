@@ -55,21 +55,33 @@
                                                 Action
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item"
-                                                        href="{{ route('customers.show', $customer->id) }}">Veiw Detail</a>
-                                                </li>
-                                                <li>
-                                                <li><a class="dropdown-item"
-                                                        href="{{ route('customers.edit', $customer->id) }}">Edit</a></li>
-                                                <li>
-                                                    <form action="{{ route('customers.destroy', $customer->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item">Delete</button>
-                                                    </form>
-                                                </li>
-
+                                                @if (Auth::user()->role === 'admin')
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('customers.show', $customer->id) }}">Veiw
+                                                            Detail</a>
+                                                    </li>
+                                                    <li>
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('customers.edit', $customer->id) }}">Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <form action="{{ route('customers.destroy', $customer->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="dropdown-item">Delete</button>
+                                                        </form>
+                                                    </li>
+                                                @elseif (Auth::user()->role === 'staff')
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('customers.show', $customer->id) }}">Veiw
+                                                            Detail</a>
+                                                    </li>
+                                                    <li>
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('customers.edit', $customer->id) }}">Edit</a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </td>

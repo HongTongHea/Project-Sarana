@@ -64,15 +64,7 @@
 
                         <div class="form-group col-12 col-md-6 mb-3">
                             <label for="stock_quantity" class="form-label">Stock Quantity</label>
-                            <select name="stock_quantity" id="stock_quantity" class="form-select form-control">
-                                <option value="">Select Stock Quantity</option>
-                                @foreach ($stocks as $stock)
-                                    <option value="{{ $stock->id }}"
-                                        {{ old('stock_quantity') == $stock->id ? 'selected' : '' }}>
-                                        {{ $stock->stock_quantity }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <input type="number" name="stock_quantity" class="form-control" id="stock_quantity">
                  
                         </div>
 

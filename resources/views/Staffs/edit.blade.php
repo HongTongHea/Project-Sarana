@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
+@section('title', 'Update Staff')
+
 @section('content')
     <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
-        <h3 class="m-3">Add New Staffs</h3>
+        <h3 class="m-3">Update Staff</h3>
         <div class="card">
             <div class="card-body">
 
@@ -87,7 +89,7 @@
                     </div>
                     <a href="{{ route('staffs.index') }}"
                         class="btn btn-secondary mt-3 btn-sm float-end rounded-5">Cancel</a>
-                    <button type="submit" class="btn btn-primary mt-3 btn-sm me-1 float-end rounded-5">Add
+                    <button type="submit" class="btn btn-primary mt-3 btn-sm me-1 float-end rounded-5">Upate
                         Staff</button>
                 </form>
             </div>

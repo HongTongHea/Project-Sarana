@@ -46,19 +46,6 @@
                         </div>
 
                         <div class="form-group col-12 col-md-6 mb-3">
-                            <label for="stock_quantity">Stock Quantity</label>
-                            <select name="stock_quantity" id="stock_quantity" class="form-select form-control">
-                                <option value="">Select Stock Quantity</option>
-                                @foreach ($stocks as $stock)
-                                    <option value="{{ $stock->id }}"
-                                        {{ $product->stock_quantity == $stock->id ? 'selected' : '' }}>
-                                        {{ $stock->stock_quantity }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group col-12 col-md-6 mb-3">
                             <label for="category_id">Category</label>
                             <select name="category_id" class="form-control form-select" required>
                                 @foreach ($categories as $category)
@@ -68,6 +55,12 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group col-12 col-md-6 mb-3">
+                            <label for="stock_quantity">Stock Quantity</label>
+                            <input type="number" name="stock_quantity" class="form-control"
+                                value="{{ $product->stock_quantity }}" required min="0">
                         </div>
 
                         <div class="form-group col-12 col-md-6  mb-2">

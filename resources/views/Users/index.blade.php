@@ -159,7 +159,7 @@
                                                         <li><a href="{{ route('users.show', $user->id) }}"
                                                                 class="dropdown-item">User Detail</a></li>
                                                         <li><a href="{{ route('users.index', ['edit' => $user->id]) }}"
-                                                                class="dropdown-item">Update</a></li>
+                                                                class="dropdown-item">Edit</a></li>
                                                         <li>
                                                             <form action="{{ route('users.destroy', $user->id) }}"
                                                                 method="POST" style="display:inline;">

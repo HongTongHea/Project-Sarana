@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Add New Staff')
+
 @section('content')
     <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">Add New Staffs</h3>

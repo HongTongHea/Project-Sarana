@@ -96,12 +96,12 @@
                         <div class="collapse" id="base1">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="">
-                                        <span class="sub-item">Sale List</span>
+                                    <a href="{{ route('sales.index') }}">
+                                        <span class="sub-item">Sale Data</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <a href="{{ route('sales.report') }}">
                                         <span class="sub-item">Sale Report</span>
                                     </a>
                                 </li>
@@ -109,14 +109,6 @@
                         </div>
                     </li>
 
-
-
-                    {{-- <li class="nav-item">
-                        <a href="">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
-                            <p>Payments</p>
-                        </a>
-                    </li> --}}
                     <li class="nav-item">
                         <a href="{{ route('users.index') }}">
                             <i class="fa-solid fa-user-gear"></i>
@@ -163,7 +155,7 @@
                                         <span class="sub-item">Order List</span>
                                     </a>
                                 </li>
-                           
+
                             </ul>
                         </div>
                     </li>
@@ -211,12 +203,7 @@
                             <p>Customers</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('customers.index') }}">
-                            <i class="fa-solid fa-address-card"></i>
-                            <p>Staffs</p>
-                        </a>
-                    </li>
+         
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base2">
                             <i class="fa-solid fa-cart-shopping"></i>
