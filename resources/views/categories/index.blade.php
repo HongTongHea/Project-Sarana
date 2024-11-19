@@ -40,7 +40,7 @@
                         <div class="float-end mt-1 m-1">
 
                             <button type="submit" class="btn btn-primary btn-sm rounded-5 ">
-                                {{ isset($category) ? 'Update' : 'Save' }}
+                                {{ isset($category) ? 'Save Changes' : 'Add Category' }}
                             </button>
                             @if (isset($category))
                                 <a href="{{ route('categories.index') }}"
@@ -50,11 +50,7 @@
                         </div>
                     </form>
 
-
-
-
                     <div class="row m-1 mt-5 align-items-center w-100">
-
                         <hr class="mt-2 ">
                         <div class="col-8 p-0">
                             <h3 class="m-3">Category Data</h3>

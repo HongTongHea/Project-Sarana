@@ -29,8 +29,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
+                                <th>F-Name</th>
+                                <th>L-Name</th>
                                 <th>Gender</th>
                                 <th>Email</th>
                                 <th>Phone</th>

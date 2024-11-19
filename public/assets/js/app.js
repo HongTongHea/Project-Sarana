@@ -1,4 +1,4 @@
-const rowsPerPage = 5; // Number of rows per page
+const rowsPerPage = 10; // Number of rows per page
 let currentPage = 1;
 const tableBody = document.getElementById("tableBody");
 const rows = tableBody.querySelectorAll("tr");

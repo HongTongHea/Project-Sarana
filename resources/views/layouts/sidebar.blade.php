@@ -101,7 +101,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('sales.report') }}">
+                                    <a href="{{ route('sales_reports.index') }}">
                                         <span class="sub-item">Sale Report</span>
                                     </a>
                                 </li>
@@ -203,7 +203,7 @@
                             <p>Customers</p>
                         </a>
                     </li>
-         
+
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base2">
                             <i class="fa-solid fa-cart-shopping"></i>
@@ -234,7 +234,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <a href="{{ route('sales_reports.index') }}">
                                         <span class="sub-item">Sale Report</span>
                                     </a>
                                 </li>

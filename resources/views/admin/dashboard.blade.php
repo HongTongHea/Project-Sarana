@@ -284,19 +284,16 @@
                         <div class="card-body">
                             <div class="row m-2 align-items-center">
                                 <div class="col-8 p-0">
-                                    <h3 class="m-3">User Data</h3>
+                                    <h3 class="m-3">Customer Data</h3>
                                 </div>
                                 <div class="col-4">
                                     <div class="row align-items-center">
-                                        <div class="input-group rounded-5">
-                                            <input type="text" id="search" placeholder="Search ..."
-                                                class="form-control rounded-4 border position-relative" />
-                                        </div>
+                                     
                                     </div>
                                 </div>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-sm table-hover mt-3 search-table" id="CustomerTableData">
+                                <table class="table table-sm table-hover mt-3 search-table" id="Table">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -324,7 +321,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>

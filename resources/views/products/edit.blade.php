@@ -87,8 +87,8 @@
                     </div>
                     <a href="{{ route('products.index') }}"
                         class="btn btn-secondary btn-sm rounded-5 mb-3 float-end ">Cancel</a>
-                    <button type="submit" class="btn btn-primary btn-sm rounded-5 mb-3 float-end me-1">Update
-                        Product</button>
+                    <button type="submit" class="btn btn-primary btn-sm rounded-5 mb-3 float-end me-1">Save
+                        Changes</button>
                 </form>
             </div>
         </div>

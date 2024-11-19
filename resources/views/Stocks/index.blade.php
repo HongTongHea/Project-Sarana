@@ -40,13 +40,13 @@
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6 p-2">
-                                <img src="/assets/img/product.png" alt=""  width="80%">
+                                <img src="/assets/img/product.png" alt="" width="80%">
                             </div>
 
                         </div>
                         <div class="float-end mt-1 m-1">
                             <button type="submit" class="btn btn-primary btn-sm rounded-5">
-                                {{ isset($stock) ? 'Update' : 'Save' }}
+                                {{ isset($stock) ? 'Save Changes' : 'Add Stock' }}
                             </button>
                             @if (isset($stock))
                                 <a href="{{ route('stocks.index') }}"

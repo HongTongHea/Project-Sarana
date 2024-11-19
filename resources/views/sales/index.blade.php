@@ -13,7 +13,8 @@
 
                         <a href="{{ route('sales.create') }}" class="btn btn-primary btn-sm rounded-5"><i
                                 class="fa-solid fa-circle-plus"></i> New Sale</a>
-                        
+                  
+
 
                     </div>
                     <div class="col-4">

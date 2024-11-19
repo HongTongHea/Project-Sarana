@@ -89,8 +89,8 @@
                     </div>
                     <a href="{{ route('staffs.index') }}"
                         class="btn btn-secondary mt-3 btn-sm float-end rounded-5">Cancel</a>
-                    <button type="submit" class="btn btn-primary mt-3 btn-sm me-1 float-end rounded-5">Upate
-                        Staff</button>
+                    <button type="submit" class="btn btn-primary mt-3 btn-sm me-1 float-end rounded-5">Save
+                        Changes</button>
                 </form>
             </div>
         </div>

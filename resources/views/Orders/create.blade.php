@@ -70,7 +70,7 @@
                     </div>
                     <a href="{{ route('orders.index') }}"
                         class="btn btn-secondary mt-3 btn-sm rounded-5 float-end">Cancel</a>
-                    <button type="submit" class="btn btn-primary mt-3 btn-sm rounded-5 float-end me-1">Create
+                    <button type="submit" class="btn btn-primary mt-3 btn-sm rounded-5 float-end me-1">Add
                         Order</button>
                 </form>
             </div>

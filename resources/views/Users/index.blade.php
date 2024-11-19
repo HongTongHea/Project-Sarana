@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">
-                                {{ isset($user) ? 'Update' : 'Save' }}
+                                {{ isset($user) ? 'Save Changes' : 'Add User' }}
                             </button>
                             @if (isset($user))
                                 <a href="{{ route('users.index') }}"

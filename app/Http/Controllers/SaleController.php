@@ -116,46 +116,8 @@ class SaleController extends Controller
         return redirect()->route('sales.index')->with('success', 'Sale updated successfully.');
     }
 
-    public function report()
-    {
-        // Total sales revenue
-        $totalRevenue = Sale::sum('total_price');
+ 
 
-        // Total quantity of products sold
-        $totalQuantity = Sale::sum('quantity');
-
-        // Total number of sales
-        $totalSales = Sale::count();
-
-        // Revenue per product
-        $revenuePerProduct = Sale::selectRaw('product_id, SUM(total_price) as total_revenue')
-            ->groupBy('product_id')
-            ->with('product')
-            ->get();
-
-        // Quantity sold per product
-        $quantityPerProduct = Sale::selectRaw('product_id, SUM(quantity) as total_quantity')
-            ->groupBy('product_id')
-            ->with('product')
-            ->get();
-
-        // Revenue per customer
-        $revenuePerCustomer = Sale::selectRaw('customer_id, SUM(total_price) as total_revenue')
-            ->groupBy('customer_id')
-            ->with('customer')
-            ->get();
-
-        return view('sales.report', compact(
-            'totalRevenue',
-            'totalQuantity',
-            'totalSales',
-            'revenuePerProduct',
-            'quantityPerProduct',
-            'revenuePerCustomer'
-        ));
-    }
-    
-    // Delete the specified sale
     public function destroy($id)
     {
         $sale = Sale::findOrFail($id);
