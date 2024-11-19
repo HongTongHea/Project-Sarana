@@ -32,15 +32,14 @@
                             <input type="text" class="form-control" id="last_name" name="last_name"
                                 value="{{ old('last_name') }}" required>
                         </div>
-                        
                         <div class="form-group col-12 col-md-6">
                             <label for="gender">Gender</label>
                             <select type="text" class="form-select form-control" id="gender" name="gender">
                                 <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
                             </select>
-                            
+
                         </div>
 
                         <div class="form-group col-12 col-md-6">
