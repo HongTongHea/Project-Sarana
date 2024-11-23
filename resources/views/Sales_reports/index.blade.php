@@ -10,7 +10,7 @@
                 <div class="row m-2 align-items-center">
                     <div class="col-8 p-0">
                         <a href="{{ route('sales_reports.generate') }}" class="btn btn-primary btn-sm rounded-5">Reports</a>
-                       
+
                     </div>
                     <div class="col-4">
                         <div class="row align-items-center">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-sm table-hover mt-3 search-table">
-                        <thead>
+                        <thead class="table-warning">
                             <tr>
                                 <th>ID</th>
                                 <th>Product</th>

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Categories Data')
 @section('content')
+   
     <div class="container" data-aos="fade-down" data-aos-duration="1000">
         <h3 class="m-3">{{ isset($category) ? 'Update Category' : 'Create New Category' }}</h3>
         <div class="container p-2">
@@ -14,7 +15,7 @@
                         @if (isset($category))
                             @method('PUT')
                         @endif
-                        <div class="row m-1 align-item-center border rounded-2 border-info">
+                        <div class="row m-1 align-item-center border rounded-2">
                             <div class="form-group col-12 col-md-6 p-2">
                                 <div class="row">
                                     <div class="form-group col-12 col-md-10 mb-3 ps-4">
@@ -31,8 +32,18 @@
                             </div>
 
 
-                            <div class="col-12 col-md-6">
-                                <img src="/assets/img/2663787.jpg" alt="" width="85%">
+                            <div class="col-12 col-md-6 mt-4">
+                                <div class="swiper">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide"><img src="/assets/img/pic (1).png" alt></div>
+                                        <div class="swiper-slide"><img src="/assets/img/pic (2).png" alt></div>
+                                        <div class="swiper-slide"><img src="/assets/img/pic (3).png" alt></div>
+                                        <div class="swiper-slide"><img src="/assets/img/pic (4).png" alt></div>
+                                    </div>
+                                    <div class="swiper-pagination"></div>
+                                    {{-- <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div> --}}
+                                </div>
                             </div>
 
 
@@ -67,7 +78,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-hover search-table" id="CategoryTableData">
-                            <thead>
+                            <thead class="table-warning">
                                 <tr>
                                     <th>No</th>
                                     <th>Name</th>

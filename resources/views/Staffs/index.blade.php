@@ -26,7 +26,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                        <thead>
+                        <thead class="table-warning">
                             <tr>
                                 <th>No</th>
                                 <th>Staff Name</th>

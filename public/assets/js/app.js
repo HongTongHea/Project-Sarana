@@ -55,33 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// document.getElementById("search").addEventListener("keyup", function () {
-//     let filter = this.value.toUpperCase();
-//     let tables = document.querySelectorAll(".search-table"); // Select all tables with the class "search-table"
-
-//     // Loop through each table and apply search functionality
-//     tables.forEach((table) => {
-//         let rows = table.querySelector("tbody").rows;
-
-//         for (let i = 0; i < rows.length; i++) {
-//             let cells = rows[i].cells;
-//             let match = false;
-
-//             // Check each cell in the row
-//             for (let j = 0; j < cells.length; j++) {
-//                 let cellContent = cells[j].textContent || cells[j].innerText;
-//                 if (cellContent.toUpperCase().indexOf(filter) > -1) {
-//                     match = true;
-//                     break;
-//                 }
-//             }
-
-//             // Show or hide the row based on match result
-//             rows[i].style.display = match ? "" : "none";
-//         }
-//     });
-// });
-
 document.getElementById("search").addEventListener("keyup", function () {
     let filter = this.value.toUpperCase();
     let tables = document.querySelectorAll(".search-table"); // Select all tables with the class "search-table"

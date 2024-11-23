@@ -20,7 +20,7 @@
                                     class="avatar-img avatar-lg rounded-5 object-fit-cover object-center m-3 mt-0 mb-2"
                                     width="100%">
                             @endif
-                            <div class="row m-1 align-items-center border rounded-3 border-info">
+                            <div class="row m-1 align-items-center border rounded-3">
                                 <div class="form-group col-12 col-md-6 ps-2">
 
                                     <div class="row">

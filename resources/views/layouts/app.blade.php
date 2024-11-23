@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+
+    <link rel="stylesheet" href="/assets/css/slide.css">
     <!-- Fonts and icons -->
     <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -61,6 +66,7 @@
 
         <!-- End Custom template -->
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!--   Core JS Files   -->
     <script src="/assets/js/core/jquery-3.7.1.min.js"></script>
@@ -88,6 +94,8 @@
     <!-- Sweet Alert -->
     <script src="/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
+    <script src="/assets/js/slide.js"></script>
+
     <!-- Kaiadmin JS -->
     <script src="/assets/js/kaiadmin.min.js"></script>
     <script src="/assets/js/app.js"></script>
@@ -95,6 +103,8 @@
     <script src="/assets/js/setting-demo.js"></script>
     <script src="/assets/js/demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="/assets/js/script.js"></script>
     <script>
         AOS.init();
     </script>

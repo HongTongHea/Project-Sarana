@@ -40,7 +40,17 @@
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6 p-2">
-                                <img src="/assets/img/product.png" alt="" width="80%">
+                                <div class="swiper">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide"><img src="/assets/img/pic (1).png" alt></div>
+                                        <div class="swiper-slide"><img src="/assets/img/pic (2).png" alt></div>
+                                        <div class="swiper-slide"><img src="/assets/img/pic (3).png" alt></div>
+                                        <div class="swiper-slide"><img src="/assets/img/pic (4).png" alt></div>
+                                    </div>
+                                    <div class="swiper-pagination"></div>
+                                    {{-- <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div> --}}
+                                </div>
                             </div>
 
                         </div>
@@ -73,7 +83,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-hover search-table" id="StockTableData">
-                            <thead>
+                            <thead class="table-warning">
                                 <tr>
                                     <th>No</th>
                                     <th>Product</th>

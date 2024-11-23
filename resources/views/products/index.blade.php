@@ -8,8 +8,9 @@
             <div class="card-body">
                 <div class="row m-2 align-items-center">
                     <div class="col-8 p-0">
-                       
-                        <a href="{{ route('products.create') }}" class="btn btn-primary mb-3 btn-sm rounded-5"><i class="fa-solid fa-circle-plus"></i> New
+
+                        <a href="{{ route('products.create') }}" class="btn btn-primary mb-3 btn-sm rounded-5"><i
+                                class="fa-solid fa-circle-plus"></i> New
                             Product</a>
                     </div>
                     <div class="col-4">
@@ -24,7 +25,7 @@
 
                 <div class="table-responsive">
                     <table class="table table-hover search-table" id="ProdcutTableData">
-                        <thead>
+                        <thead class="table-warning">
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
