@@ -81,6 +81,12 @@
                                                     <li><a class="dropdown-item"
                                                             href="{{ route('customers.edit', $customer->id) }}">Edit</a>
                                                     </li>
+                                                    @elseif (Auth::user()->role === 'customer')
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('customers.show', $customer->id) }}">Veiw
+                                                            Detail</a>
+                                                    </li>
+                                                    <li>
                                                 @endif
                                             </ul>
                                         </div>

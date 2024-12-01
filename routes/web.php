@@ -38,9 +38,6 @@ Route::get('/sales_reports/generate', [SalesReportController::class, 'generateRe
 Route::resource('sales_reports', SalesReportController::class)->only(['index', 'show']);
 
 
-
-
-
 Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
 Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');
 

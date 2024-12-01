@@ -229,7 +229,7 @@
                         <div class="collapse" id="base1">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="">
+                                    <a href="{{ route('sales.index') }}">
                                         <span class="sub-item">Sale List</span>
                                     </a>
                                 </li>

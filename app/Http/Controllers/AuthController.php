@@ -22,7 +22,7 @@ class AuthController extends Controller
             ->header('Pragma', 'no-cache')
             ->header('Expires', '0');
     }
-
+    
     public function viewUsers()
     {
         $users = User::all();

@@ -90,10 +90,12 @@
                                                         <a href="{{ route('orders.edit', $order->id) }}"
                                                             class="dropdown-item">Edit</a>
                                                     </li>
+                                                @elseif (Auth::user()->role === 'customer')
+                                                    <li>
+                                                        <a href="{{ route('orders.show', $order->id) }}"
+                                                            class="dropdown-item">View Payment</a>
+                                                    </li>
                                                 @endif
-
-
-
                                             </ul>
 
                                         </div>
