@@ -43,11 +43,11 @@
                         </div>
 
                         <div class="form-group mt-4 position-relative">
-                            <input type="password" class="form-control rounded-3  text-light bg-dark" id="password"
+                            <input type="password" class="form-control rounded-3 text-light bg-dark" id="password"
                                 placeholder="Password" name="password" required>
                             <div
-                                class="icon position-absolute top-0  end-0 bottom-0 m-auto d-flex justify-content-center align-items-center p-3">
-                                <i class="fa-solid fa-lock"></i>
+                                class="icon position-absolute top-0 end-0 bottom-0 m-auto d-flex justify-content-center align-items-center p-3">
+                                <i class="fa-solid fa-lock" id="togglePassword"></i>
                             </div>
                         </div>
 
@@ -72,6 +72,19 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const togglePassword = document.querySelector('#togglePassword');
+            const password = document.querySelector('#password');
+
+            togglePassword.addEventListener('click', function(e) {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+
+                this.classList.toggle('fa-lock');
+                this.classList.toggle('fa-unlock');
+            });
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             const rememberCheckbox = document.getElementById("remember");
 

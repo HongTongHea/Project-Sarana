@@ -1,109 +1,88 @@
 @extends('layouts.app')
 
-@section('title', 'Customers Data')
+@section('title', 'Clothes Store | Customers Data')
 
 @section('content')
-    <div class="container mt-2" data-aos="fade-down" data-aos-duration="1000">
-        <h3 class="m-3">Customer Data</h3>
+    <div class="container mt-4">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand" height="30">
+                    <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">Clothes
+                        <span class="text-warning">Store </span> | <span class="text-dark">Customers Information</span>
 
-                <div class="row m-2 align-items-center">
-                    <div class="col-8 p-0">
-
-                        <a href="{{ route('customers.create') }}" class="btn btn-primary mb-3 btn-sm rounded-5"><i
-                                class="fa-solid fa-circle-plus"></i> New
-                            Customer</a>
-                    </div>
-                    <div class="col-4">
-                        <div class="row align-items-center">
-                            <div class="input-group rounded-5">
-                                <input type="text" id="search" placeholder="Search ..."
-                                    class="form-control rounded-4 border position-relative" />
-                            </div>
-                        </div>
-                    </div>
+                    </h6>
                 </div>
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn btn-primary mb-3 ml-3 rounded-3 btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#createModal">
+                    <i class="fa-solid fa-circle-plus"></i> Add New
+                </button>
+
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                        <thead class="table-warning">
+                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                        <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
-                                <th>F-Name</th>
-                                <th>L-Name</th>
-                                <th>Gender</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Address</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
+                        <tbody>
                             @foreach ($customers as $customer)
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $customer->first_name }}</td>
                                     <td>{{ $customer->last_name }}</td>
-                                    <td>{{ $customer->gender }}</td>
                                     <td>{{ $customer->email }}</td>
                                     <td>{{ $customer->phone }}</td>
-                                    <td>{{ $customer->address }}</td>
                                     <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-warning rounded-5 dropdown-toggle btn-sm" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                Action
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                @if (Auth::user()->role === 'admin')
-                                                    <li><a class="dropdown-item"
-                                                            href="{{ route('customers.show', $customer->id) }}">Veiw
-                                                            Detail</a>
-                                                    </li>
-                                                    <li>
-                                                    <li><a class="dropdown-item"
-                                                            href="{{ route('customers.edit', $customer->id) }}">Edit</a>
-                                                    </li>
-                                                    <li>
-                                                        <form action="{{ route('customers.destroy', $customer->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item">Delete</button>
-                                                        </form>
-                                                    </li>
-                                                @elseif (Auth::user()->role === 'staff')
-                                                    <li><a class="dropdown-item"
-                                                            href="{{ route('customers.show', $customer->id) }}">Veiw
-                                                            Detail</a>
-                                                    </li>
-                                                    <li>
-                                                    <li><a class="dropdown-item"
-                                                            href="{{ route('customers.edit', $customer->id) }}">Edit</a>
-                                                    </li>
-                                                    @elseif (Auth::user()->role === 'customer')
-                                                    <li><a class="dropdown-item"
-                                                            href="{{ route('customers.show', $customer->id) }}">Veiw
-                                                            Detail</a>
-                                                    </li>
-                                                    <li>
-                                                @endif
-                                            </ul>
-                                        </div>
+
+                                        @if (Auth::user()->role === 'admin')
+                                            <!-- Show Button -->
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#showModal{{ $customer->id }}"><i
+                                                    class="fa-solid fa-circle-info"></i></button>
+
+                                            <!-- Edit Button -->
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal{{ $customer->id }}"> <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+
+                                            <!-- Delete Button -->
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ $customer->id }}"><i
+                                                    class="fa-solid fa-trash"></i></button>
+                                        @elseif (Auth::user()->role === 'staff')
+                                            <!-- Show Button -->
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#showModal{{ $customer->id }}"><i
+                                                    class="fa-solid fa-circle-info"></i></button>
+
+                                            <!-- Edit Button -->
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal{{ $customer->id }}"> <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                        @endif
                                     </td>
                                 </tr>
+
+                                <!-- Show Modal -->
+                                @include('customers.show', ['customer' => $customer])
+                                <!-- Edit Modal -->
+                                @include('customers.edit', ['customer' => $customer])
+                                <!-- Delete Modal -->
+                                @include('customers.delete', ['customer' => $customer])
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-Start mb-3 ">
-                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
-                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                </div>
             </div>
         </div>
     </div>
-
+    @include('customers.create')
 @endsection

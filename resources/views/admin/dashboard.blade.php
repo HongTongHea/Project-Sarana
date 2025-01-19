@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Clothes Store | Dashboard')
 
 @section('content')
     <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
@@ -197,32 +197,28 @@
         </div>
         <div class="row">
             @if (Auth::user()->role === 'admin')
-                <div class="col-12 col-md-12">
-                    <div class="card mt-3 mx-2">
-                        <div class="card-body">
-                            <div class="row m-2 align-items-center">
-                                <div class="col-8 p-0">
-                                    <h3 class="m-3">User Data</h3>
-                                </div>
-                                <div class="col-4">
-                                    <div class="row align-items-center">
-                                        <div class="input-group rounded-5">
-                                            <input type="text" id="search" placeholder="Search ..."
-                                                class="form-control rounded-4 border position-relative" />
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="col-12">
+                    <div class="card mt-3 ">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand"
+                                    height="30">
+                                <h6 class="text-uppercase mt-3 ms-1 text-primary    "
+                                    style="font-weight: 700; font-size: 20px">Clothes
+                                    <span class="text-warning">Store </span> | <span class="text-dark">User
+                                        Information</span>
+                                </h6>
                             </div>
-
+                        </div>
+                        <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-sm table-hover mt-3  search-table" id="UserTableData">
+                                <table id="DataTable" class="table mt-3 table-hover table-striped">
                                     <thead>
                                         <tr>
                                             <th>Profile</th>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Role</th>
-                                            <th>Actions</th>
                                         </tr>
 
                                     </thead>
@@ -243,38 +239,11 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ ucfirst($user->role) }}</td>
                                                 <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-warning btn-sm dropdown-toggle rounded-5"
-                                                            type="button" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">Action</button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="{{ route('users.show', $user->id) }}"
-                                                                    class="dropdown-item">User Detail</a></li>
-                                                            <li><a href="{{ route('users.index', ['edit' => $user->id]) }}"
-                                                                    class="dropdown-item">Edit</a></li>
-                                                            <li>
-                                                                <form action="{{ route('users.destroy', $user->id) }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item"
-                                                                        onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                                                </form>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <div class="d-flex justify-content-Start mb-3 ">
-                                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i>
-                                        Previous</button>
-                                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -288,7 +257,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="row align-items-center">
-                                     
+
                                     </div>
                                 </div>
                             </div>
@@ -383,22 +352,9 @@
                     </div>
                 </div>
             @elseif (Auth::user()->role === 'staff')
-                <div class="col-12 col-md-12">
+                <div class="col-12">
                     <div class="card mt-3 mx-2">
                         <div class="card-body">
-                            <div class="row m-2 align-items-center">
-                                <div class="col-8 p-0">
-                                    <h3 class="m-3">Staffs Data</h3>
-                                </div>
-                                <div class="col-4">
-                                    <div class="row align-items-center">
-                                        <div class="input-group rounded-5">
-                                            <input type="text" id="search" placeholder="Search ..."
-                                                class="form-control rounded-4 border position-relative" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="table-responsive">
                                 <table class="table table-sm table-hover mt-3 search-table" id="Table">
                                     <thead>
@@ -434,20 +390,12 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-Start mb-3 ">
-                                <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                                    onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
-                                <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                                    onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                            </div>
+            
                         </div>
                     </div>
                 </div>
             @endif
 
         </div>
-
-
-
     </div>
 @endsection

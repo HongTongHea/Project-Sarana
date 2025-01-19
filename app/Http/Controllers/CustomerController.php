@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\Product;
-use App\Models\Order;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -16,14 +14,6 @@ class CustomerController extends Controller
     {
         $customers = Customer::all();
         return view('customers.index', compact('customers'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('customers.create');
     }
 
     /**
@@ -42,14 +32,6 @@ class CustomerController extends Controller
 
         Customer::create($validatedData);
         return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Customer $customer)
-    {
-        return view('customers.show', compact('customer'));
     }
 
     /**
@@ -75,7 +57,7 @@ class CustomerController extends Controller
         ]);
 
         $customer->update($validatedData);
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully');
+        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 
     /**
@@ -84,6 +66,6 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully');
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
 }

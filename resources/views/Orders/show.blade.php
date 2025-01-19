@@ -26,32 +26,36 @@
         </div>
 
         <!-- Order Item Table -->
-        <table class="table table-responsive" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-            <thead style="background-color: #f5f5f5;">
-                <tr>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Product</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ $order->product->name }}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->price, 2) }}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">{{ $order->quantity }}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->total_price, 2) }}</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" style="padding: 8px; text-align: right; font-weight: bold; border: 1px solid #ddd;">
-                        Grand Total
-                    </td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->total_price, 2) }}</td>
-                </tr>
-            </tfoot>
-        </table>
+        <div class="table-responsive">
+            <table class="table" style="margin-top: 20px; border-collapse: collapse;">
+                <thead style="background-color: #f5f5f5;">
+                    <tr>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Product</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">{{ $order->product->name }}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->price, 2) }}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">{{ $order->quantity }}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->total_price, 2) }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"
+                            style="padding: 8px; text-align: right; font-weight: bold; border: 1px solid #ddd;">
+                            Grand Total
+                        </td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${{ number_format($order->total_price, 2) }}</td>
+                    </tr>
+                </tfoot>
+            </table> 
+        </div>
+
 
         <!-- Payment Status -->
         <div style="margin-top: 20px;">

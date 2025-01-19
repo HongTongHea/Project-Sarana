@@ -1,31 +1,34 @@
-@extends('layouts.app')
-
-@section('title', 'Customer Details')
-
-@section('content')
-    <div class="card rounded-0">
-        <div class="card-body">
-            <h3>Category Details</h3>
-
-            <div class="card mt-4 rounded-0 w-50 bg-dark text-white">
-                <div class="card-header">
-                    <h3>Name: {{ $cat->name }}</h3>
+<div class="modal fade" id="showModal{{ $category->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="navbar-brand" height="30">
+                    <h6 class="text-uppercase mt-3 ms-1 text-primary fw-bold" style="font-size: 15px">
+                        Clothes <span class="text-warning">Store</span> |
+                        <span class="text-dark">Categories Detail</span>
+                    </h6>
                 </div>
-                <div class="card-body">
-                    <p><strong>Description:</strong> {{ $cat->description }}</p>
-                    <p><strong>Created At:</strong> {{ $cat->created_at->format('d-m-Y H:i') }}</p>
-                    <p><strong>Updated At:</strong> {{ $cat->updated_at->format('d-m-Y H:i') }}</p>
-
-                    <a href="{{ route('categories.edit',$c->id )}}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{{ url('category') }}" class="btn btn-secondary btn-sm">Back to List</a>
-
-                    <form action="{{ route('category.delete', $c->id) }}" method="POST" class="d-inline-block">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <p><strong><i class="fa-solid fa-caret-right"> </i> Category Name:</strong>
+                                    {{ $category->name }}</p>
+                                <p><strong><i class="fa-solid fa-caret-right"> </i> Description:</strong>
+                                    {{ $category->description }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-@endsection
+</div>

@@ -10729,3 +10729,32 @@ body[data-background-color=dark] .jvm-zoom-btn {
       font-size: 18px !important
    }
 }
+
+.dataTables_paginate .paginate_button {
+   margin: 0 5px;
+   padding: 5px 10px;
+   border-radius: 5px;
+}
+
+.dataTables_paginate .paginate_button:hover {
+   color: rgb(255, 255, 255) !important;
+   border-color: #ffffff !important;
+   background: none !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+   color: rgb(255, 255, 255) !important;
+   border-color: #ffffff !important;
+   background: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+   color: rgb(255, 255, 255) !important;
+   border-color: #ffffff !important;
+   background: none !important;
+   box-shadow: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+   margin-left: -25px;
+}

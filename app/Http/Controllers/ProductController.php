@@ -13,7 +13,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('products.index', compact('products'));
+        $categories = Category::all();
+        return view('products.index', compact('products', 'categories'));
     }
 
     public function create()
@@ -30,9 +31,8 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'size' => 'required|in:XS,S,M,L,XL,XXL',
-            'stock_quantity' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:1999',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
         ]);
 
         $product = new Product($request->all());
@@ -43,6 +43,15 @@ class ProductController extends Controller
 
         $product->save();
 
+        // Auto-insert stock record
+        $existingStock = $product->stocks()->where('type', 'initial')->first();
+
+        if (!$existingStock) {
+            $product->stocks()->create([
+                'quantity' => $product->stock_quantity,
+                'type' => 'initial',
+            ]);
+        }
 
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -71,22 +80,32 @@ class ProductController extends Controller
             'size' => 'sometimes|required|in:XS,S,M,L,XL,XXL',
             'stock_quantity' => 'required|integer',
             'category_id' => 'sometimes|required|exists:categories,id',
-            'file' => 'nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:1999',
+            'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
         ]);
 
-        $product->update($request->except(['file']));
+        $product->update($request->except(['picture_url']));
 
-        if ($request->hasFile('file')) {
-            if ($product->picture_url) {
+        if ($request->hasFile('picture_url')) {
+            if ($product->picture_url && Storage::exists('public/' . $product->picture_url)) {
                 Storage::delete('public/' . $product->picture_url);
             }
-            $product->picture_url = $request->file('file')->store('picture_url', 'public');
+            $product->picture_url = $request->file('picture_url')->store('picture_url', 'public');
         }
 
         $product->save();
 
+        // Update stock record
+        $product->stocks()->updateOrCreate(
+            ['product_id' => $product->id],
+            [
+                'quantity' => $request->stock_quantity,
+                'type' => 'update',
+            ]
+        );
+
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
+
 
 
     public function destroy($id)

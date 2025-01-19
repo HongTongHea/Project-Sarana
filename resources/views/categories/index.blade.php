@@ -1,126 +1,68 @@
 @extends('layouts.app')
-@section('title', 'Categories Data')
+
+@section('title', 'Clothes Store | Categories Data')
+
 @section('content')
-   
-    <div class="container" data-aos="fade-down" data-aos-duration="1000">
-        <h3 class="m-3">{{ isset($category) ? 'Update Category' : 'Create New Category' }}</h3>
-        <div class="container p-2">
-            <div class="card">
-                <div class="card-body">
 
-                    <form
-                        action="{{ isset($category) ? route('categories.update', $category->id) : route('categories.store') }}"
-                        method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @if (isset($category))
-                            @method('PUT')
-                        @endif
-                        <div class="row m-1 align-item-center border rounded-2">
-                            <div class="form-group col-12 col-md-6 p-2">
-                                <div class="row">
-                                    <div class="form-group col-12 col-md-10 mb-3 ps-4">
-                                        <label for="name">Name</label>
-                                        <input type="text" name="name" id="name" class="form-control"
-                                            value="{{ old('name', isset($category) ? $category->name : '') }}" required>
-                                    </div>
-                                    <div class="form-group col-12 col-md-10  ps-4">
-                                        <label class="form-label">Description</label>
-                                        <textarea name="description" class="form-control" rows="7" required>{{ old('description', isset($category) ? $category->description : '') }}</textarea>
-                                    </div>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand" height="30">
+                    <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">Clothes
+                        <span class="text-warning">Store </span> | <span class="text-dark">Categories Data</span>
 
-                                </div>
-                            </div>
-
-
-                            <div class="col-12 col-md-6 mt-4">
-                                <div class="swiper">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide"><img src="/assets/img/pic (1).png" alt></div>
-                                        <div class="swiper-slide"><img src="/assets/img/pic (2).png" alt></div>
-                                        <div class="swiper-slide"><img src="/assets/img/pic (3).png" alt></div>
-                                        <div class="swiper-slide"><img src="/assets/img/pic (4).png" alt></div>
-                                    </div>
-                                    <div class="swiper-pagination"></div>
-                                    {{-- <div class="swiper-button-prev"></div>
-                                    <div class="swiper-button-next"></div> --}}
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="float-end mt-1 m-1">
-
-                            <button type="submit" class="btn btn-primary btn-sm rounded-5 ">
-                                {{ isset($category) ? 'Save Changes' : 'Add Category' }}
-                            </button>
-                            @if (isset($category))
-                                <a href="{{ route('categories.index') }}"
-                                    class="btn btn-secondary btn-sm  m-1 rounded-5">Cancel</a>
-                            @endif
-
-                        </div>
-                    </form>
-
-                    <div class="row m-1 mt-5 align-items-center w-100">
-                        <hr class="mt-2 ">
-                        <div class="col-8 p-0">
-                            <h3 class="m-3">Category Data</h3>
-                        </div>
-                        <div class="col-4">
-                            <div class="row align-items-center">
-                                <div class="input-group rounded-5">
-                                    <input type="text" id="search" placeholder="Search ..."
-                                        class="form-control rounded-4 border position-relative" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover search-table" id="CategoryTableData">
-                            <thead class="table-warning">
+                    </h6>
+                </div>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-primary btn-sm mb-3 ml-3 rounded-3" data-toggle="modal" data-target="#createModal">
+                    <i class="fa-solid fa-circle-plus"></i> Add New
+                </button>
+                <div class="table-responsive">
+                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($categories as $category)
                                 <tr>
-                                    <th>No</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody">
-                                @foreach ($categories as $index => $category)
-                                    <tr>
-                                        <td>{{ $loop->index + 1 }}</td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>{{ $category->description }}</td>
-                                        <td>
-                                            <a href="{{ route('categories.index', ['edit' => $category->id]) }}"
-                                                class="btn btn-primary btn-sm rounded-5"><i
-                                                    class="fa-solid fa-pen-to-square"></i></a>
+                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $category->name }}</td>
+                                    <td>{{ $category->description }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#showModal{{ $category->id }}"><i
+                                                class="fa-solid fa-circle-info"></i></button>
 
-                                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm rounded-5"
-                                                    onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                        class="fa-regular fa-trash-can"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="d-flex justify-content-Start mb-3">
-                            <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                                onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i>
-                                Previous</button>
-                            <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                                onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                        </div>
-                    </div>
+                                        <button class="btn btn-info btn-sm" data-toggle="modal"
+                                            data-target="#editModal-{{ $category->id }}">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#deleteModal-{{ $category->id }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Edit Category Modal -->
+                                @include('categories.show')
+                                @include('categories.edit')
+                                <!-- Delete Category Modal -->
+                                @include('categories.delete')
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Create Category Modal -->
+    @include('categories.create')
 
 @endsection
