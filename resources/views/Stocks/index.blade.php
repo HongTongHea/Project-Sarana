@@ -7,8 +7,9 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand" height="30">
-                    <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">Clothes
+                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="40">
+                    <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 20px">
+                        Clothes
                         <span class="text-warning">Store </span> | <span class="text-dark">Stocks Data</span>
 
                     </h6>

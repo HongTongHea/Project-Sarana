@@ -197,13 +197,13 @@
         </div>
         <div class="row">
             @if (Auth::user()->role === 'admin')
-                <div class="col-12">
+                <div class="col-12 col-md-6">
                     <div class="card mt-3 ">
                         <div class="card-header">
                             <div class="d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand"
-                                    height="30">
-                                <h6 class="text-uppercase mt-3 ms-1 text-primary    "
+                                <img src="{{ asset('assets/img/logostore2.png') }}" alt=""
+                                    class="navbar-brand mr-1" height="40">
+                                <h6 class="text-uppercase mt-4 ms-1 text-primary"
                                     style="font-weight: 700; font-size: 20px">Clothes
                                     <span class="text-warning">Store </span> | <span class="text-dark">User
                                         Information</span>
@@ -213,7 +213,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="DataTable" class="table mt-3 table-hover table-striped">
-                                    <thead>
+                                    <thead class="thead-dark w-100">
                                         <tr>
                                             <th>Profile</th>
                                             <th>Name</th>
@@ -232,14 +232,12 @@
                                                             class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
                                                             width="100">
                                                     @else
-                                                        No picture
+                                                        <img src="{{ asset('assets/img/Default_pfp.svg.png') }}" alt="">
                                                     @endif
                                                 </td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ ucfirst($user->role) }}</td>
-                                                <td>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -248,26 +246,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-12">
+                <div class="col-12 col-md-6">
                     <div class="card mt-3 mx-2">
-                        <div class="card-body">
-                            <div class="row m-2 align-items-center">
-                                <div class="col-8 p-0">
-                                    <h3 class="m-3">Customer Data</h3>
-                                </div>
-                                <div class="col-4">
-                                    <div class="row align-items-center">
-
-                                    </div>
-                                </div>
+                        <div class="card-header">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('assets/img/logostore2.png') }}" alt=""
+                                    class="navbar-brand mr-1" height="40">
+                                <h6 class="text-uppercase mt-4 ms-1 text-primary"
+                                    style="font-weight: 700; font-size: 20px">Clothes
+                                    <span class="text-warning">Store </span> | <span class="text-dark">Customer
+                                        Information</span>
+                                </h6>
                             </div>
+                        </div>
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                                    <thead>
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th>No</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
+                                            <th>FirstName</th>
+                                            <th>LastName</th>
                                             <th>Gender</th>
                                             <th>Email</th>
                                             <th>Phone</th>
@@ -390,7 +389,7 @@
                                     </tbody>
                                 </table>
                             </div>
-            
+
                         </div>
                     </div>
                 </div>

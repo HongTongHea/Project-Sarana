@@ -86,25 +86,30 @@
                                     <div class="dropdown-divider"></div>
                                     <form action="{{ route('logout') }}" method="POST" class="">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i>
-                                            Logout</button>
+                                        <button type="submit" class="dropdown-item"
+                                            onclick="return confirm('Are you sure you want to logout?')">
+                                            <i class="bi bi-escape"></i> Logout
+                                        </button>
                                     </form>
                                 @elseif (Auth::user()->role == 'customer')
                                     <div class="dropdown-divider"></div>
                                     <form action="{{ route('logout') }}" method="POST" class="">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i>
-                                            Logout</button>
+                                        <button type="submit" class="dropdown-item"
+                                            onclick="return confirm('Are you sure you want to logout?')">
+                                            <i class="bi bi-escape"></i> Logout
+                                        </button>
                                     </form>
                                 @elseif (Auth::user()->role == 'staff')
                                     <div class="dropdown-divider"></div>
-                                    <form action="{{ route('logout') }}" method="POST" class="">
+                                    <form action="{{ route('logout') }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"> <i class="bi bi-escape"></i>
-                                            Logout</button>
+                                        <button type="submit" class="dropdown-item"
+                                            onclick="return confirm('Are you sure you want to logout?')">
+                                            <i class="bi bi-escape"></i> Logout
+                                        </button>
                                     </form>
                                 @endif
-
                             </li>
                         </div>
                     </ul>

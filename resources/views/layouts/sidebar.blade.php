@@ -3,7 +3,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
             <a href="index.html" class="logo text-primary ">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand" height="30">
+                <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="30">
                 <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">Clothes
                     <span class="text-warning">Store</span>
                 </h6>

@@ -1,17 +1,19 @@
-<div class="modal fade" id="editModal-{{ $category->id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="editModal{{ $category->id }}" tabindex="-1" role="dialog"
     aria-labelledby="editModalLabel-{{ $category->id }}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="" class="navbar-brand" height="30">
-                    <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 15px">
+                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1"
+                        height="30">
+                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">
                         Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark"> Edit Categories </span>
+                        <span class="text-warning">Store </span> | <span class="text-dark"> Create Categories
+                        </span>
                         <br>
                     </h6>
                 </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button"class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -33,4 +35,3 @@
         </div>
     </div>
 </div>
-

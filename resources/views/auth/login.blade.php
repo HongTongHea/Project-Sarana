@@ -6,15 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="icon" href="/assets/img/logo.png" type="image/x-icon" width="100%">
-    <title>Login Page</title>
+    <link rel="icon" href="/assets/img/logostore2.png" type="image/x-icon" width="100%">
+    <title> Clothes Store | Login Page</title>
 </head>
 
-<body style="background-color: #ffffffc4">
-
+<body>
     <div class="container" style="padding-top: 100px">
-        <div class="d-flex justify-content-center align-items-center p-0">
-            <img src="/assets/img/logo4.png" alt="" width="14%">
+        <div class="d-flex justify-content-center align-items-center p-2">
+            <img src="/assets/img/logostore1.png" alt="" width="14%">
 
         </div>
 
@@ -59,7 +58,7 @@
                                 </div>
                                 <div class="col-6">
                                     <button type="submit"
-                                        class="btn btn-primary rounded-5  mt-2  fw-bold float-end w-75">Login</button>
+                                        class="btn btn-warning rounded-5  mt-2  fw-bold float-end w-75">Login</button>
                                 </div>
                             </div>
                         </div>
@@ -70,35 +69,45 @@
 
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const togglePassword = document.querySelector('#togglePassword');
-            const password = document.querySelector('#password');
-
-            togglePassword.addEventListener('click', function(e) {
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-
-                this.classList.toggle('fa-lock');
-                this.classList.toggle('fa-unlock');
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const rememberCheckbox = document.getElementById("remember");
-
-            // Load saved checkbox state on page load
-            if (localStorage.getItem("rememberMe") === "true") {
-                rememberCheckbox.checked = true;
-            }
-
-            // Save checkbox state to localStorage when toggled
-            rememberCheckbox.addEventListener("change", function() {
-                localStorage.setItem("rememberMe", rememberCheckbox.checked);
-            });
-        });
-    </script>
 </body>
+<style>
+    body {
+        background-image: url("/assets/img/bg.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        backdrop-filter: blur(3px);
+        height: 100vh;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function(e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            this.classList.toggle('fa-lock');
+            this.classList.toggle('fa-unlock');
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const rememberCheckbox = document.getElementById("remember");
+
+        // Load saved checkbox state on page load
+        if (localStorage.getItem("rememberMe") === "true") {
+            rememberCheckbox.checked = true;
+        }
+
+        // Save checkbox state to localStorage when toggled
+        rememberCheckbox.addEventListener("change", function() {
+            localStorage.setItem("rememberMe", rememberCheckbox.checked);
+        });
+    });
+</script>
 
 </html>
