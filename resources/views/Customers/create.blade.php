@@ -1,6 +1,6 @@
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
             <form action="{{ route('customers.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
@@ -46,12 +46,13 @@
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label for="address">Address</label>
-                            <textarea class="form-control" id="address" name="address" rows="4" required placeholder="Enter address">{{ old('address') }}</textarea>
+                            <input type="text" class="form-control" id="address" name="address"
+                                value="{{ old('address') }}" required placeholder="Enter address">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </div>
             </form>

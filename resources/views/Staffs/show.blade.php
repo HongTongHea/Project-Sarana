@@ -1,4 +1,4 @@
-<div class="modal fade" id="showModal{{ $customer->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
+<div class="modal fade" id="showModal{{ $staff->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content rounded-0">
             <div class="modal-header">
@@ -6,7 +6,7 @@
                     <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="30">
                     <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
                         Clothes <span class="text-warning">Store </span> |
-                        <span class="text-dark">Customer Detail</span>
+                        <span class="text-dark">Staffs Detail</span>
                     </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
@@ -16,23 +16,28 @@
                 <div class="row">
                     <!-- Personal Information Section -->
                     <div class="col-md-6 mb-4">
-                        <div class="card h-100 ">
+                        <div class="card h-100">
                             <div class="card-header">
                                 <h6 class="card-title mb-0"><i class="bi bi-person-fill"></i> Personal Information</h6>
                             </div>
                             <div class="card-body">
                                 <p class="mb-3">
-                                    <strong><i class="fa-solid fa-user me-2"></i> First Name:</strong>
-                                    <span class="text-muted">{{ $customer->first_name }}</span>
-                                </p>
-                                <p class="mb-3">
-                                    <strong><i class="fa-solid fa-user me-2"></i> Last Name:</strong>
-                                    <span class="text-muted">{{ $customer->last_name }}</span>
+                                    <strong><i class="fa-solid fa-user me-2"></i> Staff Name:</strong>
+                                    <span class="text-muted">{{ $staff->user->name }}</span>
                                 </p>
                                 <p class="mb-3">
                                     <strong><i class="fa-solid fa-venus-mars me-2"></i> Gender:</strong>
-                                    <span class="text-muted">{{ $customer->gender }}</span>
+                                    <span class="text-muted">{{ $staff->gender }}</span>
                                 </p>
+                                <p class="mb-3">
+                                    <strong><i class="fa-solid fa-briefcase me-2"></i> Position:</strong>
+                                    <span class="text-muted">{{ $staff->position }}</span>
+                                </p>
+                                <p class="mb-3">
+                                    <strong><i class="fa-solid fa-money-bill-wave me-2"></i> Salary:</strong>
+                                    <span class="text-muted">${{ number_format($staff->salary, 2) }}</span>
+                                </p>
+                            
                             </div>
                         </div>
                     </div>
@@ -45,17 +50,18 @@
                             </div>
                             <div class="card-body">
                                 <p class="mb-3">
-                                    <strong><i class="fa-solid fa-envelope me-2"></i> Email:</strong>
-                                    <span class="text-muted">{{ $customer->email }}</span>
+                                    <strong><i class="fa-solid fa-building me-2"></i> Department:</strong>
+                                    <span class="text-muted">{{ $staff->department }}</span>
                                 </p>
                                 <p class="mb-3">
-                                    <strong><i class="fa-solid fa-phone me-2"></i> Phone:</strong>
-                                    <span class="text-muted">{{ $customer->phone }}</span>
+                                    <strong><i class="fa-solid fa-calendar-days me-2"></i> Date Hired:</strong>
+                                    <span class="text-muted">{{ \Carbon\Carbon::parse($staff->date_hired)->format('M d, Y') }}</span>
                                 </p>
                                 <p class="mb-3">
                                     <strong><i class="fa-solid fa-location-dot me-2"></i> Address:</strong>
-                                    <span class="text-muted">{{ $customer->address }}</span>
+                                    <span class="text-muted">{{ $staff->address }}</span>
                                 </p>
+                              
                             </div>
                         </div>
                     </div>

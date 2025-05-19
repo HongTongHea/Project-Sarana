@@ -1,6 +1,6 @@
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
             <form action="{{ route('categories.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
@@ -15,9 +15,7 @@
 
                         </h6>
                     </div>
-                    <button type="button"class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group"> <label for="name">Name</label> <input type="text"
@@ -29,7 +27,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </div>
             </form>

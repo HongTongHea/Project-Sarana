@@ -16,7 +16,18 @@ class ProductController extends Controller
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
+    public function showDetail(Request $request)
+    {
+        $productId = $request->query('id');
+        $product = Product::findOrFail($productId);
 
+        return view('products.detail', [
+            'product' => $product,
+            'name' => $request->query('name'),
+            'price' => $request->query('price'),
+            'picture_url' => $request->query('picture_url')
+        ]);
+    }
     public function create()
     {
         $categories = Category::all();
@@ -30,18 +41,27 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'size' => 'required|in:XS,S,M,L,XL,XXL',
+            'sizes' => 'nullable|array',
+            'sizes.*' => 'in:XS,S,M,L,XL,XXL',
             'category_id' => 'required|exists:categories,id',
-            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:9999',
         ]);
 
-        $product = new Product($request->all());
+        // Create the product (only once)
+        $product = new Product($request->except('sizes'));
 
         if ($request->hasFile('picture_url')) {
             $product->picture_url = $request->file('picture_url')->store('picture_url', 'public');
         }
 
         $product->save();
+
+        // Add sizes
+        if ($request->has('sizes')) {
+            foreach ($request->sizes as $size) {
+                $product->sizes()->create(['size' => $size]);
+            }
+        }
 
         // Auto-insert stock record
         $existingStock = $product->stocks()->where('type', 'initial')->first();
@@ -77,22 +97,32 @@ class ProductController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
-            'size' => 'sometimes|required|in:XS,S,M,L,XL,XXL',
+            'sizes' => 'nullable|array',
+            'sizes.*' => 'in:XS,S,M,L,XL,XXL',
             'stock_quantity' => 'required|integer',
             'category_id' => 'sometimes|required|exists:categories,id',
             'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
         ]);
 
-        $product->update($request->except(['picture_url']));
+        // Update all attributes except picture_url and sizes
+        $product->update($request->except(['picture_url', 'sizes']));
 
+        // Handle picture upload
         if ($request->hasFile('picture_url')) {
             if ($product->picture_url && Storage::exists('public/' . $product->picture_url)) {
                 Storage::delete('public/' . $product->picture_url);
             }
             $product->picture_url = $request->file('picture_url')->store('picture_url', 'public');
+            $product->save(); // Save the picture_url change
         }
 
-        $product->save();
+        // Handle sizes
+        $product->sizes()->delete();
+        if ($request->has('sizes')) {
+            foreach ($request->sizes as $size) {
+                $product->sizes()->create(['size' => $size]);
+            }
+        }
 
         // Update stock record
         $product->stocks()->updateOrCreate(

@@ -3,8 +3,8 @@
 @section('title', ' Clothes Store | Stocks Data')
 
 @section('content')
-    <div class="container mt-4" data-aos="fade-down" data-aos-duration="1000">
-        <div class="card">
+    <div class="m-4 mt-4">
+        <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
                     <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="40">
@@ -31,7 +31,6 @@
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $stock->product->name }}</td>
                                     <td>{{ $stock->quantity }}</td>
-
                                 </tr>
                             @endforeach
                         </tbody>

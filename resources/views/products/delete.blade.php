@@ -4,7 +4,7 @@
         <form action="{{ route('products.destroy', $product->id) }}" method="POST">
             @csrf
             @method('DELETE')
-            <div class="modal-content">
+            <div class="modal-content rounded-0">
                 <div class="modal-header">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="40">
@@ -16,7 +16,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <p>Are you sure you want to delete this product <strong>
+                    <p class="text-danger">Are you sure you want to delete this product <strong class="text-dark">
                             {{ $product->name }} </strong> ?</p>
                 </div>
                 <div class="modal-footer">

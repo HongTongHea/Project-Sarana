@@ -4,106 +4,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothes Store | Login</title>
+    <link rel="icon" href="/assets/img/logostore2.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="icon" href="/assets/img/logostore2.png" type="image/x-icon" width="100%">
-    <title> Clothes Store | Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
 </head>
-
-<body>
-    <div class="container" style="padding-top: 100px">
-        <div class="d-flex justify-content-center align-items-center p-2">
-            <img src="/assets/img/logostore1.png" alt="" width="14%">
-
-        </div>
-
-        <div class="d-flex justify-content-center align-items-center">
-
-            <div class="card shadow rounded-2  text-center  text-light bg-dark" style="width: 400px; padding: 20px">
-                <div class="card-body">
-                    <h3 class="fw-bold">Login</h3>
-                    <span>Please login to start your system</span>
-                    <form action="{{ route('login') }}" method="POST">
-                        @csrf
-
-                        @if ($errors->has('email'))
-                            <label class="text-danger mt-1">{{ $errors->first('email') }}</label>
-                        @elseif (session('success'))
-                            <label class="text-success mt-1">{{ session('success') }}</label>
-                        @endif
-
-                        <div class="form-group mt-4 position-relative">
-                            <input type="email" class="form-control rounded-3  text-light bg-dark" id="email"
-                                placeholder="Email" name="email" required>
-                            <div
-                                class="icon position-absolute top-0  end-0 bottom-0 m-auto d-flex justify-content-center align-items-center p-3">
-                                <i class="fa-solid fa-envelope"></i>
-                            </div>
-                        </div>
-
-                        <div class="form-group mt-4 position-relative">
-                            <input type="password" class="form-control rounded-3 text-light bg-dark" id="password"
-                                placeholder="Password" name="password" required>
-                            <div
-                                class="icon position-absolute top-0 end-0 bottom-0 m-auto d-flex justify-content-center align-items-center p-3">
-                                <i class="fa-solid fa-lock" id="togglePassword"></i>
-                            </div>
-                        </div>
-
-                        <div class="form-group mt-4">
-                            <div class="row d-flex justify-content-center align-items-center">
-                                <div class="col-6 pe-4 ">
-                                    <input type="checkbox" id="remember" name="remember" class="form-check-input p-2">
-                                    <label for="remember" class="form-check-label ">Remember Me</label>
-                                </div>
-                                <div class="col-6">
-                                    <button type="submit"
-                                        class="btn btn-warning rounded-5  mt-2  fw-bold float-end w-75">Login</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-</body>
 <style>
     body {
-        background-image: url("/assets/img/bg.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center;
-        backdrop-filter: blur(3px);
+        background-color: #f0f2f5;
         height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+    }
+
+    .main-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 980px;
+        padding: 20px;
+    }
+
+    .branding {
+        flex: 1;
+        padding-right: 32px;
+        text-align: left;
+    }
+
+    .branding h1 {
+        color: #1877f2;
+        font-size: 3rem;
+        font-weight: bolder;
+        margin-bottom: 0;
+    }
+
+    .branding p {
+        font-size: 1.5rem;
+        line-height: 1.3;
+        max-width: 500px;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        height: 45px;
+        border-radius: 6px;
+    }
+
+    .btn-primary {
+        background-color: #1877f2;
+        border-color: #1877f2;
+    }
+
+    .btn-primary:hover {
+        background-color: #145bd1;
+    }
+
+    .btn-social {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .register-link {
+        margin-top: 15px;
+        font-size: 0.9rem;
+    }
+
+    .icon {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        color: #999;
     }
 </style>
+
+<body>
+    <div class="main-container">
+        <div class="branding me-5">
+            <h1>The best offer for your business</h1>
+            <p class="mt-4">Grow your business, connect with customers, and manage everything in one place — all in a
+                single platform
+                designed for success</p>
+        </div>
+        <div class="login-card text-center">
+            <form action="{{ route('login') }}" method="POST" class="text-start position-relative">
+                @csrf
+
+                @if ($errors->has('email'))
+                    <div class="text-danger mb-2">{{ $errors->first('email') }}</div>
+                @elseif (session('success'))
+                    <div class="text-success mb-2">{{ session('success') }}</div>
+                @endif
+
+                <div class="mb-3 position-relative">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                        required>
+                    <i class="fa-solid fa-envelope icon"></i>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                        required>
+                    <i class="fa-solid fa-lock icon" id="togglePassword"></i>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                    <label class="form-check-label" for="remember">Remember Me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-2 fw-bold">Log In</button>
+
+                <div class=" d-flex justify-content-between mb-3 ">
+                    <a href="{{ url('auth/google') }}" class="btn btn-danger btn-social me-2"><i
+                            class="fab fa-google me-2"></i>
+                        Google</a>
+                    <a href="{{ url('login/facebook') }}" class="btn btn-primary  btn-social"><i
+                            class="fab fa-facebook-f me-2"></i> Facebook</a>
+                </div>
+
+            </form>
+
+            <div class="register-link">
+                Don’t have an account? <a href="{{ route('register') }}" class="text-primary fw-bold">Register here</a>
+            </div>
+        </div>
+
+    </div>
+</body>
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
+    // Toggle password visibility
+    document.addEventListener('DOMContentLoaded', () => {
         const togglePassword = document.querySelector('#togglePassword');
         const password = document.querySelector('#password');
 
-        togglePassword.addEventListener('click', function(e) {
+        togglePassword.addEventListener('click', function() {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
-
             this.classList.toggle('fa-lock');
             this.classList.toggle('fa-unlock');
         });
-    });
 
-    document.addEventListener("DOMContentLoaded", function() {
         const rememberCheckbox = document.getElementById("remember");
-
-        // Load saved checkbox state on page load
         if (localStorage.getItem("rememberMe") === "true") {
             rememberCheckbox.checked = true;
         }
 
-        // Save checkbox state to localStorage when toggled
         rememberCheckbox.addEventListener("change", function() {
             localStorage.setItem("rememberMe", rememberCheckbox.checked);
         });

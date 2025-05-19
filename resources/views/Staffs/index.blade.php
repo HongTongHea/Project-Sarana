@@ -1,32 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Customers Data')
+@section('title', 'Clothes Store | Staffs imformation')
 
 @section('content')
-    <div class="container mt-2" data-aos="fade-down" data-aos-duration="1000">
-        <h3 class="m-3">Staffs Data</h3>
-        <div class="card">
-            <div class="card-body">
+    <div class="container mt-4">
+        <div class="card rounded-0">
+            <div class="card-header">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40">
+                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">Clothes
+                        <span class="text-warning">Store </span> | <span class="text-dark">Staffs Information</span>
 
-                <div class="row m-2 align-items-center">
-                    <div class="col-8 p-0">
-
-                        <a href="{{ route('staffs.create') }}" class="btn btn-primary mb-3 btn-sm rounded-5"><i
-                                class="fa-solid fa-circle-plus"></i> New
-                            Staff</a>
-                    </div>
-                    <div class="col-4">
-                        <div class="row align-items-center">
-                            <div class="input-group rounded-5">
-                                <input type="text" id="search" placeholder="Search ..."
-                                    class="form-control rounded-4 border position-relative" />
-                            </div>
-                        </div>
-                    </div>
+                    </h6>
                 </div>
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn btn-primary mb-3 ml-3 rounded-3 btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#createModal">
+                    <i class="fa-solid fa-circle-plus"></i> Add New
+                </button>
+
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                        <thead class="table-warning">
+                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                        <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
                                 <th>Staff Name</th>
@@ -35,7 +31,7 @@
                                 <th>Salary</th>
                                 <th>Date Hired</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Actions</th> 
                             </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -55,41 +51,41 @@
                                         @endif
                                     </td>
 
-
                                     <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-warning rounded-5 dropdown-toggle btn-sm" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                Action
-                                            </button>
-                                            <ul class="dropdown-menu">
 
-                                                <li><a class="dropdown-item"
-                                                        href="{{ route('staffs.edit', $staff->id) }}">Edit</a></li>
-                                                <li>
-                                                    <form action="{{ route('staffs.destroy', $staff->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item">Delete</button>
-                                                    </form>
-                                                </li>
+                                        @if (Auth::user()->role === 'admin')
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#showModal{{ $staff->id }}"><i
+                                                    class="fa-solid fa-circle-info"></i></button>
 
-                                            </ul>
-                                        </div>
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal{{ $staff->id }}"> <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal{{ $staff->id }}"><i
+                                                    class="fa-solid fa-trash"></i></button>
+                                        @elseif (Auth::user()->role === 'staff')
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#showModal{{ $staff->id }}"><i
+                                                    class="fa-solid fa-circle-info"></i></button>
+
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal{{ $staff->id }}"> <i
+                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
+                            @include('staffs.show', ['staff' => $staff])
+                            @include('staffs.edit', ['staffs' => $staff])
+                            @include('staffs.delete', ['staffs' => $staff])
                         </tbody>
                     </table>
-                </div>
-                <div class="d-flex justify-content-Start mb-3 ">
-                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
-                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
                 </div>
             </div>
         </div>
     </div>
+    @include('staffs.create')
 
 @endsection

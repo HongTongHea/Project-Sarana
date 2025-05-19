@@ -13,8 +13,13 @@ class SaleController extends Controller
     // Display the list of sales
     public function index()
     {
-        $sales = Sale::with(['order', 'product', 'customer'])->get();
-        return view('sales.index', compact('sales'));
+
+        $sales = Sale::with(['product', 'customer', 'order'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        $customers = Customer::all();
+
+        return view('sales.index', compact('sales', 'customers',));
     }
 
     // Show the form to create a new sale
@@ -116,7 +121,7 @@ class SaleController extends Controller
         return redirect()->route('sales.index')->with('success', 'Sale updated successfully.');
     }
 
- 
+
 
     public function destroy($id)
     {

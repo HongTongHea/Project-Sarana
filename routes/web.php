@@ -7,19 +7,32 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\WelcomeController;
 
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/', [AuthController::class, 'login'])->middleware('guest');
+Route::get('/', [WelcomeController::class, 'index'])->name('homepage.index');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
+Route::get("/register", [AuthController::class, 'showRegisterForm'])->name('register')->middleware('guest');
+route::post("/register", [AuthController::class, 'register'])->middleware('guest');
+
+
+Route::get('auth/google', [AuthController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+
+// Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
+// Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
 
 
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
     Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
 });
@@ -33,6 +46,10 @@ Route::resource('orders', OrderController::class);
 Route::resource('staffs', StaffController::class);
 Route::resource('sales', SaleController::class);
 
+Route::get('/product/detail', [ProductController::class, 'showDetail'])->name('product.detail');
+Route::get('/checkout', function () {
+    return view('checkout');
+})->name('checkout');
 
 Route::get('/sales_reports/generate', [SalesReportController::class, 'generateReports'])->name('sales_reports.generate');
 Route::resource('sales_reports', SalesReportController::class)->only(['index', 'show']);
@@ -40,4 +57,3 @@ Route::resource('sales_reports', SalesReportController::class)->only(['index', '
 
 Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
 Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');
-

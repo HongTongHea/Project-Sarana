@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductSize;
 
 class Product extends Model
 {
@@ -33,6 +34,12 @@ class Product extends Model
     {
         return $this->hasMany(Stock::class);
     }
+
+    public function sizes()
+    {
+        return $this->hasMany(ProductSize::class);
+    }
+
 
     // Boot method to automatically handle events
     protected static function boot()

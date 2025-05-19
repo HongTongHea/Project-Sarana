@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Clothes Store | Customers Data')
+@section('title', 'Clothes Store | Customers Information')
 
 @section('content')
-    <div class="container mt-4">
-        <div class="card">
+    <div class="m-4 mt-4">
+        <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
                     <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40">

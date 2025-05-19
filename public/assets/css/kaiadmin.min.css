@@ -10730,11 +10730,11 @@ body[data-background-color=dark] .jvm-zoom-btn {
    }
 }
 
-.dataTables_paginate .paginate_button {
+/* .dataTables_paginate .paginate_button {
    margin: 0 5px;
    padding: 5px 10px;
    border-radius: 5px;
-}
+} */
 
 .dataTables_paginate .paginate_button:hover {
    color: rgb(255, 255, 255) !important;
@@ -10756,5 +10756,6 @@ body[data-background-color=dark] .jvm-zoom-btn {
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-   margin-left: -25px;
+   padding: 2px !important;
 }
+

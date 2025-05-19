@@ -3,7 +3,7 @@
         <form action="{{ route('customers.update', $customer->id) }}" method="POST">
             @csrf
             @method('PUT')
-            <div class="modal-content">
+            <div class="modal-content rounded-0">
                 <div class="modal-header">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
@@ -54,12 +54,13 @@
 
                         <div class="form-group col-12 col-md-6">
                             <label for="address_{{ $customer->id }}">Address</label>
-                            <textarea class="form-control" id="address_{{ $customer->id }}" name="address" rows="4" required>{{ $customer->address }}</textarea>
+                            <input class="form-control" id="address_{{ $customer->id }}" name="address"
+                                value="{{ $customer->address }}" required>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </div>
             </div>

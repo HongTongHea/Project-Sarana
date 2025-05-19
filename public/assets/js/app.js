@@ -3,9 +3,10 @@ $(document).ready(function () {
         paging: true, // Enable pagination
         searching: true, // Enable search bar
         ordering: false, // Enable column sorting
-        info: true, // Display table information
+        // Enable column sorting
+        info: false, // Display table information
         lengthChange: true, // Allow the user to change the number of rows displayed
-        pageLength: 10,
+        pageLength: 10,// Default number of rows per page
         nextPrev: true,
         // Default number of rows per page
     });

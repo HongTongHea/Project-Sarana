@@ -4,8 +4,8 @@
 
 @section('content')
 
-    <div class="container mt-4">
-        <div class="card">
+    <div class="m-4 mt-4">
+        <div class="card shadow rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
                     <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40">
@@ -16,7 +16,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <button class="btn btn-primary btn-sm mb-3 ml-3 rounded-3" data-toggle="modal" data-target="#createModal">
+                <button class="btn btn-primary btn-sm mb-3 ml-3 rounded-3" data-bs-toggle="modal"
+                    data-bs-target="#createModal">
                     <i class="fa-solid fa-circle-plus"></i> Add New
                 </button>
                 <div class="table-responsive">
@@ -34,18 +35,18 @@
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $category->name }}</td>
-                                    <td>{{ $category->description }}</td>
+                                    <td>{{ $category->description ?? 'N/A' }}</td>
                                     <td>
                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#showModal{{ $category->id }}"><i
                                                 class="fa-solid fa-circle-info"></i></button>
 
-                                        <button class="btn btn-info btn-sm" data-toggle="modal"
-                                            data-target="#editModal{{ $category->id }}">
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editModal{{ $category->id }}">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
-                                        <button class="btn btn-danger btn-sm" data-toggle="modal"
-                                            data-target="#deleteModal{{ $category->id }}">
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal{{ $category->id }}">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </td>

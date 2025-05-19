@@ -1,9 +1,10 @@
 <div class="modal fade" id="editModal{{ $product->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="40">
+                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
+                        height="40">
                     <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
                         Clothes <span class="text-warning">Store </span> |
                         <span class="text-dark"> Edit Product</span>
@@ -35,23 +36,17 @@
                                 </div>
 
                                 <div class="form-group col-12 col-md-6">
-                                    <label for="size" class="form-label">Size</label>
-                                    <select name="size" class="form-select form-control" id="size" required>
-                                        <option value="">Select Size</option>
-                                        <option value="XS"
-                                            {{ old('size', $product->size) == 'XS' ? 'selected' : '' }}>XS</option>
-                                        <option value="S"
-                                            {{ old('size', $product->size) == 'S' ? 'selected' : '' }}>S</option>
-                                        <option value="M"
-                                            {{ old('size', $product->size) == 'M' ? 'selected' : '' }}>M</option>
-                                        <option value="L"
-                                            {{ old('size', $product->size) == 'L' ? 'selected' : '' }}>L</option>
-                                        <option value="XL"
-                                            {{ old('size', $product->size) == 'XL' ? 'selected' : '' }}>XL</option>
-                                        <option value="XXL"
-                                            {{ old('size', $product->size) == 'XXL' ? 'selected' : '' }}>XXL</option>
-                                    </select>
+                                    <label for="sizes" class="form-label">Sizes</label><br>
+                                    @foreach (['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $size)
+                                        <label class="me-2">
+                                            <input type="checkbox" name="sizes[]" value="{{ $size }}"
+                                                {{ in_array($size, $product->sizes->pluck('size')->toArray()) ? 'checked' : '' }}>
+                                            {{ $size }}
+                                        </label>
+                                    @endforeach
                                 </div>
+
+
 
                                 <div class="form-group col-12 col-md-6">
                                     <label for="category_id" class="form-label">Category</label>
@@ -82,7 +77,7 @@
                         </div>
 
                         <div class="col-12 col-md-6">
-                            <div class="form-group col-12 col-md-12">
+                            <div class="form-group col-12 col-md-12" style="margin-left: 14px">
                                 <label for="picture_url">Product Image:</label>
                                 @if ($errors->has('picture_url'))
                                     <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>
@@ -104,12 +99,10 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
                     </div>
                 </form>
             </div>

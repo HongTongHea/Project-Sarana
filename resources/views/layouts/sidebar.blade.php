@@ -115,6 +115,29 @@
                             <p>User</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#base3">
+                            <i class="fa-solid fa-gear"></i>
+                            <p>Setting </p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="base3">
+                            <ul class="nav nav-collapse" style="padding-left: 20px">
+                                <li class="nav-item">
+                                    <form action="{{ route('logout') }}" method="POST" class="w-100">
+                                        @csrf
+                                        <button type="submit"
+                                            class="dropdown-item d-flex align-items-center px-3 text-danger-hover"
+                                            onclick="return confirm('Are you sure you want to logout?')"
+                                            style="border-radius: 4px; transition: all 0.3s ease;">
+                                            <i class="bi bi-escape me-3" style="font-size: 1.1rem;"></i>
+                                            <span class="fw-medium" style="font-size: 0.9rem;">LOGOUT</span>
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -245,5 +268,10 @@
             </div>
         </div>
     @endif
-
+    <style>
+        .text-danger-hover:hover {
+            color: #dc3545 !important;
+            /* Bootstrap danger color */
+        }
+    </style>
 </div>

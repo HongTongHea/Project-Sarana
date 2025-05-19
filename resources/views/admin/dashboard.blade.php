@@ -3,7 +3,7 @@
 @section('title', 'Clothes Store | Dashboard')
 
 @section('content')
-    <div class="container mt-3" data-aos="fade-down" data-aos-duration="1000">
+    <div class="m-4 mt-3" data-aos="fade-down" data-aos-duration="1000">
 
         @if (Auth::user()->role === 'admin')
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
@@ -42,7 +42,7 @@
 
         <div class="row">
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -118,7 +118,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -137,7 +137,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -156,7 +156,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -175,7 +175,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="card card-stats card-round">
+                <div class="card rounded-0 card-stats card-round">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
@@ -193,207 +193,6 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-        <div class="row">
-            @if (Auth::user()->role === 'admin')
-                <div class="col-12 col-md-6">
-                    <div class="card mt-3 ">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/logostore2.png') }}" alt=""
-                                    class="navbar-brand mr-1" height="40">
-                                <h6 class="text-uppercase mt-4 ms-1 text-primary"
-                                    style="font-weight: 700; font-size: 20px">Clothes
-                                    <span class="text-warning">Store </span> | <span class="text-dark">User
-                                        Information</span>
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="DataTable" class="table mt-3 table-hover table-striped">
-                                    <thead class="thead-dark w-100">
-                                        <tr>
-                                            <th>Profile</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                        </tr>
-
-                                    </thead>
-                                    <tbody id="tableBody">
-                                        @foreach ($users as $index => $user)
-                                            <tr>
-                                                <td>
-                                                    @if ($user->picture_url)
-                                                        <img src="{{ asset('storage/' . $user->picture_url) }}"
-                                                            alt="{{ $user->name }}"
-                                                            class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
-                                                            width="100">
-                                                    @else
-                                                        <img src="{{ asset('assets/img/Default_pfp.svg.png') }}" alt="">
-                                                    @endif
-                                                </td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ ucfirst($user->role) }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
-                    <div class="card mt-3 mx-2">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/logostore2.png') }}" alt=""
-                                    class="navbar-brand mr-1" height="40">
-                                <h6 class="text-uppercase mt-4 ms-1 text-primary"
-                                    style="font-weight: 700; font-size: 20px">Clothes
-                                    <span class="text-warning">Store </span> | <span class="text-dark">Customer
-                                        Information</span>
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>FirstName</th>
-                                            <th>LastName</th>
-                                            <th>Gender</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
-                                        @foreach ($customers as $customer)
-                                            <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $customer->first_name }}</td>
-                                                <td>{{ $customer->last_name }}</td>
-                                                <td>{{ $customer->gender }}</td>
-                                                <td>{{ $customer->email }}</td>
-                                                <td>{{ $customer->phone }}</td>
-                                                <td>{{ $customer->address }}</td>
-
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @elseif (Auth::user()->role === 'customer')
-                <div class="col-12 col-md-12">
-                    <div class="card mt-3 mx-2">
-                        <div class="card-body">
-                            <div class="row m-2 align-items-center">
-                                <div class="col-8 p-0">
-                                    <h3 class="m-3">Customer Data</h3>
-                                </div>
-                                <div class="col-4">
-                                    <div class="row align-items-center">
-                                        <div class="input-group rounded-5">
-                                            <input type="text" id="search" placeholder="Search ..."
-                                                class="form-control rounded-4 border position-relative" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Gender</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
-                                        @foreach ($customers as $customer)
-                                            <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $customer->first_name }}</td>
-                                                <td>{{ $customer->last_name }}</td>
-                                                <td>{{ $customer->gender }}</td>
-                                                <td>{{ $customer->email }}</td>
-                                                <td>{{ $customer->phone }}</td>
-                                                <td>{{ $customer->address }}</td>
-
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="d-flex justify-content-Start mb-3">
-                                    <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                                        onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i>
-                                        Previous</button>
-                                    <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                                        onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @elseif (Auth::user()->role === 'staff')
-                <div class="col-12">
-                    <div class="card mt-3 mx-2">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover mt-3 search-table" id="Table">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Staff Name</th>
-                                            <th>Position</th>
-                                            <th>Department</th>
-                                            <th>Salary</th>
-                                            <th>Date Hired</th>
-                                            <th>Status</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
-                                        @foreach ($staffs as $staff)
-                                            <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $staff->user->name }}</td>
-                                                <td>{{ $staff->position }}</td>
-                                                <td>{{ $staff->department }}</td>
-                                                <td>{{ $staff->salary }}</td>
-                                                <td>{{ $staff->date_hired }}</td>
-                                                <td>
-                                                    @if (strtolower($staff->status) === 'active')
-                                                        <span class="badge bg-success">Active</span>
-                                                    @else
-                                                        <span class="badge bg-danger">Inactive</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            @endif
 
         </div>
     </div>

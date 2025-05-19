@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container mt-3">
+    <div class="m-4 mt-4">
         <div class="col-md-12">
             <form action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data">
                 <div class="card card-profile card-plain rounded-0">
@@ -47,7 +47,7 @@
                             <div class="view-profile">
                                 <input type="file" name="profile_picture" id="profilePicture" style="display: none;"
                                     required onchange="displayFileName()">
-                                    
+
                                 <button type="button" class="btn btn-secondary "
                                     onclick="document.getElementById('profilePicture').click()">
                                     Upload Picture

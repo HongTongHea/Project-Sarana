@@ -46,7 +46,8 @@
                                 <img src="{{ Storage::url(Auth::user()->picture_url) }}" alt="Profile Picture"
                                     class="avatar-img  rounded-5 oject-fit-cover object-center" width="100%">
                             @else
-                                No picture
+                                <img src="{{ asset('assets/img/Default_pfp.svg.png') }}"class="avatar-img rounded-5"
+                                    width="100">
                             @endif
                         </div>
                         @endif
