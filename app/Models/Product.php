@@ -40,12 +40,10 @@ class Product extends Model
         return $this->hasMany(ProductSize::class);
     }
 
-
     // Boot method to automatically handle events
     protected static function boot()
     {
         parent::boot();
-
         // Add a created event listener
         static::created(function ($product) {
             $product->stocks()->create([

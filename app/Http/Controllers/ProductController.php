@@ -6,7 +6,9 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Stock;
+use App\Models\ProductSize;
 use Illuminate\Support\Facades\Storage;
+
 
 class ProductController extends Controller
 {
@@ -16,6 +18,7 @@ class ProductController extends Controller
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
+
     public function showDetail(Request $request)
     {
         $productId = $request->query('id');

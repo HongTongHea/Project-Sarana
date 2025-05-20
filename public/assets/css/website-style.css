@@ -1,0 +1,148 @@
+  .badge-discount {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: red;
+      color: white;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      border-radius: 0.25rem;
+  }
+
+  .cart-icon {
+      position: relative;
+  }
+
+  .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 0 6px;
+      font-size: 12px;
+  }
+
+  .product-card {
+      margin-bottom: 30px;
+  }
+
+  .product-img {
+      height: 250px;
+      object-fit: cover;
+  }
+
+  .cart-item-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+  }
+
+  .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+  }
+
+  .cart-item-details {
+      flex-grow: 1;
+      margin-left: 10px;
+  }
+
+  /* Custom 5-column grid */
+  @media (min-width: 1200px) {
+      .col-lg-2-4 {
+          flex: 0 0 20%;
+          max-width: 20%;
+      }
+  }
+
+  .card-img-top {
+      border-radius: 0;
+      transition: transform 0.3s ease;
+  }
+
+  .card:hover .card-img-top {
+      transform: scale(1.02);
+  }
+
+  .product-image-container {
+      height: 160px;
+      /* Slightly smaller for 5 columns */
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+  }
+
+  .product-card:hover .product-image {
+      transform: scale(1.05);
+  }
+
+  .card-title {
+      font-size: 0.95rem;
+      color: #333;
+  }
+
+  .btn-outline-primary {
+      border-width: 1.5px;
+      font-weight: 500;
+      font-size: 0.85rem;
+  }
+
+  .sizes-container {
+      min-height: 36px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+      .product-image-container {
+          height: 120px;
+      }
+
+      .card-body {
+          padding: 1rem 0.75rem;
+      }
+  }
+
+  /* Category Card Styling */
+  .category-card {
+      transition: all 0.3s ease;
+      border-radius: 10px;
+      overflow: hidden;
+      background: white;
+  }
+
+  .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .hover-effect:hover {
+      background-color: #f8f9fa;
+  }
+
+  .category-icon {
+      color: var(--accent-color);
+      /* Use your theme color */
+  }
+
+  .text-accent {
+      color: var(--accent-color);
+  }
+
+  .btn-outline-accent {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+  }
+
+  .btn-outline-accent:hover {
+      background-color: var(--accent-color);
+      color: white;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 576px) {}
