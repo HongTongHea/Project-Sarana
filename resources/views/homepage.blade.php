@@ -159,7 +159,8 @@
                             <span class="cart-count">0</span>
                         </i>
                     </button>
-                    <a href="{{ route('login') }}" class="btn btn-primary">Sign In</a>
+                    <a href="{{ route('login') }}" class="btn btn-primary me-2">Log In</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
                 </div>
             </div>
         </div>
@@ -173,7 +174,7 @@
             <a href="#products-section  " class="btn btn-primary btn-lg">Shop Now</a>
         </div>
     </section>
-    
+
     <div class="container">
         <div class="row mb-4">
             <div class="col text-start">

@@ -19,16 +19,6 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    public function isCustomer()
-    {
-        return $this->role === 'customer';
-    }
-
-    public function isStaff()
-    {
-        return $this->role === 'staff';
-    }
-
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

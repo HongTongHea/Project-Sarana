@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
@@ -15,7 +16,8 @@ class GoogleAuthController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback() {
+    public function callback()
+    {
 
         $googleUser = Socialite::driver('google')->user();
 
@@ -27,15 +29,11 @@ class GoogleAuthController extends Controller
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
                 'password' => Str::password(12), // Generate a random password
-                'role' => 'customer', 
                 'email_verified_at' => now(), // Set the default role
             ]
         );
 
         Auth::login($user, true);
-
-        return redirect()->route('dashboard');
-
+        return redirect()->route('homepage.index');
     }
-        
 }

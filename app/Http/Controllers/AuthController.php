@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Socialite\Facades\Socialite;
+
 
 
 class AuthController extends Controller
@@ -37,12 +36,15 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard')->with('success', 'Login successful.');
+        if (Auth::attempt($credentials, $request->remember)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard')->with('success', 'Login successful.');
         }
-        return back()->withErrors(['email' => 'Invalid email or password.']);
-    }
 
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
 
     public function updateProfilePicture(Request $request)
     {
@@ -98,6 +100,7 @@ class AuthController extends Controller
 
         return redirect()->route('login')->with('success', 'Registration successful.');
     }
+
 
     public function logout(Request $request)
     {

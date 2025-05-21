@@ -49,22 +49,34 @@
 
 <body>
     <div class="wrapper">
-        <!-- Sidebar -->
-        @include('layouts.sidebar')
-        <!-- End Sidebar -->
-        <div class="main-panel">
-            <!-- Navbar -->
-            @include('layouts.navbar')
-            <!-- End Navbar -->
-            <div class="container ">
-                @yield('content')
-            </div>
+        @if (Auth::check() && Auth::user()->role === 'admin')
+            <!-- Sidebar -->
+            @include('layouts.sidebar')
+            <!-- End Sidebar -->
+            <div class="main-panel">
+                <!-- Navbar -->
+                @include('layouts.navbar')
+                <!-- End Navbar -->
+                <div class="container ">
+                    @yield('content')
+                </div>
 
-            <!-- Footer -->
-            @include('layouts.footer')
-            <!-- End Footer -->
-        </div>
-        <!-- Custom template | don't include it in your project! -->
+                <!-- Footer -->
+                @include('layouts.footer')
+                <!-- End Footer -->
+            </div>
+            <!-- Custom template | don't include it in your project! -->
+        @else
+            {{-- Show Not Found --}}
+
+            <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <div class="text-center">
+                    <h2 class="text-danger">404 | Page Not Found</h2>
+                    <p class="mb-4">You do not have permission to access this page.</p>
+                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Go Back to Dashboard</a>
+                </div>
+            </div>
+        @endif
 
         <!-- End Custom template -->
     </div>

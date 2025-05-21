@@ -48,7 +48,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:8',
-            'role' => 'required|in:admin,customer,staff',
+            'role' => 'required|in:admin,customer,user',
             'picture_url' => 'image|nullable|max:1999',
         ]);
 
@@ -84,7 +84,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|confirmed|min:8',
-            'role' => 'required|in:admin,customer,staff',
+            'role' => 'required|in:admin,customer,user',
             'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:1999',
         ]);
 

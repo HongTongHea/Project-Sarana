@@ -80,30 +80,15 @@
                                 </div>
                             </li>
                             <li>
-                       
-                                @if (Auth::user()->role == 'admin')
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('users.index') }}"><i
-                                            class="fa-solid fa-gear"></i> Account Setting</a>
-                                    <div class="dropdown-divider"></div>
-                                    <form action="{{ route('logout') }}" method="POST" class="">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item"
-                                            onclick="return confirm('Are you sure you want to logout?')">
-                                            <i class="bi bi-escape"></i> Logout
-                                        </button>
-                                    </form>
-                                @elseif (Auth::user()->role == 'customer')
-                                    <div class="dropdown-divider"></div>
-                                    <form action="{{ route('logout') }}" method="POST" class="">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item"
-                                            onclick="return confirm('Are you sure you want to logout?')">
-                                            <i class="bi bi-escape"></i> Logout
-                                        </button>
-                                    </form>
-                                @elseif (Auth::user()->role == 'staff')
-                                    <div class="dropdown-divider"></div>
+                                @auth
+                                    @if (Auth::user()->role === 'admin')
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{ route('users.index') }}">
+                                            <i class="fa-solid fa-gear"></i> Account Setting
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                    @endif
+
                                     <form action="{{ route('logout') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="dropdown-item"
@@ -111,7 +96,12 @@
                                             <i class="bi bi-escape"></i> Logout
                                         </button>
                                     </form>
-                                @endif
+                                @else
+                                    {{-- Optionally show login link if not authenticated --}}
+                                    <a class="dropdown-item" href="{{ route('login') }}">
+                                        <i class="bi bi-box-arrow-in-right"></i> Login
+                                    </a>
+                                @endauth
                             </li>
                         </div>
                     </ul>

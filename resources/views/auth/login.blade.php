@@ -129,20 +129,17 @@
                 <button type="submit" class="btn btn-primary w-100 mb-2 fw-bold">Log In</button>
 
                 <div class=" d-flex justify-content-between mb-3 ">
-                    <a href="{{ url('auth/google/redirect') }}" class="btn btn-danger btn-social me-2"><i
+                    <a href="http://localhost:8000/auth/google/redirect" class="btn btn-danger btn-social me-2"><i
                             class="fab fa-google me-2"></i>
                         Google</a>
                     <a href="{{ url('login/facebook') }}" class="btn btn-primary  btn-social"><i
                             class="fab fa-facebook-f me-2"></i> Facebook</a>
                 </div>
-
             </form>
-
             <div class="register-link">
                 Don’t have an account? <a href="{{ route('register') }}" class="text-primary fw-bold">Register here</a>
             </div>
         </div>
-
     </div>
 </body>
 <script>

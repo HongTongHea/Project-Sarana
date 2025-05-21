@@ -74,7 +74,7 @@ class OrderController extends Controller
             'price' => 'numeric|min:0',
         ]);
 
-        // Calculate total price based on quantity and price
+
         if (isset($validatedData['quantity']) && isset($validatedData['price'])) {
             $validatedData['total_price'] = $validatedData['quantity'] * $validatedData['price'];
         } else {
