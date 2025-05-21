@@ -41,7 +41,7 @@
                                         <option value="">Select Role</option>
                                         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
                                         </option>
-                                        <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff
+                                        <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User
                                         </option>
                                         <option value="customer" {{ old('role') == 'customer' ? 'selected' : '' }}>
                                             Customer</option>

@@ -10,23 +10,13 @@ class User extends Authenticatable
 {
     use Notifiable, HasFactory;
 
-    protected $fillable = ['name', 'email', 'password', 'role', 'picture_url'];
+    protected $fillable = ['name', 'email', 'password', 'role', 'picture_url', 'google_id', 'email_verified_at'];
 
     protected $hidden = ['password', 'remember_token'];
 
     public function isAdmin()
     {
         return $this->role === 'admin';
-    }
-
-    public function isCustomer()
-    {
-        return $this->role === 'customer';
-    }
-
-    public function isStaff()
-    {
-        return $this->role === 'staff';
     }
 
     protected $casts = [
