@@ -166,13 +166,51 @@
     </nav>
 
     <!-- Hero -->
-    <section class="hero-section text-center py-5">
+    {{-- <section class="hero-section text-center py-5">
         <div class="container">
             <h1 class="display-4 fw-bold">Summer Collection 2025</h1>
             <p class="lead">Discover our new arrivals and trendy outfits</p>
             <a href="#products-section  " class="btn btn-primary btn-lg">Shop Now</a>
         </div>
+    </section> --}}
+    <section>
+        <div class="hero-slideshow">
+    <div class="slide slide-1 active" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/Shoping.jpg');">
+        <div class="slide-content">
+            <h1 class="display-4 fw-bold">Summer Collection 2025</h1>
+            <p class="lead">Discover our new arrivals and trendy outfits</p>
+            <a href="#products-section" class="btn btn-primary btn-lg">Shop Now</a>
+        </div>
+    </div>
+ <div class="slide slide-2" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/Shoping1.jpg');">
+    <div class="slide-content">
+        <h1 class="display-4 fw-bold">Beach Essentials</h1>
+        <p class="lead">Everything you need for your summer getaway</p>
+        <a href="#beach-collection" class="btn btn-primary btn-lg">View Collection</a>
+    </div>
+</div>
+
+    <div class="slide slide-3" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/Shoping2.jpg');">
+        <div class="slide-content">
+            <h1 class="display-4 fw-bold">Summer Accessories</h1>
+            <p class="lead">Complete your look with our stylish accessories</p>
+            <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
+        </div>
+    </div>
+
+    <div class="slide-nav">
+        <button class="slide-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="slide-nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="slide-indicators">
+        <div class="indicator active" data-slide="0"></div>
+        <div class="indicator" data-slide="1"></div>
+        <div class="indicator" data-slide="2"></div>
+    </div>
+</div>
     </section>
+    
     <div class="container">
 
         <div class="row mb-4">
@@ -355,8 +393,91 @@
             </div>
         </div>
         <!-- Scripts -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentSlide = 0;
+            let slideInterval;
+            
+            // Function to show a specific slide
+            function showSlide(index) {
+                // Hide all slides
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Remove active class from all indicators
+                indicators.forEach(indicator => {
+                    indicator.classList.remove('active');
+                });
+                
+                // Show the selected slide
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                
+                currentSlide = index;
+            }
+            
+            // Function to show the next slide
+            function nextSlide() {
+                let newIndex = currentSlide + 1;
+                if (newIndex >= slides.length) {
+                    newIndex = 0;
+                }
+                showSlide(newIndex);
+            }
+            
+            // Function to show the previous slide
+            function prevSlide() {
+                let newIndex = currentSlide - 1;
+                if (newIndex < 0) {
+                    newIndex = slides.length - 1;
+                }
+                showSlide(newIndex);
+            }
+            
+            // Start automatic slideshow
+            function startSlideshow() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            // Stop automatic slideshow
+            function stopSlideshow() {
+                clearInterval(slideInterval);
+            }
+            
+            // Event listeners for buttons
+            nextBtn.addEventListener('click', function() {
+                stopSlideshow();
+                nextSlide();
+                startSlideshow();
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                stopSlideshow();
+                prevSlide();
+                startSlideshow();
+            });
+            
+            // Event listeners for indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    stopSlideshow();
+                    showSlide(index);
+                    startSlideshow();
+                });
+            });
+            
+            // Start the slideshow
+            startSlideshow();
+        });
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="/assets/js/addtocard.js"></script>
+     
 
 </body>
 
