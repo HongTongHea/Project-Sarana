@@ -173,8 +173,8 @@
             <a href="#products-section  " class="btn btn-primary btn-lg">Shop Now</a>
         </div>
     </section>
+    
     <div class="container">
-
         <div class="row mb-4">
             <div class="col text-start">
                 <h3 class="fw-bold">Categories</h3>

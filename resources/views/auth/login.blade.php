@@ -129,7 +129,7 @@
                 <button type="submit" class="btn btn-primary w-100 mb-2 fw-bold">Log In</button>
 
                 <div class=" d-flex justify-content-between mb-3 ">
-                    <a href="{{ url('auth/google') }}" class="btn btn-danger btn-social me-2"><i
+                    <a href="{{ url('auth/google/redirect') }}" class="btn btn-danger btn-social me-2"><i
                             class="fab fa-google me-2"></i>
                         Google</a>
                     <a href="{{ url('login/facebook') }}" class="btn btn-primary  btn-social"><i

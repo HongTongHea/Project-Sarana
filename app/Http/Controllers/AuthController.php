@@ -99,65 +99,6 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Registration successful.');
     }
 
-
-
-
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-
-    public function handleGoogleCallback()
-    {
-        $googleUser = Socialite::driver('google')->user();
-
-
-        $user = User::where('email', $googleUser->getEmail())->first();
-
-        if (!$user) {
-            // Create a new user if not found
-            $user = User::create([
-                'name' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-                'password' => Hash::make(uniqid()),
-                'role' => 'customer',
-                'picture_url' => $googleUser->getAvatar(),
-
-            ]);
-        }
-
-        Auth::login($user);
-
-        return redirect()->route('dashboard')->with('success', 'Login successful.');
-    }
-
-    // public function redirectToFacebook()
-    // {
-    //     return Socialite::driver('facebook')->redirect();
-    // }
-
-    // public function handleFacebookCallback()
-    // {
-    //     $facebookUser = Socialite::driver('facebook')->user();
-
-    //     $user = User::where('email', $facebookUser->getEmail())->first();
-
-    //     if (!$user) {
-    //         // Create a new user if not found
-    //         $user = User::create([
-    //             'name' => $facebookUser->getName(),
-    //             'email' => $facebookUser->getEmail(),
-    //             'password' => Hash::make(uniqid()), // Generate a random password for Facebook login users
-    //             'picture_url' => $facebookUser->getAvatar(),
-    //         ]);
-    //     }
-
-    //     Auth::login($user);
-
-    //     return redirect()->route('dashboard')->with('success', 'Login successful.');
-    // }
-
     public function logout(Request $request)
     {
         Auth::logout();

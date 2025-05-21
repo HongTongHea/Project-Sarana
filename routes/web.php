@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StockController;
@@ -15,6 +16,10 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\WelcomeController;
+use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('homepage.index');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
@@ -22,10 +27,9 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get("/register", [AuthController::class, 'showRegisterForm'])->name('register')->middleware('guest');
 route::post("/register", [AuthController::class, 'register'])->middleware('guest');
 
-
-Route::get('auth/google', [AuthController::class, 'redirectToGoogle']);
-Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
-
+// Google Authentication
+Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect']);
+Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 // Route::get('login/facebook', [AuthController::class, 'redirectToFacebook']);
 // Route::get('login/facebook/callback', [AuthController::class, 'handleFacebookCallback']);

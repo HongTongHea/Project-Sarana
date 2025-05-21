@@ -80,6 +80,7 @@
                                 </div>
                             </li>
                             <li>
+                       
                                 @if (Auth::user()->role == 'admin')
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('users.index') }}"><i
