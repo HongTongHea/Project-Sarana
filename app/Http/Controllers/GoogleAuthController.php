@@ -11,6 +11,18 @@ use Illuminate\Http\Request;
 
 class GoogleAuthController extends Controller
 {
+    private function redirectBasedOnRole($user)
+    {
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard');
+        } elseif ($user->role === 'customer') {
+            return redirect()->route('homepage.index');
+        }
+
+        // default fallback
+        abort(403, 'Unauthorized role.');
+    }
+
     public function redirect()
     {
         return Socialite::driver('google')->redirect();
@@ -28,12 +40,13 @@ class GoogleAuthController extends Controller
             [
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
-                'password' => Str::password(12), // Generate a random password
-                'email_verified_at' => now(), // Set the default role
+                'password' => Str::password(12),
+                'role' => 'customer',
+                'email_verified_at' => now(),
             ]
         );
 
         Auth::login($user, true);
-        return redirect()->route('homepage.index');
+        return $this->redirectBasedOnRole($user);
     }
 }

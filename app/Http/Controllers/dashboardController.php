@@ -12,6 +12,8 @@ use App\Models\Stock;
 use App\Models\Category;
 use App\Models\Sale;
 
+
+
 class DashboardController extends Controller
 {
     public function dashboard()
@@ -36,4 +38,5 @@ class DashboardController extends Controller
         // If no user or role doesn't match
         abort(403, 'Unauthorized action.');
     }
+    
 }

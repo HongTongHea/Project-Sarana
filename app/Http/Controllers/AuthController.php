@@ -12,10 +12,22 @@ use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
+    private function redirectBasedOnRole($user)
+    {
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard');
+        } elseif ($user->role === 'customer') {
+            return redirect()->route('homepage.index');
+        }
+
+        // default fallback
+        abort(403, 'Unauthorized role.');
+    }
+
     public function showLoginForm()
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            return $this->redirectBasedOnRole(Auth::user());
         }
 
         return response()
@@ -38,13 +50,16 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard')->with('success', 'Login successful.');
+            $user = Auth::user();
+
+            return $this->redirectBasedOnRole($user);
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
+
 
     public function updateProfilePicture(Request $request)
     {
@@ -70,7 +85,7 @@ class AuthController extends Controller
     public function showRegisterForm()
     {
         if (Auth::check()) {
-            return redirect()->route('login');
+            return $this->redirectBasedOnRole(Auth::user());
         }
 
         return response()
