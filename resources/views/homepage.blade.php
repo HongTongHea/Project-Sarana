@@ -160,27 +160,32 @@
                         </i>
                     </button>
                     @guest
-                        <a href="{{ route('login') }}" class="btn btn-primary me-2">Log In</a>
-                        <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
+                        <a href="{{ route('login') }}" class="btn btn-primary me-2">
+                            <i class="fas fa-sign-in-alt me-1"></i> Sign In
+                        </a>
+                        <a href="{{ route('register') }}" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-1"></i> Sign Up
+                        </a>
                     @endguest
 
                     @auth
                         @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('dashboard') }}" class="btn btn-success me-2">Dashboard</a>
+                            <a href="{{ route('dashboard') }}" class="btn btn-success me-2">
+                                <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                            </a>
                         @elseif (Auth::user()->role === 'customer')
                         @endif
 
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                             class="btn btn-danger">
-                            Logout
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
                         </a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     @endauth
-
                 </div>
             </div>
         </div>

@@ -126,18 +126,17 @@
                     <label class="form-check-label" for="remember">Remember Me</label>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 mb-2 fw-bold">Log In</button>
+                <button type="submit" class="btn btn-primary w-100 mb-2 fw-bold">Sign In</button>
 
                 <div class=" d-flex justify-content-between mb-3 ">
-                    <a href="http://localhost:8000/auth/google/redirect" class="btn btn-danger btn-social me-2"><i
-                            class="fab fa-google me-2"></i>
+                    <a href="http://localhost:8000/auth/google/redirect" class="btn btn-danger btn-social"><i
+                            class="fab fa-google"></i>
                         Google</a>
-                    <a href="{{ url('login/facebook') }}" class="btn btn-primary  btn-social"><i
-                            class="fab fa-facebook-f me-2"></i> Facebook</a>
+
                 </div>
             </form>
             <div class="register-link">
-                Don’t have an account? <a href="{{ route('register') }}" class="text-primary fw-bold">Register here</a>
+                Don’t have an account? <a href="{{ route('register') }}" class="text-primary fw-bold">Sign up</a>
             </div>
         </div>
     </div>

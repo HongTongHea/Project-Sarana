@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f599a5d04a03a52a048c8ba3baee5ded",
+    "content-hash": "f2f87731f87ffc0933572dea0a418920",
     "packages": [
         {
             "name": "brick/math",
@@ -134,6 +134,208 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "codelabmw/statuses",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codelabmw/statuses.git",
+                "reference": "4ccba18670009f1bfc9bbb6e583b10d0b6040d12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codelabmw/statuses/zipball/4ccba18670009f1bfc9bbb6e583b10d0b6040d12",
+                "reference": "4ccba18670009f1bfc9bbb6e583b10d0b6040d12",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^1.21"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codelabmw\\Statuses\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chikondi Kamwendo",
+                    "email": "kondie208@gmail.com"
+                }
+            ],
+            "description": "A PHP package that houses commonly used status classes and enums that can be used in PHP projects.",
+            "keywords": [
+                "http",
+                "http-status",
+                "http-status-codes",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/codelabmw/statuses/issues",
+                "source": "https://github.com/codelabmw/statuses/tree/v1.0.1"
+            },
+            "time": "2024-12-25T19:00:20+00:00"
+        },
+        {
+            "name": "codelabmw/suave",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codelabmw/suave.git",
+                "reference": "065a5cc8407d2d1f990baa111deb0d08b18f1ac9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codelabmw/suave/zipball/065a5cc8407d2d1f990baa111deb0d08b18f1ac9",
+                "reference": "065a5cc8407d2d1f990baa111deb0d08b18f1ac9",
+                "shasum": ""
+            },
+            "require": {
+                "codelabmw/statuses": "^1.0",
+                "codelabmw/testament": "^1.0",
+                "illuminate/contracts": "^10.0||^11.0",
+                "illuminate/filesystem": "*",
+                "illuminate/support": "*",
+                "laravel/prompts": "^0.3.2",
+                "php": "^8.3",
+                "spatie/laravel-package-tools": "^1.16",
+                "symfony/console": "^7.2"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.9",
+                "laravel/pint": "^1.14",
+                "laravel/sanctum": "^4.0",
+                "nunomaduro/collision": "^8.1.1||^7.10.0",
+                "orchestra/testbench": "^9.0.0||^8.22.0",
+                "pestphp/pest": "^3.0",
+                "pestphp/pest-plugin-arch": "^3.0",
+                "pestphp/pest-plugin-laravel": "^3.0",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan-deprecation-rules": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": [],
+                    "providers": [
+                        "Codelabmw\\Suave\\SuaveServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codelabmw\\Suave\\": "src/",
+                    "Codelabmw\\Suave\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chikondi Kamwendo",
+                    "email": "kondie208@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel package that scaffolds API authentication for both token & session based authentication using laravel/sanctum.",
+            "homepage": "https://github.com/codelabmw/suave",
+            "keywords": [
+                "Authentication",
+                "CodelabMW",
+                "api",
+                "api-authentication",
+                "auth",
+                "laravel",
+                "sanctum",
+                "suave",
+                "verification",
+                "verification-code"
+            ],
+            "support": {
+                "issues": "https://github.com/codelabmw/suave/issues",
+                "source": "https://github.com/codelabmw/suave/tree/v1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/codelabmw",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-04T21:09:48+00:00"
+        },
+        {
+            "name": "codelabmw/testament",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codelabmw/testament.git",
+                "reference": "c302172e7e92706872f8977f27ba7e2f3bd8eb1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codelabmw/testament/zipball/c302172e7e92706872f8977f27ba7e2f3bd8eb1d",
+                "reference": "c302172e7e92706872f8977f27ba7e2f3bd8eb1d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.19.0",
+                "pestphp/pest": "^3.7.1",
+                "pestphp/pest-plugin-type-coverage": "^3.2.3",
+                "phpstan/phpstan": "^1.12.13",
+                "rector/rector": "^1.2.10",
+                "symfony/var-dumper": "^7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codelabmw\\Testament\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chikondi Kamwendo",
+                    "email": "kondie208@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A UI & DB agnostic PHP package for code generation and verification.",
+            "keywords": [
+                "password-generator",
+                "php",
+                "verification",
+                "verification-code",
+                "verification-code-generator",
+                "verification-code-verifier"
+            ],
+            "support": {
+                "issues": "https://github.com/codelabmw/testament/issues",
+                "source": "https://github.com/codelabmw/testament/tree/v1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/codelabmw",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-12-31T08:59:00+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1390,6 +1592,70 @@
                 "source": "https://github.com/laravel/prompts/tree/v0.3.5"
             },
             "time": "2025-02-11T13:34:40+00:00"
+        },
+        {
+            "name": "laravel/sanctum",
+            "version": "v4.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sanctum.git",
+                "reference": "a360a6a1fd2400ead4eb9b6a9c1bb272939194f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/a360a6a1fd2400ead4eb9b6a9c1bb272939194f5",
+                "reference": "a360a6a1fd2400ead4eb9b6a9c1bb272939194f5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/console": "^11.0|^12.0",
+                "illuminate/contracts": "^11.0|^12.0",
+                "illuminate/database": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "php": "^8.2",
+                "symfony/console": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^11.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Sanctum\\SanctumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Sanctum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Sanctum provides a featherweight authentication system for SPAs and simple APIs.",
+            "keywords": [
+                "auth",
+                "laravel",
+                "sanctum"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/sanctum/issues",
+                "source": "https://github.com/laravel/sanctum"
+            },
+            "time": "2025-04-23T13:03:38+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -3723,6 +3989,67 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.92.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "d20b1969f836d210459b78683d85c9cd5c5f508c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/d20b1969f836d210459b78683d85c9cd5c5f508c",
+                "reference": "d20b1969f836d210459b78683d85c9cd5c5f508c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28|^10.0|^11.0|^12.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^1.23|^2.1|^3.1",
+                "phpunit/php-code-coverage": "^9.0|^10.0|^11.0",
+                "phpunit/phpunit": "^9.5.24|^10.5|^11.5",
+                "spatie/pest-plugin-test-time": "^1.1|^2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.92.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-04-11T15:27:14+00:00"
         },
         {
             "name": "spatie/laravel-permission",

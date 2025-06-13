@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize cart and UI elements
-    const cart = [];
+    // Initialize cart from localStorage or create empty array
+    let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+
+    // Initialize UI elements
     const addToCartModal = new bootstrap.Modal(
         document.getElementById("addToCartModal")
     );
@@ -115,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Init add-to-cart buttons on load
     reinitializeAddToCartButtons();
+    updateCartUI(); // Initialize cart UI with any existing items
 
     // Quantity controls
     document.getElementById("increaseQty").addEventListener("click", () => {
@@ -144,13 +147,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const cartItem = {
-                ...currentProduct,
-                size,
-                quantity,
-            };
+            // Check if item already exists in cart
+            const existingItemIndex = cart.findIndex(
+                (item) => item.id === currentProduct.id && item.size === size
+            );
 
-            cart.push(cartItem);
+            if (existingItemIndex > -1) {
+                // Update quantity if item exists
+                cart[existingItemIndex].quantity += quantity;
+            } else {
+                // Add new item to cart
+                const cartItem = {
+                    ...currentProduct,
+                    size,
+                    quantity,
+                };
+                cart.push(cartItem);
+            }
+
+            // Save to localStorage and update UI
+            saveCartToStorage();
             updateCartUI();
             addToCartModal.hide();
         });
@@ -171,49 +187,97 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let subtotal = 0;
 
-        cart.forEach((item) => {
+        cart.forEach((item, index) => {
             subtotal += item.price * item.quantity;
 
             const cartItem = document.createElement("div");
-            cartItem.className = "cart-item d-flex align-items-center mb-3";
+            cartItem.className = "cart-item mb-3";
+            cartItem.dataset.index = index;
 
             cartItem.innerHTML = `
+                <div class="d-flex align-items-center">
                     <img src="${item.img}" alt="${
                 item.name
             }" class="cart-item-img rounded me-3" style="width: 80px; height: 80px; object-fit: cover;">
                     <div class="cart-item-details flex-grow-1">
                         <p class="mb-1 fw-bold">${item.name}</p>
-                        <p class="mb-0 small text-muted">Size: ${
-                            item.size
-                        } | Qty: ${item.quantity}</p>
-                        <p class="mb-0 small">$${(
+                        <p class="mb-2 small text-muted">Size: ${item.size}</p>
+                        <p class="mb-0 fw-bold">$${(
                             item.price * item.quantity
                         ).toFixed(2)}</p>
                     </div>
-                    <button class="btn btn-sm btn-outline-danger remove-item-btn" data-id="${
-                        item.id
-                    }">
+                  
+                </div>
+                   
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-secondary decrease-qty-btn">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <span class="mx-2 item-quantity">${item.quantity}</span>
+                    <button class="btn btn-sm btn-outline-secondary increase-qty-btn" ${
+                        item.quantity >= item.stock ? "disabled" : ""
+                    }>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger remove-item-btn ms-4">
                         <i class="fas fa-trash"></i>
                     </button>
-                `;
+                </div>
+            `;
 
             cartItemsContainer.appendChild(cartItem);
         });
 
         cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
         cartTotal.textContent = `$${subtotal.toFixed(2)}`;
-        if (cartCount) cartCount.textContent = cart.length.toString();
+        if (cartCount)
+            cartCount.textContent = cart
+                .reduce((sum, item) => sum + item.quantity, 0)
+                .toString();
 
         // Remove items from cart
         document.querySelectorAll(".remove-item-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const idToRemove = btn.dataset.id;
-                const index = cart.findIndex((item) => item.id === idToRemove);
+            btn.addEventListener("click", (e) => {
+                const cartItem = e.target.closest(".cart-item");
+                const index = parseInt(cartItem.dataset.index);
                 if (index > -1) {
                     cart.splice(index, 1);
+                    saveCartToStorage();
+                    updateCartUI();
+                }
+            });
+        });
+
+        // Increase quantity
+        document.querySelectorAll(".increase-qty-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                const cartItem = e.target.closest(".cart-item");
+                const index = parseInt(cartItem.dataset.index);
+                if (index > -1 && cart[index].quantity < cart[index].stock) {
+                    cart[index].quantity++;
+                    saveCartToStorage();
+                    updateCartUI();
+                }
+            });
+        });
+
+        // Decrease quantity
+        document.querySelectorAll(".decrease-qty-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                const cartItem = e.target.closest(".cart-item");
+                const index = parseInt(cartItem.dataset.index);
+                if (index > -1 && cart[index].quantity > 1) {
+                    cart[index].quantity--;
+                    saveCartToStorage();
                     updateCartUI();
                 }
             });
         });
     }
+
+    // Save cart to localStorage
+    function saveCartToStorage() {
+        localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    }
 });
+

@@ -135,17 +135,14 @@
                 <button type="submit" class="btn btn-primary w-100 fw-bold">Register</button>
 
                 <div class="d-flex justify-content-between mt-2 mb-3">
-                    <a href="http://localhost:8000/auth/google/redirect" class="btn btn-danger w-100 btn-social me-2">
-                        <i class="fab fa-google me-2"></i> Google
-                    </a>
-                    <a href="{{ url('login/facebook') }}" class="btn btn-primary w-100 btn-social">
-                        <i class="fab fa-facebook-f me-2"></i> Facebook
+                    <a href="http://localhost:8000/auth/google/redirect" class="btn btn-danger w-100 btn-social">
+                        <i class="fab fa-google"></i> Google
                     </a>
                 </div>
             </form>
 
             <div class="register-link mt-3">
-                Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Login here</a>
+                Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Sign in</a>
             </div>
         </div>
     </div>
