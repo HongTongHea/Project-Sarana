@@ -45,7 +45,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'sizes' => 'nullable|array',
-            'sizes.*' => 'in:XS,S,M,L,XL,XXL',
+            'sizes.*' => 'required|string|in:XS,S,M,L,XL,XXL',
             'category_id' => 'required|exists:categories,id',
             'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:9999',
         ]);
@@ -60,12 +60,18 @@ class ProductController extends Controller
         $product->save();
 
         // Add sizes
+        // Only create sizes if they exist and are valid
         if ($request->has('sizes')) {
-            foreach ($request->sizes as $size) {
+            // Ensure only valid sizes in uppercase
+            $validSizes = array_intersect(
+                array_map('strtoupper', $request->sizes),
+                ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+            );
+
+            foreach ($validSizes as $size) {
                 $product->sizes()->create(['size' => $size]);
             }
         }
-
         // Auto-insert stock record
         $existingStock = $product->stocks()->where('type', 'initial')->first();
 
@@ -101,7 +107,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
             'sizes' => 'nullable|array',
-            'sizes.*' => 'in:XS,S,M,L,XL,XXL',
+            'sizes.*' => 'required|string|in:XS,S,M,L,XL,XXL',
             'stock_quantity' => 'required|integer',
             'category_id' => 'sometimes|required|exists:categories,id',
             'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',

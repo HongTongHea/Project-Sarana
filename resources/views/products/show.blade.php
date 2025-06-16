@@ -1,4 +1,5 @@
-    <div class="modal fade" id="showModal{{ $product->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
+    <div class="modal fade" id="showModal{{ $product->id }}" tabindex="-1" aria-labelledby="showModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content rounded-0">
                 <div class="modal-header">
@@ -21,7 +22,7 @@
                                 <div class="form-group text-center">
                                     <h4 class="mb-3">{{ $product->name }}</h4>
                                     <img src="{{ Storage::url($product->picture_url) }}" alt="Product Image"
-                                         class="img-fluid rounded shadow" style="max-width: 100%; height: auto;">
+                                        class="img-fluid rounded shadow" style="max-width: 100%; height: auto;">
                                 </div>
                             @else
                                 <div class="text-center">
@@ -29,17 +30,23 @@
                                 </div>
                             @endif
                         </div>
-                
+
                         <!-- Product Details Section -->
                         <div class="col-12 col-md-6 mt-4 mt-md-0">
-                         
-                            <h4 class="mb-3">
-                                <strong><i class="fa-solid fa-ruler me-2"></i> Size:</strong>
-                                <span class="text-muted">{{ $product->size }}</span>
-                            </h4>
+
                             <h4 class="mb-3">
                                 <strong><i class="fa-solid fa-tag me-2"></i> Price:</strong>
                                 <span class="text-muted">${{ number_format($product->price, 2) }}</span>
+                            </h4>
+                            <h4 class="mb-3">
+                                <strong><i class="fa-solid fa-ruler me-2"></i> Size:</strong>
+                                <span class="text-muted">
+                                    @if ($product->sizes && $product->sizes->count())
+                                        {{ $product->sizes->pluck('size')->implode(', ') }}
+                                    @else
+                                        No size
+                                    @endif
+                                </span>
                             </h4>
                             <h4 class="mb-3">
                                 <strong><i class="fa-solid fa-layer-group me-2"></i> Category:</strong>

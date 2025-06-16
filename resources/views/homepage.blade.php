@@ -191,14 +191,7 @@
         </div>
     </nav>
 
-    <!-- Hero -->
-    {{-- <section class="hero-section text-center py-5">
-        <div class="container">
-            <h1 class="display-4 fw-bold">Summer Collection 2025</h1>
-            <p class="lead">Discover our new arrivals and trendy outfits</p>
-            <a href="#products-section  " class="btn btn-primary btn-lg">Shop Now</a>
-        </div>
-    </section> --}}
+
     <section>
         <div class="hero-slideshow">
             <div class="slide slide-1 active"
@@ -364,8 +357,6 @@
                                                 <option value="XL">X-Large</option>
                                             </select>
                                         </div>
-
-
 
                                         <!-- Quantity Selection -->
                                         <div class="col-md-6 mb-3">

@@ -14,6 +14,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\EmployeeController;
 // Public Routes
 Route::get('/', [WelcomeController::class, 'index'])->name('homepage.index');
 
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);
+Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('stocks', StockController::class);
 Route::resource('products', ProductController::class);
