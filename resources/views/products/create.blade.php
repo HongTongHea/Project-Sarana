@@ -1,12 +1,12 @@
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content rounded-0">
+        <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                        height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
-                        Clothes <span class="text-warning">Store </span> |
+                    {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
+                        height="40"> --}}
+                    <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 16px">
+                        AngkorTech <span class="text-black">Computer</span> |
                         <span class="text-dark"> Create Product</span>
                     </h6>
                 </div>
@@ -32,25 +32,6 @@
                                         id="price" value="{{ old('price') }}" required placeholder="Enter price">
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
-                                    <label for="size" class="form-label">Size</label><br>
-                                    @foreach (['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $size)
-                                        <label class="me-2">
-                                            <input type="checkbox" name="sizes[]" value="{{ $size }}"
-                                                {{ is_array(old('sizes')) && in_array($size, old('sizes')) ? 'checked' : '' }}>
-                                            {{ $size }}
-                                        </label>
-                                    @endforeach
-
-                                    {{-- <select name="sizes[]" multiple>
-                                        <option value="XS">XS</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                        <option value="XXL">XXL</option>
-                                    </select> --}}
-                                </div>
 
                                 <div class="form-group col-12 col-md-6">
                                     <label for="category_id" class="form-label">Category</label>
@@ -65,7 +46,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-12 col-md-12">
+                                <div class="form-group col-12 col-md-6">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity') }}" required min="0"

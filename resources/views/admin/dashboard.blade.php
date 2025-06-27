@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Clothes Store | Dashboard')
+@section('title', 'AngkorTech Computer | Dashboard')
 
 @section('content')
     <div class="m-4 mt-3" data-aos="fade-down" data-aos-duration="1000">

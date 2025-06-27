@@ -3,9 +3,9 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
             <a href="index.html" class="logo text-primary ">
-                <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="30">
-                <h6 class="text-uppercase mt-3 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">Clothes
-                    <span class="text-warning">Store</span>
+                <img src="{{ asset('assets/img/logo.jpg') }}" alt="" class="navbar-brand" height="30">
+                <h6 class="mt-2 ms-1 text-white   " style="font-weight: 700; font-size: 14px">AngkorTech
+                    <span class="text-white">Computer</span>
                 </h6>
             </a>
             <div class="nav-toggle">
@@ -63,7 +63,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('employees.index') }}">
-                        <i class="fa-solid  "></i>
+                        <i class="fa-solid fa-user-tie"></i>
                         <p>Employees</p>
                     </a>
                 </li>

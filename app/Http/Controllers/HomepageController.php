@@ -11,7 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class WelcomeController extends Controller
+class HomepageController extends Controller
 {
     //
     public function index()

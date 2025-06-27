@@ -21,14 +21,27 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
+                                <th>Product Image</th>
                                 <th>Product</th>
                                 <th>Stock Quantity</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
-                            @foreach ($stocks as $index => $stock)
+                            @foreach ($stocks as $stock)
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
+                                    <td>
+                                        @if ($stock->product->picture_url)
+                                            <img src="{{ asset('storage/' . $stock->product->picture_url) }}"
+                                                alt="{{ $stock->product->name }}"
+                                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
+                                                width="80">
+                                        @else
+                                            <img src="{{ asset('assets/img/image.png') }}" class=""
+                                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
+                                                width="80">
+                                        @endif
+                                    </td>
                                     <td>{{ $stock->product->name }}</td>
                                     <td>{{ $stock->quantity }}</td>
                                 </tr>

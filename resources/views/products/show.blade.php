@@ -1,14 +1,14 @@
     <div class="modal fade" id="showModal{{ $product->id }}" tabindex="-1" aria-labelledby="showModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content rounded-0">
+            <div class="modal-content">
                 <div class="modal-header">
                     <div class="d-flex justify-content-center align-items-center">
-                        <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                            height="30">
-                        <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
-                            Clothes <span class="text-warning">Store </span> |
-                            <span class="text-dark">Product Detail</span>
+                        {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
+                            height="30"> --}}
+                        <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 16px">
+                            AngkorTech <span class="text-black">Computer</span> |
+                            <span class="text-dark"> Create Product</span>
                         </h6>
                     </div>
                     <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
@@ -37,16 +37,6 @@
                             <h4 class="mb-3">
                                 <strong><i class="fa-solid fa-tag me-2"></i> Price:</strong>
                                 <span class="text-muted">${{ number_format($product->price, 2) }}</span>
-                            </h4>
-                            <h4 class="mb-3">
-                                <strong><i class="fa-solid fa-ruler me-2"></i> Size:</strong>
-                                <span class="text-muted">
-                                    @if ($product->sizes && $product->sizes->count())
-                                        {{ $product->sizes->pluck('size')->implode(', ') }}
-                                    @else
-                                        No size
-                                    @endif
-                                </span>
                             </h4>
                             <h4 class="mb-3">
                                 <strong><i class="fa-solid fa-layer-group me-2"></i> Category:</strong>

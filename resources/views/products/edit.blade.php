@@ -1,12 +1,12 @@
 <div class="modal fade" id="editModal{{ $product->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content rounded-0">
+        <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                        height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
-                        Clothes <span class="text-warning">Store </span> |
+                    {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
+                        height="40"> --}}
+                   <h6 class="mt-4 ms-1  text-black" style="font-weight: 700; font-size: 16px">
+                        AngkorTech <span class="text-black">Computer</span> |
                         <span class="text-dark"> Edit Product</span>
                     </h6>
                 </div>
@@ -34,19 +34,6 @@
                                         id="price" value="{{ old('price', $product->price) }}" required
                                         placeholder="Enter price">
                                 </div>
-
-                                <div class="form-group col-12 col-md-6">
-                                    <label for="sizes" class="form-label">Sizes</label><br>
-                                    @foreach (['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $size)
-                                        <label class="me-2">
-                                            <input type="checkbox" name="sizes[]" value="{{ $size }}"
-                                                {{ in_array($size, $product->sizes->pluck('size')->toArray()) ? 'checked' : '' }}>
-                                            {{ $size }}
-                                        </label>
-                                    @endforeach
-                                </div>
-
-
 
                                 <div class="form-group col-12 col-md-6">
                                     <label for="category_id" class="form-label">Category</label>

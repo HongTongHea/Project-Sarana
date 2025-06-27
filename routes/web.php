@@ -13,10 +13,12 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesReportController;
-use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\ProfileController;
+
 // Public Routes
-Route::get('/', [WelcomeController::class, 'index'])->name('homepage.index');
+Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 
 // Authentication Routes (guest only)
 Route::middleware('guest')->group(function () {
@@ -36,7 +38,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
+
+
 
 Route::resource('users', UserController::class);
 Route::resource('customers', CustomerController::class);

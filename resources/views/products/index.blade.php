@@ -1,15 +1,14 @@
 @extends('layouts.app')
-@section('title', ' Clothes Store | Products Data')
+@section('title', ' Angkor Tech Computer | Products List')
 @section('content')
 
     <div class="m-4 mt-4">
-        <div class="card rounded-0">
+        <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark">Products Data</span>
-
+                    {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40"> --}}
+                    <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 20px">AngkorTech
+                        <span class="text-black">Computer </span> | <span class="text-dark">Products List</span>
                     </h6>
                 </div>
             </div>
@@ -18,10 +17,10 @@
                     data-bs-target="#createModal">
                     <i class="fa-solid fa-circle-plus"></i> Add New
                 </button>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-5">
                     @foreach ($products as $product)
                         <div class="col">
-                            <div class="card  rounded-0">
+                            <div class="card">
                                 <div class="card-body p-2">
                                     <div class="text-center">
                                         @if ($product->picture_url)
@@ -35,18 +34,10 @@
                                     </div>
                                     <p class="card-text">
                                     <h3 class="text-center"><strong>{{ $product->name }}</strong> </h3><br>
-                                    <strong>Description:</strong> {{ $product->description ?? 'N/A' }}<br>
+                                    <strong>Category:</strong> {{ $product->category->name ?? 'N/A' }}<br>
                                     <strong>Price:</strong> ${{ number_format($product->price, 2) }}<br>
-                                    <strong>Sizes:</strong>
-                                    @if ($product->sizes && $product->sizes->count())
-                                        {{ $product->sizes->pluck('size')->implode(', ') }}
-                                    @else
-                                        No size
-                                    @endif
-                                    <br>
-
                                     <strong>Stock:</strong> {{ $product->stock_quantity }}<br>
-                                    <strong>Category:</strong> {{ $product->category->name ?? 'N/A' }}
+                                    <strong>Description:</strong> {{ $product->description ?? 'N/A' }}<br>
                                     </p>
                                 </div>
                                 <div class="card-footer d-flex justify-content-end">

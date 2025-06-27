@@ -17,7 +17,7 @@
             <div class="card-body">
                 <button type="button" class="btn btn-primary mb-3 ml-3 rounded-3 btn-sm" data-bs-toggle="modal"
                     data-bs-target="#createModal">
-                    <i class="fa-solid fa-circle-plus"></i> Add New Employee
+                    <i class="fa-solid fa-circle-plus"></i> Add New
                 </button>
 
                 <div class="table-responsive">
@@ -28,7 +28,8 @@
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Position</th>
-                                <th>Contact</th>
+                                <th>Emial</th>
+                                <th>Phone</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -52,10 +53,8 @@
                                     </td>
                                     <td>{{ $employee->name }}</td>
                                     <td>{{ $employee->position }}</td>
-                                    <td>
-                                        <small class="d-block">{{ $employee->email }}</small>
-                                        <small class="d-block">{{ $employee->phone }}</small>
-                                    </td>
+                                    <td>{{ $employee->email }}</td>
+                                    <td> {{ $employee->phone }}</td>
                                     <td>
                                         <span class="badge {{ $employee->status ? 'bg-success' : 'bg-danger' }}">
                                             {{ $employee->status ? 'Active' : 'Inactive' }}
@@ -81,12 +80,12 @@
                                         </button>
                                     </td>
                                 </tr>
-                                {{-- 
-                                <!-- Show Modal -->
-                                @include('employees.detail', ['employee' => $employee])
+
+                                {{-- <!-- Show Modal -->
+                                @include('employees.detail', ['employee' => $employee]) --}}
                                 <!-- Edit Modal -->
                                 @include('employees.edit', ['employee' => $employee])
-                                <!-- Delete Modal -->
+                                {{-- <!-- Delete Modal -->
                                 @include('employees.delete', ['employee' => $employee]) --}}
                             @endforeach
                         </tbody>

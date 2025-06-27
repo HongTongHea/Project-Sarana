@@ -35,11 +35,6 @@ class Product extends Model
         return $this->hasMany(Stock::class);
     }
 
-    public function sizes()
-    {
-        return $this->hasMany(ProductSize::class);
-    }
-
     // Boot method to automatically handle events
     protected static function boot()
     {

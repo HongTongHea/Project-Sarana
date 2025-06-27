@@ -6,9 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Stock;
-use App\Models\ProductSize;
 use Illuminate\Support\Facades\Storage;
-
 
 class ProductController extends Controller
 {
@@ -31,6 +29,7 @@ class ProductController extends Controller
             'picture_url' => $request->query('picture_url')
         ]);
     }
+
     public function create()
     {
         $categories = Category::all();
@@ -44,14 +43,11 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'sizes' => 'nullable|array',
-            'sizes.*' => 'required|string|in:XS,S,M,L,XL,XXL',
             'category_id' => 'required|exists:categories,id',
             'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:9999',
         ]);
 
-        // Create the product (only once)
-        $product = new Product($request->except('sizes'));
+        $product = new Product($request->all());
 
         if ($request->hasFile('picture_url')) {
             $product->picture_url = $request->file('picture_url')->store('picture_url', 'public');
@@ -59,19 +55,6 @@ class ProductController extends Controller
 
         $product->save();
 
-        // Add sizes
-        // Only create sizes if they exist and are valid
-        if ($request->has('sizes')) {
-            // Ensure only valid sizes in uppercase
-            $validSizes = array_intersect(
-                array_map('strtoupper', $request->sizes),
-                ['XS', 'S', 'M', 'L', 'XL', 'XXL']
-            );
-
-            foreach ($validSizes as $size) {
-                $product->sizes()->create(['size' => $size]);
-            }
-        }
         // Auto-insert stock record
         $existingStock = $product->stocks()->where('type', 'initial')->first();
 
@@ -99,38 +82,25 @@ class ProductController extends Controller
         return view('products.edit', compact('product', 'categories', 'stocks'));
     }
 
-
     public function update(Request $request, Product $product)
     {
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
-            'sizes' => 'nullable|array',
-            'sizes.*' => 'required|string|in:XS,S,M,L,XL,XXL',
             'stock_quantity' => 'required|integer',
             'category_id' => 'sometimes|required|exists:categories,id',
             'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
         ]);
 
-        // Update all attributes except picture_url and sizes
-        $product->update($request->except(['picture_url', 'sizes']));
+        $product->update($request->except('picture_url'));
 
-        // Handle picture upload
         if ($request->hasFile('picture_url')) {
             if ($product->picture_url && Storage::exists('public/' . $product->picture_url)) {
                 Storage::delete('public/' . $product->picture_url);
             }
             $product->picture_url = $request->file('picture_url')->store('picture_url', 'public');
-            $product->save(); // Save the picture_url change
-        }
-
-        // Handle sizes
-        $product->sizes()->delete();
-        if ($request->has('sizes')) {
-            foreach ($request->sizes as $size) {
-                $product->sizes()->create(['size' => $size]);
-            }
+            $product->save();
         }
 
         // Update stock record
@@ -144,8 +114,6 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
-
-
 
     public function destroy($id)
     {

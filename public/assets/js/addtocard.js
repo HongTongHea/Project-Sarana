@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalProductImg = document.getElementById("modalProductImg");
     const modalProductName = document.getElementById("modalProductName");
     const modalProductPrice = document.getElementById("modalProductPrice");
-    const productSize = document.getElementById("productSize");
     const productQty = document.getElementById("productQty");
     const cartItemsContainer = document.querySelector(".cart-items");
     const cartCount = document.querySelector(".cart-count");
@@ -99,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
         modalProductName.textContent = currentProduct.name;
         modalProductPrice.textContent = `$${currentProduct.price.toFixed(2)}`;
         productQty.value = 1;
-        productSize.value = "M";
 
         // Stock status
         if (currentProduct.stock > 0) {
@@ -134,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document
         .getElementById("confirmAddToCart")
         .addEventListener("click", () => {
-            const size = productSize.value;
             const quantity = parseInt(productQty.value);
 
             if (currentProduct.stock <= 0) {
@@ -149,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Check if item already exists in cart
             const existingItemIndex = cart.findIndex(
-                (item) => item.id === currentProduct.id && item.size === size
+                (item) => item.id === currentProduct.id
             );
 
             if (existingItemIndex > -1) {
@@ -159,7 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Add new item to cart
                 const cartItem = {
                     ...currentProduct,
-                    size,
                     quantity,
                 };
                 cart.push(cartItem);
@@ -201,12 +197,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }" class="cart-item-img rounded me-3" style="width: 80px; height: 80px; object-fit: cover;">
                     <div class="cart-item-details flex-grow-1">
                         <p class="mb-1 fw-bold">${item.name}</p>
-                        <p class="mb-2 small text-muted">Size: ${item.size}</p>
                         <p class="mb-0 fw-bold">$${(
                             item.price * item.quantity
                         ).toFixed(2)}</p>
                     </div>
-                  
                 </div>
                    
                 <div class="d-flex align-items-center">
@@ -280,4 +274,3 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("shoppingCart", JSON.stringify(cart));
     }
 });
-
