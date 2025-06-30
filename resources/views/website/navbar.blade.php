@@ -6,14 +6,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav d-flex ms-auto me-auto fw-medium">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Laptop ROG</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">LAPTOP</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">ASUS</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">MSI</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">APPLE</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Accessories</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">CPU</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Monitors</a></li>
             </ul>
             <div class="d-flex align-items-center">
                 <button class="btn btn-outline-dark me-3" type="button" data-bs-toggle="offcanvas"
@@ -26,26 +23,12 @@
 
             </div>
             @guest
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fas fa-user me-1"></i>My Account
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="authDropdown">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('login') }}">
-                                <i class="fas fa-sign-in-alt me-1"></i> Sign In
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('register') }}">
-                                <i class="fas fa-user-plus me-1"></i> Sign Up
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-
+               <a href="{{ route('login') }}" class="btn btn-primary me-2">
+                    <i class="fas fa-sign-in-alt me-1"></i> Sign In
+                </a>
+                <a href="{{ route('register') }}" class="btn btn-primary">
+                    <i class="fas fa-user-plus me-1"></i> Sign Up
+                </a>
             @endguest
 
             @auth
