@@ -13,18 +13,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id'); // Foreign key to Customers table
-            $table->unsignedBigInteger('product_id');  // Foreign key to Products table
-            $table->enum('status', ['pending', 'completed', 'canceled']);
-            $table->decimal('total_price', 10, 2);
-            $table->integer('quantity');
-            $table->decimal('price', 10, 2);
-            $table->enum('payment_status', ['paid', 'unpaid']);
+            $table->foreignId('customer_id')->constrained();
+            $table->decimal('subtotal', 10, 2)->default(0);
+            $table->decimal('tax_amount', 10, 2)->default(0);
+            $table->decimal('discount_amount', 10, 2)->default(0);
+            $table->decimal('total', 10, 2)->default(0);
+            $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
+            $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
             $table->timestamps();
-
-            // Add foreign key constraints
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

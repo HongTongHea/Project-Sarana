@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Customer;
 use App\Models\Product;
-
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::with(['customer', 'items.product'])->get();
         return view('orders.index', compact('orders'));
     }
 
@@ -25,74 +25,99 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        // Decode the JSON items first
+        $items = json_decode($request->input('items'), true);
+
+        // Validate the items array
+        if (!is_array($items)) {
+            return redirect()->back()->withErrors(['items' => 'The items must be a valid array.']);
+        }
+
         // Validate incoming request
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
-            'status' => 'required|in:pending,completed,canceled',
-            'payment_status' => 'required|in:paid,unpaid',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'tax_rate' => 'nullable|numeric|min:0|max:100',
+            'discount' => 'nullable|numeric|min:0',
         ]);
-    
-        // Calculate total price based on quantity and price
-        $totalPrice = $request->input('quantity') * $request->input('price');
-        $validatedData['total_price'] = $totalPrice;
-    
-        // Create new order with calculated total price
-        Order::create($validatedData);
-    
-        return redirect()->route('orders.index')->with('success', 'Order created successfully.');
-    }
-    
 
+        // Validate each item and check stock availability
+        foreach ($items as $item) {
+            if (!isset($item['product_id']) || !isset($item['quantity']) || !isset($item['price'])) {
+                return redirect()->back()->withErrors(['items' => 'Each item must have product_id, quantity, and price.']);
+            }
+
+            $product = Product::find($item['product_id']);
+            if (!$product) {
+                return redirect()->back()->withErrors(['items' => 'Product not found.']);
+            }
+
+            if ($product->stock_quantity < $item['quantity']) {
+                return redirect()->back()->withErrors([
+                    'items' => "Not enough stock for {$product->name}. Available: {$product->stock_quantity}"
+                ]);
+            }
+        }
+
+        // Calculate totals
+        $subtotal = 0;
+        foreach ($items as $item) {
+            $subtotal += $item['quantity'] * $item['price'];
+        }
+
+        $taxAmount = $subtotal * ($validatedData['tax_rate'] ?? 0) / 100;
+        $discountAmount = $validatedData['discount'] ?? 0;
+        $total = $subtotal + $taxAmount - $discountAmount;
+
+        // Create order
+        $order = Order::create([
+            'customer_id' => $validatedData['customer_id'],
+            'subtotal' => $subtotal,
+            'tax_amount' => $taxAmount,
+            'discount_amount' => $discountAmount,
+            'total' => $total,
+            'status' => 'completed',
+            'payment_status' => 'paid',
+        ]);
+
+        // Add order items and update stock
+        foreach ($items as $item) {
+            // Create order item
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'total' => $item['quantity'] * $item['price'],
+            ]);
+
+            // Update product stock
+            $product = Product::find($item['product_id']);
+            $product->stock_quantity -= $item['quantity'];
+            $product->save();
+
+            // Create stock movement record
+            $product->stocks()->create([
+                'quantity' => -$item['quantity'], // Negative for deduction
+                'type' => 'sale',
+            ]);
+        }
+
+        return redirect()->route('orders.show', $order->id)->with('success', 'Order created successfully.');
+    }
 
     public function show($id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with(['customer', 'items.product'])->findOrFail($id);
         return view('orders.show', compact('order'));
     }
 
-    public function edit($id)
+    public function searchProducts(Request $request)
     {
-        $order = Order::findOrFail($id);
-        $customers = Customer::all();
-        $products = Product::all();
-        return view('orders.edit', compact('order', 'customers', 'products'));
-    }
+        $search = $request->input('search');
+        $products = Product::where('name', 'like', "%{$search}%")
+            ->orWhere('stock_no', 'like', "%{$search}%")
+            ->get();
 
-    public function update(Request $request, $id)
-    {
-        $order = Order::findOrFail($id);
-
-        // Validate incoming request
-        $validatedData = $request->validate([
-            'customer_id' => 'exists:customers,id',
-            'status' => 'in:pending,completed,canceled',
-            'payment_status' => 'in:paid,unpaid',
-            'quantity' => 'integer|min:1',
-            'price' => 'numeric|min:0',
-        ]);
-
-
-        if (isset($validatedData['quantity']) && isset($validatedData['price'])) {
-            $validatedData['total_price'] = $validatedData['quantity'] * $validatedData['price'];
-        } else {
-            $validatedData['total_price'] = $order->quantity * $order->price; // keep the current total if no change
-        }
-
-        // Update the order with new data
-        $order->update($validatedData);
-
-        return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
-    }
-
-
-    public function destroy($id)
-    {
-        $order = Order::findOrFail($id);
-        $order->delete();
-
-        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
+        return response()->json($products);
     }
 }

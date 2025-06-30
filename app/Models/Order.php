@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +10,13 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'customer_id', 'status', 'total_price', 'payment_status', 'product_id', 'quantity', 'price'
+        'customer_id',
+        'subtotal',
+        'tax_amount',
+        'discount_amount',
+        'total',
+        'status',
+        'payment_status'
     ];
 
     public function customer()
@@ -17,8 +24,8 @@ class Order extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function product()
+    public function items()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(OrderItem::class);
     }
 }

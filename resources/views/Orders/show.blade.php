@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('title', 'Order Invoice')
 
@@ -124,4 +124,4 @@
             html2pdf().set(options).from(invoice).save();
         }
     </script>
-@endsection
+@endsection --}}
