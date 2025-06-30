@@ -5,10 +5,9 @@
     <div class="m-4 mt-4">
         <div class="card">
             <div class="card-header">
-                <div class="d-flex justify-content-center align-items-center">
-                    {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40"> --}}
-                    <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 20px">AngkorTech
-                        <span class="text-black">Computer </span> | <span class="text-dark">Products List</span>
+                <div class="d-flex justify-content-start align-items-center">
+                    <h6 class="mt-3 ms-1 text-black text-uppercase text-start" style="font-weight: 700; font-size: 25px">
+                        Products List
                     </h6>
                 </div>
             </div>

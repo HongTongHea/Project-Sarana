@@ -55,7 +55,7 @@ Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
 Route::resource('sales', SaleController::class);
 
-
+Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');
 Route::get('/sales_reports/generate', [SalesReportController::class, 'generateReports'])->name('sales_reports.generate');
 Route::resource('sales_reports', SalesReportController::class)->only(['index', 'show']);
 

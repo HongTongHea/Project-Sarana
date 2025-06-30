@@ -46,7 +46,7 @@
                                     <td>{{ $order->customer->first_name . ' ' . $order->customer->last_name }}</td>
                                     <td>{{ $order->status }}</td>
                                     <td>{{ $order->payment_status }}</td>
-                                    <td>{{ $order->product->name }}</td>
+                                    {{-- <td>{{ $order->product->name }}</td> --}}
                                     <td>{{ $order->quantity }}</td>
                                     <td>{{ $order->price }}</td>
                                     <td>{{ $order->total_price }}</td>

@@ -7,7 +7,6 @@
                         {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
                             height="30"> --}}
                         <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 16px">
-                            AngkorTech <span class="text-black">Computer</span> |
                             <span class="text-dark"> Create Product</span>
                         </h6>
                     </div>

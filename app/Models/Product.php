@@ -14,10 +14,9 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'size',
         'stock_quantity',
         'category_id',
-        'picture_url',
+        'picture_url'
     ];
 
     public function category()
@@ -25,27 +24,19 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-
     public function stocks()
     {
         return $this->hasMany(Stock::class);
     }
 
-    // Boot method to automatically handle events
-    protected static function boot()
+    public function orderItems()
     {
-        parent::boot();
-        // Add a created event listener
-        static::created(function ($product) {
-            $product->stocks()->create([
-                'product_id' => $product->id,
-                'quantity' => $product->stock_quantity,
-                'type' => 'initial', // Optional: to denote the type of stock addition
-            ]);
-        });
+        return $this->hasMany(OrderItem::class);
+    }
+
+    // Add this method to check stock availability
+    public function hasSufficientStock($quantity)
+    {
+        return $this->stock_quantity >= $quantity;
     }
 }
