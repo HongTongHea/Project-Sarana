@@ -15,13 +15,17 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <div class="row">
-
                                 <div class="form-group col-12 col-md-6">
                                     <label for="name" class="form-label">Product Name</label>
                                     <input type="text" name="name" class="form-control" id="name"
                                         value="{{ old('name') }}" required placeholder="Enter product name">
                                 </div>
 
+                                <div class="form-group col-12 col-md-6">
+                                    <label for="barcode" class="form-label">Barcode</label>
+                                    <input type="text" name="barcode" class="form-control" id="barcode"
+                                        value="{{ old('barcode') }}" placeholder="Enter barcode">
+                                </div>
 
                                 <div class="form-group col-12 col-md-6">
                                     <label for="price" class="form-label">Price</label>
@@ -29,6 +33,12 @@
                                         id="price" value="{{ old('price') }}" required placeholder="Enter price">
                                 </div>
 
+                                <div class="form-group col-12 col-md-6">
+                                    <label for="discount_percentage" class="form-label">Discount %</label>
+                                    <input type="number" step="0.01" name="discount_percentage" class="form-control"
+                                        id="discount_percentage" value="{{ old('discount_percentage', 0) }}"
+                                        min="0" max="100" placeholder="Enter discount percentage">
+                                </div>
 
                                 <div class="form-group col-12 col-md-6">
                                     <label for="category_id" class="form-label">Category</label>
@@ -43,6 +53,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+
                                 <div class="form-group col-12 col-md-6">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
@@ -89,7 +100,7 @@
         </div>
     </div>
 </div>
-</div>
+
 <script>
     function triggerFileInput() {
         document.getElementById('picture_url').click();

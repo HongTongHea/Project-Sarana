@@ -4,13 +4,8 @@
         <div class="modal-content rounded-0">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1"
-                        height="30">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">
-                        Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark"> Edit Categories
-                        </span>
-                        <br>
+                    <h6 class="mt-3 ms-1 text-black text-uppercase" style="font-weight: 700; font-size: 16px">
+                        Edit Category
                     </h6>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

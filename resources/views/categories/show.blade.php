@@ -3,13 +3,9 @@
         <div class="modal-content rounded-0">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1"
-                        height="30">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 16px">
-                        Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark"> Show Categories
-                        </span>
-                        <br>
+
+                    <h6 class="text-uppercase mt-4 ms-1 text-black" style="font-weight: 700; font-size: 16px">
+                        Category Details
                     </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
@@ -21,7 +17,7 @@
                         <p><strong><i class="fa-solid fa-caret-right"> </i> Category Name:</strong>
                             {{ $category->name }}</p>
                         <p><strong><i class="fa-solid fa-caret-right"> </i> Description:</strong>
-                            {{ $category->description ?? 'N/A'}}</p>    
+                            {{ $category->description ?? 'N/A' }}</p>
                     </div>
                 </div>
             </div>

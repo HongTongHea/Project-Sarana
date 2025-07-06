@@ -70,14 +70,14 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#base2">
                         <i class="fa-solid fa-cart-shopping"></i>
-                        <p>Orders</p>
+                        <p>Sales & Transactions</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="base2">
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ route('orders.index') }}">
-                                    <span class="sub-item">Order Data</span>
+                                    <span class="sub-item">Order</span>
                                 </a>
                             </li>
                         </ul>

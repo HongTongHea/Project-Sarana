@@ -26,10 +26,24 @@
                                 </div>
 
                                 <div class="form-group col-12 col-md-6">
+                                    <label for="barcode" class="form-label">Barcode</label>
+                                    <input type="text" name="barcode" class="form-control" id="barcode"
+                                        value="{{ old('barcode', $product->barcode) }}" placeholder="Enter barcode">
+                                </div>
+
+                                <div class="form-group col-12 col-md-6">
                                     <label for="price" class="form-label">Price</label>
                                     <input type="number" step="0.01" name="price" class="form-control"
                                         id="price" value="{{ old('price', $product->price) }}" required
                                         placeholder="Enter price">
+                                </div>
+
+                                <div class="form-group col-12 col-md-6">
+                                    <label for="discount_percentage" class="form-label">Discount %</label>
+                                    <input type="number" step="0.01" name="discount_percentage" class="form-control"
+                                        id="discount_percentage"
+                                        value="{{ old('discount_percentage', $product->discount_percentage) }}"
+                                        min="0" max="100" placeholder="Enter discount percentage">
                                 </div>
 
                                 <div class="form-group col-12 col-md-6">
@@ -46,7 +60,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-12 col-md-12">
+                                <div class="form-group col-12 col-md-6">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity', $product->stock_quantity) }}" required

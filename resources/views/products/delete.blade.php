@@ -7,11 +7,8 @@
             <div class="modal-content rounded-0">
                 <div class="modal-header">
                     <div class="d-flex justify-content-center align-items-center">
-                        {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                            height="40"> --}}
-                        <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 16px">
-                            AngkorTech <span class="text-black">Computer</span> |
-                            <span class="text-dark"> Delete Product</span>
+                        <h6 class="mt-3 ms-1 text-black text-uppercase" style="font-weight: 700; font-size: 16px">
+                            <span class="text-dark text-uppercase"> Delete Product</span>
                         </h6>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

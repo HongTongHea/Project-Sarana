@@ -7,11 +7,8 @@
         <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand" height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 20px">
-                        Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark">Stocks Data</span>
-
+                    <h6 class="mt-3 ms-1 text-black text-uppercase text-start" style="font-weight: 700; font-size: 25px">
+                        Stocks Quantity List
                     </h6>
                 </div>
             </div>
@@ -21,29 +18,32 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
-                                <th>Product Image</th>
-                                <th>Product</th>
-                                <th>Stock Quantity</th>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Stocks</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
                             @foreach ($stocks as $stock)
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
+
                                     <td>
                                         @if ($stock->product->picture_url)
                                             <img src="{{ asset('storage/' . $stock->product->picture_url) }}"
-                                                alt="{{ $stock->product->name }}"
-                                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
-                                                width="80">
+                                                alt="{{ $stock->product->name }}" width="70" height="70"
+                                                style="object-fit: cover; object-position: center;">
                                         @else
-                                            <img src="{{ asset('assets/img/image.png') }}" class=""
-                                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
-                                                width="80">
+                                            <img src="{{ asset('assets/img/image.png') }}" width="70" height="70"
+                                                style="object-fit: cover;">
                                         @endif
                                     </td>
                                     <td>{{ $stock->product->name }}</td>
-                                    <td>{{ $stock->quantity }}</td>
+                                    <td class="{{ $stock->quantity > 0 ? 'text-success fw-bold' : 'text-danger fw-bold' }}">
+                                        {!! $stock->quantity > 0
+                                            ? '<i class="fas fa-check-circle me-1"></i>' . $stock->quantity
+                                            : '<i class="fas fa-times-circle me-1"></i>Out of stock' !!}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

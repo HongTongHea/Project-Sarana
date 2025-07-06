@@ -26,7 +26,8 @@ class ProductController extends Controller
             'product' => $product,
             'name' => $request->query('name'),
             'price' => $request->query('price'),
-            'picture_url' => $request->query('picture_url')
+            'picture_url' => $request->query('picture_url'),
+            'discount_percentage' => $request->query('discount_percentage')
         ]);
     }
 
@@ -43,7 +44,10 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'stock_quantity' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'barcode' => 'nullable|string|max:255|unique:products',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:9999',
         ]);
 
@@ -90,6 +94,8 @@ class ProductController extends Controller
             'price' => 'sometimes|required|numeric',
             'stock_quantity' => 'required|integer',
             'category_id' => 'sometimes|required|exists:categories,id',
+            'barcode' => 'nullable|string|max:255|unique:products,barcode,' . $product->id,
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
         ]);
 

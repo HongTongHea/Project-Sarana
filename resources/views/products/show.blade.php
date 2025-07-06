@@ -7,7 +7,7 @@
                         {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
                             height="30"> --}}
                         <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 16px">
-                            <span class="text-dark"> Create Product</span>
+                            <span class="text-dark text-uppercase">Product Detail</span>
                         </h6>
                     </div>
                     <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
@@ -19,7 +19,6 @@
                         <div class="col-12 col-md-6">
                             @if ($product->picture_url)
                                 <div class="form-group text-center">
-                                    <h4 class="mb-3">{{ $product->name }}</h4>
                                     <img src="{{ Storage::url($product->picture_url) }}" alt="Product Image"
                                         class="img-fluid rounded shadow" style="max-width: 100%; height: auto;">
                                 </div>
@@ -34,9 +33,24 @@
                         <div class="col-12 col-md-6 mt-4 mt-md-0">
 
                             <h4 class="mb-3">
+                                <strong><i class="fa-solid fa-caret-right me-2"></i> Product Name:</strong>
+                                <span class="text-muted">{{ $product->name }}</span>
+                            </h4>
+                            <h4 class="mb-3">
                                 <strong><i class="fa-solid fa-tag me-2"></i> Price:</strong>
                                 <span class="text-muted">${{ number_format($product->price, 2) }}</span>
                             </h4>
+                            <h4 class="mb-3">
+                                <strong><i class="fa-solid fa-percent me-2"></i> Discount:</strong>
+                                <span class="text-muted">
+                                    {{ $product->discount_percentage > 0 ? $product->discount_percentage . '%' : 'No Discount' }}
+                                </span>
+                            </h4>
+                            <h4 class="mb-3">
+                                <strong><i class="fa-solid fa-barcode me-2"></i> Barcode:</strong>
+                                <span class="text-muted">{{ $product->barcode }}</span>
+                            </h4>
+
                             <h4 class="mb-3">
                                 <strong><i class="fa-solid fa-layer-group me-2"></i> Category:</strong>
                                 <span class="text-muted">{{ $product->category->name }}</span>
