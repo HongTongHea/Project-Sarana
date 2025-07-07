@@ -4,10 +4,8 @@
 
         </nav>
         <div class="copyright">
-            2024, Made by Student Build Bright University SR <i class="fa fa-heart heart text-danger"></i>
+            @COPYRIGHT 2025 BY ANGKOR TECH COMPUTOR <i class="fa fa-heart heart text-danger"></i>
         </div>
-        <div>
-            Group 4
-        </div>
+        <div></div>
     </div>
 </footer>

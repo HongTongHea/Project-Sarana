@@ -6,7 +6,7 @@
             <div class="slide slide-1 active"
                 style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/AsuszepyrusG16.jpg');">
                 <div class="slide-content">
-                    <h1 class="display-4 fw-bold">Summer Collection 2025</h1>
+                    <h1 class="display-4 fw-bold">All ZEPHYRUS G16</h1>
                     <p class="lead">Discover our new arrivals and trendy outfits</p>
                     <a href="#products-section" class="btn btn-primary btn-lg">Shop Now</a>
                 </div>
@@ -28,6 +28,30 @@
                     <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
                 </div>
             </div>
+            <div class="slide slide-4"
+                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/MacBook-Pro-2021.png');">
+                <div class="slide-content">
+                    <h1 class="display-4 fw-bold">Summer Accessories</h1>
+                    <p class="lead">Complete your look with our stylish accessories</p>
+                    <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
+                </div>
+            </div>
+            <div class="slide slide-5"
+                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/mac-gaming.jpg');">
+                <div class="slide-content">
+                    <h1 class="display-4 fw-bold">Summer Accessories</h1>
+                    <p class="lead">Complete your look with our stylish accessories</p>
+                    <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
+                </div>
+            </div>
+            <div class="slide slide-6"
+                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/macbook.jpg');">
+                <div class="slide-content">
+                    <h1 class="display-4 fw-bold">Summer Accessories</h1>
+                    <p class="lead">Complete your look with our stylish accessories</p>
+                    <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
+                </div>
+            </div>
 
             <div class="slide-nav">
                 <button class="slide-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -38,6 +62,9 @@
                 <div class="indicator active" data-slide="0"></div>
                 <div class="indicator" data-slide="1"></div>
                 <div class="indicator" data-slide="2"></div>
+                <div class="indicator" data-slide="3"></div>
+                <div class="indicator" data-slide="4"></div>
+                <div class="indicator" data-slide="5"></div>
             </div>
         </div>
     </section>
@@ -139,7 +166,8 @@
         </section>
 
         <!-- Add to Cart Modal -->
-        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-light border-bottom">
