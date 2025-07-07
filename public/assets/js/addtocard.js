@@ -9,10 +9,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalProductImg = document.getElementById("modalProductImg");
     const modalProductName = document.getElementById("modalProductName");
     const modalProductPrice = document.getElementById("modalProductPrice");
+    const modalProductOriginalPrice = document.getElementById(
+        "modalProductOriginalPrice"
+    );
+    const modalProductDiscount = document.getElementById(
+        "modalProductDiscount"
+    );
+    const modalProductBarcode = document.getElementById("modalProductBarcode");
     const productQty = document.getElementById("productQty");
     const cartItemsContainer = document.querySelector(".cart-items");
     const cartCount = document.querySelector(".cart-count");
     const cartSubtotal = document.querySelector(".cart-subtotal");
+    const cartDiscount = document.querySelector(".cart-discount");
     const cartTotal = document.querySelector(".cart-total");
     const cartSummary = document.querySelector(".cart-summary");
     const emptyCartMessage = document.querySelector(".empty-cart-message");
@@ -50,18 +58,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             } else {
                 productsContainer.innerHTML = `
-                        <div class="col-12 text-center py-5">
-                            <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
-                            <h5 class="text-muted">No products found in this category</h5>
-                        </div>
-                    `;
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No products found in this category</h5>
+                    </div>
+                `;
             }
 
             document.getElementById(
                 "products-title"
             ).textContent = `${categoryName} Products`;
-
-            // Reinitialize add-to-cart buttons
             reinitializeAddToCartButtons();
         });
     });
@@ -90,13 +96,38 @@ document.addEventListener("DOMContentLoaded", function () {
             id: this.dataset.id,
             name: this.dataset.name,
             price: parseFloat(this.dataset.price),
+            discount: parseFloat(this.dataset.discount) || 0,
             img: this.dataset.img,
             stock: parseInt(this.dataset.stock),
+            barcode: this.dataset.barcode,
         };
 
         modalProductImg.src = currentProduct.img;
         modalProductName.textContent = currentProduct.name;
-        modalProductPrice.textContent = `$${currentProduct.price.toFixed(2)}`;
+        modalProductBarcode.textContent = currentProduct.barcode
+            ? `Barcode: ${currentProduct.barcode}`
+            : "";
+
+        // Calculate discounted price
+        const discountedPrice =
+            currentProduct.discount > 0
+                ? currentProduct.price * (1 - currentProduct.discount / 100)
+                : currentProduct.price;
+
+        modalProductPrice.textContent = `$${discountedPrice.toFixed(2)}`;
+
+        if (currentProduct.discount > 0) {
+            modalProductOriginalPrice.textContent = `$${currentProduct.price.toFixed(
+                2
+            )}`;
+            modalProductDiscount.textContent = `-${currentProduct.discount}%`;
+            modalProductOriginalPrice.style.display = "inline";
+            modalProductDiscount.style.display = "inline";
+        } else {
+            modalProductOriginalPrice.style.display = "none";
+            modalProductDiscount.style.display = "none";
+        }
+
         productQty.value = 1;
 
         // Stock status
@@ -182,9 +213,19 @@ document.addEventListener("DOMContentLoaded", function () {
         cartSummary.classList.remove("d-none");
 
         let subtotal = 0;
+        let totalDiscount = 0;
 
         cart.forEach((item, index) => {
+            const itemPrice =
+                item.discount > 0
+                    ? item.price * (1 - item.discount / 100)
+                    : item.price;
+
             subtotal += item.price * item.quantity;
+            totalDiscount +=
+                item.discount > 0
+                    ? ((item.price * item.discount) / 100) * item.quantity
+                    : 0;
 
             const cartItem = document.createElement("div");
             cartItem.className = "cart-item mb-3";
@@ -192,14 +233,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
             cartItem.innerHTML = `
                 <div class="d-flex align-items-center">
-                    <img src="${item.img}" alt="${
-                item.name
-            }" class="cart-item-img rounded me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                    <img src="${item.img}" alt="${item.name}" 
+                        class="cart-item-img rounded me-3" 
+                        style="width: 80px; height: 80px; object-fit: cover;">
                     <div class="cart-item-details flex-grow-1">
                         <p class="mb-1 fw-bold">${item.name}</p>
-                        <p class="mb-0 fw-bold">$${(
-                            item.price * item.quantity
-                        ).toFixed(2)}</p>
+                        ${
+                            item.discount > 0
+                                ? `
+                            <p class="mb-0">
+                                <span class="fw-bold">$${(
+                                    itemPrice * item.quantity
+                                ).toFixed(2)}</span><br>
+                                <span class="text-muted text-decoration-line-through small ms-2">
+                                    $${(item.price * item.quantity).toFixed(2)}
+                                </span><br>
+                                <span class="badge bg-danger ms-2">-${
+                                    item.discount
+                                }%</span>
+                            </p>
+                        `
+                                : `
+                            <p class="mb-0 fw-bold">$${(
+                                item.price * item.quantity
+                            ).toFixed(2)}</p>
+                        `
+                        }
                     </div>
                 </div>
                    
@@ -223,11 +282,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-        cartTotal.textContent = `$${subtotal.toFixed(2)}`;
-        if (cartCount)
+        cartDiscount.textContent = `-$${totalDiscount.toFixed(2)}`;
+        cartTotal.textContent = `$${(subtotal - totalDiscount).toFixed(2)}`;
+        if (cartCount) {
             cartCount.textContent = cart
                 .reduce((sum, item) => sum + item.quantity, 0)
                 .toString();
+        }
 
         // Remove items from cart
         document.querySelectorAll(".remove-item-btn").forEach((btn) => {

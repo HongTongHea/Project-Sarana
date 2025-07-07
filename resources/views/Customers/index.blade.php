@@ -7,10 +7,8 @@
         <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark">Customers Information</span>
-
+                    <h6 class="mt-3 ms-1 text-black text-uppercase text-start" style="font-weight: 700; font-size: 25px">
+                        Customers
                     </h6>
                 </div>
             </div>
@@ -27,6 +25,7 @@
                                 <th>No</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Gender</th>
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Actions</th>
@@ -38,6 +37,7 @@
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $customer->first_name }}</td>
                                     <td>{{ $customer->last_name }}</td>
+                                    <td>{{ $customer->gender }}</td>
                                     <td>{{ $customer->email }}</td>
                                     <td>{{ $customer->phone }}</td>
                                     <td>

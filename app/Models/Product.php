@@ -16,7 +16,9 @@ class Product extends Model
         'price',
         'stock_quantity',
         'category_id',
-        'picture_url'
+        'picture_url',
+        'barcode',
+        'discount_percentage'
     ];
 
     public function category()
@@ -38,5 +40,14 @@ class Product extends Model
     public function hasSufficientStock($quantity)
     {
         return $this->stock_quantity >= $quantity;
+    }
+
+    // Optionally add an accessor for discounted price
+    public function getDiscountedPriceAttribute()
+    {
+        if ($this->discount_percentage > 0) {
+            return $this->price - ($this->price * ($this->discount_percentage / 100));
+        }
+        return $this->price;
     }
 }

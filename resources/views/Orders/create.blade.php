@@ -15,26 +15,29 @@
     <div class="container-fluid mt-3">
         <div class="row">
             <!-- Order Column -->
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">Current Order</h5>
-                    </div>
+            <div class="col-md-7">
+                <div class="card rounded-0">
                     <div class="card-body">
                         <form action="{{ route('orders.store') }}" method="POST" id="order-form">
                             @csrf
 
                             <div class="form-group mb-3">
-                                <label for="customer_id">Customer</label>
-                                <select name="customer_id" id="customer_id" class="form-control" required>
-                                    <option value="">Select customer</option>
-                                    @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">
-                                            {{ $customer->first_name }} {{ $customer->last_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+
+                                <div class="input-group w-50">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <i class="fa-solid fa-users-line"></i>
+                                    </span>
+                                    <select name="customer_id" id="customer_id" class="form-control" required>
+                                        <option value="">Enter Customer Name</option>
+                                        @foreach ($customers as $customer)
+                                            <option value="{{ $customer->id }}">
+                                                {{ $customer->first_name }} {{ $customer->last_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+
 
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="order-items">
@@ -103,15 +106,19 @@
                 </div>
             </div>
             <!-- Product Selection Column -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Computer Shop - Encoder</h5>
-                    </div>
+            <div class="col-md-5">
+                <div class="card rounded-0">
                     <div class="card-body">
                         <div class="form-group mb-3">
-                            <input type="text" id="product-search" class="form-control" placeholder="Search products...">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </span>
+                                <input type="text" id="product-search" class="form-control"
+                                    placeholder="Search products...">
+                            </div>
                         </div>
+
 
                         <div id="product-results" class="list-group" style="max-height: 300px; overflow-y: auto;">
                             @foreach ($products as $product)
@@ -124,7 +131,7 @@
                                     <div class="d-flex align-items-center">
                                         @if ($product->picture_url)
                                             <img src="{{ asset('storage/' . $product->picture_url) }}"
-                                                alt="{{ $product->name }}" class="img-thumbnail me-3"
+                                                alt="{{ $product->name }}" class="img-thumbnail me-3 rounded-0"
                                                 style="width: 60px; height: 60px; object-fit: cover;">
                                         @else
                                             <div class="img-thumbnail me-3 d-flex align-items-center justify-content-center"
@@ -243,7 +250,7 @@
 
                 orderItems.forEach((item, index) => {
                     const imageHtml = item.picture_url ?
-                        `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2" style="width: 40px; height: 40px; object-fit: cover;">` :
+                        `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">` :
                         `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f0f0f0;">
                               <i class="fas fa-image text-muted"></i>
                            </div>`;

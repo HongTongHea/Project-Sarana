@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2); // Adjust precision and scale as needed
-            $table->enum('size', ['XS', 'S', 'M', 'L', 'XL', 'XXL']); // Define allowed sizes
             $table->integer('stock_quantity');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Foreign key to categories
             $table->string('picture_url')->nullable();
+            $table->string('barcode')->nullable()->unique(); // Added barcode column
+            $table->decimal('discount_percentage', 5, 2)->nullable()->default(0); // Added discount percentage column
             $table->timestamps();
         });
     }

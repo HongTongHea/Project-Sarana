@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Clothes Store | Categories Data')
+@section('title', 'Angkor Tech Computer | Categories List')
 
 @section('content')
 
@@ -8,10 +8,8 @@
         <div class="card shadow rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark">Categories Data</span>
-
+                    <h6 class="mt-3 ms-1 text-black text-uppercase text-start" style="font-weight: 700; font-size: 25px">
+                        Categories List
                     </h6>
                 </div>
             </div>
@@ -25,7 +23,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
-                                <th>Name</th>
+                                <th>Category Name</th>
                                 <th>Description</th>
                                 <th>Actions</th>
                             </tr>
