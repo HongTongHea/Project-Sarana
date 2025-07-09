@@ -40,7 +40,7 @@ class EmployeeController extends Controller
             'phone' => 'required|string|max:191',
             'address' => 'required|string|max:191',
             'position' => 'required|string|max:191',
-            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:9999',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30000',
             'status' => 'sometimes|integer',
         ]);
 
@@ -75,7 +75,7 @@ class EmployeeController extends Controller
             'phone' => 'sometimes|required|string|max:191',
             'address' => 'sometimes|required|string|max:191',
             'position' => 'sometimes|required|string|max:191',
-            'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
+            'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30000',
             'status' => 'sometimes|integer',
         ]);
 

@@ -1,24 +1,21 @@
 <div class="modal fade" id="editModal{{ $user->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                        height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
-                        Clothes <span class="text-warning">Store </span> |
-                        <span class="text-dark"> Edit User</span>
+                    <h6 class="text-uppercase mt-3 ms-1 text-black" style="font-weight: 700; font-size: 16px">
+                        Edit User
                     </h6>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4 pe-0">
                 <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-7">
                             <div class="row">
                                 <div class="form-group col-12 col-md-6">
                                     <label for="name" class="form-label">Username</label>
@@ -73,8 +70,8 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-6">
-                            <div class="form-group col-12 col-md-12" style="margin-left: 14px">
+                        <div class="col-12 col-md-5 p-0 mt-md-0 mt-3">
+                            <div class="form-group">
                                 <label for="picture_url">Upload Image:</label>
                                 @if ($errors->has('picture_url'))
                                     <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>
@@ -88,7 +85,7 @@
                                 <!-- Image preview container -->
                                 <div id="edit_preview_{{ $user->id }}"
                                     onclick="triggerEditFileInput({{ $user->id }})"
-                                    style="cursor: pointer; width: 350px; height: 350px; display: flex; justify-content: center; align-items: center; border: 1px solid #ccc; border-radius: 5px;">
+                                    style="cursor: pointer; width: 430px; height: 350px; display: flex; justify-content: center; align-items: center; border: 1px solid #ccc; border-radius: 5px;">
                                     <img id="edit_imagePreview_{{ $user->id }}"
                                         src="{{ $user->picture_url ? asset('storage/' . $user->picture_url) : '/assets/img/image.png' }}"
                                         alt="Image Preview" class="img-fluid"

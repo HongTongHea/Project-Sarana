@@ -99,14 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
             discount: parseFloat(this.dataset.discount) || 0,
             img: this.dataset.img,
             stock: parseInt(this.dataset.stock),
-            barcode: this.dataset.barcode,
         };
 
         modalProductImg.src = currentProduct.img;
         modalProductName.textContent = currentProduct.name;
-        modalProductBarcode.textContent = currentProduct.barcode
-            ? `Barcode: ${currentProduct.barcode}`
-            : "";
 
         // Calculate discounted price
         const discountedPrice =

@@ -1,16 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Clothes Store | Users Information')
+@section('title', 'Angkor Tech Computer | Users ')
 
 @section('content')
     <div class="m-3 mt-4">
-        <div class="card">
+        <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand mr-1" height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary    " style="font-weight: 700; font-size: 20px">
-                        Clothes
-                        <span class="text-warning">Store </span> | <span class="text-dark">Users Information</span>
+                    <h6 class="mt-3 ms-1 text-black text-uppercase text-start" style="font-weight: 700; font-size: 25px">
+                        Users List
                     </h6>
                 </div>
             </div>
@@ -26,10 +24,10 @@
                             <tr>
                                 <th>No</th>
                                 <th>Profile</th>
-                                <th>Name</th>
+                                <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,22 +50,46 @@
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->role }}</td>
-                                    <td>
-                                        <!-- Show Button -->
-                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#showModal{{ $user->id }}"><i
-                                                class="fa-solid fa-circle-info"></i></button>
+                                    <td class="text-nowrap text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton{{ $user->id }}" data-bs-toggle="dropdown"
+                                                aria-expanded="false" title="Actions">
+                                                <i class="fas fa-ellipsis-v fs-6"></i>
+                                            </button>
+                                            <ul class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton{{ $user->id }}">
+                                                <!-- View Details -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#showModal{{ $user->id }}">
+                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
+                                                        View Details
+                                                    </button>
+                                                </li>
 
-                                        <!-- Edit Button -->
-                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editModal{{ $user->id }}"> <i
-                                                class="fa-solid fa-pen-to-square"></i></button>
+                                                <!-- Edit -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editModal{{ $user->id }}">
+                                                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i>
+                                                        Edit
+                                                    </button>
+                                                </li>
 
-                                        <!-- Delete Button -->
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{ $user->id }}"><i
-                                                class="fa-solid fa-trash"></i></button>
-
+                                                <!-- Delete -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ $user->id }}">
+                                                        <i class="fa-solid fa-trash me-2 text-danger"></i>
+                                                        Delete
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
 

@@ -22,9 +22,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'gender' => 'required|in:Male,Female',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:15',
             'address' => 'required|string',
@@ -48,9 +46,7 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'gender' => 'required|in:Male,Female',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:15',
             'address' => 'required|string',

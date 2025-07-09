@@ -1,6 +1,6 @@
 <div class="modal fade" id="showModal{{ $category->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content rounded-0">
+        <div class="modal-content ">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
 

@@ -1,5 +1,5 @@
 <div class="modal fade" id="editModal{{ $product->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
@@ -16,13 +16,19 @@
                     @method('PUT')
 
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="form-group col-12 col-md-6">
                                     <label for="name" class="form-label">Product Name</label>
                                     <input type="text" name="name" class="form-control" id="name"
                                         value="{{ old('name', $product->name) }}" required
                                         placeholder="Enter product name">
+                                </div>
+                                <div class="form-group col-12 col-md-6">
+                                    <label for="brand" class="form-label">Brand Name</label>
+                                    <input type="text" name="brand" class="form-control" id="brand"
+                                        value="{{ old('brand', $product->brand) }}" required
+                                        placeholder="Enter brand name">
                                 </div>
 
                                 <div class="form-group col-12 col-md-6">
@@ -38,7 +44,7 @@
                                         placeholder="Enter price">
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-4">
                                     <label for="discount_percentage" class="form-label">Discount %</label>
                                     <input type="number" step="0.01" name="discount_percentage" class="form-control"
                                         id="discount_percentage"
@@ -46,7 +52,7 @@
                                         min="0" max="100" placeholder="Enter discount percentage">
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-4">
                                     <label for="category_id" class="form-label">Category</label>
                                     <select name="category_id" class="form-select form-control" id="category_id"
                                         required>
@@ -60,7 +66,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-4">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity', $product->stock_quantity) }}" required
@@ -74,8 +80,8 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-6">
-                            <div class="form-group col-12 col-md-12" style="margin-left: 14px">
+                        <div class="col-12 col-md-4 p-0 mt-md-0 mt-3">
+                            <div class="form-group">
                                 <label for="picture_url">Product Image:</label>
                                 @if ($errors->has('picture_url'))
                                     <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>

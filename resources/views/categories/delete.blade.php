@@ -1,7 +1,7 @@
 <div class="modal fade" id="deleteModal{{ $category->id }}" tabindex="-1" role="dialog"
     aria-labelledby="deleteModalLabel-{{ $category->id }}" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-0">
+        <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
                     <h6 class="mt-3 ms-1 text-black text-uppercase" style="font-weight: 700; font-size: 16px">

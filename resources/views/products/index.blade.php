@@ -1,9 +1,6 @@
 @extends('layouts.app')
-
-@section('title', 'Angkor Tech Computer | Products List')
-
+@section('title', 'AngkorTech Computer | Products List')
 @section('content')
-
     <div class="m-4 mt-4">
         <div class="card shadow rounded-0">
             <div class="card-header">
@@ -26,11 +23,12 @@
                                 <th>Stock</th>
                                 <th>Image</th>
                                 <th width="15%">Name</th>
+                                <th width="15%">Brand</th>
                                 <th>Barcode</th>
                                 <th>Discount</th>
                                 <th>Price</th>
                                 <th width="20%">Description</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,8 +41,6 @@
                                             ? '<i class="fas fa-check-circle me-1"></i>' . $product->stock_quantity
                                             : '<i class="fas fa-times-circle me-1"></i>Out of stock' !!}
                                     </td>
-
-
                                     <td>
                                         @if ($product->picture_url)
                                             <img src="{{ asset('storage/' . $product->picture_url) }}"
@@ -56,26 +52,54 @@
                                         @endif
                                     </td>
                                     <td>{{ $product->name }}</td>
+                                    <td>{{ $product->brand }}</td>
                                     <td>{{ $product->barcode }}</td>
                                     <td>{{ $product->discount_percentage ? $product->discount_percentage . '%' : 'None' }}
                                     </td>
                                     <td>${{ number_format($product->price, 2) }}</td>
                                     <td>{{ $product->description ?? 'N/A' }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-info btn-sm mb-1" data-bs-toggle="modal"
-                                            data-bs-target="#showModal{{ $product->id }}"><i
-                                                class="fa-solid fa-circle-info"></i></button>
+                                    <td class="text-nowrap text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton{{ $product->id }}" data-bs-toggle="dropdown"
+                                                aria-expanded="false" title="Actions">
+                                                <i class="fas fa-ellipsis-v fs-6"></i>
+                                            </button>
+                                            <ul class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton{{ $product->id }}">
+                                                <!-- View Details -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#showModal{{ $product->id }}">
+                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
+                                                        View Details
+                                                    </button>
+                                                </li>
 
-                                        <button type="button" class="btn btn-warning btn-sm mb-1" data-bs-toggle="modal"
-                                            data-bs-target="#editModal{{ $product->id }}"><i
-                                                class="fa-solid fa-pen-to-square"></i></button>
+                                                <!-- Edit -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editModal{{ $product->id }}">
+                                                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i>
+                                                        Edit
+                                                    </button>
+                                                </li>
 
-                                        <button type="button" class="btn btn-danger btn-sm mb-1" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{ $product->id }}"><i
-                                                class="fa-solid fa-trash"></i></button>
+                                                <!-- Delete -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ $product->id }}">
+                                                        <i class="fa-solid fa-trash me-2 text-danger"></i>
+                                                        Delete
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
-
                                 @include('products.show', ['product' => $product])
                                 @include('products.edit', ['product' => $product])
                                 @include('products.delete', ['product' => $product])
@@ -86,7 +110,5 @@
             </div>
         </div>
     </div>
-
     @include('products.create')
-
 @endsection

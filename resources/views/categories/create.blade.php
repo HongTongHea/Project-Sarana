@@ -1,6 +1,6 @@
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-0">
+        <div class="modal-content">
             <form action="{{ route('categories.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">

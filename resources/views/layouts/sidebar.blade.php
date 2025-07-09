@@ -50,10 +50,20 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('products.index') }}">
+                    <a data-bs-toggle="collapse" href="#base4">
                         <i class="fa-brands fa-product-hunt"></i>
-                        <p>Products</p>
+                        <p>Product Management</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse" id="base4">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('products.index') }}">
+                                    <span class="sub-item">Products</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('customers.index') }}">

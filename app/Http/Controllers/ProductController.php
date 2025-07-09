@@ -42,13 +42,14 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'stock_quantity' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
             'barcode' => 'nullable|string|max:255|unique:products',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
-            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:9999',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30',
         ]);
 
         $product = new Product($request->all());
@@ -90,13 +91,14 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
+            'brand' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
             'stock_quantity' => 'required|integer',
             'category_id' => 'sometimes|required|exists:categories,id',
             'barcode' => 'nullable|string|max:255|unique:products,barcode,' . $product->id,
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
-            'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:1999',
+            'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30',
         ]);
 
         $product->update($request->except('picture_url'));

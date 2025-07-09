@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('brand'); // Added brand column
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2); // Adjust precision and scale as needed
             $table->integer('stock_quantity');

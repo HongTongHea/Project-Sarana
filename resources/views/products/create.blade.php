@@ -1,5 +1,5 @@
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
@@ -9,16 +9,21 @@
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-8">
                             <div class="row">
                                 <div class="form-group col-12 col-md-6">
                                     <label for="name" class="form-label">Product Name</label>
                                     <input type="text" name="name" class="form-control" id="name"
                                         value="{{ old('name') }}" required placeholder="Enter product name">
+                                </div>
+                                <div class="form-group col-12 col-md-6">
+                                    <label for="brand" class="form-label">Brand Name</label>
+                                    <input type="text" name="brand" class="form-control" id="brand"
+                                        value="{{ old('brand') }}" required placeholder="Enter brand name">
                                 </div>
 
                                 <div class="form-group col-12 col-md-6">
@@ -33,14 +38,14 @@
                                         id="price" value="{{ old('price') }}" required placeholder="Enter price">
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-4">
                                     <label for="discount_percentage" class="form-label">Discount %</label>
                                     <input type="number" step="0.01" name="discount_percentage" class="form-control"
                                         id="discount_percentage" value="{{ old('discount_percentage', 0) }}"
                                         min="0" max="100" placeholder="Enter discount percentage">
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-4">
                                     <label for="category_id" class="form-label">Category</label>
                                     <select name="category_id" class="form-select form-control" id="category_id"
                                         required>
@@ -54,7 +59,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-4">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity') }}" required min="0"
@@ -68,16 +73,16 @@
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <div class="form-group col-12 col-md-12" style="margin-left: 14px">
+                        <div class="col-12 col-md-4 p-0 mt-md-0 mt-3">
+                            <div class="form-group">
                                 <label for="picture_url">Product Image:
                                     @if ($errors->has('picture_url'))
                                         <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>
                                     @endif
                                 </label>
 
-                                <input type="file" class="form-control d-none" name="picture_url" id="picture_url"
-                                    accept="image/*" onchange="showPreview(event)"
+                                <input type="file" class="form-control d-none" name="picture_url"
+                                    id="picture_url" accept="image/*" onchange="showPreview(event)"
                                     style="width: 350px; height: 350px; object-fit: cover; border: 1px solid #ccc; border-radius: 5px;">
 
                                 <div id="preview" onclick="triggerFileInput()"

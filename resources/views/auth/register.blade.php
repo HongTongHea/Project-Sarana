@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/assets/img/logo.jpg" type="image/x-icon" />
     <title>AngkorTech Computer | Register</title>
-    {{-- <link rel="icon" href="/assets/img/logostore2.png" type="image/x-icon"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -37,7 +37,16 @@
 
     .branding h1 {
         color: #1877f2;
-        font-size: 3rem;
+        font-size: 5rem;
+        width: 100%;
+        font-weight: bolder;
+        margin-bottom: 0;
+    }
+
+    .branding h2 {
+        color: #1877f2;
+        font-size: 2.5rem;
+        width: 100%;
         font-weight: bolder;
         margin-bottom: 0;
     }
@@ -88,10 +97,10 @@
 <body>
     <div class="main-container">
         <div class="branding me-5">
-            <h1>The best offer for your business</h1>
+            <h1>Welcome to </h1>
+            <h2>AngkorTech Computer</h2>
             <p class="mt-4">
-                Grow your business, connect with customers, and manage everything in one place —
-                all in a single platform designed for success.
+                Please sign up to create a new account. If you already have an account, you can sign in instead.
             </p>
         </div>
 
@@ -142,7 +151,7 @@
             </form>
 
             <div class="register-link mt-3">
-                Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Sign in</a>
+                Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Log in</a>
             </div>
         </div>
     </div>

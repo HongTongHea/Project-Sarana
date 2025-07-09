@@ -1,25 +1,22 @@
 <div class="modal fade" id="editModal{{ $employee->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content rounded-0">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                        height="40">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
-                        Clothes <span class="text-warning">Store </span> |
-                        <span class="text-dark"> Edit Employee</span>
+                    <h6 class="mt-3 ms-1 text-black text-uppercase" style="font-weight: 700; font-size: 16px">
+                        Edit Employee
                     </h6>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form action="{{ route('employees.update', $employee->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-7">
                             <div class="row">
                                 <div class="form-group col-12 col-md-6">
                                     <label for="name" class="form-label">Full Name</label>
@@ -50,11 +47,6 @@
                                 </div>
 
                                 <div class="form-group col-12 col-md-12">
-                                    <label for="address" class="form-label">Address</label>
-                                    <textarea name="address" class="form-control" id="address" rows="3" required>{{ old('address', $employee->address) }}</textarea>
-                                </div>
-
-                                <div class="form-group col-12 col-md-12">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" class="form-select form-control" id="status" required>
                                         <option value="1"
@@ -65,10 +57,16 @@
                                         </option>
                                     </select>
                                 </div>
+
+                                <div class="form-group col-12 col-md-12">
+                                    <label for="address" class="form-label">Address</label>
+                                    <textarea name="address" class="form-control" id="address" rows="3" required>{{ old('address', $employee->address) }}</textarea>
+                                </div>
+
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-5 p-0 mt-md-0 mt-3">
                             <div class="form-group col-12 col-md-12" style="margin-left: 14px">
                                 <label for="picture_url">Employee Photo:</label>
                                 @if ($errors->has('picture_url'))
@@ -83,7 +81,7 @@
                                 <!-- Image preview container -->
                                 <div id="edit_preview_{{ $employee->id }}"
                                     onclick="triggerEditFileInput({{ $employee->id }})"
-                                    style="cursor: pointer; width: 350px; height: 350px; display: flex; justify-content: center; align-items: center; border: 1px solid #ccc; border-radius: 5px;">
+                                    style="cursor: pointer; width: 430px; height: 350px; display: flex; justify-content: center; align-items: center; border: 1px solid #ccc; border-radius: 5px;">
                                     <img id="edit_imagePreview_{{ $employee->id }}"
                                         src="{{ $employee->picture_url ? asset('storage/' . $employee->picture_url) : '/assets/img/image.png' }}"
                                         alt="Image Preview" class="img-fluid"

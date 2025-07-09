@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Clothes Store | Customers Information')
+@section('title', 'AngkorTech Computer| Customers')
 
 @section('content')
     <div class="m-4 mt-4">
@@ -23,11 +23,10 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Gender</th>
+                                <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th>Address</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -35,39 +34,53 @@
                             @foreach ($customers as $customer)
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
-                                    <td>{{ $customer->first_name }}</td>
-                                    <td>{{ $customer->last_name }}</td>
-                                    <td>{{ $customer->gender }}</td>
+                                    <td>{{ $customer->name }}</td>
                                     <td>{{ $customer->email }}</td>
                                     <td>{{ $customer->phone }}</td>
+                                    <td>{{ $customer->address }}</td>
                                     <td>
 
-                                        @if (Auth::user()->role === 'admin')
-                                            <!-- Show Button -->
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#showModal{{ $customer->id }}"><i
-                                                    class="fa-solid fa-circle-info"></i></button>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton{{ $customer->id }}" data-bs-toggle="dropdown"
+                                                aria-expanded="false" title="Actions">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton{{ $customer->id }}">
+                                                <!-- View Details - Visible to both admin and staff -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#showModal{{ $customer->id }}">
+                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
+                                                        View Details
+                                                    </button>
+                                                </li>
 
-                                            <!-- Edit Button -->
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editModal{{ $customer->id }}"> <i
-                                                    class="fa-solid fa-pen-to-square"></i></button>
+                                                <!-- Edit - Visible to both admin and staff -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editModal{{ $customer->id }}">
+                                                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i>
+                                                        Edit
+                                                    </button>
+                                                </li>
 
-                                            <!-- Delete Button -->
-                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal{{ $customer->id }}"><i
-                                                    class="fa-solid fa-trash"></i></button>
-                                        @elseif (Auth::user()->role === 'staff')
-                                            <!-- Show Button -->
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#showModal{{ $customer->id }}"><i
-                                                    class="fa-solid fa-circle-info"></i></button>
-
-                                            <!-- Edit Button -->
-                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editModal{{ $customer->id }}"> <i
-                                                    class="fa-solid fa-pen-to-square"></i></button>
-                                        @endif
+                                                @if (Auth::user()->role === 'admin')
+                                                    <!-- Delete - Only visible to admin -->
+                                                    <li>
+                                                        <button class="dropdown-item d-flex align-items-center"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal{{ $customer->id }}">
+                                                            <i class="fa-solid fa-trash me-2 text-danger"></i>
+                                                            Delete
+                                                        </button>
+                                                    </li>
+                                                @endif
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
 

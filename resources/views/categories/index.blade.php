@@ -34,19 +34,36 @@
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $category->name }}</td>
                                     <td>{{ $category->description ?? 'N/A' }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#showModal{{ $category->id }}"><i
-                                                class="fa-solid fa-circle-info"></i></button>
+                                    <td class="text-nowrap text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton{{ $category->id }}" data-bs-toggle="dropdown"
+                                                aria-expanded="false" title="Actions">
+                                                <i class="fas fa-ellipsis-v fs-6"></i>
+                                            </button>
+                                            <ul class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton{{ $category->id }}">
+                                                <!-- Edit -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editModal{{ $category->id }}">
+                                                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i>
+                                                        Edit
+                                                    </button>
+                                                </li>
 
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editModal{{ $category->id }}">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal{{ $category->id }}">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
+                                                <!-- Delete -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ $category->id }}">
+                                                        <i class="fa-solid fa-trash me-2 text-danger"></i>
+                                                        Delete
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                                 <!-- Edit Category Modal -->

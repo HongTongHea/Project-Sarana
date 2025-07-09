@@ -79,27 +79,13 @@
         </div>
         <div class="row" id="categories-section">
             @foreach ($categories as $category)
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4">
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-3">
                     <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
                         data-category-id="{{ $category->id }}" style="cursor: pointer;">
-                        <div class="card-body text-center d-flex flex-column justify-content-center p-3">
-                            <div class="mb-2">
-                                @php
-                                    $categoryImages = [
-                                        'computer' => 'computer.png',
-                                        'accessories' => 'electronic-devices.png',
-                                        'laptop' => 'computer (1).png',
-                                    ];
-
-                                    $iconKeys = array_keys($categoryImages);
-                                    $imageIndex = $category->id % count($iconKeys);
-                                    $imageKey = $iconKeys[$imageIndex];
-                                    $imagePath = asset('assets/img/category-images/' . $categoryImages[$imageKey]);
-                                @endphp
-                                <img src="{{ $imagePath }}" alt="{{ $category->name }}" class="img-fluid"
-                                    style="height: 40px; width: auto;">
-                            </div>
-                            <h5 class="card-title fw-semibold mb-0 fs-6 text-truncate">{{ $category->name }}</h5>
+                        <div class="card-body text-center d-flex flex-column justify-content-center p-2">
+                            <h5 class="card-title fw-semibold mb-0 fs-6 text-uppercase">
+                                {{ $category->name }}
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -171,7 +157,8 @@
 
                                 <button class="btn btn-outline-primary btn-sm mt-2 w-100 add-to-cart-btn"
                                     data-id="{{ $product->id }}" data-name="{{ $product->name }}"
-                                    data-price="{{ $product->price }}" data-discount="{{ $product->discount_percentage }}"
+                                    data-price="{{ $product->price }}"
+                                    data-discount="{{ $product->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $product->picture_url) }}"
                                     data-stock="{{ $product->stock_quantity }}" data-barcode="{{ $product->barcode }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
@@ -212,8 +199,10 @@
                                         class="text-muted text-decoration-line-through small ms-2"></span>
                                     <span id="modalProductDiscount" class="badge bg-danger ms-2"></span>
                                 </p>
-                                <p class="mb-1 small" id="modalProductBarcode"></p>
+
                                 <p class="mb-1 small stock-status"></p>
+
+
 
                                 <!-- Quantity Selection -->
                                 <div class="mb-3">

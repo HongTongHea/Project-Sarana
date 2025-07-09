@@ -10,6 +10,8 @@
             <ul class="navbar-nav d-flex ms-auto me-auto fw-medium">
                 <li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">LAPTOP</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">PC</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">ACCESSORIES</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">ASUS</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">MSI</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">APPLE</a></li>
@@ -25,7 +27,7 @@
 
             </div>
             @guest
-               <a href="{{ route('login') }}" class="btn btn-primary me-2">
+                <a href="{{ route('login') }}" class="btn btn-primary me-2">
                     <i class="fas fa-sign-in-alt me-1"></i> Sign In
                 </a>
                 <a href="{{ route('register') }}" class="btn btn-primary">
