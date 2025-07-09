@@ -8,8 +8,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav d-flex ms-auto me-auto fw-medium">
-                <li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">LAPTOP</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('homepage.index') }}">HOME</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">LAPTOP</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">PC</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">ACCESSORIES</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">ASUS</a></li>

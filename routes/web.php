@@ -16,9 +16,11 @@ use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductpageController;
 
 // Public Routes
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
+Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
 
 // Authentication Routes (guest only)
 Route::middleware('guest')->group(function () {

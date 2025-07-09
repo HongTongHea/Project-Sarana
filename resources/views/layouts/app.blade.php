@@ -73,7 +73,7 @@
                 <div class="text-center">
                     <h2 class="text-danger">404 | Page Not Found</h2>
                     <p class="mb-4">You do not have permission to access this page.</p>
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Go Back to Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Go Back </a>
                 </div>
             </div>
         @endif
