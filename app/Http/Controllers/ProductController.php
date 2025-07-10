@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Accessory;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Stock;
@@ -49,7 +50,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'barcode' => 'nullable|string|max:255|unique:products',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
-            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30000',
         ]);
 
         $product = new Product($request->all());
@@ -60,15 +61,11 @@ class ProductController extends Controller
 
         $product->save();
 
-        // Auto-insert stock record
-        $existingStock = $product->stocks()->where('type', 'initial')->first();
-
-        if (!$existingStock) {
-            $product->stocks()->create([
-                'quantity' => $product->stock_quantity,
-                'type' => 'initial',
-            ]);
-        }
+        // Create initial stock record using polymorphic relationship
+        $product->stocks()->create([
+            'quantity' => $product->stock_quantity,
+            'type' => 'initial',
+        ]);
 
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -98,7 +95,7 @@ class ProductController extends Controller
             'category_id' => 'sometimes|required|exists:categories,id',
             'barcode' => 'nullable|string|max:255|unique:products,barcode,' . $product->id,
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
-            'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30',
+            'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30000',
         ]);
 
         $product->update($request->except('picture_url'));
@@ -111,12 +108,15 @@ class ProductController extends Controller
             $product->save();
         }
 
-        // Update stock record
+        // Update or create stock record using polymorphic relationship
         $product->stocks()->updateOrCreate(
-            ['product_id' => $product->id],
             [
-                'quantity' => $request->stock_quantity,
-                'type' => 'update',
+                'stockable_id' => $product->id,
+                'stockable_type' => Product::class,
+                'type' => 'update'
+            ],
+            [
+                'quantity' => $request->stock_quantity
             ]
         );
 
@@ -127,6 +127,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        // Delete associated stock records
+        $product->stocks()->delete();
+
         if ($product->picture_url) {
             Storage::delete('public/' . $product->picture_url);
         }
@@ -135,4 +138,25 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
+
+    // Additional method to handle stock for accessories
+    // public function updateAccessoryStock(Request $request, Accessory $accessory)
+    // {
+    //     $request->validate([
+    //         'stock_quantity' => 'required|integer',
+    //     ]);
+
+    //     $accessory->stocks()->updateOrCreate(
+    //         [
+    //             'stockable_id' => $accessory->id,
+    //             'stockable_type' => Accessory::class,
+    //             'type' => 'update'
+    //         ],
+    //         [
+    //             'quantity' => $request->stock_quantity
+    //         ]
+    //     );
+
+    //     return back()->with('success', 'Accessory stock updated successfully');
+    // }
 }

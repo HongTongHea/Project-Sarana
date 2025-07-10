@@ -59,7 +59,12 @@
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ route('products.index') }}">
-                                    <span class="sub-item">Products</span>
+                                    <span class="sub-item">Product Items</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('accessories.index') }}">
+                                    <span class="sub-item">Accessories</span>
                                 </a>
                             </li>
                         </ul>

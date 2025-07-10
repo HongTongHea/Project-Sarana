@@ -17,6 +17,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductpageController;
+use App\Http\Controllers\AccessoryController;
 
 // Public Routes
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
@@ -54,6 +55,7 @@ Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('stocks', StockController::class);
 Route::resource('products', ProductController::class);
+Route::resource('accessories', AccessoryController::class);
 Route::resource('orders', OrderController::class);
 Route::resource('sales', SaleController::class);
 

@@ -29,7 +29,7 @@ class Product extends Model
 
     public function stocks()
     {
-        return $this->hasMany(Stock::class);
+        return $this->morphMany(Stock::class, 'stockable');
     }
 
     public function orderItems()

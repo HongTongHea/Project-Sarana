@@ -10,12 +10,11 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('stockable_id');
+            $table->string('stockable_type'); // Will store 'App\Models\Product' or 'App\Models\Accessory'
             $table->integer('quantity');
-            $table->string('type')->default('initial'); // Optional: to track stock changes
+            $table->string('type');
             $table->timestamps();
-
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

@@ -1,26 +1,7 @@
 @extends('website.app')
 @section('content')
     <div class="container">
-        <div class="row mb-4">
-            <div class="col text-start">
-                <h3 class="fw-bold">Browse by Categories</h3>
-                <p class="text-muted">Browse our wide range of categories</p>
-            </div>
-        </div>
-        <div class="row" id="categories-section">
-            @foreach ($categories as $category)
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-3">
-                    <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
-                        data-category-id="{{ $category->id }}" style="cursor: pointer;">
-                        <div class="card-body text-center d-flex flex-column justify-content-center p-2">
-                            <h5 class="card-title fw-semibold mb-0 fs-6 text-uppercase">
-                                {{ $category->name }}
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+
         <!-- Products Section -->
         <section class="mb-5" id="products-section">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -44,7 +25,7 @@
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
                                 <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
-                                    class="card-img-top img-fluid product-image">
+                                    class="card-img-top img-fluid product-image mt-2">
 
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
@@ -56,9 +37,9 @@
                             <div class="card-body p-2">
                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                     @if ($product->discount_percentage > 0)
-                                        <span class="text-danger fw-bold me-2">
+                                        <span class="text-danger fw-bold me-1">
                                             ${{ number_format($product->price - ($product->price * $product->discount_percentage) / 100, 2) }}
-                                            <span class="text-muted text-decoration-line-through small">
+                                            <br><span class="text-muted text-decoration-line-through small">
                                                 ${{ number_format($product->price, 2) }}
                                             </span>
                                         </span>
@@ -71,7 +52,7 @@
                                         class="mb-1  small {{ $product->stock_quantity > 0 ? 'text-warning' : 'text-danger' }}">
                                         {!! $product->stock_quantity > 0
                                             ? '<i class="fas fa-check-circle me-1"></i>In stock'
-                                            : '<i class="fas fa-times-circle me-1"></i>Out of stock' !!}
+                                            : '<i class="fas fa-times-circle me-1"></i>Out stock' !!}
                                     </p>
                                 </div>
 

@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             stockStatusElement.className = "mb-1 small text-danger";
             stockStatusElement.innerHTML =
-                '<i class="fas fa-times-circle me-1"></i>Out of stock';
+                '<i class="fas fa-times-circle me-1"></i>Out stock';
         }
 
         addToCartModal.show();
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const quantity = parseInt(productQty.value);
 
             if (currentProduct.stock <= 0) {
-                alert("This product is out of stock!");
+                alert("This product is out stock!");
                 return;
             }
 

@@ -10,13 +10,14 @@ class Stock extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id',
+        'stockable_id',
+        'stockable_type',
         'quantity',
         'type',
     ];
 
-    public function product()
+    public function stockable()
     {
-        return $this->belongsTo(Product::class);
+        return $this->morphTo();
     }
 }

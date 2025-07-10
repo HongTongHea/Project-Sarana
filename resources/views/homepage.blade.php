@@ -114,7 +114,7 @@
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
                                 <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
-                                    class="card-img-top img-fluid product-image">
+                                    class="card-img-top img-fluid product-image mt-2">
 
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
@@ -126,9 +126,9 @@
                             <div class="card-body p-2">
                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                     @if ($product->discount_percentage > 0)
-                                        <span class="text-danger fw-bold me-2">
+                                        <span class="text-danger fw-bold me-1">
                                             ${{ number_format($product->price - ($product->price * $product->discount_percentage) / 100, 2) }}
-                                            <span class="text-muted text-decoration-line-through small">
+                                            <br><span class="text-muted text-decoration-line-through small">
                                                 ${{ number_format($product->price, 2) }}
                                             </span>
                                         </span>
@@ -141,7 +141,7 @@
                                         class="mb-1  small {{ $product->stock_quantity > 0 ? 'text-warning' : 'text-danger' }}">
                                         {!! $product->stock_quantity > 0
                                             ? '<i class="fas fa-check-circle me-1"></i>In stock'
-                                            : '<i class="fas fa-times-circle me-1"></i>Out of stock' !!}
+                                            : '<i class="fas fa-times-circle me-1"></i>Out stock' !!}
                                     </p>
                                 </div>
 
