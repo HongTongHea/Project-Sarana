@@ -4,7 +4,7 @@
 
         </nav>
         <div class="copyright">
-            @COPYRIGHT 2025 BY ANGKOR TECH COMPUTOR <i class="fa fa-heart heart text-danger"></i>
+            @COPYRIGHT 2025 BY ANGKOR TECH COMPUTOR
         </div>
         <div></div>
     </div>

@@ -25,54 +25,57 @@
                 </button>
                 <div class="vr" style="height: 30px; width: 2px; margin-right: 10px; margin-top: 5px"></div>
 
-            </div>
-            @guest
-                <a href="{{ route('login') }}" class="btn btn-primary me-2">
-                    <i class="fas fa-sign-in-alt me-1"></i> Sign In
-                </a>
-                <a href="{{ route('register') }}" class="btn btn-primary">
-                    <i class="fas fa-user-plus me-1"></i> Sign Up
-                </a>
-            @endguest
 
-            @auth
-                <div class="dropdown">
-                    <a href="#" class="dropdown-toggle-start d-flex align-items-center text-decoration-none"
-                        id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="me-2 d-none d-lg-inline">{{ Auth::user()->name }}</span>
-                        @if (Auth::user()->picture_url)
-                            <img src="{{ Storage::url(Auth::user()->picture_url) }}" alt="Profile Picture"
-                                class="avatar-img rounded-5" width="40" height="40" style="object-fit: cover;">
-                        @else
-                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-2"
-                                style="width: 32px; height: 32px;">
-                                <i class="fas fa-user text-white"></i>
-                            </div>
-                        @endif
+                @guest
+                    <a href="{{ route('login') }}" class="btn btn-primary me-2">
+                        <i class="fas fa-sign-in-alt me-1"></i> Sign In
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="fas fa-user me-2"></i>
-                                Profile</a></li>
-                        @if (Auth::user()->role === 'admin')
-                            <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i
-                                        class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
-                        @endif
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-sign-out-alt me-2"></i> Logout
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            @endauth
+                    <a href="{{ route('register') }}" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-1"></i> Sign Up
+                    </a>
+                @endguest
+
+                @auth
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle-start d-flex align-items-center text-decoration-none"
+                            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="p-2 d-none d-lg-inline">{{ Auth::user()->name }}</span>
+                            @if (Auth::user()->picture_url)
+                                <img src="{{ Storage::url(Auth::user()->picture_url) }}" alt="Profile Picture"
+                                    class="avatar-img rounded-5" width="40" height="40" style="object-fit: cover;">
+                            @else
+                                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center p-2"
+                                    style="width: 32px; height: 32px;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                            @endif
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="fas fa-user me-2"></i>
+                                    Profile</a></li>
+                            @if (Auth::user()->role === 'admin')
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i
+                                            class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                            @endif
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @endauth
+            </div>
         </div>
+    </div>
     </div>
     </div>
 </nav>

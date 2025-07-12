@@ -31,8 +31,8 @@
 
     .branding {
         flex: 1;
-        padding-right: 32px;
         text-align: left;
+        width: 100%;
     }
 
     .branding h1 {
@@ -54,7 +54,8 @@
     .branding p {
         font-size: 1.5rem;
         line-height: 1.3;
-        max-width: 500px;
+        width: 100%;
+        /* max-width: 500px; */
     }
 
     .login-card {
@@ -80,6 +81,11 @@
         background-color: #145bd1;
     }
 
+    .btn-social {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
     .register-link {
         margin-top: 15px;
         font-size: 0.9rem;
@@ -92,66 +98,106 @@
         transform: translateY(-50%);
         color: #999;
     }
+
+    @media (max-width: 1080px) {
+
+        .branding h1 {
+            font-size: 4rem;
+        }
+
+        .branding h2 {
+            font-size: 2rem;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+
+        .branding {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .branding h1 {
+            font-size: 3rem;
+        }
+
+        .branding h2 {
+            font-size: 1.5rem;
+        }
+
+        .branding p {
+            font-size: 1.2rem;
+        }
+
+        .login-card {
+            padding: 20px;
+        }
+    }
 </style>
 
 <body>
     <div class="main-container">
-        <div class="branding me-5">
-            <h1>Welcome to </h1>
-            <h2>AngkorTech Computer</h2>
-            <p class="mt-4">
-                Please sign up to create a new account. If you already have an account, you can sign in instead.
-            </p>
-        </div>
+        <div class="row align-items-center">
+            <div class="branding  col-12 col-md-6 text-center text-md-start justify-content-center">
+                <h1>Welcome to </h1>
+                <h2>AngkorTech Computer</h2>
+                <p class="mt-4">
+                    Please sign up to create a new account. If you already have an account, you can sign in instead.
+                </p>
+            </div>
+            <div class="col-12 col-md-6 text-start d-flex justify-content-center">
+                <div class="login-card text-center">
+                    <form action="{{ route('register') }}" method="POST" class="text-start position-relative">
+                        @csrf
 
-        <div class="login-card text-center">
-            <form action="{{ route('register') }}" method="POST" class="text-start position-relative">
-                @csrf
+                        @if ($errors->any())
+                            <div class="text-danger mb-2">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-                @if ($errors->any())
-                    <div class="text-danger mb-2">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                        <div class="mb-3 position-relative">
+                            <input type="text" class="form-control" id="name" name="name"
+                                placeholder="Username" required>
+                            <i class="fa-solid fa-user icon"></i>
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                required>
+                            <i class="fa-solid fa-envelope icon"></i>
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Password" required>
+                            <i class="fa-solid fa-lock icon toggle-password" data-target="password"></i>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="password" class="form-control" id="password_confirmation"
+                                name="password_confirmation" placeholder="Confirm Password" required>
+                            <i class="fa-solid fa-lock icon toggle-password" data-target="password_confirmation"></i>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Register</button>
+
+                       <div class=" d-flex justify-content-between mb-3 mt-2">
+                            <a href="http://localhost:8000/auth/google/redirect" class="btn btn-dark btn-social fw-bold"><img
+                                    src="assets/img/logo-google.png" alt="" width="20" height="20">
+                                Google</a>
+
+                        </div>
+                    </form>
+
+                    <div class="register-link mt-3">
+                        Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Log in</a>
                     </div>
-                @endif
-
-                <div class="mb-3 position-relative">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Username"
-                        required>
-                    <i class="fa-solid fa-user icon"></i>
                 </div>
-
-                <div class="mb-3 position-relative">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                        required>
-                    <i class="fa-solid fa-envelope icon"></i>
-                </div>
-
-                <div class="mb-3 position-relative">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                        required>
-                    <i class="fa-solid fa-lock icon toggle-password" data-target="password"></i>
-                </div>
-                <div class="mb-3 position-relative">
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                        placeholder="Confirm Password" required>
-                    <i class="fa-solid fa-lock icon toggle-password" data-target="password_confirmation"></i>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100 fw-bold">Register</button>
-
-                <div class="d-flex justify-content-between mt-2 mb-3">
-                    <a href="http://localhost:8000/auth/google/redirect" class="btn btn-danger w-100 btn-social">
-                        <i class="fab fa-google"></i> Google
-                    </a>
-                </div>
-            </form>
-
-            <div class="register-link mt-3">
-                Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Log in</a>
             </div>
         </div>
     </div>

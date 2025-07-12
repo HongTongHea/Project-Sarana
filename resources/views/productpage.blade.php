@@ -1,9 +1,11 @@
 @extends('website.app')
 @section('content')
     <div class="container">
+        <!-- Add this right after the opening <div class="container"> -->
 
         <!-- Products Section -->
         <section class="mb-5" id="products-section">
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="row mb-2">
                     <div class="col text-start">
@@ -12,8 +14,23 @@
                     </div>
                 </div>
                 <div class="text-start"></div>
-                <button class="btn btn-outline-primary btn-sm" id="see-all-btn">See All</button>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="input-group ">
+                        <input type="text" id="productSearch" class="form-control" placeholder="Search products...">
+                        <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm ms-2" id="see-all-btn">See All</button>
+                    </div>
+                </div>
+
             </div>
+            <div class="row mb-4">
+                <div class="col-md-6">
+
+                </div>
+            </div>
+
             <div class="row" id="products-container">
                 @foreach ($products as $product)
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4 product-item"
@@ -39,31 +56,27 @@
                                     @if ($product->discount_percentage > 0)
                                         <span class="text-danger fw-bold me-1">
                                             ${{ number_format($product->price - ($product->price * $product->discount_percentage) / 100, 2) }}
-                                            <br><span class="text-muted text-decoration-line-through small">
-                                                ${{ number_format($product->price, 2) }}
-                                            </span>
+                                        </span>
+                                        <span class="text-muted text-decoration-line-through small">
+                                            ${{ number_format($product->price, 2) }}
                                         </span>
                                     @else
                                         <span class="text-dark fw-bold">
                                             ${{ number_format($product->price, 2) }}
                                         </span>
                                     @endif
-                                    <p
-                                        class="mb-1  small {{ $product->stock_quantity > 0 ? 'text-warning' : 'text-danger' }}">
-                                        {!! $product->stock_quantity > 0
-                                            ? '<i class="fas fa-check-circle me-1"></i>In stock'
-                                            : '<i class="fas fa-times-circle me-1"></i>Out stock' !!}
-                                    </p>
+
                                 </div>
+                                <p class="mb-1  small {{ $product->stock_quantity > 0 ? 'text-warning' : 'text-danger' }}">
+                                    {!! $product->stock_quantity > 0
+                                        ? '<i class="fas fa-check-circle me-1"></i>In stock'
+                                        : '<i class="fas fa-times-circle me-1"></i>Out stock' !!}
+                                </p>
 
                                 <div class="d-flex flex-column">
                                     <p class="mb-1 fw-semibold">{{ $product->name }}</p>
-                                    {{-- <p class="mb-0 text-muted small">
-                                        <i class="fas fa-barcode me-1"></i>
-                                        {{ $product->barcode }}
-                                    </p> --}}
 
-                                    <p class="mb-0 text-muted small">{{ $product->description }}</p>
+                                    <p class="mb-0 text-muted small d-none">{{ $product->description }}</p>
                                 </div>
 
                                 <button class="btn btn-outline-primary btn-sm mt-2 w-100 add-to-cart-btn"
@@ -111,11 +124,16 @@
 
                                 <p class="mb-1 small stock-status"></p>
 
+                                <!-- Product Description -->
+                                <div class="mb-3">
+                                    <h6 class="fw-semibold">Detail</h6>
+                                    <p id="modalProductDescription" class="text-muted small"></p>
+                                </div>
 
 
                                 <!-- Quantity Selection -->
                                 <div class="mb-3">
-                                    <label class="form-label d-block">Quantity</label>
+                                    <label class="form-label d-block fw-semibold">Quantity</label>
                                     <div class="input-group input-group-sm w-50">
                                         <button class="btn btn-outline-secondary" type="button" id="decreaseQty">
                                             <i class="bi bi-dash">-</i>

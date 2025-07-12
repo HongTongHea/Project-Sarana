@@ -29,30 +29,8 @@
                     <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
                 </div>
             </div>
-            <div class="slide slide-4"
-                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/MacBook-Pro-2021.png');">
-                <div class="slide-content">
-                    <h1 class="display-4 fw-bold">Summer Accessories</h1>
-                    <p class="lead">Complete your look with our stylish accessories</p>
-                    <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
-                </div>
-            </div>
-            <div class="slide slide-5"
-                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/mac-gaming.jpg');">
-                <div class="slide-content">
-                    <h1 class="display-4 fw-bold">Summer Accessories</h1>
-                    <p class="lead">Complete your look with our stylish accessories</p>
-                    <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
-                </div>
-            </div>
-            <div class="slide slide-6"
-                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/macbook.jpg');">
-                <div class="slide-content">
-                    <h1 class="display-4 fw-bold">Summer Accessories</h1>
-                    <p class="lead">Complete your look with our stylish accessories</p>
-                    <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
-                </div>
-            </div>
+
+
 
             <div class="slide-nav">
                 <button class="slide-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -63,9 +41,6 @@
                 <div class="indicator active" data-slide="0"></div>
                 <div class="indicator" data-slide="1"></div>
                 <div class="indicator" data-slide="2"></div>
-                <div class="indicator" data-slide="3"></div>
-                <div class="indicator" data-slide="4"></div>
-                <div class="indicator" data-slide="5"></div>
             </div>
         </div>
     </section>
@@ -78,7 +53,10 @@
             </div>
         </div>
         <div class="row" id="categories-section">
-            @foreach ($categories as $category)
+            @foreach ($categories as $index => $category)
+                @if ($index >= 5)
+                    @break
+                @endif
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-3">
                     <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
                         data-category-id="{{ $category->id }}" style="cursor: pointer;">
@@ -104,7 +82,10 @@
                 <button class="btn btn-outline-primary btn-sm" id="see-all-btn">See All</button>
             </div>
             <div class="row" id="products-container">
-                @foreach ($products as $product)
+                @foreach ($products as $index => $product)
+                    @if ($index >= 10)
+                        @break
+                    @endif
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">
                         <div class="card border-0 position-relative product-card">
@@ -128,37 +109,32 @@
                                     @if ($product->discount_percentage > 0)
                                         <span class="text-danger fw-bold me-1">
                                             ${{ number_format($product->price - ($product->price * $product->discount_percentage) / 100, 2) }}
-                                            <br><span class="text-muted text-decoration-line-through small">
-                                                ${{ number_format($product->price, 2) }}
-                                            </span>
+                                        </span>
+                                        <span class="text-muted text-decoration-line-through small">
+                                            ${{ number_format($product->price, 2) }}
                                         </span>
                                     @else
                                         <span class="text-dark fw-bold">
                                             ${{ number_format($product->price, 2) }}
                                         </span>
                                     @endif
-                                    <p
-                                        class="mb-1  small {{ $product->stock_quantity > 0 ? 'text-warning' : 'text-danger' }}">
-                                        {!! $product->stock_quantity > 0
-                                            ? '<i class="fas fa-check-circle me-1"></i>In stock'
-                                            : '<i class="fas fa-times-circle me-1"></i>Out stock' !!}
-                                    </p>
+
                                 </div>
+                                <p class="mb-1  small {{ $product->stock_quantity > 0 ? 'text-warning' : 'text-danger' }}">
+                                    {!! $product->stock_quantity > 0
+                                        ? '<i class="fas fa-check-circle me-1"></i>In stock'
+                                        : '<i class="fas fa-times-circle me-1"></i>Out stock' !!}
+                                </p>
 
                                 <div class="d-flex flex-column">
                                     <p class="mb-1 fw-semibold">{{ $product->name }}</p>
-                                    {{-- <p class="mb-0 text-muted small">
-                                        <i class="fas fa-barcode me-1"></i>
-                                        {{ $product->barcode }}
-                                    </p> --}}
 
-                                    <p class="mb-0 text-muted small">{{ $product->description }}</p>
+                                    <p class="mb-0 text-muted small d-none">{{ $product->description }}</p>
                                 </div>
 
                                 <button class="btn btn-outline-primary btn-sm mt-2 w-100 add-to-cart-btn"
                                     data-id="{{ $product->id }}" data-name="{{ $product->name }}"
-                                    data-price="{{ $product->price }}"
-                                    data-discount="{{ $product->discount_percentage }}"
+                                    data-price="{{ $product->price }}" data-discount="{{ $product->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $product->picture_url) }}"
                                     data-stock="{{ $product->stock_quantity }}" data-barcode="{{ $product->barcode }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
@@ -172,8 +148,7 @@
         </section>
 
         <!-- Add to Cart Modal -->
-        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-light border-bottom">
@@ -202,11 +177,16 @@
 
                                 <p class="mb-1 small stock-status"></p>
 
+                                <!-- Product Description -->
+                                <div class="mb-3">
+                                    <h6 class="fw-semibold">Detail</h6>
+                                    <p id="modalProductDescription" class="text-muted small"></p>
+                                </div>
 
 
                                 <!-- Quantity Selection -->
                                 <div class="mb-3">
-                                    <label class="form-label d-block">Quantity</label>
+                                    <label class="form-label d-block fw-semibold">Quantity</label>
                                     <div class="input-group input-group-sm w-50">
                                         <button class="btn btn-outline-secondary" type="button" id="decreaseQty">
                                             <i class="bi bi-dash">-</i>

@@ -99,10 +99,15 @@ document.addEventListener("DOMContentLoaded", function () {
             discount: parseFloat(this.dataset.discount) || 0,
             img: this.dataset.img,
             stock: parseInt(this.dataset.stock),
+            description:
+                this.closest(".card-body").querySelector("p.text-muted.small")
+                    .textContent,
         };
 
         modalProductImg.src = currentProduct.img;
         modalProductName.textContent = currentProduct.name;
+        document.getElementById("modalProductDescription").textContent =
+            currentProduct.description;
 
         // Calculate discounted price
         const discountedPrice =

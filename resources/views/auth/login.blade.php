@@ -32,8 +32,8 @@
 
     .branding {
         flex: 1;
-        padding-right: 32px;
         text-align: left;
+        width: 100%;
     }
 
     .branding h1 {
@@ -55,7 +55,8 @@
     .branding p {
         font-size: 1.5rem;
         line-height: 1.3;
-        max-width: 500px;
+        width: 100%;
+        /* max-width: 500px; */
     }
 
     .login-card {
@@ -98,57 +99,100 @@
         transform: translateY(-50%);
         color: #999;
     }
+
+    @media (max-width: 1080px) {
+
+        .branding h1 {
+            font-size: 4rem;
+        }
+
+        .branding h2 {
+            font-size: 2rem;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+
+        .branding {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .branding h1 {
+            font-size: 3rem;
+        }
+
+        .branding h2 {
+            font-size: 1.5rem;
+        }
+
+        .branding p {
+            font-size: 1.2rem;
+        }
+
+        .login-card {
+            padding: 20px;
+        }
+    }
 </style>
 
 <body>
     <div class="main-container">
-        <div class="branding me-5">
-            <h1>Welcome to </h1>
-            <h2>AngkorTech Computer</h2>
-            <p class="mt-4">
-                Please sign in to continue. If you don't have an account, you can register for one.
-            </p>
-        </div>
-        <div class="login-card text-center">
-            <form action="{{ route('login') }}" method="POST" class="text-start position-relative">
-                @csrf
-
-                @if ($errors->has('email'))
-                    <div class="text-danger mb-2">{{ $errors->first('email') }}</div>
-                @elseif (session('success'))
-                    <div class="text-success mb-2">{{ session('success') }}</div>
-                @endif
-
-                <div class="mb-3 position-relative">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                        required>
-                    <i class="fa-solid fa-envelope icon"></i>
-                </div>
-
-                <div class="mb-3 position-relative">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                        required>
-                    <i class="fa-solid fa-lock icon" id="togglePassword"></i>
-                </div>
-
-                <div class="form-check mb-3">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Remember Me</label>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100 mb-2 fw-bold">Log in</button>
-
-                <div class=" d-flex justify-content-between mb-3 ">
-                    <a href="http://localhost:8000/auth/google/redirect" class="btn btn-danger btn-social"><i
-                            class="fab fa-google"></i>
-                        Google</a>
-
-                </div>
-            </form>
-            <div class="register-link">
-                Don’t have an account? <a href="{{ route('register') }}" class="text-primary fw-bold">Register</a>
+        <div class="row align-items-center">
+            <div class="branding  col-12 col-md-6 text-center text-md-start justify-content-center">
+                <h1>Welcome to </h1>
+                <h2>AngkorTech Computer</h2>
+                <p class="mt-4">
+                    Please sign in to continue. If you don't have an account, you can register for one.
+                </p>
             </div>
+            <div class="col-12 col-md-6 text-start d-flex justify-content-center">
+                <div class="login-card text-center p-4 ">
+                    <form action="{{ route('login') }}" method="POST" class="text-start position-relative">
+                        @csrf
+
+                        @if ($errors->has('email'))
+                            <div class="text-danger mb-2">{{ $errors->first('email') }}</div>
+                        @elseif (session('success'))
+                            <div class="text-success mb-2">{{ session('success') }}</div>
+                        @endif
+
+                        <div class="mb-3 position-relative">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                required>
+                            <i class="fa-solid fa-envelope icon"></i>
+                        </div>
+
+                        <div class="mb-3 position-relative">
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Password" required>
+                            <i class="fa-solid fa-lock icon" id="togglePassword"></i>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Remember Me</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-2 fw-bold">Log in</button>
+
+                        <div class=" d-flex justify-content-between mb-3 ">
+                            <a href="http://localhost:8000/auth/google/redirect" class="btn btn-dark btn-social fw-bold"><img
+                                    src="assets/img/logo-google.png" alt="" width="20" height="20">
+                                Google</a>
+
+                        </div>
+                    </form>
+                    <div class="register-link">
+                        Don’t have an account? <a href="{{ route('register') }}"
+                            class="text-primary fw-bold">Register</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
     </div>
 </body>
 <script>
