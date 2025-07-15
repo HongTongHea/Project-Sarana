@@ -4,7 +4,7 @@
 
         </nav>
         <div class="copyright">
-            @COPYRIGHT 2025 BY ANGKOR TECH COMPUTOR
+            @Copyright 2025 By AngkorTech Computer
         </div>
         <div></div>
     </div>

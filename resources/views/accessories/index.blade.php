@@ -26,7 +26,6 @@
                                 <th>Brand</th>
                                 <th>Discount</th>
                                 <th>Price</th>
-                                <th width="25%">Description</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -55,7 +54,6 @@
                                     <td>{{ $accessory->discount_percentage ? $accessory->discount_percentage . '%' : 'None' }}
                                     </td>
                                     <td>${{ number_format($accessory->price, 2) }}</td>
-                                    <td>{{ $accessory->description ?? 'N/A' }}</td>
                                     <td class="text-nowrap text-center">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"

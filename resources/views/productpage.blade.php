@@ -1,7 +1,29 @@
 @extends('website.app')
 @section('content')
     <div class="container">
-        <!-- Add this right after the opening <div class="container"> -->
+        <div class="row mb-4">
+            <div class="col text-start">
+                <h3 class="fw-bold">Browse by Categories</h3>
+                <p class="text-muted">Browse our wide range of categories</p>
+            </div>
+        </div>
+        <div class="row" id="categories-section">
+            @foreach ($categories as $index => $category)
+                @if ($index >= 5)
+                    @break
+                @endif
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-3">
+                    <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
+                        data-category-id="{{ $category->id }}" style="cursor: pointer;">
+                        <div class="card-body text-center d-flex flex-column justify-content-center p-2">
+                            <h5 class="card-title fw-semibold mb-0 fs-6 text-uppercase">
+                                {{ $category->name }}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
         <!-- Products Section -->
         <section class="mb-5" id="products-section">
@@ -24,11 +46,6 @@
                     </div>
                 </div>
 
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-6">
-
-                </div>
             </div>
 
             <div class="row" id="products-container">

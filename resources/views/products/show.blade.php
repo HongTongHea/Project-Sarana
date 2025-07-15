@@ -59,11 +59,13 @@
                                 <strong><i class="fa-solid fa-boxes-stacked me-2"></i> Stock Quantity:</strong>
                                 <span class="text-muted">{{ $product->stock_quantity }}</span>
                             </h4>
-                            <h4 class="mb-3">
-                                <strong><i class="fa-solid fa-file-lines me-2"></i> Description:</strong>
-                                <span class="text-muted">{{ $product->description ?? 'N/A' }}</span>
-                            </h4>
                         </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="mb-3">
+                            <strong><i class="fa-solid fa-info-circle me-2"></i> Details:</strong>
+                            <span class="text-muted">{{ $product->description ?? 'No description available' }}</span>
+                        </h4>
                     </div>
                 </div>
                 <div class="modal-footer">

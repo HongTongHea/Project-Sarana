@@ -12,9 +12,8 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">LAPTOP</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">PC</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">ACCESSORIES</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">ASUS</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">MSI</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">APPLE</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">CONTACT US</a></li>
             </ul>
             <div class="d-flex align-items-center">
                 <button class="btn btn-outline-dark me-3" type="button" data-bs-toggle="offcanvas"
