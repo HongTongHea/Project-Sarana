@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Clothes Store | Current Stock Levels')
+@section('title', 'AngkorTech Computer | Current Stock Levels')
 
 @section('content')
     <div class="m-4 mt-4">

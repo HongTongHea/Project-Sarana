@@ -6,11 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-    protected $fillable = ['order_id', 'product_id', 'quantity', 'price', 'total'];
+    protected $fillable = [
+        'order_id',
+        'item_type', // For polymorphic relationship (Product or Accessory)
+        'item_id',   // For polymorphic relationship (product_id or accessory_id)
+        'quantity',
+        'price',
+        'discount_percentage',
+        'discounted_price',
+        'total'
+    ];
 
+    // Polymorphic relationship
+    public function item()
+    {
+        return $this->morphTo();
+    }
+
+    // For backward compatibility or easy access
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->morphTo('item', Product::class, 'item_type', 'item_id');
+    }
+
+    public function accessory()
+    {
+        return $this->morphTo('item', Accessory::class, 'item_type', 'item_id');
     }
 
     public function order()

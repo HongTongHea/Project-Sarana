@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'POS System')
+@section('title', 'Angkor Tech Computer | POS System ')
 
 @section('content')
     @if ($errors->any())
@@ -15,14 +15,15 @@
     <div class="container-fluid mt-3">
         <div class="row">
             <!-- Order Column -->
-            <div class="col-md-7">
-                <div class="card rounded-0">
-                    <div class="card-body">
-                        <form action="{{ route('orders.store') }}" method="POST" id="order-form">
+            <div class="col-md-8 mb-3">
+                <div class="card rounded-0 h-100 "> <!-- Added h-100 here -->
+                    <div class="card-body d-flex flex-column" style="height: 100vh;">
+                        <!-- Changed to flex column layout -->
+                        <form action="{{ route('orders.store') }}" method="POST" id="order-form"
+                            class="d-flex flex-column h-100"> <!-- Added flex classes -->
                             @csrf
 
                             <div class="form-group mb-3">
-
                                 <div class="input-group w-50">
                                     <span class="input-group-text" id="basic-addon1">
                                         <i class="fa-solid fa-users-line"></i>
@@ -31,20 +32,21 @@
                                         <option value="">Enter Customer Name</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}">
-                                                {{ $customer->first_name }} {{ $customer->last_name }}
+                                                {{ $customer->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
-
-                            <div class="table-responsive">
+                            <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
+                                <!-- Made table scrollable -->
                                 <table class="table table-bordered" id="order-items">
                                     <thead>
                                         <tr>
                                             <th>Item</th>
                                             <th>Price</th>
+                                            <th>Discount</th>
                                             <th>Qty</th>
                                             <th>Total</th>
                                             <th>Stock</th>
@@ -60,9 +62,9 @@
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="discount">Discount ($)</label>
-                                        <input type="number" name="discount" id="discount" class="form-control"
-                                            value="0" min="0" step="0.01">
+                                        <label for="additional_discount">Additional Discount ($)</label>
+                                        <input type="number" name="additional_discount" id="additional_discount"
+                                            class="form-control" value="0" min="0" step="0.01">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -81,12 +83,16 @@
                                         <span id="subtotal">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                        <strong>Tax:</strong>
-                                        <span id="tax">$0.00</span>
+                                        <strong>Item Discounts:</strong>
+                                        <span id="item-discounts">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                        <strong>Discount:</strong>
-                                        <span id="discount-display">$0.00</span>
+                                        <strong>Additional Discount:</strong>
+                                        <span id="additional-discount-display">$0.00</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Tax:</strong>
+                                        <span id="tax">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <strong>Total:</strong>
@@ -96,63 +102,153 @@
                             </div>
 
                             <input type="hidden" name="items" id="order-items-data" value="[]">
+                            <input type="hidden" name="item_types" id="order-item-types" value="[]">
 
-                            <div class="mt-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-danger me-2" id="clear-order">Clear Order</button>
-                                <button type="submit" class="btn btn-primary" id="submit-order">Complete Order</button>
+                            <div class="mt-auto pt-3"> <!-- Added mt-auto to push to bottom -->
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-danger me-2" id="clear-order">Clear Order</button>
+                                    <button type="submit" class="btn btn-primary" id="submit-order">Check Out</button>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <!-- Product Selection Column -->
-            <div class="col-md-5">
-                <div class="card rounded-0">
+            <div class="col-md-4 mb-3">
+                <div class="card rounded-0 h-100">
                     <div class="card-body">
-                        <div class="form-group mb-3">
-                            <div class="input-group">
-                                <span class="input-group-text" id="basic-addon1">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </span>
-                                <input type="text" id="product-search" class="form-control"
-                                    placeholder="Search products...">
-                            </div>
-                        </div>
+                        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="products-tab" data-bs-toggle="tab"
+                                    data-bs-target="#products" type="button" role="tab">Products</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="accessories-tab" data-bs-toggle="tab"
+                                    data-bs-target="#accessories" type="button" role="tab">Accessories</button>
+                            </li>
+                        </ul>
 
-
-                        <div id="product-results" class="list-group" style="max-height: 300px; overflow-y: auto;">
-                            @foreach ($products as $product)
-                                <a href="#" class="list-group-item list-group-item-action product-item"
-                                    data-id="{{ $product->id }}" data-name="{{ $product->name }}"
-                                    data-price="{{ $product->price }}" data-stock="{{ $product->stock_no }}"
-                                    data-stock-quantity="{{ $product->stock_quantity }}"
-                                    data-picture-url="{{ $product->picture_url ? asset('storage/' . $product->picture_url) : '' }}"
-                                    data-original-stock="{{ $product->stock_quantity }}">
-                                    <div class="d-flex align-items-center">
-                                        @if ($product->picture_url)
-                                            <img src="{{ asset('storage/' . $product->picture_url) }}"
-                                                alt="{{ $product->name }}" class="img-thumbnail me-3 rounded-0"
-                                                style="width: 60px; height: 60px; object-fit: cover;">
-                                        @else
-                                            <div class="img-thumbnail me-3 d-flex align-items-center justify-content-center"
-                                                style="width: 60px; height: 60px; background: #f0f0f0;">
-                                                <i class="fas fa-image text-muted"></i>
-                                            </div>
-                                        @endif
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex justify-content-between">
-                                                <strong>{{ $product->stock_no }}</strong>
-                                            </div>
-                                            <div>Name: {{ $product->name }}</div>
-                                            <span>Price: ${{ number_format($product->price, 2) }}</span><br>
-                                            <div class="badge bg-info mt-1 stock-badge"
-                                                data-product-id="{{ $product->id }}">
-                                                Stock: {{ $product->stock_quantity }}
-                                            </div>
-                                        </div>
+                        <div class="tab-content mt-3" id="productTabsContent">
+                            <div class="tab-pane fade show active" id="products" role="tabpanel">
+                                <div class="form-group mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                        </span>
+                                        <input type="text" id="product-search" class="form-control"
+                                            placeholder="Search products...">
                                     </div>
-                                </a>
-                            @endforeach
+                                </div>
+
+                                <div id="product-results" class="list-group"
+                                    style="max-height: 800px; overflow-y: auto;">
+                                    @foreach ($products as $product)
+                                        <a href="#" class="list-group-item list-group-item-action product-item"
+                                            data-id="{{ $product->id }}" data-name="{{ $product->name }}"
+                                            data-price="{{ $product->price }}" data-stock="{{ $product->stock_no }}"
+                                            data-stock-quantity="{{ $product->stock_quantity }}"
+                                            data-picture-url="{{ $product->picture_url ? asset('storage/' . $product->picture_url) : '' }}"
+                                            data-original-stock="{{ $product->stock_quantity }}"
+                                            data-discount-percentage="{{ $product->discount_percentage }}"
+                                            data-type="product">
+                                            <div class="d-flex align-items-center">
+                                                @if ($product->picture_url)
+                                                    <img src="{{ asset('storage/' . $product->picture_url) }}"
+                                                        alt="{{ $product->name }}" class="img-thumbnail me-3 rounded-0"
+                                                        style="width: 60px; height: 60px; object-fit: cover;">
+                                                @else
+                                                    <div class="img-thumbnail me-3 d-flex align-items-center justify-content-center"
+                                                        style="width: 60px; height: 60px; background: #f0f0f0;">
+                                                        <i class="fas fa-image text-muted"></i>
+                                                    </div>
+                                                @endif
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>Name: {{ $product->name }}</div>
+                                                        <strong>{{ $product->stock_no }}</strong>
+                                                        @if ($product->discount_percentage > 0)
+                                                            <span class="badge bg-success">
+                                                                {{ $product->discount_percentage }}% off</span>
+                                                        @endif
+                                                    </div>
+                                                    <span>Price: ${{ number_format($product->price, 2) }}</span><br>
+                                                    <span>
+                                                        @if ($product->discount_percentage > 0)
+                                                            <span class="text-success">Discounted:
+                                                                ${{ number_format($product->price * (1 - $product->discount_percentage / 100), 2) }}</span>
+                                                        @endif
+                                                    </span>
+
+                                                    <br>
+                                                    <div class="badge bg-info mt-1 stock-badge"
+                                                        data-product-id="{{ $product->id }}">
+                                                        Stock: {{ $product->stock_quantity }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="accessories" role="tabpanel">
+                                <div class="form-group mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                        </span>
+                                        <input type="text" id="accessory-search" class="form-control"
+                                            placeholder="Search accessories...">
+                                    </div>
+                                </div>
+
+                                <div id="accessory-results" class="list-group"
+                                    style="max-height: 800px; overflow-y: auto;">
+                                    @foreach ($accessories as $accessory)
+                                        <a href="#" class="list-group-item list-group-item-action accessory-item"
+                                            data-id="{{ $accessory->id }}" data-name="{{ $accessory->name }}"
+                                            data-price="{{ $accessory->price }}"
+                                            data-stock-quantity="{{ $accessory->stock_quantity }}"
+                                            data-picture-url="{{ $accessory->picture_url ? asset('storage/' . $accessory->picture_url) : '' }}"
+                                            data-original-stock="{{ $accessory->stock_quantity }}"
+                                            data-discount-percentage="{{ $accessory->discount_percentage }}"
+                                            data-type="accessory">
+                                            <div class="d-flex align-items-center">
+                                                @if ($accessory->picture_url)
+                                                    <img src="{{ asset('storage/' . $accessory->picture_url) }}"
+                                                        alt="{{ $accessory->name }}" class="img-thumbnail me-3 rounded-0"
+                                                        style="width: 60px; height: 60px; object-fit: cover;">
+                                                @else
+                                                    <div class="img-thumbnail me-3 d-flex align-items-center justify-content-center"
+                                                        style="width: 60px; height: 60px; background: #f0f0f0;">
+                                                        <i class="fas fa-image text-muted"></i>
+                                                    </div>
+                                                @endif
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div>Name: {{ $accessory->name }}</div>
+                                                        @if ($accessory->discount_percentage > 0)
+                                                            <span class="badge bg-success">
+                                                                {{ $accessory->discount_percentage }}% off</span>
+                                                        @endif
+                                                    </div>
+                                                    <span>Price: ${{ number_format($accessory->price, 2) }}</span><br>
+                                                    @if ($accessory->discount_percentage > 0)
+                                                        <span class="text-success">Discounted:
+                                                            ${{ number_format($accessory->price * (1 - $accessory->discount_percentage / 100), 2) }}</span>
+                                                    @endif
+                                                    <br>
+                                                    <div class="badge bg-info mt-1 stock-badge"
+                                                        data-accessory-id="{{ $accessory->id }}">
+                                                        Stock: {{ $accessory->stock_quantity }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -171,42 +267,64 @@
                 });
             });
 
-            // Add product to order
+            // Accessory search functionality
+            $('#accessory-search').on('input', function() {
+                const search = $(this).val().toLowerCase();
+                $('.accessory-item').each(function() {
+                    const text = $(this).text().toLowerCase();
+                    $(this).toggle(text.includes(search));
+                });
+            });
+
+            // Add product/accessory to order
             let orderItems = [];
 
-            $('.product-item').on('click', function(e) {
+            $(document).on('click', '.product-item, .accessory-item', function(e) {
                 e.preventDefault();
 
-                const productId = $(this).data('id');
-                const productName = $(this).data('name');
-                const productPrice = parseFloat($(this).data('price'));
-                const stockNo = $(this).data('stock');
+                const itemType = $(this).data('type'); // 'product' or 'accessory'
+                const itemId = $(this).data('id');
+                const itemName = $(this).data('name');
+                const itemPrice = parseFloat($(this).data('price'));
+                const stockNo = $(this).data('stock') || ''; // Accessories might not have stock no
                 const availableStock = parseInt($(this).data('stock-quantity'));
                 const pictureUrl = $(this).data('picture-url');
                 const originalStock = parseInt($(this).data('original-stock'));
+                const discountPercentage = parseFloat($(this).data('discount-percentage')) || 0;
 
-                // Check if product already exists in order
-                const existingItem = orderItems.find(item => item.product_id === productId);
+                // Calculate discounted price
+                const discountedPrice = discountPercentage > 0 ?
+                    itemPrice * (1 - discountPercentage / 100) :
+                    itemPrice;
+
+                // Check if item already exists in order
+                const existingItem = orderItems.find(item =>
+                    item.item_id === itemId && item.type === itemType
+                );
+
                 const requestedQty = existingItem ? existingItem.quantity + 1 : 1;
 
                 // Check stock availability
                 if (availableStock <= 0) {
-                    alert(`Not enough stock for ${productName}. Available: 0`);
+                    alert(`Not enough stock for ${itemName}. Available: 0`);
                     return;
                 }
 
                 if (existingItem) {
                     existingItem.quantity += 1;
-                    existingItem.total = existingItem.quantity * existingItem.price;
+                    existingItem.total = existingItem.quantity * existingItem.discountedPrice;
                     existingItem.availableStock = originalStock - existingItem.quantity;
                 } else {
                     orderItems.push({
-                        product_id: productId,
-                        name: productName,
+                        type: itemType,
+                        item_id: itemId,
+                        name: itemName,
                         stock_no: stockNo,
-                        price: productPrice,
+                        price: itemPrice,
+                        discountedPrice: discountedPrice,
+                        discountPercentage: discountPercentage,
                         quantity: 1,
-                        total: productPrice,
+                        total: discountedPrice,
                         availableStock: originalStock - 1,
                         picture_url: pictureUrl,
                         originalStock: originalStock
@@ -215,31 +333,38 @@
 
                 // Update stock display (subtract 1)
                 const newStock = originalStock - (existingItem ? existingItem.quantity : 1);
-                updateStockDisplay(productId, newStock);
+                updateStockDisplay(itemType, itemId, newStock);
 
                 updateOrderTable();
                 calculateTotals();
             });
 
-            // Update stock display in product list
-            function updateStockDisplay(productId, newStock) {
-                const badge = $(`.stock-badge[data-product-id="${productId}"]`);
+            // Update stock display in product/accessory list
+            function updateStockDisplay(itemType, itemId, newStock) {
+                const selector = itemType === 'product' ?
+                    `.stock-badge[data-product-id="${itemId}"]` :
+                    `.stock-badge[data-accessory-id="${itemId}"]`;
+
+                const badge = $(selector);
                 badge.text(`Stock: ${newStock}`);
 
-                // Update the data attribute for the product item
-                const productItem = $(`.product-item[data-id="${productId}"]`);
-                productItem.data('stock-quantity', newStock);
+                // Update the data attribute for the item
+                const itemElement = itemType === 'product' ?
+                    $(`.product-item[data-id="${itemId}"]`) :
+                    $(`.accessory-item[data-id="${itemId}"]`);
+
+                itemElement.data('stock-quantity', newStock);
 
                 // Change badge color if stock is low
                 if (newStock <= 0) {
                     badge.removeClass('bg-info').addClass('bg-danger');
-                    productItem.addClass('disabled').css('opacity', '0.6');
+                    itemElement.addClass('disabled').css('opacity', '0.6');
                 } else if (newStock <= 5) {
                     badge.removeClass('bg-info').addClass('bg-warning');
-                    productItem.removeClass('disabled').css('opacity', '1');
+                    itemElement.removeClass('disabled').css('opacity', '1');
                 } else {
                     badge.removeClass('bg-danger bg-warning').addClass('bg-info');
-                    productItem.removeClass('disabled').css('opacity', '1');
+                    itemElement.removeClass('disabled').css('opacity', '1');
                 }
             }
 
@@ -255,18 +380,27 @@
                               <i class="fas fa-image text-muted"></i>
                            </div>`;
 
+                    const discountBadge = item.discountPercentage > 0 ?
+                        `<span class="badge bg-success">${item.discountPercentage}% off</span>` :
+                        '';
+
                     const row = `
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
                                     ${imageHtml}
                                     <div>
-                                        <div><strong>${item.stock_no}</strong></div>
-                                        <div>${item.name}</div>
+                                        ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
+                                        <div>${item.name} ${discountBadge}</div>
+                                        <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
                                     </div>
                                 </div>
                             </td>
-                            <td>$${item.price.toFixed(2)}</td>
+                            <td>
+                                $${item.price.toFixed(2)}
+                                ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
+                            </td>
+                            <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
                             <td>
                                 <input type="number" class="form-control qty-input" 
                                        data-index="${index}" 
@@ -310,12 +444,12 @@
 
                     // Update item properties
                     item.quantity = newQty;
-                    item.total = newQty * item.price;
+                    item.total = newQty * item.discountedPrice;
                     item.availableStock = item.originalStock - newQty;
 
-                    // Update stock display in product list
+                    // Update stock display in product/accessory list
                     const newStock = item.originalStock - newQty;
-                    updateStockDisplay(item.product_id, newStock);
+                    updateStockDisplay(item.type, item.item_id, newStock);
 
                     updateOrderTable();
                     calculateTotals();
@@ -326,9 +460,9 @@
                     const index = $(this).data('index');
                     const item = orderItems[index];
 
-                    // Restore stock quantity in product list
-                    const restoredStock = item.originalStock - item.quantity + item.quantity;
-                    updateStockDisplay(item.product_id, restoredStock);
+                    // Restore stock quantity in product/accessory list
+                    const restoredStock = item.originalStock;
+                    updateStockDisplay(item.type, item.item_id, restoredStock);
 
                     orderItems.splice(index, 1);
                     updateOrderTable();
@@ -338,43 +472,54 @@
 
             // Calculate totals
             function calculateTotals() {
-                const subtotal = orderItems.reduce((sum, item) => sum + item.total, 0);
+                const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const discountedSubtotal = orderItems.reduce((sum, item) => sum + item.total, 0);
+                const itemDiscounts = subtotal - discountedSubtotal;
+
                 const taxRate = parseFloat($('#tax_rate').val()) || 0;
-                const discount = parseFloat($('#discount').val()) || 0;
-                const tax = subtotal * (taxRate / 100);
-                const total = subtotal + tax - discount;
+                const additionalDiscount = parseFloat($('#additional_discount').val()) || 0;
+                const tax = discountedSubtotal * (taxRate / 100);
+                const total = discountedSubtotal + tax - additionalDiscount;
 
                 $('#subtotal').text(`$${subtotal.toFixed(2)}`);
+                $('#item-discounts').text(`$${itemDiscounts.toFixed(2)}`);
+                $('#additional-discount-display').text(`$${additionalDiscount.toFixed(2)}`);
                 $('#tax').text(`$${tax.toFixed(2)}`);
-                $('#discount-display').text(`$${discount.toFixed(2)}`);
                 $('#total').text(`$${total.toFixed(2)}`);
 
-                // Update hidden field with properly formatted items data
+                // Update hidden fields with order data
                 const formattedItems = orderItems.map(item => ({
-                    product_id: item.product_id,
+                    type: item.type,
+                    item_id: item.item_id,
                     quantity: item.quantity,
-                    price: item.price
+                    price: item.price,
+                    discount_percentage: item.discountPercentage
                 }));
+
                 $('#order-items-data').val(JSON.stringify(formattedItems));
+
+                // Also store item types separately if needed
+                const itemTypes = orderItems.map(item => item.type);
+                $('#order-item-types').val(JSON.stringify(itemTypes));
             }
 
             // Clear order
             $('#clear-order').on('click', function() {
                 // Restore all stock quantities
                 orderItems.forEach(item => {
-                    updateStockDisplay(item.product_id, item.originalStock);
+                    updateStockDisplay(item.type, item.item_id, item.originalStock);
                 });
 
                 orderItems = [];
                 updateOrderTable();
                 calculateTotals();
                 $('#customer_id').val('');
-                $('#discount').val(0);
+                $('#additional_discount').val(0);
                 $('#tax_rate').val(12);
             });
 
             // Recalculate when tax or discount changes
-            $('#tax_rate, #discount').on('change', calculateTotals);
+            $('#tax_rate, #additional_discount').on('change', calculateTotals);
 
             // Handle form submission
             $('#order-form').on('submit', function(e) {

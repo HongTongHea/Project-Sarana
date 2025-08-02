@@ -11,9 +11,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <button class="btn btn-primary btn-sm mb-3 ml-3 rounded-3" data-bs-toggle="modal"
-                    data-bs-target="#createModal">
-                    <i class="fa-solid fa-circle-plus"></i> Add New
+                <button class="btn btn-primary btn-sm mb-3 ml-3" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="fas fa-plus"></i> Add New Product
                 </button>
                 <div class="table-responsive">
                     <table id="DataTable" class="table mt-3 table-hover table-striped">
@@ -27,7 +26,7 @@
                                 <th>Barcode</th>
                                 <th>Discount</th>
                                 <th>Price</th>
-                          
+
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>

@@ -95,7 +95,6 @@ class AuthController extends Controller
             ->header('Expires', '0');
     }
 
-
     public function register(Request $request)
     {
         $request->validate([
@@ -103,14 +102,15 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
+            'role' => 'sometimes|in:customer,admin' // Add this line
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'customer', // Default role for new users
-            'picture_url' => null, // Default picture URL
+            'role' => $request->role ?? 'customer', // Modified this line
+            'picture_url' => null,
         ]);
 
         return redirect()->route('login')->with('success', 'Registration successful.');

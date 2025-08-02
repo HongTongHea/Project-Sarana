@@ -11,9 +11,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <button class="btn btn-primary btn-sm mb-3 ml-3 rounded-3" data-bs-toggle="modal"
-                    data-bs-target="#createModal">
-                    <i class="fa-solid fa-circle-plus"></i> Add New
+                <button class="btn btn-primary btn-sm mb-3 ml-3" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="fas fa-plus"></i> Add New Accessories
                 </button>
                 <div class="table-responsive">
                     <table id="DataTable" class="table mt-3 table-hover table-striped">
@@ -84,21 +83,21 @@
                                                 </li>
 
                                                 <!-- Delete -->
-                                                {{-- <li>
+                                                <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#deleteModal{{ $accessory->id }}">
                                                         <i class="fa-solid fa-trash me-2 text-danger"></i>
                                                         Delete
                                                     </button>
-                                                </li> --}}
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
                                 </tr>
                                 {{-- @include('accessories.show', ['accessory' => $accessory]) --}}
                                 @include('accessories.edit', ['accessory' => $accessory])
-                                {{-- @include('accessories.delete', ['accessory' => $accessory]) --}}
+                                @include('accessories.delete', ['accessory' => $accessory])
                             @endforeach
                         </tbody>
                     </table>

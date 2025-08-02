@@ -11,7 +11,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('homepage.index') }}">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">LAPTOP</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">PC</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">ACCESSORIES</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('accessorypage.index') }}">ACCESSORIES</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">CONTACT US</a></li>
             </ul>

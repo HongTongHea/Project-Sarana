@@ -13,9 +13,9 @@
                 </div>
             </div>
             <div class="card-body">
-                <button type="button" class="btn btn-primary mb-3 ml-3 rounded-3 btn-sm" data-bs-toggle="modal"
+                <button type="button" class="btn btn-primary mb-3 ml-3  btn-sm" data-bs-toggle="modal"
                     data-bs-target="#createModal">
-                    <i class="fa-solid fa-circle-plus"></i> Add New
+                    <i class="fas fa-plus"></i> Add New Customer
                 </button>
 
                 <div class="table-responsive">

@@ -47,7 +47,7 @@
                                         min="0" max="100" placeholder="Enter discount percentage">
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-12">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity', $accessory->stock_quantity) }}" required

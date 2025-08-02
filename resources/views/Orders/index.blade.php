@@ -1,121 +1,66 @@
-<!-- resources/views/order_products/index.blade.php -->
-
 @extends('layouts.app')
 
-@section('title', 'Orders Data')
+@section('title', 'POS System | Orders')
 
 @section('content')
-    <div class="container mt-2" data-aos="fade-down" data-aos-duration="1000">
-        <h3 class="m-3">Orders Data</h3>
-        <div class="card">
-            <div class="card-body">
-                <div class="row m-2 align-items-center">
-                    <div class="col-8 p-0">
-
-                        <a href="{{ route('orders.create') }}" class="btn btn-primary btn-sm rounded-5"><i
-                                class="fa-solid fa-circle-plus"></i> New Order</a>
-                    </div>
-                    <div class="col-4">
-                        <div class="row align-items-center">
-                            <div class="input-group rounded-5">
-                                <input type="text" id="search" placeholder="Search ..."
-                                    class="form-control rounded-4 border position-relative" />
-                            </div>
-                        </div>
-                    </div>
+    <div class="container-fluid mt-3">
+        <div class="card rounded-0">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-semibold">Order History</h4>
                 </div>
+            </div>
+            <div class="card-body">
+                <a href="{{ route('orders.create') }}" class="btn btn-primary btn-sm mb-3 ml-3">
+                    <i class="fas fa-plus"></i> New Order
+                </a>
                 <div class="table-responsive">
-                    <table class="table table-sm table-hover mt-3 search-table">
-                        <thead class="table-warning">
+                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                        <thead class="thead-dark">
                             <tr>
-                                <th>No</th>
+                                <th>Order #</th>
                                 <th>Customer</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Subtotal</th>
+                                <th>Tax</th>
+                                <th>Discount</th>
+                                <th>Total</th>
                                 <th>Status</th>
-                                <th>Payment Status</th>
-                                <th>Products</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Total Price</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
+                        <tbody>
                             @foreach ($orders as $order)
                                 <tr>
-                                    <td>{{ $loop->index + 1 }}</td>
-                                    <td>{{ $order->customer->first_name . ' ' . $order->customer->last_name }}</td>
-                                    <td>{{ $order->status }}</td>
-                                    <td>{{ $order->payment_status }}</td>
-                                    {{-- <td>{{ $order->product->name }}</td> --}}
-                                    <td>{{ $order->quantity }}</td>
-                                    <td>{{ $order->price }}</td>
-                                    <td>{{ $order->total_price }}</td>
+                                    <td>ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                    <td>{{ $order->customer->name ?? 'Walk-in' }}</td>
+                                    <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
+                                    <td>{{ $order->items->count() }}</td>
+                                    <td>${{ number_format($order->subtotal, 2) }}</td>
+                                    <td>${{ number_format($order->tax_amount, 2) }}</td>
+                                    <td>${{ number_format($order->discount_amount, 2) }}</td>
+                                    <td>${{ number_format($order->total, 2) }}</td>
                                     <td>
-                                        <div class="dropdown align-items-center d-flex">
-
-                                            @if ($order->status == 'completed' && $order->payment_status == 'unpaid')
-                                                <a href="{{ route('payments.create', $order->id) }}"
-                                                    class="btn btn-sm btn-primary text-white rounded-5 ">Payment</a>
-                                            @endif
-
-                                            <button class="btn btn-warning rounded-5 btn-sm dropdown-toggle ms-1"
-                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Action
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                @if (Auth::user()->role === 'admin')
-                                                    <li>
-                                                        <a href="{{ route('orders.show', $order->id) }}"
-                                                            class="dropdown-item">View Payment</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ route('orders.edit', $order->id) }}"
-                                                            class="dropdown-item">Edit</a>
-                                                    </li>
-                                                    <li>
-                                                        <form action="{{ route('orders.destroy', $order->id) }}"
-                                                            method="POST" style="display:inline-block;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item"
-                                                                onclick="return confirm('Are you sure?')">Delete</button>
-                                                        </form>
-                                                    </li>
-                                                @elseif (Auth::user()->role === 'staff')
-                                                    <li>
-                                                        <a href="{{ route('orders.show', $order->id) }}"
-                                                            class="dropdown-item">View Payment</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ route('orders.edit', $order->id) }}"
-                                                            class="dropdown-item">Edit</a>
-                                                    </li>
-                                                @elseif (Auth::user()->role === 'customer')
-                                                    <li>
-                                                        <a href="{{ route('orders.show', $order->id) }}"
-                                                            class="dropdown-item">View Payment</a>
-                                                    </li>
-                                                @endif
-                                            </ul>
-
-                                        </div>
-
+                                        <span
+                                            class="badge {{ $order->status == 'completed' ? 'bg-success' : 'bg-warning' }}">
+                                            {{ ucfirst($order->status) }}
+                                        </span>
                                     </td>
-
+                                    <td>
+                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-Start  mb-3">
-                        <button id="prevBtn" class="btn border btn-sm me-2 rounded-5 border-dark txt-dark"
-                            onclick="prevPage()" disabled><i class="fa-solid fa-angle-left"></i> Previous</button>
-                        <button id="nextBtn" class="btn border btn-sm rounded-5 border-dark txt-dark"
-                            onclick="nextPage()">Next <i class="fa-solid fa-angle-right"></i></button>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 @endsection

@@ -33,7 +33,7 @@
                         <div class="col-12 col-md-6 mt-4 mt-md-0">
 
                             <h4 class="mb-3">
-                                <strong><i class="fa-solid fa-caret-right me-2"></i> Product Name:</strong>
+                                <strong><i class="fa-solid fa-caret-right me-2"></i>Name:</strong>
                                 <span class="text-muted">{{ $product->name }}</span>
                             </h4>
                             <h4 class="mb-3">

@@ -39,7 +39,7 @@
                                         min="0" max="100" placeholder="Enter discount percentage">
                                 </div>
 
-                                <div class="form-group col-12 col-md-6">
+                                <div class="form-group col-12 col-md-12">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity') }}" required min="0"
@@ -61,8 +61,8 @@
                                     @endif
                                 </label>
 
-                                <input type="file" class="form-control d-none" name="picture_url"
-                                    id="picture_url" accept="image/*" onchange="showPreview(event)"
+                                <input type="file" class="form-control d-none" name="picture_url" id="picture_url"
+                                    accept="image/*" onchange="showPreview(event)"
                                     style="width: 350px; height: 350px; object-fit: cover; border: 1px solid #ccc; border-radius: 5px;">
 
                                 <div id="preview" onclick="triggerFileInput()"

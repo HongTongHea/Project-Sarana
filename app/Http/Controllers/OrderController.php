@@ -6,27 +6,38 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Accessory;
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with(['customer', 'items.product'])->get();
-        return view('orders.index', compact('orders'));
+        $categories = Category::all();
+        $customers = Customer::all();
+        $products = Product::where('stock_quantity', '>', 0)->get();
+        $accessories = Accessory::where('stock_quantity', '>', 0)->get();
+        $orders = Order::with(['customer', 'items.product', 'items.accessory'])->get();
+
+        return view('orders.index', compact('orders', 'customers', 'products', 'accessories', 'categories'));
     }
 
     public function create()
     {
         $customers = Customer::all();
-        $products = Product::all();
-        return view('orders.create', compact('customers', 'products'));
+        $products = Product::where('stock_quantity', '>', 0)->get();
+        $accessories = Accessory::where('stock_quantity', '>', 0)->get();
+        $categories = Category::all();
+        return view('orders.create', compact('customers', 'products', 'accessories', 'categories'));
     }
 
     public function store(Request $request)
     {
-        // Decode the JSON items first
+        // Decode the JSON items and item types
         $items = json_decode($request->input('items'), true);
+        $itemTypes = json_decode($request->input('item_types'), true);
 
         // Validate the items array
         if (!is_array($items)) {
@@ -37,87 +48,132 @@ class OrderController extends Controller
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'tax_rate' => 'nullable|numeric|min:0|max:100',
-            'discount' => 'nullable|numeric|min:0',
+            'additional_discount' => 'nullable|numeric|min:0',
         ]);
 
         // Validate each item and check stock availability
-        foreach ($items as $item) {
-            if (!isset($item['product_id']) || !isset($item['quantity']) || !isset($item['price'])) {
-                return redirect()->back()->withErrors(['items' => 'Each item must have product_id, quantity, and price.']);
+        foreach ($items as $index => $item) {
+            if (!isset($item['item_id']) || !isset($item['quantity']) || !isset($item['price'])) {
+                return redirect()->back()->withErrors(['items' => 'Each item must have item_id, quantity, and price.']);
             }
 
-            $product = Product::find($item['product_id']);
-            if (!$product) {
-                return redirect()->back()->withErrors(['items' => 'Product not found.']);
+            $itemType = $itemTypes[$index] ?? null;
+            if (!in_array($itemType, ['product', 'accessory'])) {
+                return redirect()->back()->withErrors(['items' => 'Invalid item type.']);
             }
 
-            if ($product->stock_quantity < $item['quantity']) {
+            $model = $itemType === 'product' ? Product::class : Accessory::class;
+            $itemModel = $model::find($item['item_id']);
+
+            if (!$itemModel) {
+                return redirect()->back()->withErrors(['items' => ucfirst($itemType) . ' not found.']);
+            }
+
+            if ($itemModel->stock_quantity < $item['quantity']) {
                 return redirect()->back()->withErrors([
-                    'items' => "Not enough stock for {$product->name}. Available: {$product->stock_quantity}"
+                    'items' => "Not enough stock for {$itemModel->name}. Available: {$itemModel->stock_quantity}"
                 ]);
             }
         }
 
         // Calculate totals
         $subtotal = 0;
-        foreach ($items as $item) {
+        $itemDiscounts = 0;
+
+        foreach ($items as $index => $item) {
+            $itemType = $itemTypes[$index];
+            $model = $itemType === 'product' ? Product::class : Accessory::class;
+            $itemModel = $model::find($item['item_id']);
+
+            $discountPercentage = $item['discount_percentage'] ?? 0;
+            $discountedPrice = $discountPercentage > 0
+                ? $item['price'] * (1 - $discountPercentage / 100)
+                : $item['price'];
+
             $subtotal += $item['quantity'] * $item['price'];
+            $itemDiscounts += ($item['price'] - $discountedPrice) * $item['quantity'];
         }
 
-        $taxAmount = $subtotal * ($validatedData['tax_rate'] ?? 0) / 100;
-        $discountAmount = $validatedData['discount'] ?? 0;
-        $total = $subtotal + $taxAmount - $discountAmount;
+        $discountedSubtotal = $subtotal - $itemDiscounts;
+        $taxAmount = $discountedSubtotal * ($validatedData['tax_rate'] ?? 0) / 100;
+        $additionalDiscount = $validatedData['additional_discount'] ?? 0;
+        $total = $discountedSubtotal + $taxAmount - $additionalDiscount;
 
         // Create order
         $order = Order::create([
             'customer_id' => $validatedData['customer_id'],
             'subtotal' => $subtotal,
+            'item_discounts' => $itemDiscounts,
+            'additional_discount' => $additionalDiscount,
             'tax_amount' => $taxAmount,
-            'discount_amount' => $discountAmount,
             'total' => $total,
             'status' => 'completed',
             'payment_status' => 'paid',
         ]);
 
         // Add order items and update stock
-        foreach ($items as $item) {
+        foreach ($items as $index => $item) {
+            $itemType = $itemTypes[$index];
+            $model = $itemType === 'product' ? Product::class : Accessory::class;
+            $itemModel = $model::find($item['item_id']);
+
+            $discountPercentage = $item['discount_percentage'] ?? 0;
+            $discountedPrice = $discountPercentage > 0
+                ? $item['price'] * (1 - $discountPercentage / 100)
+                : $item['price'];
+
             // Create order item
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $item['product_id'],
+                'item_type' => $model,
+                'item_id' => $item['item_id'],
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
-                'total' => $item['quantity'] * $item['price'],
+                'discount_percentage' => $discountPercentage,
+                'discounted_price' => $discountedPrice,
+                'total' => $item['quantity'] * $discountedPrice,
             ]);
 
-            // Update product stock
-            $product = Product::find($item['product_id']);
-            $product->stock_quantity -= $item['quantity'];
-            $product->save();
+            // Update product/accessory stock
+            $itemModel->stock_quantity -= $item['quantity'];
+            $itemModel->save();
 
             // Create stock movement record
-            $product->stocks()->create([
+            $itemModel->stocks()->create([
                 'quantity' => -$item['quantity'], // Negative for deduction
                 'type' => 'sale',
             ]);
         }
 
-        return redirect()->route('orders.show', $order->id)->with('success', 'Order created successfully.');
+        return redirect()->route('orders.index', $order->id)->with('success', 'Order created successfully.');
     }
 
     public function show($id)
     {
-        $order = Order::with(['customer', 'items.product'])->findOrFail($id);
+        $order = Order::with(['customer', 'items.product', 'items.accessory'])->findOrFail($id);
         return view('orders.show', compact('order'));
     }
 
     public function searchProducts(Request $request)
     {
         $search = $request->input('search');
-        $products = Product::where('name', 'like', "%{$search}%")
-            ->orWhere('stock_no', 'like', "%{$search}%")
+        $products = Product::where('stock_quantity', '>', 0)
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('stock_no', 'like', "%{$search}%");
+            })
             ->get();
 
         return response()->json($products);
+    }
+
+    public function searchAccessories(Request $request)
+    {
+        $search = $request->input('search');
+        $accessories = Accessory::where('stock_quantity', '>', 0)
+            ->where('name', 'like', "%{$search}%")
+            ->get();
+
+        return response()->json($accessories);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
@@ -14,14 +15,15 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProductpageController;
-use App\Http\Controllers\AccessoryController;
+use App\Http\Controllers\AccessorypageController;
 
 // Public Routes
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
+Route::get('/accessorypage', [AccessorypageController::class, 'index'])->name('accessorypage.index');
 
 // Authentication Routes (guest only)
 Route::middleware('guest')->group(function () {

@@ -59,7 +59,7 @@
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ route('products.index') }}">
-                                    <span class="sub-item">Product Items</span>
+                                    <span class="sub-item">Products</span>
                                 </a>
                             </li>
                             <li>
@@ -91,17 +91,28 @@
                     <div class="collapse" id="base2">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="{{ route('orders.index') }}">
+                                <a href="{{ route('orders.create') }}">
                                     <span class="sub-item">Order</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('orders.index') }}">
+                                    <span class="sub-item">Order History</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a href="">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <p>Reports</p>
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#base1">
-                        <i class="fa-solid fa-money-check-dollar"></i>
-                        <p>Sales</p>
+                        <i class="fa-solid fa-chart-column"></i>
+                        <p>Reports</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="base1">
@@ -118,7 +129,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}">
                         <i class="fa-solid fa-user-gear"></i>
@@ -141,7 +152,7 @@
                                         onclick="return confirm('Are you sure you want to logout?')"
                                         style="border-radius: 4px; transition: all 0.3s ease;">
                                         <i class="bi bi-escape me-3" style="font-size: 1.1rem;"></i>
-                                        <span class="fw-medium" style="font-size: 0.9rem;">LOGOUT</span>
+                                        <span class="fw-medium" style="font-size: 0.9rem;">Logout</span>
                                     </button>
                                 </form>
                             </li>
