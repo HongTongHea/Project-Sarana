@@ -10,10 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StockController;
-use App\Http\Controllers\SaleController;
-use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomepageController;
@@ -59,12 +56,6 @@ Route::resource('stocks', StockController::class);
 Route::resource('products', ProductController::class);
 Route::resource('accessories', AccessoryController::class);
 Route::resource('orders', OrderController::class);
-Route::resource('sales', SaleController::class);
+
 
 Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');
-Route::get('/sales_reports/generate', [SalesReportController::class, 'generateReports'])->name('sales_reports.generate');
-Route::resource('sales_reports', SalesReportController::class)->only(['index', 'show']);
-
-
-Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
-Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');

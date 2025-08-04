@@ -1,13 +1,11 @@
 @extends('layouts.app')
 @section('title', 'AngkorTech Computer | Products List')
 @section('content')
-    <div class="m-4 mt-4">
+     <div class="container-fluid mt-3">
         <div class="card shadow rounded-0">
             <div class="card-header">
-                <div class="d-flex justify-content-center align-items-center">
-                    <h6 class="mt-3 ms-1 text-black text-uppercase text-start" style="font-weight: 700; font-size: 25px">
-                        Products List
-                    </h6>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-semibold text-uppercase">Products</h4>
                 </div>
             </div>
             <div class="card-body">

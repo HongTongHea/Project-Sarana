@@ -3,8 +3,7 @@
 @section('title', 'AngkorTech Computer | Dashboard')
 
 @section('content')
-    <div class="m-4 mt-3" data-aos="fade-down" data-aos-duration="1000">
-
+    <div class="container-fluid mt-3" data-aos="fade-down" data-aos-duration="1000">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
                 <h3 class="fw-bold m-3  mb-0 mt-0">Dashboard</h3>
@@ -66,8 +65,8 @@
                             </div>
                             <div class="col col-stats ms-3 ms-sm-0">
                                 <div class="numbers">
-                                    <p class="card-category">Sales</p>
-                                    <h4 class="card-title">${{ $sales->sum('total_price') }}</h4>
+                                    {{-- <p class="card-category">Sales</p>
+                                    <h4 class="card-title">${{ $sales->sum('total_price') }}</h4> --}}
                                 </div>
                             </div>
                         </div>
