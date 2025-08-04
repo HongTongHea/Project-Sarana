@@ -21,6 +21,7 @@
                                 <th>Order #</th>
                                 <th>Customer</th>
                                 <th>Date</th>
+                                <th>Product</th>
                                 <th>Items</th>
                                 <th>Subtotal</th>
                                 <th>Tax</th>
@@ -34,8 +35,20 @@
                             @foreach ($orders as $order)
                                 <tr>
                                     <td>ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                    <td>{{ $order->customer->name ?? 'Walk-in' }}</td>
                                     <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
+                                    <td>{{ $order->customer->name }}</td>
+                                    <td>
+                                        @foreach ($order->items as $item)
+                                            @if ($item->item_type === 'App\Models\Product')
+                                                {{ $item->item->name }}
+                                            @elseif ($item->item_type === 'App\Models\Accessory')
+                                                {{ $item->item->name }}
+                                            @else
+                                                No Item
+                                            @endif
+                                        @endforeach
+                                    </td>
+
                                     <td>{{ $order->items->count() }}</td>
                                     <td>${{ number_format($order->subtotal, 2) }}</td>
                                     <td>${{ number_format($order->tax_amount, 2) }}</td>
@@ -47,14 +60,38 @@
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
+                                    <td class="text-nowrap text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton{{ $order->id }}" data-bs-toggle="dropdown"
+                                                aria-expanded="false" title="Actions">
+                                                <i class="fas fa-ellipsis-v fs-6"></i>
+                                            </button>
+                                            <ul class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton{{ $order->id }}">
+                                                <!-- View Order -->
+                                                <li>
+                                                    <a href="{{ route('orders.show', $order->id) }}"
+                                                        class="dropdown-item d-flex align-items-center">
+                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
+                                                        View Details
+                                                    </a>
+                                                </li>
+
+                                                <!-- Edit Order -->
+                                                <li>
+                                                    <a href="{{ route('orders.edit', $order->id) }}"
+                                                        class="dropdown-item d-flex align-items-center">
+                                                        <i class="fas fa-edit me-2 text-warning"></i>
+                                                        Edit
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>
