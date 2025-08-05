@@ -7,9 +7,9 @@ use App\Models\OrderItem;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Accessory;
+use App\Models\Payment;
 use App\Models\Category;
 use Illuminate\Http\Request;
-
 
 class OrderController extends Controller
 {
@@ -19,7 +19,7 @@ class OrderController extends Controller
         $customers = Customer::all();
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
-        $orders = Order::with(['customer', 'items.product', 'items.accessory'])->get();
+        $orders = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])->get();
 
         return view('orders.index', compact('orders', 'customers', 'products', 'accessories', 'categories'));
     }
@@ -137,21 +137,47 @@ class OrderController extends Controller
             // Update product/accessory stock
             $itemModel->stock_quantity -= $item['quantity'];
             $itemModel->save();
+        }
 
-            // Create stock movement record
-            $itemModel->stocks()->create([
-                'quantity' => -$item['quantity'], // Negative for deduction
-                'type' => 'sale',
+        // Process payment if payment data exists
+        if ($request->has('payment_data')) {
+            $paymentData = json_decode($request->input('payment_data'), true);
+
+            $payment = Payment::create([
+                'order_id' => $order->id,
+                'method' => $paymentData['method'],
+                'amount' => $paymentData['amount'],
+                'received_amount' => $paymentData['received'] ?? null,
+                'reference' => $paymentData['reference'] ?? null,
+                'notes' => $paymentData['notes'] ?? null,
+                'status' => 'completed'
             ]);
         }
 
-        return redirect()->route('orders.index', $order->id)->with('success', 'Order created successfully.');
+        return redirect()->route('orders.invoice', $order->id)
+            ->with('success', 'Order created successfully.');
     }
 
     public function show($id)
     {
-        $order = Order::with(['customer', 'items.product', 'items.accessory'])->findOrFail($id);
-        return view('orders.show', compact('order'));
+        $order = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])->findOrFail($id);
+        return view('orders.show', compact('order',));
+    }
+
+    public function invoice($id)
+    {
+        $order = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])
+            ->findOrFail($id);
+
+        return view('orders.invoice', compact('order'));
+    }
+
+    public function printInvoice($id)
+    {
+        $order = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])
+            ->findOrFail($id);
+
+        return view('orders.print-invoice', compact('order'));
     }
 
     public function searchProducts(Request $request)

@@ -42,7 +42,7 @@
                             <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
                                 <!-- Made table scrollable -->
                                 <table class="table table-bordered" id="order-items">
-                                    <thead>
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th>Item</th>
                                             <th>Price</th>
@@ -107,7 +107,8 @@
                             <div class="mt-auto pt-3"> <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-danger me-2" id="clear-order">Clear Order</button>
-                                    <button type="submit" class="btn btn-primary" id="submit-order">Check Out</button>
+                                    <button type="button" class="btn btn-primary" id="submit-order">Check Out</button>
+                                    @include('Orders.payment') <!-- Include payment modal -->
                                 </div>
                             </div>
                         </form>
@@ -257,7 +258,10 @@
     </div>
 
     <script>
+        let orderItems = [];
+
         document.addEventListener('DOMContentLoaded', function() {
+
             // Product search functionality
             $('#product-search').on('input', function() {
                 const search = $(this).val().toLowerCase();
@@ -276,8 +280,25 @@
                 });
             });
 
+            $('#submit-order').on('click', function(e) {
+                e.preventDefault();
+
+                if (orderItems.length === 0) {
+                    alert('Please add items to the order');
+                    return;
+                }
+
+                // Update the total amount in the modal
+                const total = parseFloat($('#total').text().replace('$', ''));
+                $('#modal-total-amount').text('$' + total.toFixed(2));
+
+                // Show the modal
+                $('#paymentModal').modal('show');
+            });
+
+
             // Add product/accessory to order
-            let orderItems = [];
+
 
             $(document).on('click', '.product-item, .accessory-item', function(e) {
                 e.preventDefault();

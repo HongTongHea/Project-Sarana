@@ -149,6 +149,25 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card rounded-0 card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                    <i class="fas fa-headphones"></i>
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Accessories</p>
+                                    <h4 class="card-title">{{ $accessories->count() }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

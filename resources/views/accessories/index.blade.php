@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'AngkorTech Computer | Accessories List')
 @section('content')
-    <div class="m-4 mt-4">
+    <div class="container-fluid mt-3">
         <div class="card shadow rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">

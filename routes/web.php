@@ -59,3 +59,5 @@ Route::resource('orders', OrderController::class);
 
 
 Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');
+Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+Route::get('/orders/{order}/print-invoice', [OrderController::class, 'printInvoice'])->name('orders.print-invoice');

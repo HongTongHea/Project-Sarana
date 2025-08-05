@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Category;
+use App\Models\Accessory;
 
 
 
@@ -28,8 +29,9 @@ class DashboardController extends Controller
             $products = Product::all();
             $stocks = Stock::all();
             $categories = Category::all();
- 
-            return view('admin.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories', ));
+            $accessories = Accessory::all();
+
+            return view('admin.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories', 'accessories'));
         } elseif ($user && $user->role === 'customer') {
             return redirect()->route('homepage.index');
         }
@@ -37,5 +39,4 @@ class DashboardController extends Controller
         // If no user or role doesn't match
         abort(403, 'Unauthorized action.');
     }
-    
 }

@@ -30,36 +30,28 @@
             <div class="row mb-4">
                 <div class="col-md-6">
                     <h5 class="card-title pb-2"><strong>Customer Information</strong></h5>
-                    <div class="row">
-                        <div><strong>Name: {{ $order->customer->name ?? 'N/A' }}</strong></div>
-                    </div>
-                    <div class="row">
-                        <div><strong>Email: {{ $order->customer->email ?? 'N/A' }}</strong></div>
-                    </div>
-                    <div class="row">
-                        <div><strong>Phone: {{ $order->customer->phone ?? 'N/A' }}</strong></div>
-                    </div>
+                    <div class="row"><div><strong>Name: {{ $order->customer->name ?? 'N/A' }}</strong></div></div>
+                    <div class="row"><div><strong>Email: {{ $order->customer->email ?? 'N/A' }}</strong></div></div>
+                    <div class="row"><div><strong>Phone: {{ $order->customer->phone ?? 'N/A' }}</strong></div></div>
                 </div>
                 <div class="col-md-6">
                     <h5 class="card-title border-bottom pb-2"><strong>Order Summary</strong></h5>
-                    <div class="row">
-                        <div><strong>Items: {{ $order->items->count() ?? 0 }}</strong></div>
-                    </div>
+                    <div class="row"><div><strong>Items: {{ $order->items->count() ?? 0 }}</strong></div></div>
                     <div class="row">
                         <div class="col-6"><strong>Status: <span class="badge bg-success">Completed</span></strong></div>
                     </div>
                     <div class="row">
                         <div class="col-6"><strong>Payment:
-                                @if ($order->payment_method === 'cash')
-                                    Cash
-                                @elseif($order->payment_method === 'aba')
-                                    ABA Pay
-                                @elseif($order->payment_method === 'credit_card')
-                                    Credit Card
-                                @else
-                                    N/A
-                                @endif
-                            </strong></div>
+                            @if ($order->payment_method === 'cash')
+                                Cash
+                            @elseif($order->payment_method === 'aba')
+                                ABA Pay
+                            @elseif($order->payment_method === 'credit_card')
+                                Credit Card
+                            @else
+                                N/A
+                            @endif
+                        </strong></div>
                     </div>
                 </div>
             </div>
@@ -167,8 +159,7 @@
                 margin: 0;
             }
 
-            html,
-            body {
+            html, body {
                 width: 400px;
                 height: 400px;
                 margin: 0 !important;
@@ -180,8 +171,7 @@
                 visibility: hidden;
             }
 
-            #invoice-area,
-            #invoice-area * {
+            #invoice-area, #invoice-area * {
                 visibility: visible;
             }
 
