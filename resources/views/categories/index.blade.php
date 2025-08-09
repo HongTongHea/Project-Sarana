@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 <button class="btn btn-primary btn-sm mb-3 ml-3" data-bs-toggle="modal" data-bs-target="#createModal">
-                    <i class="fas fa-plus"></i> Add New Category
+                    <i class="fas fa-plus"></i> New Category
                 </button>
                 <div class="table-responsive">
                     <table id="DataTable" class="table mt-3 table-hover table-striped">

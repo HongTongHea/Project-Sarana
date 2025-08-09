@@ -7,7 +7,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav d-flex ms-auto me-auto fw-medium">
+            <ul class="navbar-nav d-flex ms-auto me-auto fw-bold">
                 <li class="nav-item"><a class="nav-link" href="{{ route('homepage.index') }}">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">LAPTOP</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">PC</a></li>

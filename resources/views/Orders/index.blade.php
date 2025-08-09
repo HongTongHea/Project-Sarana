@@ -35,8 +35,8 @@
                             @foreach ($orders as $order)
                                 <tr>
                                     <td>ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                    <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
                                     <td>{{ $order->customer->name }}</td>
+                                    <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
                                     <td>
                                         @foreach ($order->items as $item)
                                             @if ($item->item_type === 'App\Models\Product')

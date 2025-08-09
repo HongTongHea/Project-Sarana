@@ -19,7 +19,7 @@
                                 <th>Type</th>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Initial Stock</th>
+                                {{-- <th>Initial Stock</th> --}}
                                 <th>Current Stock</th>
                                 <th>Last Updated</th>
                                 <th>Status</th>
@@ -41,9 +41,9 @@
                                         @endif
                                     </td>
                                     <td>{{ $stock['stockable']->name ?? 'N/A' }}</td>
-                                    <td class="text-info fw-bold">
+                                    {{-- <td class="text-info fw-bold">
                                         <i class="fas fa-boxes me-1"></i>{{ $stock['initial_quantity'] }}
-                                    </td>
+                                    </td> --}}
                                     <td
                                         class="{{ $stock['current_quantity'] > 0 ? 'text-success fw-bold' : 'text-danger fw-bold' }}">
                                         <i

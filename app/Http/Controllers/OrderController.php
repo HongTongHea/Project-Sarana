@@ -137,6 +137,12 @@ class OrderController extends Controller
             // Update product/accessory stock
             $itemModel->stock_quantity -= $item['quantity'];
             $itemModel->save();
+
+            // Create stock update record
+            $itemModel->stocks()->create([
+                'quantity' => $itemModel->stock_quantity,
+                'type' => 'update',
+            ]);
         }
 
         // Process payment if payment data exists

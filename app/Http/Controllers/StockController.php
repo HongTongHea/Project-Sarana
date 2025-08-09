@@ -2,50 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Stock;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Models\Accessory;
+
 
 class StockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        // Get all stock entries grouped by stockable type and ID
-        $stocks = Stock::with(['stockable'])
-            ->get()
-            ->groupBy(['stockable_type', 'stockable_id']);
+        // Get all products and accessories with their latest stock records
+        $products = Product::with(['stocks' => function ($query) {
+            $query->latest()->limit(1);
+        }])->get();
 
-        // Calculate current quantities
+        $accessories = Accessory::with(['stocks' => function ($query) {
+            $query->latest()->limit(1);
+        }])->get();
+
+        // Combine and format the data
         $currentStocks = [];
 
-        foreach ($stocks as $type => $items) {
-            foreach ($items as $id => $stockRecords) {
-                $currentQuantity = 0;
+        // Process products
+        foreach ($products as $product) {
+            $latestStock = $product->stocks->first();
+            $initialStock = $product->stocks()->where('type', 'initial')->first();
 
-                foreach ($stockRecords as $record) {
-                    if ($record->type === 'initial') {
-                        $currentQuantity += $record->quantity;
-                    } elseif ($record->type === 'update') {
-                        $currentQuantity = $record->quantity; // Updates replace the quantity
-                    }
-                }
-
-                if ($stockRecords->first()->stockable) {
-                    $currentStocks[] = [
-                        'stockable' => $stockRecords->first()->stockable,
-                        'stockable_type' => $type,
-                        'current_quantity' => $currentQuantity,
-                        'initial_quantity' => $stockRecords->firstWhere('type', 'initial')->quantity ?? 0,
-                        'last_updated' => $stockRecords->sortByDesc('created_at')->first()->created_at
-                    ];
-                }
-            }
+            $currentStocks[] = [
+                'stockable' => $product,
+                'stockable_type' => get_class($product),
+                'current_quantity' => $product->stock_quantity, // Use the direct quantity from product
+                'initial_quantity' => $initialStock ? $initialStock->quantity : $product->stock_quantity,
+                'last_updated' => $latestStock ? $latestStock->created_at : now()
+            ];
         }
 
-        // Sort by latest updated
+        // Process accessories
+        foreach ($accessories as $accessory) {
+            $latestStock = $accessory->stocks->first();
+            $initialStock = $accessory->stocks()->where('type', 'initial')->first();
+
+            $currentStocks[] = [
+                'stockable' => $accessory,
+                'stockable_type' => get_class($accessory),
+                'current_quantity' => $accessory->stock_quantity, // Use the direct quantity from accessory
+                'initial_quantity' => $initialStock ? $initialStock->quantity : $accessory->stock_quantity,
+                'last_updated' => $latestStock ? $latestStock->created_at : now()
+            ];
+        }
+
+        // Sort by last updated
         $currentStocks = collect($currentStocks)->sortByDesc('last_updated');
 
         return view('stocks.index', compact('currentStocks'));

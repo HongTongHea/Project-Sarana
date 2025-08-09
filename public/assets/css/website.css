@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
     --primary-color: #ff6b6b;
@@ -9,8 +9,9 @@
 }
 
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     background-color: #f5f5f5;
+    position: relative;
 }
 
 .navbar {
@@ -19,19 +20,53 @@ body {
 
 .navbar-brand {
     font-weight: 700;
+    text-transform: uppercase;
     color: var(--primary-color);
 }
 
-/* Hero Section */
-/* .hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-        url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 100px 0;
-    margin-bottom: 30px;
-} */
+.navbar-nav .nav-link {
+    position: relative;
+    display: inline-block;
+    color: var(--dark-color);
+    font-weight: 700;
+    text-decoration: none;
+    padding: 0 0 0 0 !important;
+    margin: 10px;
+    /* remove Bootstrap's default vertical padding */
+    line-height: 1.2;
+    /* keeps height tight to text */
+}
+
+/* underline effect */
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    /* very close under the text */
+    width: 100%;
+    height: 2px;
+    background-color: var(--secondary-color);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.25s ease;
+    padding: 0px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--secondary-color);
+}
+
+.navbar-nav .nav-link:hover::after {
+    transform: scaleX(1);
+}
+
+/* keep underline on active */
+.navbar-nav .nav-link.active::after {
+    transform: scaleX(1);
+}
+
+
 
 .hero-slideshow {
     position: relative;
@@ -205,6 +240,12 @@ body {
 }
 
 @media (max-width: 768px) {
+
+    .navbar-nav .nav-link {
+        margin-left: 0 !important;
+    }
+
+    /* Responsive: Small Screens */
     .offcanvas-cart {
         width: 100%;
     }
@@ -291,4 +332,3 @@ body {
     background-color: var(--accent-color);
     color: white;
 }
-

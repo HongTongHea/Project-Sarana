@@ -139,24 +139,4 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 
-    // Additional method to handle stock for accessories
-    // public function updateAccessoryStock(Request $request, Accessory $accessory)
-    // {
-    //     $request->validate([
-    //         'stock_quantity' => 'required|integer',
-    //     ]);
-
-    //     $accessory->stocks()->updateOrCreate(
-    //         [
-    //             'stockable_id' => $accessory->id,
-    //             'stockable_type' => Accessory::class,
-    //             'type' => 'update'
-    //         ],
-    //         [
-    //             'quantity' => $request->stock_quantity
-    //         ]
-    //     );
-
-    //     return back()->with('success', 'Accessory stock updated successfully');
-    // }
 }

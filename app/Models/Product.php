@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ProductSize;
 
 class Product extends Model
 {
@@ -27,10 +26,12 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+
     public function stocks()
     {
         return $this->morphMany(Stock::class, 'stockable');
     }
+
 
     public function orderItems()
     {
