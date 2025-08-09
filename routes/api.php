@@ -11,4 +11,4 @@ Route::get('/user', function (Request $request) {
 
 
 Route::apiResource('products', ProductController::class);
-Route::apiResource('tickets', TicketController::class);
+// Route::apiResource('tickets', TicketController::class);

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Customer;
@@ -12,17 +11,14 @@ use App\Models\Stock;
 use App\Models\Category;
 use App\Models\Accessory;
 
-
-
-
 class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $user = Auth::user();
+        // Only admins should see admin dashboard
+        $user = Auth::guard('admin')->user();
 
-        if ($user && $user->isAdmin()) {
-
+        if ($user && $user->role === 'admin') {
             $users = User::all();
             $customers = Customer::all();
             $orders = Order::all();
@@ -32,11 +28,13 @@ class DashboardController extends Controller
             $accessories = Accessory::all();
 
             return view('admin.dashboard', compact('users', 'customers', 'orders', 'products', 'stocks', 'categories', 'accessories'));
-        } elseif ($user && $user->role === 'customer') {
+        }
+
+        // Customers (or unauthenticated) visiting this route will be redirected
+        if (Auth::guard('customer')->check()) {
             return redirect()->route('homepage.index');
         }
 
-        // If no user or role doesn't match
         abort(403, 'Unauthorized action.');
     }
 }

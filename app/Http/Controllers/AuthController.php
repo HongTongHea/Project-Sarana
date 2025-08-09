@@ -7,59 +7,100 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-
-
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
     private function redirectBasedOnRole($user)
     {
+        if (!$user) {
+            abort(403, 'Unauthorized role.');
+        }
+
         if ($user->role === 'admin') {
-            return redirect()->route('dashboard');
+            return redirect()->route('admin.dashboard');
         } elseif ($user->role === 'customer') {
             return redirect()->route('homepage.index');
         }
 
-        // default fallback
         abort(403, 'Unauthorized role.');
     }
 
     public function showLoginForm()
     {
-        if (Auth::check()) {
-            return $this->redirectBasedOnRole(Auth::user());
+        // If already logged in as admin/customer, redirect them
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
         }
 
-        return response()
-            ->view('auth.login')
-            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-            ->header('Pragma', 'no-cache')
-            ->header('Expires', '0');
-    }
+        if (Auth::guard('customer')->check()) {
+            return redirect()->route('homepage.index');
+        }
 
-    public function viewUsers()
-    {
-        $users = User::all();
-        return view('users.index', compact('users'));
+        return view('auth.login');
     }
-
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
+
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials, $request->remember)) {
-            $request->session()->regenerate();
-            $user = Auth::user();
+        // Try find user first
+        $user = User::where('email', $request->email)->first();
 
-            return $this->redirectBasedOnRole($user);
+        if (!$user) {
+            return back()->withErrors(['email' => 'User not found.']);
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        // Choose guard automatically based on role
+        $guard = $user->role === 'admin' ? 'admin' : 'customer';
+
+        if (Auth::guard($guard)->attempt($credentials, $request->remember)) {
+            $request->session()->regenerate();
+            return $this->redirectBasedOnRole(Auth::guard($guard)->user());
+        }
+
+        return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
     }
 
+    public function showRegisterForm()
+    {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if (Auth::guard('customer')->check()) {
+            return redirect()->route('homepage.index');
+        }
+
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name'                  => 'required|string|max:255',
+            'email'                 => 'required|string|email|max:255|unique:users',
+            'password'              => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string|min:8',
+            'role'                  => 'sometimes|in:customer,admin'
+        ]);
+
+        User::create([
+            'name'           => $request->name,
+            'email'          => $request->email,
+            'password'       => Hash::make($request->password),
+            'role'           => $request->role ?? 'customer',
+            'picture_url'    => null,
+            'remember_token' => Str::random(60),
+        ]);
+
+        return redirect()->route('login')->with('success', 'Registration successful.');
+    }
 
     public function updateProfilePicture(Request $request)
     {
@@ -67,68 +108,35 @@ class AuthController extends Controller
             'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $user = Auth::user();
+        $user = Auth::guard('admin')->user() ?? Auth::guard('customer')->user();
 
+        if (!$user) {
+            return back()->withErrors(['profile_picture' => 'No authenticated user found.']);
+        }
 
         if ($user->picture_url) {
             Storage::disk('public')->delete($user->picture_url);
         }
 
-        // Store the new picture
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
         $user->picture_url = $path;
         $user->save();
 
-        return redirect()->route('users.show', $user->id)->with('success', 'Profile picture updated successfully.');
+        return redirect()->route('profile')->with('success', 'Profile picture updated successfully.');
     }
-
-    public function showRegisterForm()
-    {
-        if (Auth::check()) {
-            return $this->redirectBasedOnRole(Auth::user());
-        }
-
-        return response()
-            ->view('auth.register')
-            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-            ->header('Pragma', 'no-cache')
-            ->header('Expires', '0');
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required|string|min:8',
-            'role' => 'sometimes|in:customer,admin' // Add this line
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role ?? 'customer', // Modified this line
-            'picture_url' => null,
-        ]);
-
-        return redirect()->route('login')->with('success', 'Registration successful.');
-    }
-
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        // Logout whichever guard is active
+        if (Auth::guard('admin')->check()) {
+            Auth::guard('admin')->logout();
+        } elseif (Auth::guard('customer')->check()) {
+            Auth::guard('customer')->logout();
+        }
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Check the previous URL to determine where to redirect
-        if (str_contains($request->headers->get('referer'), 'admin')) {
-            return redirect()->route('login')->with("success", "You have been logged out.");
-        }
-
-        return redirect('/');
+        return redirect('/')->with("success", "Logged out successfully.");
     }
 }

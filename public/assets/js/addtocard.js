@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize cart from localStorage
     let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
 
-    // Modal and cart UI elements
+    // Modal & UI elements
     const addToCartModal = document.getElementById("addToCartModal")
         ? new bootstrap.Modal(document.getElementById("addToCartModal"))
         : null;
@@ -33,90 +32,85 @@ document.addEventListener("DOMContentLoaded", function () {
     const accessoriesContainer = document.getElementById(
         "accessories-container"
     );
+    const productsContainer = document.getElementById("products-container"); // New for products
 
     let currentProduct = {};
 
-    // Collect all original accessory items
+    // Original DOM items
     const allOriginalAccessories = Array.from(
         document.querySelectorAll(".accessory-item")
     );
+    const allOriginalProducts = Array.from(
+        document.querySelectorAll(".product-item")
+    );
 
-    // === SEARCH FUNCTIONALITY (Accessories only) ===
+    // Search Function (works for both)
     function performSearch() {
-        if (!accessoriesContainer || !productSearch) return;
+        const searchTerm = productSearch?.value.toLowerCase().trim() || "";
 
-        const searchTerm = productSearch.value.toLowerCase().trim();
-        accessoriesContainer.innerHTML = "";
+        // Accessories search
+        if (accessoriesContainer) {
+            accessoriesContainer.innerHTML = "";
+            const accessories = searchTerm
+                ? allOriginalAccessories.filter(
+                      (item) =>
+                          item
+                              .querySelector(".fw-semibold")
+                              ?.textContent.toLowerCase()
+                              .includes(searchTerm) ||
+                          item
+                              .querySelector(".text-muted.small")
+                              ?.textContent.toLowerCase()
+                              .includes(searchTerm)
+                  )
+                : allOriginalAccessories;
 
-        if (searchTerm === "") {
-            showAllAccessories();
-            return;
-        }
-
-        const filteredAccessories = allOriginalAccessories.filter(
-            (accessory) => {
-                const accessoryName =
-                    accessory
-                        .querySelector(".fw-semibold")
-                        ?.textContent.toLowerCase() || "";
-                const accessoryDesc =
-                    accessory
-                        .querySelector(".text-muted.small")
-                        ?.textContent.toLowerCase() || "";
-                return (
-                    accessoryName.includes(searchTerm) ||
-                    accessoryDesc.includes(searchTerm)
+            if (accessories.length) {
+                accessories.forEach((item) =>
+                    accessoriesContainer.appendChild(item.cloneNode(true))
                 );
+            } else {
+                accessoriesContainer.innerHTML = `<div class="text-center py-5"><i class="fas fa-search fa-3x text-muted mb-3"></i><h5 class="text-muted">No accessories found matching "${searchTerm}"</h5></div>`;
             }
-        );
-
-        if (filteredAccessories.length > 0) {
-            filteredAccessories.forEach((accessory) => {
-                accessoriesContainer.appendChild(accessory.cloneNode(true));
-            });
-            reinitializeAddToCartButtons();
-        } else {
-            showNoResults(searchTerm);
         }
-    }
 
-    function showAllAccessories() {
-        if (!accessoriesContainer) return;
+        // Products search
+        if (productsContainer) {
+            productsContainer.innerHTML = "";
+            const products = searchTerm
+                ? allOriginalProducts.filter(
+                      (item) =>
+                          item
+                              .querySelector(".fw-semibold")
+                              ?.textContent.toLowerCase()
+                              .includes(searchTerm) ||
+                          item
+                              .querySelector(".text-muted.small")
+                              ?.textContent.toLowerCase()
+                              .includes(searchTerm)
+                  )
+                : allOriginalProducts;
 
-        accessoriesContainer.innerHTML = "";
-        allOriginalAccessories.forEach((accessory) => {
-            accessoriesContainer.appendChild(accessory.cloneNode(true));
-        });
+            if (products.length) {
+                products.forEach((item) =>
+                    productsContainer.appendChild(item.cloneNode(true))
+                );
+            } else {
+                productsContainer.innerHTML = `<div class="text-center py-5"><i class="fas fa-search fa-3x text-muted mb-3"></i><h5 class="text-muted">No products found matching "${searchTerm}"</h5></div>`;
+            }
+        }
+
         reinitializeAddToCartButtons();
     }
 
-    function showNoResults(term) {
-        if (!accessoriesContainer) return;
-
-        accessoriesContainer.innerHTML = `
-            <div class="mt-5 pt-5">
-                <div class="col-12 text-center py-5 mt-5">
-                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                    <h5 class="text-muted">No accessories found matching "${term}"</h5>
-                </div>
-            </div>
-        `;
-    }
-
-    // Event Listeners for search
-    if (searchButton) {
-        searchButton.addEventListener("click", performSearch);
-    }
-
+    if (searchButton) searchButton.addEventListener("click", performSearch);
     if (productSearch) {
-        productSearch.addEventListener("keyup", function (e) {
-            if (e.key === "Enter") {
-                performSearch();
-            }
+        productSearch.addEventListener("keyup", (e) => {
+            if (e.key === "Enter") performSearch();
         });
     }
 
-    // CART FUNCTIONS
+    // Add to cart button logic
     function reinitializeAddToCartButtons() {
         document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
             btn.removeEventListener("click", handleAddToCartClick);
@@ -152,7 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (modalProductPrice)
             modalProductPrice.textContent = `$${discountedPrice.toFixed(2)}`;
-
         if (currentProduct.discount > 0) {
             if (modalProductOriginalPrice) {
                 modalProductOriginalPrice.textContent = `$${currentProduct.price.toFixed(
@@ -172,8 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (productQty) productQty.value = 1;
-
-        // Stock display
         if (stockStatusElement) {
             stockStatusElement.className = `mb-1 small ${
                 currentProduct.stock > 0 ? "text-warning" : "text-danger"
@@ -187,40 +178,29 @@ document.addEventListener("DOMContentLoaded", function () {
         if (addToCartModal) addToCartModal.show();
     }
 
-    // Initialize buttons and cart UI
     reinitializeAddToCartButtons();
     updateCartUI();
 
-    // Quantity controls
-    const increaseBtn = document.getElementById("increaseQty");
-    const decreaseBtn = document.getElementById("decreaseQty");
-    const confirmAddBtn = document.getElementById("confirmAddToCart");
+    // Quantity modal buttons
+    document
+        .getElementById("increaseQty")
+        ?.addEventListener(
+            "click",
+            () => (productQty.value = parseInt(productQty.value) + 1)
+        );
+    document.getElementById("decreaseQty")?.addEventListener("click", () => {
+        if (parseInt(productQty.value) > 1)
+            productQty.value = parseInt(productQty.value) - 1;
+    });
 
-    if (increaseBtn && productQty) {
-        increaseBtn.addEventListener("click", () => {
-            productQty.value = parseInt(productQty.value) + 1;
-        });
-    }
-
-    if (decreaseBtn && productQty) {
-        decreaseBtn.addEventListener("click", () => {
-            if (parseInt(productQty.value) > 1) {
-                productQty.value = parseInt(productQty.value) - 1;
-            }
-        });
-    }
-
-    if (confirmAddBtn) {
-        confirmAddBtn.addEventListener("click", () => {
+    document
+        .getElementById("confirmAddToCart")
+        ?.addEventListener("click", () => {
             const quantity = parseInt(productQty.value);
-            if (currentProduct.stock <= 0) {
-                alert("This accessory is out of stock!");
-                return;
-            }
-            if (quantity > currentProduct.stock) {
-                alert(`Only ${currentProduct.stock} items available in stock!`);
-                return;
-            }
+            if (currentProduct.stock <= 0)
+                return alert("This item is out of stock!");
+            if (quantity > currentProduct.stock)
+                return alert(`Only ${currentProduct.stock} available!`);
 
             const index = cart.findIndex(
                 (item) => item.id === currentProduct.id
@@ -235,31 +215,27 @@ document.addEventListener("DOMContentLoaded", function () {
             updateCartUI();
             if (addToCartModal) addToCartModal.hide();
         });
-    }
 
     function updateCartUI() {
         if (!cartItemsContainer) return;
 
         cartItemsContainer.innerHTML = "";
-
         if (cart.length === 0) {
-            if (emptyCartMessage) emptyCartMessage.classList.remove("d-none");
-            if (cartSummary) cartSummary.classList.add("d-none");
+            emptyCartMessage?.classList.remove("d-none");
+            cartSummary?.classList.add("d-none");
             if (cartCount) cartCount.textContent = "0";
             return;
         }
 
-        if (emptyCartMessage) emptyCartMessage.classList.add("d-none");
-        if (cartSummary) cartSummary.classList.remove("d-none");
+        emptyCartMessage?.classList.add("d-none");
+        cartSummary?.classList.remove("d-none");
 
         let subtotal = 0,
             discount = 0;
-
         cart.forEach((item, index) => {
             const itemPrice = item.discount
                 ? item.price * (1 - item.discount / 100)
                 : item.price;
-
             subtotal += item.price * item.quantity;
             discount += item.discount
                 ? ((item.price * item.discount) / 100) * item.quantity
@@ -268,7 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const el = document.createElement("div");
             el.className = "cart-item mb-3";
             el.dataset.index = index;
-
             el.innerHTML = `
                 <div class="d-flex align-items-center">
                     <img src="${
@@ -278,17 +253,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         <p class="mb-1 fw-bold">${item.name}</p>
                         ${
                             item.discount
-                                ? `<p class="mb-0">
-                                    <span class="fw-bold">$${(
-                                        itemPrice * item.quantity
-                                    ).toFixed(2)}</span><br>
-                                    <span class="text-muted text-decoration-line-through small">$${(
-                                        item.price * item.quantity
-                                    ).toFixed(2)}</span><br>
-                                    <span class="badge bg-danger">-${
-                                        item.discount
-                                    }%</span>
-                                </p>`
+                                ? `
+                            <p class="mb-0">
+                                <span class="fw-bold">$${(
+                                    itemPrice * item.quantity
+                                ).toFixed(2)}</span><br>
+                                <span class="text-muted text-decoration-line-through small">$${(
+                                    item.price * item.quantity
+                                ).toFixed(2)}</span><br>
+                                <span class="badge bg-danger">-${
+                                    item.discount
+                                }%</span>
+                            </p>`
                                 : `<p class="mb-0 fw-bold">$${(
                                       item.price * item.quantity
                                   ).toFixed(2)}</p>`
@@ -304,7 +280,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button class="btn btn-sm btn-outline-danger remove-item-btn ms-4"><i class="fas fa-trash"></i></button>
                 </div>
             `;
-
             cartItemsContainer.appendChild(el);
         });
 
@@ -315,11 +290,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cartCount)
             cartCount.textContent = cart.reduce((s, i) => s + i.quantity, 0);
 
-        // Add event listeners to dynamic cart items
+        // Button actions
         document.querySelectorAll(".remove-item-btn").forEach((btn) => {
             btn.addEventListener("click", function () {
-                const index = this.closest(".cart-item").dataset.index;
-                cart.splice(index, 1);
+                cart.splice(this.closest(".cart-item").dataset.index, 1);
                 saveCartToStorage();
                 updateCartUI();
             });
@@ -327,9 +301,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll(".increase-qty-btn").forEach((btn) => {
             btn.addEventListener("click", function () {
-                const index = this.closest(".cart-item").dataset.index;
-                if (cart[index].quantity < cart[index].stock) {
-                    cart[index].quantity++;
+                const i = this.closest(".cart-item").dataset.index;
+                if (cart[i].quantity < cart[i].stock) {
+                    cart[i].quantity++;
                     saveCartToStorage();
                     updateCartUI();
                 }
@@ -338,9 +312,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll(".decrease-qty-btn").forEach((btn) => {
             btn.addEventListener("click", function () {
-                const index = this.closest(".cart-item").dataset.index;
-                if (cart[index].quantity > 1) {
-                    cart[index].quantity--;
+                const i = this.closest(".cart-item").dataset.index;
+                if (cart[i].quantity > 1) {
+                    cart[i].quantity--;
                     saveCartToStorage();
                     updateCartUI();
                 }
@@ -350,5 +324,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function saveCartToStorage() {
         localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    }
+
+    // Send cart to Laravel on checkout
+    const checkoutForm = document.getElementById("checkoutForm");
+    if (checkoutForm) {
+        checkoutForm.addEventListener("submit", function () {
+            const hiddenCartInput = document.getElementById("cartData");
+            if (hiddenCartInput) {
+                hiddenCartInput.value = JSON.stringify(cart);
+            }
+        });
     }
 });

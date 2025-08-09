@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 
@@ -49,7 +50,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:8',
             'role' => 'required|in:admin,manager,cashier,customer',
-            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|30000',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:30000',
         ]);
 
         $user = new User();
@@ -57,6 +58,9 @@ class UserController extends Controller
         $user->email = $validatedData['email'];
         $user->role = $validatedData['role'];
         $user->password = Hash::make($validatedData['password']);
+
+        // Generate a random remember token
+        $user->remember_token = Str::random(60);
 
         if ($request->hasFile('picture_url')) {
             $user->picture_url = $request->file('picture_url')->store('picture_url', 'public');
@@ -66,6 +70,7 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
+
 
     public function show($id)
     {
