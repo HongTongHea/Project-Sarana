@@ -3,7 +3,7 @@
 @section('title', 'Invoice | POS System')
 
 @section('content')
-    <div class="container mt-5 mb-5" id="invoice-area" style="max-width: 400px;">
+    <div class="container mt-5 mb-5" id="invoice-area" style="max-width: 800px;">
         <div class="card p-4 border-0 rounded-0 shadow-sm">
             <!-- Header -->
             <div class="text-center mb-4">
@@ -29,7 +29,7 @@
             <!-- Customer Info -->
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h5 class="card-title pb-2"><strong>Customer Information</strong></h5>
+                    <h5 class="card-title border-bottom pb-2"><strong>Customer Information</strong></h5>
                     <div class="row">
                         <div><strong>Name: {{ $order->customer->name ?? 'N/A' }}</strong></div>
                     </div>
@@ -49,17 +49,31 @@
                         <div class="col-6"><strong>Status: <span class="badge bg-success">Completed</span></strong></div>
                     </div>
                     <div class="row">
-                        <div class="col-6"><strong>Payment:
-                                @if ($order->payment_method === 'cash')
-                                    Cash
-                                @elseif($order->payment_method === 'aba')
-                                    ABA Pay
-                                @elseif($order->payment_method === 'credit_card')
-                                    Credit Card
+                        <div class="col-6">
+                            <strong>Payment:
+                                @if ($order->payments->isNotEmpty())
+                                    @php $paymentMethod = $order->payments->first()->method; @endphp
+                                    @switch($paymentMethod)
+                                        @case('cash')
+                                            Cash
+                                        @break
+
+                                        @case('aba')
+                                            ABA Pay
+                                        @break
+
+                                        @case('credit_card')
+                                            Credit Card
+                                        @break
+
+                                        @default
+                                            N/A
+                                    @endswitch
                                 @else
-                                    N/A
+                                    Not Paid
                                 @endif
-                            </strong></div>
+                            </strong>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,7 +124,7 @@
 
             <!-- Total -->
             <div class="row justify-content-end">
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
@@ -136,68 +150,61 @@
                 <p class="mb-0">For any inquiries, please contact us at info@angkortech.com</p>
             </div>
 
-            <!-- Print Button -->
+            <!-- Print Buttons (Hidden on print) -->
             <div class="text-center mt-4 no-print">
                 <button onclick="printInvoice()" class="btn btn-primary px-4">
                     <i class="fas fa-print me-2"></i> Print Invoice
                 </button>
-                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4 ms-2">
+                <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary px-4 ms-2">
                     <i class="fas fa-arrow-left me-2"></i> Back
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Print Script -->
+    <!-- Print Script with Bootstrap -->
     <script>
         function printInvoice() {
-            let printContents = document.getElementById('invoice-area').innerHTML;
-            let originalContents = document.body.innerHTML;
+            const invoiceContent = document.getElementById('invoice-area').innerHTML;
+            const printWindow = window.open('', '', 'height=800,width=800');
 
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
+            printWindow.document.write('<html><head><title>Print Invoice</title>');
+            // Load Bootstrap CSS from CDN
+            printWindow.document.write(
+                '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">'
+                );
+            // Custom styles for printing
+            printWindow.document.write('<style>');
+            printWindow.document.write(`
+                @media print {
+                    .no-print {
+                        display: none !important;
+                    }
+                }
+                body {
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                }
+            `);
+            printWindow.document.write('</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(invoiceContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+
+            // Delay to ensure CSS loads before printing
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
         }
     </script>
 
+    <!-- Optional: Hide .no-print when printing (fallback) -->
     <style>
         @media print {
-            @page {
-                size: 400px 400px;
-                margin: 0;
-            }
-
-            html,
-            body {
-                width: 400px;
-                height: 400px;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: hidden;
-            }
-
-            body * {
-                visibility: hidden;
-            }
-
-            #invoice-area,
-            #invoice-area * {
-                visibility: visible;
-            }
-
-            #invoice-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 400px;
-                height: 400px;
-                overflow: hidden;
-            }
-
-            .btn,
-            .no-print,
-            .navbar,
-            .footer {
+            .no-print {
                 display: none !important;
             }
         }

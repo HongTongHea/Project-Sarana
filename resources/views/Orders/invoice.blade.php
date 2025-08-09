@@ -3,7 +3,7 @@
 @section('title', 'Invoice | POS System')
 
 @section('content')
-    <div class="container mt-5 mb-5" id="invoice-area" style="max-width: 400px;">
+    <div class="container mt-5 mb-5" id="invoice-area" style="max-width: 800px;">
         <div class="card p-4 border-0 rounded-0 shadow-sm">
             <!-- Header -->
             <div class="text-center mb-4">
@@ -29,29 +29,49 @@
             <!-- Customer Info -->
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h5 class="card-title pb-2"><strong>Customer Information</strong></h5>
-                    <div class="row"><div><strong>Name: {{ $order->customer->name ?? 'N/A' }}</strong></div></div>
-                    <div class="row"><div><strong>Email: {{ $order->customer->email ?? 'N/A' }}</strong></div></div>
-                    <div class="row"><div><strong>Phone: {{ $order->customer->phone ?? 'N/A' }}</strong></div></div>
+                    <h5 class="card-title  border-bottom pb-2"><strong>Customer Information</strong></h5>
+                    <div class="row">
+                        <div><strong>Name: {{ $order->customer->name ?? 'N/A' }}</strong></div>
+                    </div>
+                    <div class="row">
+                        <div><strong>Email: {{ $order->customer->email ?? 'N/A' }}</strong></div>
+                    </div>
+                    <div class="row">
+                        <div><strong>Phone: {{ $order->customer->phone ?? 'N/A' }}</strong></div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <h5 class="card-title border-bottom pb-2"><strong>Order Summary</strong></h5>
-                    <div class="row"><div><strong>Items: {{ $order->items->count() ?? 0 }}</strong></div></div>
+                    <div class="row">
+                        <div><strong>Items: {{ $order->items->count() ?? 0 }}</strong></div>
+                    </div>
                     <div class="row">
                         <div class="col-6"><strong>Status: <span class="badge bg-success">Completed</span></strong></div>
                     </div>
                     <div class="row">
                         <div class="col-6"><strong>Payment:
-                            @if ($order->payment_method === 'cash')
-                                Cash
-                            @elseif($order->payment_method === 'aba')
-                                ABA Pay
-                            @elseif($order->payment_method === 'credit_card')
-                                Credit Card
-                            @else
-                                N/A
-                            @endif
-                        </strong></div>
+                                @if ($order->payments->isNotEmpty())
+                                    @php $paymentMethod = $order->payments->first()->method; @endphp
+                                    @switch($paymentMethod)
+                                        @case('cash')
+                                            Cash
+                                        @break
+
+                                        @case('aba')
+                                            ABA Pay
+                                        @break
+
+                                        @case('credit_card')
+                                            Credit Card
+                                        @break
+
+                                        @default
+                                            N/A
+                                    @endswitch
+                                @else
+                                    Not Paid
+                                @endif
+                            </strong></div>
                     </div>
                 </div>
             </div>
@@ -155,13 +175,14 @@
     <style>
         @media print {
             @page {
-                size: 400px 400px;
+                size: 800px 800px;
                 margin: 0;
             }
 
-            html, body {
-                width: 400px;
-                height: 400px;
+            html,
+            body {
+                width: 800px;
+                height: 800px;
                 margin: 0 !important;
                 padding: 0 !important;
                 overflow: hidden;
@@ -171,7 +192,8 @@
                 visibility: hidden;
             }
 
-            #invoice-area, #invoice-area * {
+            #invoice-area,
+            #invoice-area * {
                 visibility: visible;
             }
 
@@ -179,8 +201,8 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 400px;
-                height: 400px;
+                width: 800px;
+                height: 800px;
                 overflow: hidden;
             }
 

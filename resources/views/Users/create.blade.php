@@ -36,12 +36,18 @@
                                     <label for="role" class="form-label">Role</label>
                                     <select name="role" class="form-select form-control" id="role" required>
                                         <option value="">Select Role</option>
-                                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
+                                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>
+                                            Admin
                                         </option>
-                                        <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User
+                                        <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>
+                                            Manager
+                                        </option>
+                                        <option value="cashier" {{ old('role') == 'cashier' ? 'selected' : '' }}>
+                                            Cashier
                                         </option>
                                         <option value="customer" {{ old('role') == 'customer' ? 'selected' : '' }}>
-                                            Customer</option>
+                                            Customer
+                                        </option>
                                     </select>
                                 </div>
 

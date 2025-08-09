@@ -36,9 +36,12 @@
                                         <option value="admin"
                                             {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
                                             Admin</option>
-                                        <option value="user"
-                                            {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>
-                                            User</option>
+                                        <option value="manager"
+                                            {{ old('role', $user->role) == 'manager' ? 'selected' : '' }}>
+                                            Manager</option>
+                                        <option value="cashier"
+                                            {{ old('role', $user->role) == 'cashier' ? 'selected' : '' }}>
+                                            Cashier</option>
                                         <option value="customer"
                                             {{ old('role', $user->role) == 'customer' ? 'selected' : '' }}>
                                             Customer

@@ -3,11 +3,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                        height="30">
-                    <h6 class="text-uppercase mt-4 ms-1 text-primary" style="font-weight: 700; font-size: 16px">
-                        Clothes <span class="text-warning">Store </span> |
-                        <span class="text-dark">Users Details</span>
+                    <h6 class="text-uppercase mt-3 ms-1 text-black" style="font-weight: 700; font-size: 16px">
+                        User Details
                     </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
@@ -16,7 +13,7 @@
             <div class="modal-body">
                 <div class="row align-items-center">
                     <!-- Profile Picture Section -->
-                    <div class="col-12 col-md-12 text-center">
+                    <div class="col-12 col-md-6">
                         @if ($user->picture_url)
                             <div class="form-group">
                                 <p class="fw-bolder text-uppercase">Profile Picture</p>
@@ -30,6 +27,9 @@
                                 class="img-thumbnail rounded-circle shadow-lg"
                                 style="width: 150px; height: 150px; object-fit: cover;">
                         @endif
+
+                    </div>
+                    <div class="col-12 col-md-6">
                         <h5 class="mb-3"><strong>Username:</strong> <span
                                 class="text-warning">{{ $user->name }}</span></h5>
                         <h5 class="mb-3"><strong>Email:</strong> <span class="text-dark">{{ $user->email }}</span>

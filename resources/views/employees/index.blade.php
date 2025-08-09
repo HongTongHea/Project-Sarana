@@ -4,16 +4,16 @@
 
 @section('content')
     <div class="container-fluid mt-3">
-        <div class="card">
+        <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="mb-0 fw-semibold text-uppercase">Employees</h4>
                 </div>
             </div>
             <div class="card-body">
-                <button type="button" class="btn btn-primary mb-3 ml-3 rounded-3 btn-sm" data-bs-toggle="modal"
+                <button type="button" class="btn btn-primary mb-3 ml-3 btn-sm" data-bs-toggle="modal"
                     data-bs-target="#createModal">
-                    <i class="fa-solid fa-circle-plus"></i> Add New
+                    <i class="fas fa-plus"></i> New Employee 
                 </button>
 
                 <div class="table-responsive">

@@ -13,7 +13,7 @@
             <div class="card-body">
                 <button type="button" class="btn btn-primary mb-3 ml-3 btn-sm" data-bs-toggle="modal"
                     data-bs-target="#createModal">
-                    <i class="fas fa-plus"></i> Add New User
+                    <i class="fas fa-plus"></i> New User
                 </button>
 
                 <div class="table-responsive">

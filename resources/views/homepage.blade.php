@@ -4,32 +4,12 @@
     {{-- Hero Section --}}
     <section>
         <div class="hero-slideshow">
-            <div class="slide slide-1 active"
-                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/AsuszepyrusG16.jpg');">
-                <div class="slide-content">
-                    <h1 class="display-4 fw-bold">All ZEPHYRUS G16</h1>
-                    <p class="lead">Discover our new arrivals and trendy outfits</p>
-                    <a href="#products-section" class="btn btn-primary btn-lg">Shop Now</a>
-                </div>
+            <div class="slide slide-1 active" style="background-image: url('assets/img/slide (7).png');">
             </div>
-            <div class="slide slide-2"
-                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/allasus.jpg');">
-                <div class="slide-content">
-                    <h1 class="display-4 fw-bold">Beach Essentials</h1>
-                    <p class="lead">Everything you need for your summer getaway</p>
-                    <a href="#beach-collection" class="btn btn-primary btn-lg">View Collection</a>
-                </div>
+            <div class="slide slide-2" style="background-image: url('assets/img/slide (6).png');">
             </div>
-
-            <div class="slide slide-3"
-                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/tuf.png');">
-                <div class="slide-content">
-                    <h1 class="display-4 fw-bold">Summer Accessories</h1>
-                    <p class="lead">Complete your look with our stylish accessories</p>
-                    <a href="#accessories" class="btn btn-primary btn-lg">Explore Now</a>
-                </div>
+            <div class="slide slide-3" style="background-image: url('assets/img/slide (9).png');">
             </div>
-
             <div class="slide-nav">
                 <button class="slide-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
                 <button class="slide-nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
@@ -225,7 +205,7 @@
                 </div>
             @endforeach
         </section>
-       
+
         @include('website.shoppingcart')
     </div>
 @endsection

@@ -3,16 +3,17 @@
 @section('title', 'Angkor Tech Computer | POS System ')
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     <div class="container-fluid mt-3">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="row">
             <!-- Order Column -->
             <div class="col-md-8 mb-3">
@@ -24,6 +25,10 @@
                             @csrf
 
                             <div class="form-group mb-3">
+                                <button type="button" class="btn btn-primary mb-3   btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#createModal">
+                                    <i class="fas fa-plus"></i> Add New Customer
+                                </button>
                                 <div class="input-group w-50">
                                     <span class="input-group-text" id="basic-addon1">
                                         <i class="fa-solid fa-users-line"></i>
@@ -36,8 +41,12 @@
                                             </option>
                                         @endforeach
                                     </select>
+
                                 </div>
+
                             </div>
+
+
 
                             <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
                                 <!-- Made table scrollable -->
@@ -256,6 +265,7 @@
             </div>
         </div>
     </div>
+    @include('Customers.create') <!-- Include customer creation modal -->
 
     <script>
         let orderItems = [];

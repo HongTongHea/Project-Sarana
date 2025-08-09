@@ -73,8 +73,8 @@
                                                 <li>
                                                     <a href="{{ route('orders.show', $order->id) }}"
                                                         class="dropdown-item d-flex align-items-center">
-                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
-                                                        View Details
+                                                        <i class="fa-solid fa-file-invoice me-2 text-info"></i>
+                                                        View Invoice
                                                     </a>
                                                 </li>
 
