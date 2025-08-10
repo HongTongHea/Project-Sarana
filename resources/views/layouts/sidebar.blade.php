@@ -26,7 +26,7 @@
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
                 <li class="nav-item active">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('admin.dashboard') }}">
                         <i class="fa-solid fa-gauge-high"></i>
                         <p>Dashboard</p>
                     </a>

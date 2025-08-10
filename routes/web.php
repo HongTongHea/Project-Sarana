@@ -40,15 +40,23 @@ Route::middleware('guest:admin,customer')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 
-    // // Google Authentication (if used)
-    // Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect']);
-    // Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
+
+    // Google Authentication (if used)
+    Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect']);
+    Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 });
 
 
 Route::middleware('guest')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
     Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.redirect');
     Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 });
 
 /*
@@ -56,27 +64,35 @@ Route::middleware('guest')->group(function () {
 | Logout (single route) - accessible even if guard varies (controller will handle)
 |--------------------------------------------------------------------------
 */
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+//Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated routes for either admin OR customer (shared website features)
-| Use auth:admin,customer so either logged-in admin OR customer can access.
+| Authenticated routes - for either admin OR customer
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:admin,customer'])->group(function () {
+    // Profile
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
 
-    // Orders / shopping features that both can use (if applicable)
-    // Route::resource('orders', OrderController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+    // Orders
     Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');
     Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
     Route::get('/orders/{order}/print-invoice', [OrderController::class, 'printInvoice'])->name('orders.print-invoice');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 });
+
+
+// Profile
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
 
 /*
 |--------------------------------------------------------------------------

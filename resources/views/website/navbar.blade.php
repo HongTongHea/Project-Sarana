@@ -56,7 +56,8 @@
                         <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="userDropdown">
                             <li>
                                 <a class="dropdown-item" href="{{ route('profile') }}">
-                                    <i class="fas fa-user me-2"></i> Profile
+                                    <i class="fas fa-gear me-2"></i>
+                                    </i> Setting
                                 </a>
                             </li>
 
@@ -73,15 +74,14 @@
                             </li>
 
                             <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                </a>
-
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                     style="display: none;">
                                     @csrf
                                 </form>
+                                <a class="dropdown-item" href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                </a>
                             </li>
                         </ul>
                     </div>

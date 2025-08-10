@@ -62,7 +62,7 @@
                 </div>
 
                 <!-- Footer -->
-                @include('layouts.footer')
+                {{-- @include('layouts.footer') --}}
                 <!-- End Footer -->
             </div>
             <!-- Custom template | don't include it in your project! -->
