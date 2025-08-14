@@ -125,18 +125,20 @@ class AuthController extends Controller
         return redirect()->route('profile')->with('success', 'Profile picture updated successfully.');
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        // Logout whichever guard is active
-        if (Auth::guard('admin')->check()) {
-            Auth::guard('admin')->logout();
-        } elseif (Auth::guard('customer')->check()) {
-            Auth::guard('customer')->logout();
-        }
+        // Clear Google OAuth session (if used)
+        session()->forget(config('services.google.token_name'));
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // Logout from all guards
+        Auth::guard('admin')->logout();
+        Auth::guard('customer')->logout();
+        Auth::logout(); // Default guard logout as fallback
 
-        return redirect('/')->with("success", "Logged out successfully.");
-    }
+        // Invalidate session & regenerate CSRF token
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('/'); // Redirect to homepage after logout
+    } 
 }

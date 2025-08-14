@@ -50,6 +50,27 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#base5">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Inventory Management</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="base5">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('suppliers.index') }}">
+                                    <span class="sub-item">Suppliers</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('accessories.index') }}">
+                                    <span class="sub-item">Purchases</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#base4">
                         <i class="fa-brands fa-product-hunt"></i>
                         <p>Product Management</p>

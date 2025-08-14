@@ -68,10 +68,11 @@
 
                         <div class="col-12 col-md-5 p-0 mt-md-0 mt-3">
                             <div class="form-group col-12 col-md-12" style="margin-left: 14px">
-                                <label for="picture_url">Employee Photo:</label>
-                                @if ($errors->has('picture_url'))
-                                    <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>
-                                @endif
+                                <label for="picture_url">Click to upload image
+                                    @if ($errors->has('picture_url'))
+                                        <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>
+                                    @endif
+                                </label>
 
                                 <!-- File input for image upload -->
                                 <input type="file" class="form-control d-none" name="picture_url"

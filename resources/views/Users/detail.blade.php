@@ -1,5 +1,5 @@
 <div class="modal fade" id="showModal{{ $user->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex justify-content-center align-items-center">
@@ -16,7 +16,7 @@
                     <div class="col-12 col-md-6">
                         @if ($user->picture_url)
                             <div class="form-group">
-                                <p class="fw-bolder text-uppercase">Profile Picture</p>
+                                <p class="fw-bolder text-uppercase">Profile</p>
                                 <img src="{{ Storage::url($user->picture_url) }}" alt="User Image"
                                     class="img-thumbnail rounded-circle shadow-lg"
                                     style="width: 150px; height: 150px; object-fit: cover;">

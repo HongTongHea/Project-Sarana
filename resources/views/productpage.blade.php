@@ -35,17 +35,9 @@
                         <p class="text-muted">Browse our selection of featured products</p>
                     </div>
                 </div>
-                <div class="text-start"></div>
                 <div class="d-flex align-items-center mb-2">
-                    <div class="input-group ">
-                        <input type="text" id="productSearch" class="form-control" placeholder="Search products...">
-                        <button class="btn btn-outline-secondary" type="button" id="searchButton">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-outline-primary btn-sm ms-2" id="see-all-btn">See All</button>
-                    </div>
+                    <button class="btn btn-outline-primary btn-sm" id="see-all-btn" style="display: none;">See All</button>
                 </div>
-
             </div>
 
             <div class="row" id="products-container">
@@ -206,6 +198,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 @endsection

@@ -6,8 +6,11 @@
 
     <div class="container-fluid mt-3">
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -15,6 +18,7 @@
             </div>
         @endif
         <div class="row">
+
             <!-- Order Column -->
             <div class="col-md-8 mb-3">
                 <div class="card rounded-0 h-100 "> <!-- Added h-100 here -->

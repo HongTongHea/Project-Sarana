@@ -16,7 +16,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProductpageController;
 use App\Http\Controllers\AccessorypageController;
-
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PurchaseOrderController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -26,6 +28,8 @@ use App\Http\Controllers\AccessorypageController;
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
 Route::get('/accessorypage', [AccessorypageController::class, 'index'])->name('accessorypage.index');
+// routes/web.php
+Route::get('/search', [SearchController::class, 'search']);
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +43,9 @@ Route::middleware('guest:admin,customer')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-
-
     // Google Authentication (if used)
     Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect']);
     Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 });
 
 
@@ -56,7 +56,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
     Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.redirect');
     Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 });
 
 /*
@@ -64,9 +63,9 @@ Route::middleware('guest')->group(function () {
 | Logout (single route) - accessible even if guard varies (controller will handle)
 |--------------------------------------------------------------------------
 */
-//Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 
 /*
 |--------------------------------------------------------------------------
@@ -84,10 +83,13 @@ Route::middleware(['auth:admin,customer'])->group(function () {
     Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');
     Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
     Route::get('/orders/{order}/print-invoice', [OrderController::class, 'printInvoice'])->name('orders.print-invoice');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 });
 
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 // Profile
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -111,4 +113,6 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('accessories', AccessoryController::class);
     Route::resource('orders', OrderController::class);
+    Route::resource('suppliers', SupplierController::class);
+    Route::resource('purchase-orders', PurchaseOrderController::class);
 });

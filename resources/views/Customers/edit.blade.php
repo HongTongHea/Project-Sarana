@@ -1,5 +1,5 @@
 <div class="modal fade" id="editModal{{ $customer->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="{{ route('customers.update', $customer->id) }}" method="POST">
                 @csrf
@@ -15,13 +15,13 @@
                 </div>
                 <div class="modal-body p-2">
                     <div class="row m-2">
-                        <div class="form-group col-12 col-md-12">
+                        <div class="form-group col-12 col-md-6">
                             <label for="name_{{ $customer->id }}">Full Name</label>
                             <input type="text" class="form-control" id="name_{{ $customer->id }}" name="name"
                                 value="{{ $customer->name }}" required>
                         </div>
 
-                        <div class="form-group col-12 col-md-12">
+                        <div class="form-group col-12 col-md-6">
                             <label for="email_{{ $customer->id }}">Email</label>
                             <input type="email" class="form-control" id="email_{{ $customer->id }}" name="email"
                                 value="{{ $customer->email }}" required>

@@ -27,88 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const emptyCartMessage = document.querySelector(".empty-cart-message");
     const stockStatusElement = document.querySelector(".stock-status");
 
-    const productSearch = document.getElementById("productSearch");
-    const searchButton = document.getElementById("searchButton");
     const accessoriesContainer = document.getElementById(
         "accessories-container"
     );
-    const productsContainer = document.getElementById("products-container"); // New for products
+    const productsContainer = document.getElementById("products-container");
 
     let currentProduct = {};
-
-    // Original DOM items
-    const allOriginalAccessories = Array.from(
-        document.querySelectorAll(".accessory-item")
-    );
-    const allOriginalProducts = Array.from(
-        document.querySelectorAll(".product-item")
-    );
-
-    // Search Function (works for both)
-    function performSearch() {
-        const searchTerm = productSearch?.value.toLowerCase().trim() || "";
-
-        // Accessories search
-        if (accessoriesContainer) {
-            accessoriesContainer.innerHTML = "";
-            const accessories = searchTerm
-                ? allOriginalAccessories.filter(
-                      (item) =>
-                          item
-                              .querySelector(".fw-semibold")
-                              ?.textContent.toLowerCase()
-                              .includes(searchTerm) ||
-                          item
-                              .querySelector(".text-muted.small")
-                              ?.textContent.toLowerCase()
-                              .includes(searchTerm)
-                  )
-                : allOriginalAccessories;
-
-            if (accessories.length) {
-                accessories.forEach((item) =>
-                    accessoriesContainer.appendChild(item.cloneNode(true))
-                );
-            } else {
-                accessoriesContainer.innerHTML = `<div class="text-center py-5"><i class="fas fa-search fa-3x text-muted mb-3"></i><h5 class="text-muted">No accessories found matching "${searchTerm}"</h5></div>`;
-            }
-        }
-
-        // Products search
-        if (productsContainer) {
-            productsContainer.innerHTML = "";
-            const products = searchTerm
-                ? allOriginalProducts.filter(
-                      (item) =>
-                          item
-                              .querySelector(".fw-semibold")
-                              ?.textContent.toLowerCase()
-                              .includes(searchTerm) ||
-                          item
-                              .querySelector(".text-muted.small")
-                              ?.textContent.toLowerCase()
-                              .includes(searchTerm)
-                  )
-                : allOriginalProducts;
-
-            if (products.length) {
-                products.forEach((item) =>
-                    productsContainer.appendChild(item.cloneNode(true))
-                );
-            } else {
-                productsContainer.innerHTML = `<div class="text-center py-5"><i class="fas fa-search fa-3x text-muted mb-3"></i><h5 class="text-muted">No products found matching "${searchTerm}"</h5></div>`;
-            }
-        }
-
-        reinitializeAddToCartButtons();
-    }
-
-    if (searchButton) searchButton.addEventListener("click", performSearch);
-    if (productSearch) {
-        productSearch.addEventListener("keyup", (e) => {
-            if (e.key === "Enter") performSearch();
-        });
-    }
 
     // Add to cart button logic
     function reinitializeAddToCartButtons() {
@@ -324,6 +248,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function saveCartToStorage() {
         localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    }
+
+    // Category filtering functionality
+    document.querySelectorAll(".category-item").forEach((category) => {
+        category.addEventListener("click", function () {
+            const categoryId = this.dataset.categoryId;
+            filterProductsByCategory(categoryId);
+        });
+    });
+
+    // See All button functionality
+    document
+        .getElementById("see-all-btn")
+        ?.addEventListener("click", function () {
+            resetProductFilter();
+        });
+
+    function filterProductsByCategory(categoryId) {
+        const allProducts = document.querySelectorAll(".product-item");
+        const categoryTitle = document.querySelector(
+            `.category-item[data-category-id="${categoryId}"] h5`
+        ).textContent;
+
+        // Update the products title
+        document.getElementById("products-title").textContent = categoryTitle;
+
+        // Filter products
+        allProducts.forEach((product) => {
+            if (product.dataset.categoryId === categoryId) {
+                product.style.display = "block";
+            } else {
+                product.style.display = "none";
+            }
+        });
+
+        // Show the "See All" button
+        document.getElementById("see-all-btn").style.display = "inline-block";
+    }
+
+    function resetProductFilter() {
+        const allProducts = document.querySelectorAll(".product-item");
+
+        // Reset products title
+        document.getElementById("products-title").textContent =
+            "Featured Products";
+
+        // Show all products
+        allProducts.forEach((product) => {
+            product.style.display = "block";
+        });
+
+        // Hide the "See All" button
+        document.getElementById("see-all-btn").style.display = "none";
     }
 
     // Send cart to Laravel on checkout

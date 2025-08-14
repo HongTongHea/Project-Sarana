@@ -93,7 +93,7 @@
                 </div>
             </section>
         @endif
-        <section>
+        <section class="mb-5">
             <div class="row mb-2">
                 <div class="col text-start">
                     <h3 class="mb-0 text-start font-weight-bold" id="products-title">Accesseries</h3>

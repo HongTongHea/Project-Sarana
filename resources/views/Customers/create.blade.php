@@ -1,5 +1,5 @@
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="{{ route('customers.store') }}" method="POST">
                 @csrf
@@ -13,12 +13,12 @@
                 </div>
                 <div class="modal-body p-2">
                     <div class="row m-2">
-                        <div class="form-group col-12 col-md-12">
+                        <div class="form-group col-12 col-md-6">
                             <label for="name">Full Name</label>
                             <input type="text" class="form-control" id="first_name" name="name"
                                 value="{{ old('name') }}" required placeholder="Enter full name">
                         </div>
-                        <div class="form-group col-12 col-md-12">
+                        <div class="form-group col-12 col-md-6">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email"
                                 value="{{ old('email') }}" required placeholder="Enter email">

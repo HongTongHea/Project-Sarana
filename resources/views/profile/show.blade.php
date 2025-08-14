@@ -213,17 +213,17 @@
             <div class="profile-content">
                 <!-- Left Section - Edit Form -->
                 <div class="profile-form-section">
-                    <div class="profile-header">
+                    <div class="profile-header d-flex align-items-center">
                         <div>
                             <h2>My Profile</h2>
                             <p class="text-muted">Manage your account information</p>
                         </div>
-                        {{-- <form action="{{ route('logout') }}" method="POST">
+                        <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </button>
-                        </form> --}}
+                        </form>
                     </div>
 
                     {{-- Success / error messages --}}
