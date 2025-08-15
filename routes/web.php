@@ -19,6 +19,7 @@ use App\Http\Controllers\AccessorypageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -83,6 +84,9 @@ Route::middleware(['auth:admin,customer'])->group(function () {
     Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');
     Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
     Route::get('/orders/{order}/print-invoice', [OrderController::class, 'printInvoice'])->name('orders.print-invoice');
+
+    Route::post('/purchase_orders/{purchase_order}/mark-received', [PurchaseOrderController::class, 'markAsReceived'])
+        ->name('purchase_orders.markReceived');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -115,4 +119,5 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('purchase-orders', PurchaseOrderController::class);
+    Route::resource('purchase_orders', PurchaseOrderController::class);
 });

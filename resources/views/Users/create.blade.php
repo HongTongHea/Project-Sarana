@@ -80,7 +80,6 @@
                                         <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>
                                     @endif
                                 </label>
-
                                 <input type="file" class="form-control d-none" name="picture_url" id="picture_url"
                                     accept="image/*" onchange="showPreview(event)"
                                     style="width: 430px; height: 350px; object-fit: cover; border: 1px solid #ccc; border-radius: 5px;">

@@ -63,7 +63,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('accessories.index') }}">
+                                <a href="{{ route('purchase_orders.index') }}">
                                     <span class="sub-item">Purchases</span>
                                 </a>
                             </li>

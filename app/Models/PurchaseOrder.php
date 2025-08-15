@@ -3,18 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use \Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseOrder extends Model
 {
-
     use HasFactory;
 
     protected $fillable = [
         'supplier_id',
+        'created_by',
         'order_date',
         'total_amount',
         'status'
+    ];
+
+    protected $casts = [
+        'order_date' => 'date',
+        'total_amount' => 'decimal:2',
     ];
 
     public function supplier()
@@ -22,8 +28,41 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function orderItems()
+    public function creator()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->belongsTo(Employee::class, 'created_by');
     }
+
+    public function items()
+    {
+        return $this->hasMany(PurchaseOrderItem::class);
+    }
+
+    public function updateTotalAmount()
+    {
+        $this->total_amount = $this->items()->sum('total_price');
+        $this->save();
+    }
+
+    // When marking as received, update product stock
+    public function markAsReceived()
+    {
+        if ($this->status !== 'pending') {
+            return false;
+        }
+
+        DB::transaction(function () {
+            foreach ($this->items as $item) {
+                $product = $item->product;
+                $product->stock_quantity += $item->quantity;
+                $product->save();
+            }
+
+            $this->status = 'received';
+            $this->save();
+        });
+
+        return true;
+    }
+
 }
