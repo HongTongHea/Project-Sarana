@@ -25,7 +25,11 @@
                 <div class="vr" style="height: 30px; width: 2px; margin-right: 10px; margin-top: 5px"></div>
 
                 @php
-                    $user = Auth::guard('admin')->user() ?? (Auth::guard('customer')->user() ?? Auth::user());
+                    $user =
+                        Auth::guard('admin')->user() ??
+                        (Auth::guard('manager')->user() ??
+                        (Auth::guard('cashier')->user() ?? 
+                        (Auth::guard('customer')->user() ?? Auth::user())));
                 @endphp
 
                 @if (!$user)
@@ -54,17 +58,32 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="userDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile') }}">
-                                    <i class="fas fa-gear me-2"></i>
-                                    </i> Setting
-                                </a>
-                            </li>
+                            {{-- Show Settings only if NOT admin --}}
+                            @if ($user->role !== 'admin')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('profile') }}">
+                                        <i class="fas fa-gear me-2"></i> Setting
+                                    </a>
+                                </li>
+                            @endif
 
+                            {{-- Dashboard routes by role --}}
                             @if ($user->role === 'admin')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                                        <i class="fas fa-tachometer-alt me-2"></i> Admin Dashboard
+                                    </a>
+                                </li>
+                            @elseif ($user->role === 'manager')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('manager.dashboard') }}">
+                                        <i class="fas fa-briefcase me-2"></i> Manager Dashboard
+                                    </a>
+                                </li>
+                            @elseif ($user->role === 'cashier')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('cashier.dashboard') }}">
+                                        <i class="fas fa-cash-register me-2"></i> Cashier Dashboard
                                     </a>
                                 </li>
                             @endif

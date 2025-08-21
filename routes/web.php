@@ -29,7 +29,6 @@ use App\Http\Controllers\PurchaseOrderController;
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
 Route::get('/accessorypage', [AccessorypageController::class, 'index'])->name('accessorypage.index');
-// routes/web.php
 Route::get('/search', [SearchController::class, 'search']);
 
 /*
@@ -37,26 +36,15 @@ Route::get('/search', [SearchController::class, 'search']);
 | Auth (guest) routes - accessible only when NOT authenticated as admin OR customer
 |--------------------------------------------------------------------------
 */
-Route::middleware('guest:admin,customer')->group(function () {
+Route::middleware('guest:admin,manager,cashier,customer')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     // Google Authentication (if used)
     Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect']);
     Route::get('auth/google/callback', [GoogleAuthController::class, 'callback']);
-});
-
-
-Route::middleware('guest')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
-    Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.redirect');
-    Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->name('google.callback');
 });
 
 /*
@@ -66,14 +54,12 @@ Route::middleware('guest')->group(function () {
 */
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
-
 /*
 |--------------------------------------------------------------------------
-| Authenticated routes - for either admin OR customer
+| Authenticated routes - for all roles
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:admin,customer'])->group(function () {
+Route::middleware(['auth:admin,manager,cashier,customer'])->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -89,26 +75,30 @@ Route::middleware(['auth:admin,customer'])->group(function () {
         ->name('purchase_orders.markReceived');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-});
-// Profile
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
-
 /*
 |--------------------------------------------------------------------------
-| Admin-only routes
+| Role-specific dashboard routes
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth:admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
+});
 
-    // Admin resources (only admins)
+Route::middleware(['auth:manager'])->group(function () {
+    Route::get('/manager/dashboard', [DashboardController::class, 'managerDashboard'])->name('manager.dashboard');
+});
+
+Route::middleware(['auth:cashier'])->group(function () {
+    Route::get('/cashier/dashboard', [DashboardController::class, 'cashierDashboard'])->name('cashier.dashboard');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin, Manager, Cashier shared resources
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth:admin,manager,cashier'])->group(function () {
+    // Shared resources with role-based authorization in controllers
     Route::resource('users', UserController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('employees', EmployeeController::class);
@@ -118,6 +108,8 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('accessories', AccessoryController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('suppliers', SupplierController::class);
-    Route::resource('purchase-orders', PurchaseOrderController::class);
     Route::resource('purchase_orders', PurchaseOrderController::class);
 });
+
+// Legacy dashboard route for backward compatibility
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');

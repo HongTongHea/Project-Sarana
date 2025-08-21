@@ -49,31 +49,42 @@
 
 <body>
     <div class="wrapper">
-        @if (Auth::check() && Auth::user()->role === 'admin')
+        @php
+            // Get the authenticated user from any guard
+            $user = null;
+            $guards = ['admin', 'manager', 'cashier', 'customer', 'web'];
+
+            foreach ($guards as $guard) {
+                if (Auth::guard($guard)->check()) {
+                    $user = Auth::guard($guard)->user();
+                    break;
+                }
+            }
+        @endphp
+
+        @if ($user && in_array($user->role, ['admin', 'manager', 'cashier']))
             <!-- Sidebar -->
             @include('layouts.sidebar')
             <!-- End Sidebar -->
+
             <div class="main-panel">
                 <!-- Navbar -->
                 @include('layouts.navbar')
                 <!-- End Navbar -->
-                <div class="container ">
+
+                <div class="container">
                     @yield('content')
                 </div>
 
                 <!-- Footer -->
                 {{-- @include('layouts.footer') --}}
-                <!-- End Footer -->
             </div>
-            <!-- Custom template | don't include it in your project! -->
         @else
-            {{-- Show Not Found --}}
-
             <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
                 <div class="text-center">
                     <h2 class="text-danger">404 | Page Not Found</h2>
                     <p class="mb-4">You do not have permission to access this page.</p>
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Go Back </a>
+                    <a href="{{ route('login') }}" class="btn btn-primary">Go Back</a>
                 </div>
             </div>
         @endif

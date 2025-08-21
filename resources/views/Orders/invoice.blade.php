@@ -122,7 +122,7 @@
 
             <!-- Total -->
             <div class="row justify-content-end">
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <table class="table table-bordered">
                         <tbody>
                             <tr>

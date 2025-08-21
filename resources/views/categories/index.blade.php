@@ -63,8 +63,8 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <!-- Edit Category Modal -->
-                                @include('categories.show')
+                                {{-- <!-- Edit Category Modal -->
+                                @include('categories.show') --}}
                                 @include('categories.edit')
                                 <!-- Delete Category Modal -->
                                 @include('categories.delete')

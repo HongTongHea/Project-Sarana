@@ -41,12 +41,22 @@ return [
             'provider' => 'users',
         ],
 
-        'customer' => [
+        'admin' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
 
-        'admin' => [
+        'manager' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'cashier' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'customer' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
@@ -73,8 +83,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\User::class,
         ],
+        // 'users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => env('AUTH_MODEL', App\Models\User::class),
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',

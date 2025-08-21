@@ -37,13 +37,25 @@
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                         aria-expanded="false">
                         <span class="profile-username text-capitalize pe-3">
-                            @if (Auth::check())
-                                <span class="">Welcome {{ Auth::user()->name }}</span>
-                                {{-- <p class="mt-3">Role: {{ ucfirst($user->role) }}</p> --}}
+                            @php
+                                // Get the authenticated user from any guard
+                                $user = null;
+                                $guards = ['admin', 'manager', 'cashier', 'customer', 'web'];
+
+                                foreach ($guards as $guard) {
+                                    if (Auth::guard($guard)->check()) {
+                                        $user = Auth::guard($guard)->user();
+                                        break;
+                                    }
+                                }
+                            @endphp
+
+                            @if ($user)
+                                <span class="">Welcome {{ $user->name }}</span>
                         </span>
                         <div class="avatar">
-                            @if (Auth::user()->picture_url)
-                                <img src="{{ Storage::url(Auth::user()->picture_url) }}" alt="Profile Picture"
+                            @if ($user->picture_url)
+                                <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
                                     class="avatar-img  rounded-5 oject-fit-cover object-center" width="100%">
                             @else
                                 <img src="{{ asset('assets/img/Default_pfp.svg.png') }}"class="avatar-img rounded-5"
@@ -57,31 +69,29 @@
                         <div class="dropdown-user-scroll scrollbar-outer">
                             <li>
                                 <div class="user-box">
-
                                     <div class="avatar">
-                                        @if (Auth::check())
-                                            @if (Auth::user()->picture_url)
-                                                <img src="{{ Storage::url(Auth::user()->picture_url) }}"
-                                                    alt="Profile Picture" class="avatar-img rounded-5" width="100">
+                                        @if ($user)
+                                            @if ($user->picture_url)
+                                                <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
+                                                    class="avatar-img rounded-5" width="100">
                                             @else
                                                 <img src="{{ asset('assets/img/Default_pfp.svg.png') }}"class="avatar-img rounded-5"
                                                     width="100">
                                             @endif
-
                                     </div>
                                     <div class="u-text">
-                                        <h6>{{ Auth::user()->name }}</h6>
-                                        <p class="text-muted">Role: {{ ucfirst(Auth::user()->role) }}</p>
-                                        <p class="text-muted">Email: {{ Auth::user()->email }}</p>
-                                        <a href="{{ route('users.show', Auth::user()->id) }}"
+                                        <h6>{{ $user->name }}</h6>
+                                        <p class="text-muted">Role: {{ ucfirst($user->role) }}</p>
+                                        <p class="text-muted">Email: {{ $user->email }}</p>
+                                        <a href="{{ route('users.show', $user->id) }}"
                                             class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                     </div>
                                     @endif
                                 </div>
                             </li>
                             <li>
-                                @auth
-                                    @if (Auth::user()->role === 'admin')
+                                @if ($user)
+                                    @if ($user->role === 'admin')
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ route('users.index') }}">
                                             <i class="fa-solid fa-gear"></i> Account Setting
@@ -101,7 +111,7 @@
                                     <a class="dropdown-item" href="{{ route('login') }}">
                                         <i class="bi bi-box-arrow-in-right"></i> Login
                                     </a>
-                                @endauth
+                                @endif
                             </li>
                         </div>
                     </ul>

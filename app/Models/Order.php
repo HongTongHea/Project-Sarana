@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -12,9 +13,9 @@ class Order extends Model
 
     protected $fillable = [
         'customer_id',
+        'employee_id', // Added employee_id
         'subtotal',
         'tax_amount',
-        'discount_amount',
         'total',
         'status',
         'payment_status'
@@ -25,10 +26,16 @@ class Order extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
     public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
+
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);

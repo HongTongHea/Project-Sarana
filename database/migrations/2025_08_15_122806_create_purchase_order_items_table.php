@@ -14,15 +14,18 @@ return new class extends Migration
         Schema::create('purchase_order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('purchase_order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('restrict');
+
+            // Polymorphic item (Product or Accessory)
+            $table->unsignedBigInteger('item_id');
+            $table->string('item_type'); // App\Models\Product or App\Models\Accessory
+
             $table->integer('quantity')->unsigned();
             $table->decimal('unit_price', 10, 2);
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
 
-            // Indexes for better performance
+            $table->index(['item_id', 'item_type']);
             $table->index('purchase_order_id');
-            $table->index('product_id');
         });
     }
 

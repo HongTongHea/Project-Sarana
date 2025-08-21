@@ -11,35 +11,58 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    /**
+     * Redirect user based on role
+     */
     private function redirectBasedOnRole($user)
     {
         if (!$user) {
             abort(403, 'Unauthorized role.');
         }
 
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->role === 'customer') {
-            return redirect()->route('homepage.index');
+        // Redirect based on specific role
+        switch ($user->role) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            case 'manager':
+                return redirect()->route('manager.dashboard');
+            case 'cashier':
+                return redirect()->route('cashier.dashboard');
+            case 'customer':
+                return redirect()->route('homepage.index');
+            default:
+                abort(403, 'Unauthorized role.');
         }
-
-        abort(403, 'Unauthorized role.');
     }
 
+    /**
+     * Get the currently authenticated user from any guard
+     */
+    private function getAuthenticatedUser()
+    {
+        foreach (['admin', 'manager', 'cashier', 'customer', 'web'] as $guard) {
+            if (Auth::guard($guard)->check()) {
+                return Auth::guard($guard)->user();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Show login form
+     */
     public function showLoginForm()
     {
-        // If already logged in as admin/customer, redirect them
-        if (Auth::guard('admin')->check()) {
-            return redirect()->route('admin.dashboard');
-        }
-
-        if (Auth::guard('customer')->check()) {
-            return redirect()->route('homepage.index');
+        if ($user = $this->getAuthenticatedUser()) {
+            return $this->redirectBasedOnRole($user);
         }
 
         return view('auth.login');
     }
 
+    /**
+     * Handle login
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -49,37 +72,31 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        // Try find user first
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user) {
-            return back()->withErrors(['email' => 'User not found.']);
-        }
-
-        // Choose guard automatically based on role
-        $guard = $user->role === 'admin' ? 'admin' : 'customer';
-
-        if (Auth::guard($guard)->attempt($credentials, $request->remember)) {
-            $request->session()->regenerate();
-            return $this->redirectBasedOnRole(Auth::guard($guard)->user());
+        foreach (['admin', 'manager', 'cashier', 'customer'] as $guard) {
+            if (Auth::guard($guard)->attempt($credentials, $request->remember)) {
+                $request->session()->regenerate();
+                return $this->redirectBasedOnRole(Auth::guard($guard)->user());
+            }
         }
 
         return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
     }
 
+    /**
+     * Show register form
+     */
     public function showRegisterForm()
     {
-        if (Auth::guard('admin')->check()) {
-            return redirect()->route('admin.dashboard');
-        }
-
-        if (Auth::guard('customer')->check()) {
-            return redirect()->route('homepage.index');
+        if ($user = $this->getAuthenticatedUser()) {
+            return $this->redirectBasedOnRole($user);
         }
 
         return view('auth.register');
     }
 
+    /**
+     * Handle registration
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -102,13 +119,16 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Registration successful.');
     }
 
+    /**
+     * Update profile picture
+     */
     public function updateProfilePicture(Request $request)
     {
         $request->validate([
             'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $user = Auth::guard('admin')->user() ?? Auth::guard('customer')->user();
+        $user = $this->getAuthenticatedUser();
 
         if (!$user) {
             return back()->withErrors(['profile_picture' => 'No authenticated user found.']);
@@ -125,20 +145,20 @@ class AuthController extends Controller
         return redirect()->route('profile')->with('success', 'Profile picture updated successfully.');
     }
 
+    /**
+     * Logout user from all guards
+     */
     public function logout()
     {
-        // Clear Google OAuth session (if used)
         session()->forget(config('services.google.token_name'));
 
-        // Logout from all guards
-        Auth::guard('admin')->logout();
-        Auth::guard('customer')->logout();
-        Auth::logout(); // Default guard logout as fallback
+        foreach (['admin', 'manager', 'cashier', 'customer', 'web'] as $guard) {
+            Auth::guard($guard)->logout();
+        }
 
-        // Invalidate session & regenerate CSRF token
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect('/'); // Redirect to homepage after logout
-    } 
+        return redirect('/');
+    }
 }

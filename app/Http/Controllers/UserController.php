@@ -24,15 +24,17 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::all();
+        // Separate users by role
+        $adminAuthors = User::whereIn('role', ['admin', 'manager'])->get();
+        $customers = User::where('role', 'customer')->get();
 
-        // Check if `edit` parameter is present to load the user data for editing
+        // For editing if needed
         $user = null;
         if ($request->has('edit')) {
             $user = User::find($request->input('edit'));
         }
 
-        return view('users.index', compact('users', 'user'));
+        return view('users.index', compact('adminAuthors', 'customers', 'user'));
     }
 
 
@@ -57,6 +59,8 @@ class UserController extends Controller
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->role = $validatedData['role'];
+
+        // ✅ Hash password before saving
         $user->password = Hash::make($validatedData['password']);
 
         // Generate a random remember token
@@ -70,6 +74,7 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
+
 
 
     public function show($id)
@@ -90,7 +95,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|confirmed|min:8',
             'role' => 'required|in:admin,manager,cashier,customer',
-            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|30000',
+            'picture_url' => 'image|nullable|mimes:jpg,jpeg,png,gif,bmp,tiff,pdf,doc,docx,xlsx,xls|max:30000',
         ]);
 
         $user->name = $request->name;
@@ -98,6 +103,7 @@ class UserController extends Controller
         $user->role = $request->role;
 
         if ($request->filled('password')) {
+            // ✅ Hash new password before saving
             $user->password = Hash::make($request->password);
         }
 
@@ -112,6 +118,7 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'Profile updated successfully');
     }
+
 
     public function destroy(User $user)
     {

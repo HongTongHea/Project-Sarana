@@ -25,17 +25,6 @@
 
     <div class="container">
         <div class="row mb-4">
-            <div class="col-md-6 mx-auto">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="search-input"
-                        placeholder="Search products and accessories...">
-                    <button class="btn btn-primary" id="search-btn" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-4">
             <div class="col text-start">
                 <h3 class="fw-bold">Browse by Categories</h3>
                 <p class="text-muted">Browse our wide range of categories</p>
@@ -245,8 +234,8 @@
                 <div class="card border-0 position-relative product-card">
                     ${product.discount_percentage > 0
                         ? `<span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">
-                                         -${product.discount_percentage}%
-                                       </span>` : ""}
+                                             -${product.discount_percentage}%
+                                           </span>` : ""}
                     <div class="overflow-hidden product-image-container position-relative">
                         <img src="/storage/${product.picture_url}" alt="${product.name}"
                              class="card-img-top img-fluid product-image mt-2">
@@ -312,8 +301,8 @@
                 <div class="card border-0 position-relative product-card">
                     ${accessory.discount_percentage > 0
                         ? `<span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">
-                                         -${accessory.discount_percentage}%
-                                       </span>` : ""}
+                                             -${accessory.discount_percentage}%
+                                           </span>` : ""}
                     <div class="overflow-hidden product-image-container position-relative">
                         <img src="/storage/${accessory.picture_url}" alt="${accessory.name}"
                              class="card-img-top img-fluid product-image mt-2">

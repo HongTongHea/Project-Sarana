@@ -49,27 +49,20 @@
                                     </select>
                                 </div>
 
+                                <!-- Password -->
                                 <div class="form-group col-12 col-md-12">
-                                    <label for="password">Password
-                                        @if ($errors->has('password'))
-                                            <label class="text-danger mt-1">{{ $errors->first('password') }}</label>
-                                        @endif
-                                    </label>
+                                    <label for="password">Password</label>
                                     <input type="password" name="password" id="password" class="form-control"
-                                        {{ isset($user) ? '' : 'required' }} placeholder="Enter password" />
+                                        placeholder="Enter new password or keep existing">
                                 </div>
 
+                                <!-- Password Confirmation -->
                                 <div class="form-group col-12 col-md-12">
-                                    <label for="password_confirmation">Confirm Password
-                                        @if ($errors->has('password_confirmation'))
-                                            <label
-                                                class="text-danger mt-1">{{ $errors->first('password_confirmation') }}</label>
-                                        @endif
-                                    </label>
+                                    <label for="password_confirmation">Confirm Password</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control" {{ isset($user) ? '' : 'required' }}
-                                        placeholder="Enter confirm password">
+                                        class="form-control" placeholder="Confirm password">
                                 </div>
+
                             </div>
                         </div>
 
@@ -101,7 +94,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
                     </div>
                 </form>
             </div>

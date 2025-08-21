@@ -53,9 +53,13 @@ class PurchaseOrder extends Model
 
         DB::transaction(function () {
             foreach ($this->items as $item) {
-                $product = $item->product;
-                $product->stock_quantity += $item->quantity;
-                $product->save();
+                if ($item->product) {   // ✅ check if product exists
+                    $item->product->stock_quantity += $item->quantity;
+                    $item->product->save();
+
+                    // Optionally log stock change
+                    Stock::updateStock(Product::class, $item->product->id, $item->quantity);
+                }
             }
 
             $this->status = 'received';
@@ -64,5 +68,4 @@ class PurchaseOrder extends Model
 
         return true;
     }
-
 }

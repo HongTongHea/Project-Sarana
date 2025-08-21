@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Accessory;
 use App\Models\Payment;
 use App\Models\Category;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -17,20 +18,22 @@ class OrderController extends Controller
     {
         $categories = Category::all();
         $customers = Customer::all();
+        $employees = Employee::where('status', 1)->get(); // Added employees
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
-        $orders = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])->get();
+        $orders = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->get();
 
-        return view('orders.index', compact('orders', 'customers', 'products', 'accessories', 'categories'));
+        return view('orders.index', compact('orders', 'customers', 'employees', 'products', 'accessories', 'categories'));
     }
 
     public function create()
     {
         $customers = Customer::all();
+        $employees = Employee::where('status', 1)->get(); // Added employees
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
         $categories = Category::all();
-        return view('orders.create', compact('customers', 'products', 'accessories', 'categories'));
+        return view('orders.create', compact('customers', 'employees', 'products', 'accessories', 'categories'));
     }
 
     public function store(Request $request)
@@ -47,6 +50,7 @@ class OrderController extends Controller
         // Validate incoming request
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
+            'employee_id' => 'required|exists:employees,id', // Added employee validation
             'tax_rate' => 'nullable|numeric|min:0|max:100',
             'additional_discount' => 'nullable|numeric|min:0',
         ]);
@@ -102,6 +106,7 @@ class OrderController extends Controller
         // Create order
         $order = Order::create([
             'customer_id' => $validatedData['customer_id'],
+            'employee_id' => $validatedData['employee_id'], // Added employee_id
             'subtotal' => $subtotal,
             'item_discounts' => $itemDiscounts,
             'additional_discount' => $additionalDiscount,
@@ -166,13 +171,13 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])->findOrFail($id);
-        return view('orders.show', compact('order',));
+        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->findOrFail($id);
+        return view('orders.show', compact('order'));
     }
 
     public function invoice($id)
     {
-        $order = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])
+        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
             ->findOrFail($id);
 
         return view('orders.invoice', compact('order'));
@@ -180,7 +185,7 @@ class OrderController extends Controller
 
     public function printInvoice($id)
     {
-        $order = Order::with(['customer', 'items.product', 'items.accessory', 'payments'])
+        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
             ->findOrFail($id);
 
         return view('orders.print-invoice', compact('order'));
@@ -192,7 +197,7 @@ class OrderController extends Controller
         $products = Product::where('stock_quantity', '>', 0)
             ->where(function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('stock_no', 'like', "%{$search}%");
+                    ->orWhere('barcode', 'like', "%{$search}%");
             })
             ->get();
 

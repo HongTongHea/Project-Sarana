@@ -24,7 +24,7 @@
                 <div class="modal-body">
                     <div class="row m-2">
                         <!-- Supplier -->
-                        <div class="form-group col-12 col-md-6">
+                        <div class="form-group col-12 col-md-4">
                             <label for="supplier_id">Supplier</label>
                             <select class="form-control" id="supplier_id" name="supplier_id" required>
                                 <option value="">Select Supplier</option>
@@ -34,20 +34,32 @@
                             </select>
                         </div>
 
+                        <!-- Created By -->
+                        <div class="form-group col-12 col-md-4">
+                            <label for="created_by">Created By (Employee)</label>
+                            <select class="form-control" id="created_by" name="created_by" required>
+                                <option value="">Select Employee</option>
+                                @foreach ($employees as $employee)
+                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Order Date -->
-                        <div class="form-group col-12 col-md-6">
+                        <div class="form-group col-12 col-md-4">
                             <label for="order_date">Order Date</label>
                             <input type="date" class="form-control" id="order_date" name="order_date" required>
                         </div>
                     </div>
 
                     <!-- Purchase Order Items -->
-                    <div class="mt-4">
+                    <div class="mt-4 m-3">
                         <h6 class="fw-bold">Order Items</h6>
                         <table class="table table-bordered" id="itemsTable">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
+                                    <th>Item Type</th>
+                                    <th>Item</th>
                                     <th width="120px">Quantity</th>
                                     <th width="150px">Unit Price</th>
                                     <th width="150px">Total</th>
@@ -57,11 +69,15 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <select name="items[0][product_id]" class="form-control" required>
-                                            <option value="">Select Product</option>
-                                            @foreach ($products as $product)
-                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                            @endforeach
+                                        <select name="items[0][item_type]" class="form-control item_type" required>
+                                            <option value="">Select Type</option>
+                                            <option value="App\Models\Product">Product</option>
+                                            <option value="App\Models\Accessory">Accessory</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="items[0][item_id]" class="form-control item_id" required>
+                                            <option value="">Select Item</option>
                                         </select>
                                     </td>
                                     <td>
@@ -77,41 +93,55 @@
                                         <input type="text" class="form-control total_price" readonly value="0.00">
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger btn-sm removeRow"><i
-                                                class="fas fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm removeRow">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-success btn-sm" id="addRow"><i class="fas fa-plus"></i>
-                            Add Item</button>
+                        <button type="button" class="btn btn-success btn-sm" id="addRow">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Save Order</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- JavaScript for Adding/Removing Rows and Calculating Total -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         let rowIndex = 1;
 
+        const products = @json($products);
+        const accessories = @json($accessories);
+
+        function populateItems(selectElement, type) {
+            selectElement.innerHTML = '<option value="">Select Item</option>';
+            const list = (type === 'App\\Models\\Product') ? products : accessories;
+            list.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.id;
+                opt.textContent = item.name;
+                selectElement.appendChild(opt);
+            });
+        }
+
         // Add new row
         document.getElementById("addRow").addEventListener("click", function() {
-            let tableBody = document.querySelector("#itemsTable tbody");
-            let newRow = tableBody.rows[0].cloneNode(true);
+            const tableBody = document.querySelector("#itemsTable tbody");
+            const newRow = tableBody.rows[0].cloneNode(true);
 
             newRow.querySelectorAll("input, select").forEach((input) => {
-                let name = input.getAttribute("name");
-                if (name) {
-                    input.setAttribute("name", name.replace(/\[\d+\]/, `[${rowIndex}]`));
-                }
+                const name = input.getAttribute("name");
+                if (name) input.setAttribute("name", name.replace(/\[\d+\]/, `[${rowIndex}]`));
+
                 if (input.tagName === "INPUT") {
                     if (input.type === "number") input.value = 1;
                     if (input.classList.contains("unit_price")) input.value = 0;
@@ -119,6 +149,8 @@
                 }
                 if (input.tagName === "SELECT") {
                     input.selectedIndex = 0;
+                    if (input.classList.contains("item_id")) input.innerHTML =
+                        '<option value="">Select Item</option>';
                 }
             });
 
@@ -129,19 +161,26 @@
         // Remove row
         document.querySelector("#itemsTable").addEventListener("click", function(e) {
             if (e.target.closest(".removeRow")) {
-                let rows = document.querySelectorAll("#itemsTable tbody tr");
-                if (rows.length > 1) {
-                    e.target.closest("tr").remove();
-                }
+                const rows = document.querySelectorAll("#itemsTable tbody tr");
+                if (rows.length > 1) e.target.closest("tr").remove();
             }
         });
 
-        // Calculate total for each row
+        // Calculate total
         document.querySelector("#itemsTable").addEventListener("input", function(e) {
-            let row = e.target.closest("tr");
-            let qty = parseFloat(row.querySelector(".quantity").value) || 0;
-            let price = parseFloat(row.querySelector(".unit_price").value) || 0;
+            const row = e.target.closest("tr");
+            const qty = parseFloat(row.querySelector(".quantity").value) || 0;
+            const price = parseFloat(row.querySelector(".unit_price").value) || 0;
             row.querySelector(".total_price").value = (qty * price).toFixed(2);
+        });
+
+        // Populate items based on type
+        document.querySelector("#itemsTable").addEventListener("change", function(e) {
+            if (e.target.classList.contains("item_type")) {
+                const row = e.target.closest("tr");
+                const itemSelect = row.querySelector(".item_id");
+                populateItems(itemSelect, e.target.value);
+            }
         });
     });
 </script>

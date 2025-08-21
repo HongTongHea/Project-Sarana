@@ -89,12 +89,6 @@
                                         </div>
                                     </td>
                                 </tr>
-
-                                {{-- <!-- Edit Purchase Order Modal -->
-                                @include('purchase_orders.edit')
-
-                                <!-- Delete Purchase Order Modal -->
-                                @include('purchase_orders.delete') --}}
                             @endforeach
                         </tbody>
                     </table>
@@ -102,7 +96,7 @@
             </div>
         </div>
     </div>
-    {{-- @foreach ($orders as $order)
+    @foreach ($orders as $order)
         @include('purchase_orders.edit', [
             'purchaseOrder' => $order,
             'suppliers' => $suppliers,
@@ -110,7 +104,7 @@
             'employees' => $employees,
         ])
         @include('purchase_orders.delete', ['purchaseOrder' => $order])
-    @endforeach --}}
+    @endforeach
     <!-- Create Purchase Order Modal -->
     @include('purchase_orders.create')
 

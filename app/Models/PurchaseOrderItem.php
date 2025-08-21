@@ -11,7 +11,8 @@ class PurchaseOrderItem extends Model
 
     protected $fillable = [
         'purchase_order_id',
-        'product_id',
+        'item_id',
+        'item_type',
         'quantity',
         'unit_price',
         'total_price'
@@ -28,9 +29,10 @@ class PurchaseOrderItem extends Model
         return $this->belongsTo(PurchaseOrder::class);
     }
 
-    public function product()
+    // Polymorphic relation: can be Product or Accessory
+    public function item()
     {
-        return $this->belongsTo(Product::class);
+        return $this->morphTo();
     }
 
     protected static function boot()
@@ -38,23 +40,11 @@ class PurchaseOrderItem extends Model
         parent::boot();
 
         static::saving(function ($item) {
-            // Calculate total price automatically
             $item->total_price = $item->quantity * $item->unit_price;
         });
 
-        static::created(function ($item) {
-            // Update purchase order total when items are added
-            $item->purchaseOrder->updateTotalAmount();
-        });
-
-        static::updated(function ($item) {
-            // Update purchase order total when items are modified
-            $item->purchaseOrder->updateTotalAmount();
-        });
-
-        static::deleted(function ($item) {
-            // Update purchase order total when items are removed
-            $item->purchaseOrder->updateTotalAmount();
-        });
+        static::created(fn($item) => $item->purchaseOrder->updateTotalAmount());
+        static::updated(fn($item) => $item->purchaseOrder->updateTotalAmount());
+        static::deleted(fn($item) => $item->purchaseOrder->updateTotalAmount());
     }
 }

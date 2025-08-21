@@ -27,30 +27,46 @@
                         <form action="{{ route('orders.store') }}" method="POST" id="order-form"
                             class="d-flex flex-column h-100"> <!-- Added flex classes -->
                             @csrf
-
-                            <div class="form-group mb-3">
-                                <button type="button" class="btn btn-primary mb-3   btn-sm" data-bs-toggle="modal"
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn btn-primary mb-3 btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#createModal">
                                     <i class="fas fa-plus"></i> New Customer
                                 </button>
-                                <div class="input-group w-50">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="fa-solid fa-users-line"></i>
-                                    </span>
-                                    <select name="customer_id" id="customer_id" class="form-control" required>
-                                        <option value="">Enter Customer Name</option>
-                                        @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}">
-                                                {{ $customer->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                </div>
-
                             </div>
 
+                            <div class="row">
+                                <div class="form-group mb-3 col-md-6">
 
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="fa-solid fa-users-line"></i>
+                                        </span>
+                                        <select name="customer_id" id="customer_id" class="form-control" required>
+                                            <option value="">Enter Customer Name</option>
+                                            @foreach ($customers as $customer)
+                                                <option value="{{ $customer->id }}">
+                                                    {{ $customer->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon2">
+                                            <i class="fa-solid fa-user-tie"></i>
+                                        </span>
+                                        <select name="employee_id" id="employee_id" class="form-control" required>
+                                            <option value="">Select Sales Person</option>
+                                            @foreach ($employees as $employee)
+                                                <option value="{{ $employee->id }}">
+                                                    {{ $employee->name }} ({{ $employee->position }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
                                 <!-- Made table scrollable -->
@@ -161,6 +177,7 @@
                                         <a href="#" class="list-group-item list-group-item-action product-item"
                                             data-id="{{ $product->id }}" data-name="{{ $product->name }}"
                                             data-price="{{ $product->price }}" data-stock="{{ $product->stock_no }}"
+                                            data-barcode="{{ $product->barcode }}"
                                             data-stock-quantity="{{ $product->stock_quantity }}"
                                             data-picture-url="{{ $product->picture_url ? asset('storage/' . $product->picture_url) : '' }}"
                                             data-original-stock="{{ $product->stock_quantity }}"
@@ -182,7 +199,7 @@
                                                         <div>Name: {{ $product->name }}</div>
                                                         <strong>{{ $product->stock_no }}</strong>
                                                         @if ($product->discount_percentage > 0)
-                                                            <span class="badge bg-success">
+                                                            <span class="badge bg-success ms-2">
                                                                 {{ $product->discount_percentage }}% off</span>
                                                         @endif
                                                     </div>
@@ -277,12 +294,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Product search functionality
             $('#product-search').on('input', function() {
-                const search = $(this).val().toLowerCase();
+                const search = $(this).val().toLowerCase(); // convert input to string
                 $('.product-item').each(function() {
-                    const text = $(this).text().toLowerCase();
-                    $(this).toggle(text.includes(search));
+                    const name = $(this).data('name').toString().toLowerCase(); // ensure string
+                    const barcode = $(this).data('barcode').toString()
+                        .toLowerCase(); // convert number to string
+                    $(this).toggle(name.includes(search) || barcode.includes(search));
                 });
             });
+
+
 
             // Accessory search functionality
             $('#accessory-search').on('input', function() {

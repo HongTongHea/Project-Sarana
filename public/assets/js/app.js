@@ -1,14 +1,12 @@
 $(document).ready(function () {
+    $("#AdminTable").DataTable({
+        ordering: false,
+    });
+    $("#CustomerTable").DataTable({
+        ordering: false,
+    });
     $("#DataTable").DataTable({
-        paging: true, // Enable pagination
-        searching: true, // Enable search bar
-        ordering: false, // Enable column sorting
-        // Enable column sorting
-        info: false, // Display table information
-        lengthChange: true, // Allow the user to change the number of rows displayed
-        pageLength: 10,// Default number of rows per page
-        nextPrev: true,
-        // Default number of rows per page
+        ordering: false,
     });
 });
 
