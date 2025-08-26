@@ -13,8 +13,7 @@ class Stock extends Model
         'stockable_id',
         'stockable_type',
         'quantity',
-        'type',
-        'initial_quantity'
+        'type'
     ];
 
     public function stockable()
@@ -22,30 +21,61 @@ class Stock extends Model
         return $this->morphTo();
     }
 
-    // Method to update stock
-    public static function updateStock($stockableType, $stockableId, $quantityChange)
+    /**
+     * Update stock quantity for a product or accessory.
+     *
+     * @param string $stockableType  (Product::class or Accessory::class)
+     * @param int    $stockableId    (ID of the product/accessory)
+     * @param int    $quantityChange (positive = add, negative = reduce)
+     * @param string $type           (purchase, sale, return, adjust)
+     */
+    public static function updateStock($stockableType, $stockableId, $quantityChange, $type = 'purchase')
     {
-        $stock = self::firstOrCreate(
-            [
-                'stockable_id' => $stockableId,
-                'stockable_type' => $stockableType
-            ],
-            [
-                'quantity' => 0,
-                'initial_quantity' => 0,
-                'type' => class_basename($stockableType)
-            ]
-        );
+        // Get the latest stock record
+        $stock = self::where('stockable_id', $stockableId)
+            ->where('stockable_type', $stockableType)
+            ->latest()
+            ->first();
 
-        if ($stock->wasRecentlyCreated) {
+        // If no record exists, create one with initial values
+        if (!$stock) {
             $stockable = $stockableType::find($stockableId);
-            $stock->initial_quantity = $stockable->stock_quantity ?? 0;
-            $stock->quantity = $stockable->stock_quantity ?? 0;
-            $stock->save();
+            $initialQuantity = $stockable->stock_quantity ?? 0;
+
+            $stock = self::create([
+                'stockable_id'   => $stockableId,
+                'stockable_type' => $stockableType,
+                'quantity'       => $initialQuantity + $quantityChange,
+                'type'           => $type
+            ]);
+
+            // Also update the product/accessory's stock_quantity field
+            if ($stockable) {
+                $stockable->stock_quantity = $stock->quantity;
+                $stockable->save();
+            }
+
+            return $stock;
         }
 
-        $stock->decrement('quantity', $quantityChange);
+        // Update stock quantity
+        $newQuantity = $stock->quantity + $quantityChange;
 
-        return $stock;
+        // Create a new stock record instead of updating the existing one
+        $newStock = self::create([
+            'stockable_id'   => $stockableId,
+            'stockable_type' => $stockableType,
+            'quantity'       => $newQuantity,
+            'type'           => $type
+        ]);
+
+        // Update the product/accessory's stock_quantity field
+        $stockable = $stockableType::find($stockableId);
+        if ($stockable) {
+            $stockable->stock_quantity = $newQuantity;
+            $stockable->save();
+        }
+
+        return $newStock;
     }
 }

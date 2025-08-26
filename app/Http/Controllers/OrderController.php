@@ -191,6 +191,134 @@ class OrderController extends Controller
         return view('orders.print-invoice', compact('order'));
     }
 
+    public function edit($id)
+    {
+        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
+            ->findOrFail($id);
+
+        $customers = Customer::all();
+        $employees = Employee::where('status', 1)->get();
+        $products = Product::where('stock_quantity', '>', 0)->get();
+        $accessories = Accessory::where('stock_quantity', '>', 0)->get();
+        $categories = Category::all();
+
+        return view('orders.edit', compact('order', 'customers', 'employees', 'products', 'accessories', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::with(['items'])->findOrFail($id);
+
+        // Decode new items
+        $items = json_decode($request->input('items'), true);
+        $itemTypes = json_decode($request->input('item_types'), true);
+
+        if (!is_array($items)) {
+            return redirect()->back()->withErrors(['items' => 'The items must be a valid array.']);
+        }
+
+        $validatedData = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'employee_id' => 'required|exists:employees,id',
+            'tax_rate' => 'nullable|numeric|min:0|max:100',
+            'additional_discount' => 'nullable|numeric|min:0',
+        ]);
+
+        // Restore stock from old items before re-calculation
+        foreach ($order->items as $oldItem) {
+            $model = $oldItem->item_type === Product::class ? Product::class : Accessory::class;
+            $itemModel = $model::find($oldItem->item_id);
+
+            if ($itemModel) {
+                $itemModel->stock_quantity += $oldItem->quantity;
+                $itemModel->save();
+            }
+
+            $oldItem->delete(); // remove old order items
+        }
+
+        // Calculate new totals
+        $subtotal = 0;
+        $itemDiscounts = 0;
+
+        foreach ($items as $index => $item) {
+            $itemType = $itemTypes[$index] ?? null;
+            $model = $itemType === 'product' ? Product::class : Accessory::class;
+            $itemModel = $model::find($item['item_id']);
+
+            if (!$itemModel) {
+                return redirect()->back()->withErrors(['items' => ucfirst($itemType) . ' not found.']);
+            }
+
+            if ($itemModel->stock_quantity < $item['quantity']) {
+                return redirect()->back()->withErrors([
+                    'items' => "Not enough stock for {$itemModel->name}. Available: {$itemModel->stock_quantity}"
+                ]);
+            }
+
+            $discountPercentage = $item['discount_percentage'] ?? 0;
+            $discountedPrice = $discountPercentage > 0
+                ? $item['price'] * (1 - $discountPercentage / 100)
+                : $item['price'];
+
+            $subtotal += $item['quantity'] * $item['price'];
+            $itemDiscounts += ($item['price'] - $discountedPrice) * $item['quantity'];
+        }
+
+        $discountedSubtotal = $subtotal - $itemDiscounts;
+        $taxAmount = $discountedSubtotal * ($validatedData['tax_rate'] ?? 0) / 100;
+        $additionalDiscount = $validatedData['additional_discount'] ?? 0;
+        $total = $discountedSubtotal + $taxAmount - $additionalDiscount;
+
+        // Update order
+        $order->update([
+            'customer_id' => $validatedData['customer_id'],
+            'employee_id' => $validatedData['employee_id'],
+            'subtotal' => $subtotal,
+            'item_discounts' => $itemDiscounts,
+            'additional_discount' => $additionalDiscount,
+            'tax_amount' => $taxAmount,
+            'total' => $total,
+        ]);
+
+        // Add new items
+        foreach ($items as $index => $item) {
+            $itemType = $itemTypes[$index];
+            $model = $itemType === 'product' ? Product::class : Accessory::class;
+            $itemModel = $model::find($item['item_id']);
+
+            $discountPercentage = $item['discount_percentage'] ?? 0;
+            $discountedPrice = $discountPercentage > 0
+                ? $item['price'] * (1 - $discountPercentage / 100)
+                : $item['price'];
+
+            OrderItem::create([
+                'order_id' => $order->id,
+                'item_type' => $model,
+                'item_id' => $item['item_id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'discount_percentage' => $discountPercentage,
+                'discounted_price' => $discountedPrice,
+                'total' => $item['quantity'] * $discountedPrice,
+            ]);
+
+            // Deduct new stock
+            $itemModel->stock_quantity -= $item['quantity'];
+            $itemModel->save();
+
+            $itemModel->stocks()->create([
+                'quantity' => $itemModel->stock_quantity,
+                'type' => 'update',
+            ]);
+        }
+
+        return redirect()->route('orders.invoice', $order->id)
+            ->with('success', 'Order updated successfully.');
+    }
+
+
+
     public function searchProducts(Request $request)
     {
         $search = $request->input('search');
@@ -212,5 +340,25 @@ class OrderController extends Controller
             ->get();
 
         return response()->json($accessories);
+    }
+
+
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+
+        // Add any validation logic here (e.g., only allow deletion of certain status orders)
+        if ($order->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending orders can be deleted.');
+        }
+
+        // Delete related records first if needed
+        $order->items()->delete();
+        $order->payments()->delete();
+
+        // Delete the order
+        $order->delete();
+
+        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
     }
 }

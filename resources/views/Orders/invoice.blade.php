@@ -153,7 +153,7 @@
                 <button onclick="printInvoice()" class="btn btn-primary px-4">
                     <i class="fas fa-print me-2"></i> Print Invoice
                 </button>
-                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4 ms-2">
+                <a href="{{ route('orders.index')}}" class="btn btn-outline-secondary px-4 ms-2">
                     <i class="fas fa-arrow-left me-2"></i> Back
                 </a>
             </div>

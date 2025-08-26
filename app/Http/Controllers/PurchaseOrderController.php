@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Accessory;
 use App\Models\Supplier;
 use App\Models\Employee;
+use App\Models\Stock;
+use Illuminate\Support\Facades\Validator;
 
 class PurchaseOrderController extends Controller
 {
@@ -64,11 +66,14 @@ class PurchaseOrderController extends Controller
             [$itemTypeClass, $existsRule] = $this->normalizeAndRule($itemData['item_type']);
 
             // Ensure the item actually exists in its table
-            $request->validate([
-                'dummy_field_for_exists_check' => "nullable|exists:{$existsRule},id"
-            ], [], ['dummy_field_for_exists_check' => 'item_id']);
-            // Manually set the value for the inline validation
-            $request->merge(['dummy_field_for_exists_check' => $itemData['item_id']]);
+            $validator = Validator::make(
+                ['item_id' => $itemData['item_id']],
+                ['item_id' => "exists:{$existsRule},id"]
+            );
+            
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             $order->items()->create([
                 'item_id'     => $itemData['item_id'],
@@ -138,10 +143,14 @@ class PurchaseOrderController extends Controller
             [$itemTypeClass, $existsRule] = $this->normalizeAndRule($itemData['item_type']);
 
             // Ensure the item actually exists in its table
-            $request->validate([
-                'dummy_field_for_exists_check' => "nullable|exists:{$existsRule},id"
-            ], [], ['dummy_field_for_exists_check' => 'item_id']);
-            $request->merge(['dummy_field_for_exists_check' => $itemData['item_id']]);
+            $validator = Validator::make(
+                ['item_id' => $itemData['item_id']],
+                ['item_id' => "exists:{$existsRule},id"]
+            );
+            
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             $purchaseOrder->items()->create([
                 'item_id'     => $itemData['item_id'],

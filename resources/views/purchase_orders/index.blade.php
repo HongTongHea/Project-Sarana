@@ -22,6 +22,7 @@
                                 <th>No</th>
                                 <th>Supplier</th>
                                 <th>Order Date</th>
+                                <th>Items</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
                                 <th>Created By</th>
@@ -34,6 +35,19 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $order->supplier->name ?? 'N/A' }}</td>
                                     <td>{{ $order->order_date->format('Y-m-d') }}</td>
+                                    <td>
+                                        @foreach ($order->items as $item)
+                                            @if ($item->item)
+                                                @if ($item->item_type === 'App\Models\Product')
+                                                    {{ $item->item->name }}&nbsp; <br>
+                                                @elseif ($item->item_type === 'App\Models\Accessory')
+                                                    {{ $item->item->name }}
+                                                @endif
+                                            @else
+                                                Item Deleted
+                                            @endif
+                                        @endforeach
+                                    </td>
                                     <td>${{ number_format($order->total_amount, 2) }}</td>
                                     <td>
                                         <span class="badge bg-{{ $order->status == 'pending' ? 'warning' : 'success' }}">

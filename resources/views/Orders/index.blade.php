@@ -23,6 +23,7 @@
                                 <th>Date</th>
                                 <th>Product</th>
                                 <th>Items</th>
+                                {{-- <th>Qty</th> --}}
                                 <th>Subtotal</th>
                                 <th>Tax</th>
                                 <th>Discount</th>
@@ -39,16 +40,17 @@
                                     <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
                                     <td>
                                         @foreach ($order->items as $item)
-                                            @if ($item->item_type === 'App\Models\Product')
-                                                {{ $item->item->name }}
-                                            @elseif ($item->item_type === 'App\Models\Accessory')
-                                                {{ $item->item->name }}
+                                            @if ($item->item)
+                                                @if ($item->item_type === 'App\Models\Product')
+                                                    {{ $item->item->name }}&nbsp; <br>
+                                                @elseif ($item->item_type === 'App\Models\Accessory')
+                                                    {{ $item->item->name }}
+                                                @endif
                                             @else
-                                                No Item
+                                                Item Deleted
                                             @endif
                                         @endforeach
                                     </td>
-
                                     <td>{{ $order->items->count() }}</td>
                                     <td>${{ number_format($order->subtotal, 2) }}</td>
                                     <td>${{ number_format($order->tax_amount, 2) }}</td>
@@ -87,12 +89,21 @@
                                                     </a>
                                                 </li>
 
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ $order->id }}">
+                                                        <i class="fa-solid fa-trash me-2 text-danger"></i>
+                                                        Delete
+                                                    </button>
+                                                </li>
+
 
                                             </ul>
                                         </div>
                                     </td>
-
                                 </tr>
+                                @include('Orders.delete', ['order' => $order])
                             @endforeach
                         </tbody>
                     </table>

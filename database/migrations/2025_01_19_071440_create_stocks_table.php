@@ -11,10 +11,14 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('stockable_id');
-            $table->string('stockable_type'); // Will store 'App\Models\Product' or 'App\Models\Accessory'
-            $table->integer('quantity');
-            $table->string('type');
+            $table->string('stockable_type');
+            $table->integer('quantity')->default(0);
+            $table->integer('initial_quantity')->default(0);
+            $table->string('type')->default('purchase');
             $table->timestamps();
+
+            // Index for better performance
+            $table->index(['stockable_id', 'stockable_type']);
         });
     }
 

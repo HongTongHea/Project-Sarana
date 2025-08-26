@@ -15,11 +15,9 @@
                     <table id="DataTable" class="table mt-3 table-hover table-striped">
                         <thead class="thead-dark">
                             <tr>
-                                {{-- <th>No</th> --}}
                                 <th>Type</th>
                                 <th>Image</th>
                                 <th>Name</th>
-                                {{-- <th>Initial Stock</th> --}}
                                 <th>Current Stock</th>
                                 <th>Last Updated</th>
                                 <th>Status</th>
@@ -28,7 +26,6 @@
                         <tbody id="tableBody">
                             @foreach ($currentStocks as $index => $stock)
                                 <tr>
-                                    {{-- <td>{{ $index + 1 }}</td> --}}
                                     <td>{{ class_basename($stock['stockable_type']) }}</td>
                                     <td>
                                         @if ($stock['stockable']->picture_url ?? false)
@@ -41,9 +38,6 @@
                                         @endif
                                     </td>
                                     <td>{{ $stock['stockable']->name ?? 'N/A' }}</td>
-                                    {{-- <td class="text-info fw-bold">
-                                        <i class="fas fa-boxes me-1"></i>{{ $stock['initial_quantity'] }}
-                                    </td> --}}
                                     <td
                                         class="{{ $stock['current_quantity'] > 0 ? 'text-success fw-bold' : 'text-danger fw-bold' }}">
                                         <i

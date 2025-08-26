@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Accessory;
 
-
 class StockController extends Controller
 {
     public function index()
@@ -30,9 +29,9 @@ class StockController extends Controller
             $currentStocks[] = [
                 'stockable' => $product,
                 'stockable_type' => get_class($product),
-                'current_quantity' => $product->stock_quantity, // Use the direct quantity from product
+                'current_quantity' => $latestStock ? $latestStock->quantity : $product->stock_quantity,
                 'initial_quantity' => $initialStock ? $initialStock->quantity : $product->stock_quantity,
-                'last_updated' => $latestStock ? $latestStock->created_at : now()
+                'last_updated' => $latestStock ? $latestStock->updated_at : now()
             ];
         }
 
@@ -44,9 +43,9 @@ class StockController extends Controller
             $currentStocks[] = [
                 'stockable' => $accessory,
                 'stockable_type' => get_class($accessory),
-                'current_quantity' => $accessory->stock_quantity, // Use the direct quantity from accessory
+                'current_quantity' => $latestStock ? $latestStock->quantity : $accessory->stock_quantity,
                 'initial_quantity' => $initialStock ? $initialStock->quantity : $accessory->stock_quantity,
-                'last_updated' => $latestStock ? $latestStock->created_at : now()
+                'last_updated' => $latestStock ? $latestStock->updated_at : now()
             ];
         }
 

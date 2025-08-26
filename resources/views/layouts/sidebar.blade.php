@@ -44,12 +44,36 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('accessories.index') }}">
+                        <i class="fa-solid fa-keyboard"></i>
+                        <p>Accessories</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('products.index') }}">
+                        <i class="fa-brands fa-product-hunt"></i>
+                        <p>Products</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('stocks.index') }}">
                         <i class="fa-solid fa-boxes-stacked"></i>
                         <p>Stocks</p>
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('suppliers.index') }}">
+                        <i class="fa-solid fa-truck"></i>
+                        <p>Suppliers</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('purchase_orders.index') }}">
+                        <i class="fa-solid fa-receipt"></i>
+                        <p>Purchases</p>
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#base5">
                         <i class="fas fa-clipboard-list"></i>
                         <p>Inventory Management</p>
@@ -90,7 +114,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{ route('customers.index') }}">
                         <i class="fa-solid fa-users-line"></i>
@@ -113,12 +137,12 @@
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ route('orders.create') }}">
-                                    <span class="sub-item">Order</span>
+                                    <span class="sub-item">Sale</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('orders.index') }}">
-                                    <span class="sub-item">Order History</span>
+                                    <span class="sub-item">Sale History</span>
                                 </a>
                             </li>
                         </ul>

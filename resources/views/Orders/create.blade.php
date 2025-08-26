@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Angkor Tech Computer | POS System ')
+@section('title', 'Angkor Tech Computer | Sale & Transaction') 
 
 @section('content')
 
@@ -27,11 +27,13 @@
                         <form action="{{ route('orders.store') }}" method="POST" id="order-form"
                             class="d-flex flex-column h-100"> <!-- Added flex classes -->
                             @csrf
-                            <div class="d-flex justify-content-between align-items-center">
-                                <button type="button" class="btn btn-primary mb-3 btn-sm" data-bs-toggle="modal"
+                            <div class="d-flex justify-content-start align-items-center">
+                                <button type="button" class="btn btn-primary mb-3 btn-sm me-2" data-bs-toggle="modal"
                                     data-bs-target="#createModal">
                                     <i class="fas fa-plus"></i> New Customer
                                 </button>
+                                <a href="{{ route('orders.index') }}" class="btn btn-primary mb-3 btn-sm">
+                                    <i class="fas fa-list"></i> Sale History</a>
                             </div>
 
                             <div class="row">
@@ -135,7 +137,8 @@
 
                             <div class="mt-auto pt-3"> <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-danger me-2" id="clear-order">Clear Order</button>
+                                    <button type="button" class="btn btn-danger me-2" id="clear-order">Clear
+                                        Order</button>
                                     <button type="button" class="btn btn-primary" id="submit-order">Check Out</button>
                                     @include('Orders.payment') <!-- Include payment modal -->
                                 </div>

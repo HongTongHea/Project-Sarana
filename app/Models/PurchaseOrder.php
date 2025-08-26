@@ -19,7 +19,7 @@ class PurchaseOrder extends Model
     ];
 
     protected $casts = [
-        'order_date' => 'date',
+        'order_date'   => 'date',
         'total_amount' => 'decimal:2',
     ];
 
@@ -44,7 +44,9 @@ class PurchaseOrder extends Model
         $this->save();
     }
 
-    // When marking as received, update product stock
+    /**
+     * Mark purchase order as received and update stock
+     */
     public function markAsReceived()
     {
         if ($this->status !== 'pending') {
@@ -53,12 +55,18 @@ class PurchaseOrder extends Model
 
         DB::transaction(function () {
             foreach ($this->items as $item) {
-                if ($item->product) {   // ✅ check if product exists
-                    $item->product->stock_quantity += $item->quantity;
-                    $item->product->save();
+                if ($item->item) {
+                    // Update the item's stock quantity
+                    $item->item->stock_quantity += $item->quantity;
+                    $item->item->save();
 
-                    // Optionally log stock change
-                    Stock::updateStock(Product::class, $item->product->id, $item->quantity);
+                    // Update stock tracking
+                    Stock::updateStock(
+                        get_class($item->item),
+                        $item->item->id,
+                        $item->quantity,
+                        'purchase'
+                    );
                 }
             }
 

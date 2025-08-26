@@ -19,8 +19,8 @@ class PurchaseOrderItem extends Model
     ];
 
     protected $casts = [
-        'quantity' => 'integer',
-        'unit_price' => 'decimal:2',
+        'quantity'    => 'integer',
+        'unit_price'  => 'decimal:2',
         'total_price' => 'decimal:2',
     ];
 
@@ -29,7 +29,7 @@ class PurchaseOrderItem extends Model
         return $this->belongsTo(PurchaseOrder::class);
     }
 
-    // Polymorphic relation: can be Product or Accessory
+    // Polymorphic relation: Product or Accessory
     public function item()
     {
         return $this->morphTo();
