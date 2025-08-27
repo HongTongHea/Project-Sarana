@@ -13,7 +13,11 @@ class Stock extends Model
         'stockable_id',
         'stockable_type',
         'quantity',
-        'type'
+        'initial_quantity',
+        'type',
+        'change_amount',
+        'created_at',
+        'updated_at'
     ];
 
     public function stockable()
@@ -27,7 +31,7 @@ class Stock extends Model
      * @param string $stockableType  (Product::class or Accessory::class)
      * @param int    $stockableId    (ID of the product/accessory)
      * @param int    $quantityChange (positive = add, negative = reduce)
-     * @param string $type           (purchase, sale, return, adjust)
+     * @param string $type           (initial, purchase, sale, return, adjust)
      */
     public static function updateStock($stockableType, $stockableId, $quantityChange, $type = 'purchase')
     {
@@ -37,7 +41,10 @@ class Stock extends Model
             ->latest()
             ->first();
 
-        // If no record exists, create one with initial values
+        // For sales, ensure we record a negative change amount
+        $changeAmount = $type === 'sale' ? -abs($quantityChange) : abs($quantityChange);
+
+        // If no record exists, create initial record
         if (!$stock) {
             $stockable = $stockableType::find($stockableId);
             $initialQuantity = $stockable->stock_quantity ?? 0;
@@ -45,8 +52,10 @@ class Stock extends Model
             $stock = self::create([
                 'stockable_id'   => $stockableId,
                 'stockable_type' => $stockableType,
-                'quantity'       => $initialQuantity + $quantityChange,
-                'type'           => $type
+                'quantity'       => $initialQuantity + $changeAmount,
+                'initial_quantity' => $initialQuantity,
+                'type'           => $type,
+                'change_amount'  => $changeAmount
             ]);
 
             // Also update the product/accessory's stock_quantity field
@@ -59,14 +68,16 @@ class Stock extends Model
         }
 
         // Update stock quantity
-        $newQuantity = $stock->quantity + $quantityChange;
+        $newQuantity = $stock->quantity + $changeAmount;
 
         // Create a new stock record instead of updating the existing one
         $newStock = self::create([
             'stockable_id'   => $stockableId,
             'stockable_type' => $stockableType,
             'quantity'       => $newQuantity,
-            'type'           => $type
+            'initial_quantity' => $stock->initial_quantity,
+            'type'           => $type,
+            'change_amount'  => $changeAmount
         ]);
 
         // Update the product/accessory's stock_quantity field

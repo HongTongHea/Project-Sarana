@@ -18,7 +18,11 @@
                                 <th>Type</th>
                                 <th>Image</th>
                                 <th>Name</th>
+                                {{-- <th>Initial Stock</th> --}}
                                 <th>Current Stock</th>
+                                <th>Purchases</th>
+                                <th>Sales</th>
+                                <th>Net Change</th>
                                 <th>Last Updated</th>
                                 <th>Status</th>
                             </tr>
@@ -38,29 +42,42 @@
                                         @endif
                                     </td>
                                     <td>{{ $stock['stockable']->name ?? 'N/A' }}</td>
+                                    {{-- <td>{{ $stock['initial_quantity'] }}</td> --}}
                                     <td
                                         class="{{ $stock['current_quantity'] > 0 ? 'text-success fw-bold' : 'text-danger fw-bold' }}">
                                         <i
                                             class="fas {{ $stock['current_quantity'] > 0 ? 'fa-check-circle' : 'fa-times-circle' }} me-1"></i>
                                         {{ $stock['current_quantity'] > 0 ? $stock['current_quantity'] : 'Out of stock' }}
                                     </td>
-                                    <td>{{ $stock['last_updated']->format('Y-m-d H:i') }}</td>
+                                    <td class="text-success">
+                                        <i class="fas fa-arrow-up me-1"></i>+{{ $stock['total_purchases'] }}
+                                    </td>
+                                    <td class="text-danger">
+                                        <i class="fas fa-arrow-down me-1"></i>-{{ $stock['total_sales'] }}
+                                    </td>
                                     <td>
-                                        @php
-                                            $difference = $stock['current_quantity'] - $stock['initial_quantity'];
-                                        @endphp
-                                        @if ($difference > 0)
-                                            <span class="badge bg-success">
-                                                <i class="fas fa-arrow-up me-1"></i>+{{ $difference }}
+                                        @if ($stock['net_change'] > 0)
+                                            <span class="text-success fw-bold">
+                                                <i class="fas fa-arrow-up me-1"></i>+{{ $stock['net_change'] }}
                                             </span>
-                                        @elseif ($difference < 0)
-                                            <span class="badge bg-danger">
-                                                <i class="fas fa-arrow-down me-1"></i>{{ $difference }}
+                                        @elseif ($stock['net_change'] < 0)
+                                            <span class="text-danger fw-bold">
+                                                <i class="fas fa-arrow-down me-1"></i>{{ $stock['net_change'] }}
                                             </span>
                                         @else
-                                            <span class="badge bg-secondary">
-                                                <i class="fas fa-equals me-1"></i>No change
+                                            <span class="text-secondary">
+                                                <i class="fas fa-equals me-1"></i>0
                                             </span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $stock['last_updated']->format('Y-m-d H:i') }}</td>
+                                    <td>
+                                        @if ($stock['current_quantity'] > $stock['initial_quantity'])
+                                            <span class="badge bg-success">Stock In</span>
+                                        @elseif ($stock['current_quantity'] < $stock['initial_quantity'])
+                                            <span class="badge bg-success">Stock In</span>
+                                        @else
+                                            <span class="badge bg-danger">Stock Out</span>
                                         @endif
                                     </td>
                                 </tr>

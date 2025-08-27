@@ -10,6 +10,7 @@ use App\Models\Accessory;
 use App\Models\Payment;
 use App\Models\Category;
 use App\Models\Employee;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -18,7 +19,7 @@ class OrderController extends Controller
     {
         $categories = Category::all();
         $customers = Customer::all();
-        $employees = Employee::where('status', 1)->get(); // Added employees
+        $employees = Employee::where('status', 1)->get();
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
         $orders = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->get();
@@ -29,7 +30,7 @@ class OrderController extends Controller
     public function create()
     {
         $customers = Customer::all();
-        $employees = Employee::where('status', 1)->get(); // Added employees
+        $employees = Employee::where('status', 1)->get();
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
         $categories = Category::all();
@@ -50,7 +51,7 @@ class OrderController extends Controller
         // Validate incoming request
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
-            'employee_id' => 'required|exists:employees,id', // Added employee validation
+            'employee_id' => 'required|exists:employees,id',
             'tax_rate' => 'nullable|numeric|min:0|max:100',
             'additional_discount' => 'nullable|numeric|min:0',
         ]);
@@ -106,7 +107,7 @@ class OrderController extends Controller
         // Create order
         $order = Order::create([
             'customer_id' => $validatedData['customer_id'],
-            'employee_id' => $validatedData['employee_id'], // Added employee_id
+            'employee_id' => $validatedData['employee_id'],
             'subtotal' => $subtotal,
             'item_discounts' => $itemDiscounts,
             'additional_discount' => $additionalDiscount,
@@ -139,15 +140,13 @@ class OrderController extends Controller
                 'total' => $item['quantity'] * $discountedPrice,
             ]);
 
-            // Update product/accessory stock
-            $itemModel->stock_quantity -= $item['quantity'];
-            $itemModel->save();
-
-            // Create stock update record
-            $itemModel->stocks()->create([
-                'quantity' => $itemModel->stock_quantity,
-                'type' => 'update',
-            ]);
+            // Update stock using Stock model (FIXED)
+            Stock::updateStock(
+                $model,
+                $item['item_id'],
+                -$item['quantity'], // Negative for sale
+                'sale'
+            );
         }
 
         // Process payment if payment data exists
@@ -224,16 +223,15 @@ class OrderController extends Controller
             'additional_discount' => 'nullable|numeric|min:0',
         ]);
 
-        // Restore stock from old items before re-calculation
+        // Restore stock from old items before re-calculation (FIXED)
         foreach ($order->items as $oldItem) {
-            $model = $oldItem->item_type === Product::class ? Product::class : Accessory::class;
-            $itemModel = $model::find($oldItem->item_id);
-
-            if ($itemModel) {
-                $itemModel->stock_quantity += $oldItem->quantity;
-                $itemModel->save();
-            }
-
+            $model = $oldItem->item_type;
+            Stock::updateStock(
+                $model,
+                $oldItem->item_id,
+                $oldItem->quantity, // Positive to restore
+                'return'
+            );
             $oldItem->delete(); // remove old order items
         }
 
@@ -281,7 +279,7 @@ class OrderController extends Controller
             'total' => $total,
         ]);
 
-        // Add new items
+        // Add new items and update stock (FIXED)
         foreach ($items as $index => $item) {
             $itemType = $itemTypes[$index];
             $model = $itemType === 'product' ? Product::class : Accessory::class;
@@ -303,21 +301,18 @@ class OrderController extends Controller
                 'total' => $item['quantity'] * $discountedPrice,
             ]);
 
-            // Deduct new stock
-            $itemModel->stock_quantity -= $item['quantity'];
-            $itemModel->save();
-
-            $itemModel->stocks()->create([
-                'quantity' => $itemModel->stock_quantity,
-                'type' => 'update',
-            ]);
+            // Update stock using Stock model (FIXED)
+            Stock::updateStock(
+                $model,
+                $item['item_id'],
+                -$item['quantity'], // Negative for sale
+                'sale'
+            );
         }
 
         return redirect()->route('orders.invoice', $order->id)
             ->with('success', 'Order updated successfully.');
     }
-
-
 
     public function searchProducts(Request $request)
     {
@@ -342,7 +337,6 @@ class OrderController extends Controller
         return response()->json($accessories);
     }
 
-
     public function destroy($id)
     {
         $order = Order::findOrFail($id);
@@ -352,7 +346,18 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Only pending orders can be deleted.');
         }
 
-        // Delete related records first if needed
+        // Restore stock before deletion (FIXED)
+        foreach ($order->items as $item) {
+            $model = $item->item_type;
+            Stock::updateStock(
+                $model,
+                $item->item_id,
+                $item->quantity, // Positive to restore
+                'return'
+            );
+        }
+
+        // Delete related records
         $order->items()->delete();
         $order->payments()->delete();
 
