@@ -16,7 +16,7 @@
                     <i class="fas fa-plus"></i> New Purchase Order
                 </button>
                 <div class="table-responsive">
-                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                    <table id="DataTable" class="table mt-3 table-border table-hover ">
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
@@ -34,7 +34,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $order->supplier->name ?? 'N/A' }}</td>
-                                    <td>{{ $order->order_date->format('Y-m-d') }}</td>
+                                    <td>{{ $order->order_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
+                                    </td>
                                     <td>
                                         @foreach ($order->items as $item)
                                             @if ($item->item)

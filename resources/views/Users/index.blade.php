@@ -17,7 +17,7 @@
                     <i class="fas fa-plus"></i> New User
                 </button>
                 <div class="table-responsive">
-                    <table id="AdminTable" class="table table-hover table-striped">
+                    <table id="AdminTable" class="table table-border table-hover">
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
@@ -100,7 +100,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="CustomerTable" class="table table-hover table-striped">
+                    <table id="CustomerTable" class="table table-border table-hover ">
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>

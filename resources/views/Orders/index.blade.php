@@ -15,7 +15,7 @@
                     <i class="fas fa-plus"></i> New Order
                 </a>
                 <div class="table-responsive">
-                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                    <table id="DataTable" class="table mt-3 table-border table-hover">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Order #</th>
@@ -35,9 +35,9 @@
                         <tbody>
                             @foreach ($orders as $order)
                                 <tr>
-                                    <td>ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                    <td>ORD-{{ str_pad($order->id, 2, '0', STR_PAD_LEFT) }}</td>
                                     <td>{{ $order->customer->name }}</td>
-                                    <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
+                                    <td>{{ $order->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}</td>
                                     <td>
                                         @foreach ($order->items as $item)
                                             @if ($item->item)

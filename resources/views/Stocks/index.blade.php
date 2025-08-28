@@ -7,12 +7,12 @@
         <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0 fw-semibold text-uppercase">Current Stock</h4>
+                    <h4 class="mb-0 fw-semibold text-uppercase">Stocks</h4>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                    <table id="DataTable" class="table table-border mt-3 table-hover ">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Type</th>
@@ -70,7 +70,8 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td>{{ $stock['last_updated']->format('Y-m-d H:i') }}</td>
+                                    <td>{{ $stock['last_updated']->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
+                                    </td>
                                     <td>
                                         @if ($stock['current_quantity'] > $stock['initial_quantity'])
                                             <span class="badge bg-success">Stock In</span>

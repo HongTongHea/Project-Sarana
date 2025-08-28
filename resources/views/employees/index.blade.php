@@ -17,7 +17,7 @@
                 </button>
 
                 <div class="table-responsive">
-                    <table id="DataTable" class="table mt-3 table-hover table-striped">
+                    <table id="DataTable" class="table mt-3 table-border table-hover ">
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>

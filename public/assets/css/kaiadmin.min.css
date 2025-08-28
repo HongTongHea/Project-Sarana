@@ -10730,6 +10730,12 @@ body[data-background-color=dark] .jvm-zoom-btn {
    }
 }
 
+/* table.table-bordered td,
+table.table-bordered th {
+   border: 0.5px solid gray !important;
+   border-width: 0.5px !important
+} */
+
 /* .dataTables_paginate .paginate_button {
    margin: 0 5px;
    padding: 5px 10px;

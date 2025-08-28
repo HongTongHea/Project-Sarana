@@ -140,30 +140,35 @@
         let successMessage = @json(session('success'));
         let errorMessage = @json(session('error'));
 
-        function updateDate() {
-            const now = new Date();
-            let day = now.getDate().toString().padStart(1, "0");
-            let month = (now.getMonth() + 1).toString().padStart(1, "0");
-            let year = now.getFullYear();
-            let date = `${day}-${month}-${year}`;
-            document.getElementById("date").textContent = `${date} `;
-        }
-        setInterval(updateTime, 1000);
-        updateDate();
-
-        function updateTime() {
+        function updateDateTime() {
             const now = new Date();
 
-            let hours = now.getHours().toString().padStart(1, "0");
-            let minutes = now.getMinutes().toString().padStart(1, "0");
-            let seconds = now.getSeconds().toString().padStart(1, "0");
+            const options = {
+                timeZone: 'Asia/Phnom_Penh',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
 
-            let time = `${hours}:${minutes}:${seconds}`;
-            document.getElementById("time").textContent = `${time} `;
+            const formatter = new Intl.DateTimeFormat('en-GB', options);
+            const parts = formatter.formatToParts(now);
+
+            let date =
+                `${parts.find(p => p.type === 'day').value}-${parts.find(p => p.type === 'month').value}-${parts.find(p => p.type === 'year').value}`;
+            let time =
+                `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value}:${parts.find(p => p.type === 'second').value}`;
+
+            document.getElementById("date").textContent = date;
+            document.getElementById("time").textContent = time;
         }
 
-        setInterval(updateTime, 1000);
-        updateTime();
+        // Run once and then every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
     </script>
 
 </body>
