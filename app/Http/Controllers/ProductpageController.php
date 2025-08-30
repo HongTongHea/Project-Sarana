@@ -11,7 +11,7 @@ class ProductpageController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::where('stock_quantity', '>', 0)->get();
         $categories = Category::all();
         return view('productpage', compact('products', 'categories'));
     }

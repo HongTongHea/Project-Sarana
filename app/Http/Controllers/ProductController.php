@@ -62,10 +62,14 @@ class ProductController extends Controller
         $product->save();
 
         // Create initial stock record using polymorphic relationship
+        // Replace this:
         $product->stocks()->create([
             'quantity' => $product->stock_quantity,
             'type' => 'initial',
         ]);
+
+        // With this:
+        Stock::updateStock(Product::class, $product->id, $product->stock_quantity, 'initial');
 
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -98,6 +102,10 @@ class ProductController extends Controller
             'picture_url' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,tiff|max:30000',
         ]);
 
+        // Get the old stock quantity before update
+        $oldStockQuantity = $product->stock_quantity;
+        $newStockQuantity = $request->stock_quantity;
+
         $product->update($request->except('picture_url'));
 
         if ($request->hasFile('picture_url')) {
@@ -108,17 +116,17 @@ class ProductController extends Controller
             $product->save();
         }
 
-        // Update or create stock record using polymorphic relationship
-        $product->stocks()->updateOrCreate(
-            [
-                'stockable_id' => $product->id,
-                'stockable_type' => Product::class,
-                'type' => 'update'
-            ],
-            [
-                'quantity' => $request->stock_quantity
-            ]
-        );
+        // Calculate stock difference and update using the Stock model method
+        $stockDifference = $newStockQuantity - $oldStockQuantity;
+
+        if ($stockDifference != 0) {
+            Stock::updateStock(
+                Product::class,
+                $product->id,
+                abs($stockDifference),
+                $stockDifference > 0 ? 'purchase' : 'adjust' // Use 'adjust' for reductions
+            );
+        }
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
@@ -138,5 +146,4 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
-
 }
