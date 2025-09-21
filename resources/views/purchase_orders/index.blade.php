@@ -26,7 +26,7 @@
                                 <th>Total Amount</th>
                                 <th>Status</th>
                                 <th>Created By</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

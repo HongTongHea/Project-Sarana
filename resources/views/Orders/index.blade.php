@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'POS System | Orders')
+@section('title', 'AngkorTech Computer | Sales History')
 
 @section('content')
     <div class="container-fluid mt-3">
         <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0 fw-semibold">Order History</h4>
+                    <h4 class="mb-0 fw-semibold">Sales History</h4>
                 </div>
             </div>
             <div class="card-body">

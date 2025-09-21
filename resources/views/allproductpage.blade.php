@@ -1,60 +1,13 @@
 @extends('website.app')
-@section('title', 'ANGKOR TECH COMPUTER | Home Page')
 @section('content')
-    {{-- Hero Section --}}
-    <section>
-        <div class="hero-slideshow">
-            <div class="slide slide-1 active" style="background-image: url('assets/img/slide (7).png');">
-            </div>
-            <div class="slide slide-2" style="background-image: url('assets/img/slide (6).png');">
-            </div>
-            <div class="slide slide-3" style="background-image: url('assets/img/slide (9).png');">
-            </div>
-            <div class="slide-nav">
-                <button class="slide-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                <button class="slide-nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
-            </div>
-
-            <div class="slide-indicators">
-                <div class="indicator active" data-slide="0"></div>
-                <div class="indicator" data-slide="1"></div>
-                <div class="indicator" data-slide="2"></div>
-            </div>
-        </div>
-    </section>
-
     <div class="container">
-        <div class="row mb-4">
-            <div class="col text-start">
-                <h3 class="fw-bold">Browse by Categories</h3>
-                <p class="text-muted">Browse our wide range of categories</p>
-            </div>
-
-        </div>
-        <div class="row" id="categories-section">
-            @foreach ($categories as $index => $category)
-                @if ($index >= 5)
-                    @break
-                @endif
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-5">
-                    <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
-                        data-category-id="{{ $category->id }}" style="cursor: pointer;">
-                        <div class="card-body text-center d-flex flex-column justify-content-center p-2">
-                            <h5 class="card-title fw-semibold mb-0 fs-6 text-uppercase">
-                                {{ $category->name }}
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
         <!-- Products Section -->
-        <section class="mb-5" id="products-section">
+        <section id="products-section">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="row mb-2">
                     <div class="col text-start">
-                        <h3 class="mb-0 text-start font-weight-bold" id="products-title">Featured Products</h3>
-                        <p class="text-muted">Browse our selection of featured products</p>
+                        <h3 class="mb-0 text-start font-weight-bold" id="products-title">All Products</h3>
+                        <p class="text-muted">Browse our selection of all products</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-2">
@@ -63,9 +16,6 @@
             </div>
             <div class="row" id="products-container">
                 @foreach ($products as $index => $product)
-                    @if ($index >= 10)
-                        @break
-                    @endif
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">
                         <div class="card border-0 position-relative product-card">
@@ -127,17 +77,8 @@
 
         <!-- Accessories Section -->
         <section>
-            <div class="row mb-2">
-                <div class="col text-start">
-                    <h3 class="mb-0 text-start font-weight-bold">Accessories</h3>
-                    <p class="text-muted">Browse our selection of accessories</p>
-                </div>
-            </div>
             <div class="row" id="accessories-container">
                 @foreach ($accessories as $index => $accessory)
-                    @if ($index >= 10)
-                        @break
-                    @endif
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4 accessory-item">
                         <div class="card border-0 position-relative product-card">
                             @if ($accessory->discount_percentage > 0)
@@ -198,7 +139,6 @@
                 @endforeach
             </div>
         </section>
-
         @include('website.shoppingcart')
     </div>
 @endsection

@@ -15,10 +15,11 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProductpageController;
-use App\Http\Controllers\AccessorypageController;
+use App\Http\Controllers\AllproductpageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\SalesReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,7 @@ use App\Http\Controllers\PurchaseOrderController;
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
-Route::get('/accessorypage', [AccessorypageController::class, 'index'])->name('accessorypage.index');
+Route::get('/allproductpage', [AllproductpageController::class, 'index'])->name('allproductpage.index');
 Route::get('/search', [SearchController::class, 'search']);
 
 /*
@@ -109,6 +110,17 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('purchase_orders', PurchaseOrderController::class);
+
+    Route::prefix('sales-reports')->name('sales-reports.')->group(function () {
+        Route::get('/', [SalesReportController::class, 'index'])->name('index');
+        Route::get('/create', [SalesReportController::class, 'create'])->name('create');
+        Route::post('/generate', [SalesReportController::class, 'generate'])->name('generate');
+        Route::post('/generate-weekly', [SalesReportController::class, 'generateWeekly'])->name('generate.weekly');
+        Route::post('/generate-monthly', [SalesReportController::class, 'generateMonthly'])->name('generate.monthly');
+        Route::post('/generate-yearly', [SalesReportController::class, 'generateYearly'])->name('generate.yearly');
+        Route::post('/regenerate-all', [SalesReportController::class, 'regenerateAll'])->name('regenerate.all');
+        Route::get('/top-items', [SalesReportController::class, 'topSellingItems'])->name('top.items');
+    });
 });
 
 // Legacy dashboard route for backward compatibility

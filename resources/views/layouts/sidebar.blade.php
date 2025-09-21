@@ -149,7 +149,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="">
+                    <a href="{{ route('sales-reports.index') }}">
                         <i class="fa-solid fa-chart-column"></i>
                         <p>Reports</p>
                     </a>

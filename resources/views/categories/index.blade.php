@@ -22,7 +22,7 @@
                                 <th>No</th>
                                 <th>Category Name</th>
                                 <th>Description</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

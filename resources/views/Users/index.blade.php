@@ -57,13 +57,13 @@
                                             </button>
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton{{ $user->id }}">
-                                                <li>
+                                                {{-- <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#showModal{{ $user->id }}">
                                                         <i class="fa-solid fa-circle-info me-2 text-info"></i> View Details
                                                     </button>
-                                                </li>
+                                                </li> --}}
                                                 <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
@@ -83,7 +83,7 @@
                                     </td>
                                 </tr>
 
-                                @include('users.detail', ['user' => $user])
+                                {{-- @include('users.detail', ['user' => $user]) --}}
                                 @include('users.edit', ['user' => $user])
                                 @include('users.delete', ['user' => $user])
                             @endforeach
@@ -140,13 +140,13 @@
                                             </button>
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton{{ $user->id }}">
-                                                <li>
+                                                {{-- <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#showModal{{ $user->id }}">
                                                         <i class="fa-solid fa-circle-info me-2 text-info"></i> View Details
                                                     </button>
-                                                </li>
+                                                </li> --}}
                                                 <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
@@ -166,7 +166,7 @@
                                     </td>
                                 </tr>
 
-                                @include('users.detail', ['user' => $user])
+                                {{-- @include('users.detail', ['user' => $user]) --}}
                                 @include('users.edit', ['user' => $user])
                                 @include('users.delete', ['user' => $user])
                             @endforeach

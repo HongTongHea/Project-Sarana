@@ -25,7 +25,7 @@
                                 <th>Phone</th>
                                 <th>Address</th>
                                 <th>Contact Person</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

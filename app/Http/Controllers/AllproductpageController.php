@@ -7,7 +7,7 @@ use App\Models\Product;
 use App\Models\Accessory;
 use App\Models\Category;
 
-class AccessorypageController extends Controller
+class AllproductpageController extends Controller
 {
     public function index()
     {
@@ -15,11 +15,11 @@ class AccessorypageController extends Controller
         $accessories = Accessory::all();
         $categories = Category::all();
 
-        return view('accessorypage', [
+        return view('allproductpage', [
             'products' => $products,
             'accessories' => $accessories,
             'categories' => $categories,
-            'showProducts' => false, 
+            'showProducts' => false,
         ]);
     }
 }

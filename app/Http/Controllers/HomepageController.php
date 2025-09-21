@@ -17,8 +17,8 @@ class HomepageController extends Controller
     //
     public function index()
     {
-        $products = Product::where('stock_quantity', '>', 0)->get();
-        $accessories = Accessory::where('stock_quantity', '>', 0)->get();
+        $products = Product::all();
+        $accessories = Accessory::all();
         $categories = Category::all();
 
         return view('homepage', compact('products', 'accessories', 'categories'));

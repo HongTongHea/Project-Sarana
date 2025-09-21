@@ -39,16 +39,14 @@
                 </div>
             </div>
             <div class="row" id="products-container">
-                @foreach ($products as $index => $product)
-                    @if ($index >= 10)
-                        @break
-                    @endif
+                @foreach ($products as $product)
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">
                         <div class="card border-0 position-relative product-card">
                             @if ($product->discount_percentage > 0)
-                                <span
-                                    class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">-{{ $product->discount_percentage }}%</span>
+                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">
+                                    -{{ $product->discount_percentage }}%
+                                </span>
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
                                 <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
@@ -100,6 +98,7 @@
                     </div>
                 @endforeach
             </div>
+
         </section>
         @include('website.shoppingcart')
     </div>

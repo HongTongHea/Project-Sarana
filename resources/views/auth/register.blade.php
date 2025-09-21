@@ -5,19 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/assets/img/logo.jpg" type="image/x-icon" />
-    <title>AngkorTech Computer | Register</title>
+    <title>AngkorTech Computer | Sign Up</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
     body {
+        font-family: 'Poppins', sans-serif;
         background-color: #f0f2f5;
         height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: Arial, sans-serif;
     }
 
     .main-container {
@@ -37,7 +39,7 @@
 
     .branding h1 {
         color: #1877f2;
-        font-size: 5rem;
+        font-size: 4.5rem;
         width: 100%;
         font-weight: bolder;
         margin-bottom: 0;
@@ -45,14 +47,14 @@
 
     .branding h2 {
         color: #1877f2;
-        font-size: 2.5rem;
+        font-size: 2.3rem;
         width: 100%;
         font-weight: bolder;
         margin-bottom: 0;
     }
 
     .branding p {
-        font-size: 1.5rem;
+        font-size: 1.1rem;
         line-height: 1.3;
         width: 100%;
         /* max-width: 500px; */
@@ -184,18 +186,19 @@
                             <i class="fa-solid fa-lock icon toggle-password" data-target="password_confirmation"></i>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 fw-bold">Register</button>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Sign Up</button>
 
-                       <div class=" d-flex justify-content-between mb-3 mt-2">
-                            <a href="http://localhost:8000/auth/google/redirect" class="btn btn-dark btn-social fw-bold"><img
-                                    src="assets/img/logo-google.png" alt="" width="20" height="20">
+                        <div class=" d-flex justify-content-between mb-3 mt-2">
+                            <a href="http://localhost:8000/auth/google/redirect"
+                                class="btn btn-dark btn-social fw-bold"><img src="assets/img/logo-google.png"
+                                    alt="" width="20" height="20">
                                 Google</a>
 
                         </div>
                     </form>
 
                     <div class="register-link mt-3">
-                        Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Log in</a>
+                        Already have an account? <a href="{{ route('login') }}" class="text-primary fw-bold">Sign In</a>
                     </div>
                 </div>
             </div>
