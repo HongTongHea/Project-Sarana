@@ -36,7 +36,7 @@
                 @if ($index >= 5)
                     @break
                 @endif
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-5">
+                <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-5">
                     <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
                         data-category-id="{{ $category->id }}" style="cursor: pointer;">
                         <div class="card-body text-center d-flex flex-column justify-content-center p-2">
@@ -53,8 +53,8 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="row mb-2">
                     <div class="col text-start">
-                        <h3 class="mb-0 text-start font-weight-bold" id="products-title">Featured Products</h3>
-                        <p class="text-muted">Browse our selection of featured products</p>
+                        <h3 class="mb-0 text-start font-weight-bold" id="products-title">Products</h3>
+                        <p class="text-muted">Browse our selection of Products</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-2">
@@ -66,7 +66,7 @@
                     @if ($index >= 10)
                         @break
                     @endif
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4 product-item"
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">
                         <div class="card border-0 position-relative product-card">
                             @if ($product->discount_percentage > 0)
@@ -107,14 +107,14 @@
 
                                 <div class="d-flex flex-column">
                                     <p class="mb-1 fw-semibold">{{ $product->name }}</p>
-                                    <p class="mb-0 text-muted small">{{ $product->description }}</p>
                                 </div>
 
                                 <button class="btn btn-outline-primary btn-sm mt-2 w-100 add-to-cart-btn"
                                     data-id="{{ $product->id }}" data-name="{{ $product->name }}"
                                     data-price="{{ $product->price }}" data-discount="{{ $product->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $product->picture_url) }}"
-                                    data-stock="{{ $product->stock_quantity }}" data-barcode="{{ $product->barcode }}">
+                                    data-stock="{{ $product->stock_quantity }}" data-barcode="{{ $product->barcode }}"
+                                    data-description="{{ $product->description }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
                                     Add to Cart
                                 </button>
@@ -138,7 +138,7 @@
                     @if ($index >= 10)
                         @break
                     @endif
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4 accessory-item">
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 accessory-item">
                         <div class="card border-0 position-relative product-card">
                             @if ($accessory->discount_percentage > 0)
                                 <span
@@ -179,7 +179,6 @@
 
                                 <div class="d-flex flex-column">
                                     <p class="mb-1 fw-semibold">{{ $accessory->name }}</p>
-                                    <p class="mb-0 text-muted small">{{ $accessory->description }}</p>
                                 </div>
 
                                 <button class="btn btn-outline-primary btn-sm mt-2 w-100 add-to-cart-btn"
@@ -188,7 +187,8 @@
                                     data-discount="{{ $accessory->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $accessory->picture_url) }}"
                                     data-stock="{{ $accessory->stock_quantity }}"
-                                    data-barcode="{{ $accessory->barcode }}">
+                                    data-barcode="{{ $accessory->barcode }}"
+                                    data-description="{{ $accessory->description }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
                                     Add to Cart
                                 </button>
@@ -201,4 +201,7 @@
 
         @include('website.shoppingcart')
     </div>
+
+    <!-- ✅ Toast container -->
+    <div id="cartToastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
 @endsection

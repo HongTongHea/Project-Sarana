@@ -60,12 +60,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | Authenticated routes - for all roles
 |--------------------------------------------------------------------------
 */
+// Profile
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
+
 Route::middleware(['auth:admin,manager,cashier,customer'])->group(function () {
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
 
     // Orders
     Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');

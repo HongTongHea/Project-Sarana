@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/assets/img/logo.jpg" type="image/x-icon" />
+    <link rel="icon" href="/assets/img/logo-Company2.png" type="image/x-icon" />
     <title>AngkorTech Computer</title>
     <link rel="stylesheet" href="./assets/css/website.css" />
 
@@ -19,6 +19,7 @@
     body {
         font-family: 'Poppins', sans-serif;
     }
+
     .product-card {
         margin-bottom: 30px;
     }
@@ -235,6 +236,7 @@
             startSlideshow();
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/addtocard.js"></script>
     <script src="/assets/js/search.js"></script>

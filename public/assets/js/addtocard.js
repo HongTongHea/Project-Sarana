@@ -1,103 +1,98 @@
-document.addEventListener("DOMContentLoaded", function () {
+$(document).ready(function () {
     let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
 
     // Modal & UI elements
-    const addToCartModal = document.getElementById("addToCartModal")
-        ? new bootstrap.Modal(document.getElementById("addToCartModal"))
+    const addToCartModal = $("#addToCartModal").length
+        ? new bootstrap.Modal($("#addToCartModal")[0])
         : null;
-    const modalProductImg = document.getElementById("modalProductImg");
-    const modalProductName = document.getElementById("modalProductName");
-    const modalProductPrice = document.getElementById("modalProductPrice");
-    const modalProductOriginalPrice = document.getElementById(
-        "modalProductOriginalPrice"
-    );
-    const modalProductDiscount = document.getElementById(
-        "modalProductDiscount"
-    );
-    const modalProductDescription = document.getElementById(
-        "modalProductDescription"
-    );
-    const productQty = document.getElementById("productQty");
-    const cartItemsContainer = document.querySelector(".cart-items");
-    const cartCount = document.querySelector(".cart-count");
-    const cartSubtotal = document.querySelector(".cart-subtotal");
-    const cartDiscount = document.querySelector(".cart-discount");
-    const cartTotal = document.querySelector(".cart-total");
-    const cartSummary = document.querySelector(".cart-summary");
-    const emptyCartMessage = document.querySelector(".empty-cart-message");
-    const stockStatusElement = document.querySelector(".stock-status");
-
-    const accessoriesContainer = document.getElementById(
-        "accessories-container"
-    );
-    const productsContainer = document.getElementById("products-container");
+    const modalProductImg = $("#modalProductImg");
+    const modalProductName = $("#modalProductName");
+    const modalProductPrice = $("#modalProductPrice");
+    const modalProductOriginalPrice = $("#modalProductOriginalPrice");
+    const modalProductDiscount = $("#modalProductDiscount");
+    const modalProductDescription = $("#modalProductDescription");
+    const productQty = $("#productQty");
+    const cartItemsContainer = $(".cart-items");
+    const cartCount = $(".cart-count");
+    const cartSubtotal = $(".cart-subtotal");
+    const cartDiscount = $(".cart-discount");
+    const cartTotal = $(".cart-total");
+    const cartSummary = $(".cart-summary");
+    const emptyCartMessage = $(".empty-cart-message");
+    const stockStatusElement = $(".stock-status");
 
     let currentProduct = {};
 
+    // ✅ Toast function
+    function showCartToast(message, type = "success") {
+        const toastContainer = $("#cartToastContainer");
+        if (!toastContainer.length) return;
+
+        const toast = $(`
+            <div class="toast align-items-center text-bg-${type} border-0 show mb-2" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `);
+
+        toastContainer.append(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
     // Add to cart button logic
     function reinitializeAddToCartButtons() {
-        document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
-            btn.removeEventListener("click", handleAddToCartClick);
-            btn.addEventListener("click", handleAddToCartClick);
-        });
+        $(".add-to-cart-btn").off("click").on("click", handleAddToCartClick);
     }
 
     function handleAddToCartClick() {
-        const cardBody = this.closest(".card-body");
-        if (!cardBody) return;
+        const cardBody = $(this).closest(".card-body");
+        if (!cardBody.length) return;
 
         currentProduct = {
-            id: this.dataset.id,
-            name: this.dataset.name,
-            price: parseFloat(this.dataset.price),
-            discount: parseFloat(this.dataset.discount) || 0,
-            img: this.dataset.img,
-            stock: parseInt(this.dataset.stock),
-            description:
-                cardBody.querySelector("p.text-muted.small")?.textContent || "",
-            barcode: this.dataset.barcode || "",
+            id: $(this).data("id"),
+            name: $(this).data("name"),
+            price: parseFloat($(this).data("price")),
+            discount: parseFloat($(this).data("discount")) || 0,
+            img: $(this).data("img"),
+            stock: parseInt($(this).data("stock")),
+            description: $(this).data("description") || "",
+            barcode: $(this).data("barcode") || "",
         };
 
-        if (modalProductImg) modalProductImg.src = currentProduct.img;
-        if (modalProductName)
-            modalProductName.textContent = currentProduct.name;
-        if (modalProductDescription)
-            modalProductDescription.textContent = currentProduct.description;
+        modalProductImg.attr("src", currentProduct.img);
+        modalProductName.text(currentProduct.name);
+        modalProductDescription.text(currentProduct.description);
 
         const discountedPrice = currentProduct.discount
             ? currentProduct.price * (1 - currentProduct.discount / 100)
             : currentProduct.price;
 
-        if (modalProductPrice)
-            modalProductPrice.textContent = `$${discountedPrice.toFixed(2)}`;
+        modalProductPrice.text(`$${discountedPrice.toFixed(2)}`);
         if (currentProduct.discount > 0) {
-            if (modalProductOriginalPrice) {
-                modalProductOriginalPrice.textContent = `$${currentProduct.price.toFixed(
-                    2
-                )}`;
-                modalProductOriginalPrice.style.display = "inline";
-            }
-            if (modalProductDiscount) {
-                modalProductDiscount.textContent = `-${currentProduct.discount}%`;
-                modalProductDiscount.style.display = "inline";
-            }
+            modalProductOriginalPrice
+                .text(`$${currentProduct.price.toFixed(2)}`)
+                .show();
+            modalProductDiscount.text(`-${currentProduct.discount}%`).show();
         } else {
-            if (modalProductOriginalPrice)
-                modalProductOriginalPrice.style.display = "none";
-            if (modalProductDiscount)
-                modalProductDiscount.style.display = "none";
+            modalProductOriginalPrice.hide();
+            modalProductDiscount.hide();
         }
 
-        if (productQty) productQty.value = 1;
-        if (stockStatusElement) {
-            stockStatusElement.className = `mb-1 small ${
-                currentProduct.stock > 0 ? "text-warning" : "text-danger"
-            }`;
-            stockStatusElement.innerHTML =
+        productQty.val(1);
+
+        stockStatusElement
+            .removeClass("text-warning text-danger")
+            .addClass(currentProduct.stock > 0 ? "text-warning" : "text-danger")
+            .html(
                 currentProduct.stock > 0
                     ? '<i class="fas fa-check-circle me-1"></i>In stock'
-                    : '<i class="fas fa-times-circle me-1"></i>Out stock';
-        }
+                    : '<i class="fas fa-times-circle me-1"></i>Out stock'
+            );
 
         if (addToCartModal) addToCartModal.show();
     }
@@ -106,53 +101,59 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCartUI();
 
     // Quantity modal buttons
-    document
-        .getElementById("increaseQty")
-        ?.addEventListener(
-            "click",
-            () => (productQty.value = parseInt(productQty.value) + 1)
-        );
-    document.getElementById("decreaseQty")?.addEventListener("click", () => {
-        if (parseInt(productQty.value) > 1)
-            productQty.value = parseInt(productQty.value) - 1;
+    $("#increaseQty").on("click", function () {
+        productQty.val(parseInt(productQty.val()) + 1);
     });
 
-    document
-        .getElementById("confirmAddToCart")
-        ?.addEventListener("click", () => {
-            const quantity = parseInt(productQty.value);
-            if (currentProduct.stock <= 0)
-                return alert("This item is out of stock!");
-            if (quantity > currentProduct.stock)
-                return alert(`Only ${currentProduct.stock} available!`);
+    $("#decreaseQty").on("click", function () {
+        if (parseInt(productQty.val()) > 1) {
+            productQty.val(parseInt(productQty.val()) - 1);
+        }
+    });
 
-            const index = cart.findIndex(
-                (item) => item.id === currentProduct.id
-            );
-            if (index > -1) {
-                cart[index].quantity += quantity;
-            } else {
-                cart.push({ ...currentProduct, quantity });
-            }
-
-            saveCartToStorage();
-            updateCartUI();
-            if (addToCartModal) addToCartModal.hide();
-        });
-
-    function updateCartUI() {
-        if (!cartItemsContainer) return;
-
-        cartItemsContainer.innerHTML = "";
-        if (cart.length === 0) {
-            emptyCartMessage?.classList.remove("d-none");
-            cartSummary?.classList.add("d-none");
-            if (cartCount) cartCount.textContent = "0";
+    // Confirm Add to Cart
+    $("#confirmAddToCart").on("click", function () {
+        const quantity = parseInt(productQty.val());
+        if (currentProduct.stock <= 0) {
+            showCartToast("This item is out of stock!", "danger");
+            return;
+        }
+        if (quantity > currentProduct.stock) {
+            showCartToast(`Only ${currentProduct.stock} available!`, "warning");
             return;
         }
 
-        emptyCartMessage?.classList.add("d-none");
-        cartSummary?.classList.remove("d-none");
+        const index = cart.findIndex((item) => item.id === currentProduct.id);
+        if (index > -1) {
+            cart[index].quantity += quantity;
+        } else {
+            cart.push({ ...currentProduct, quantity });
+        }
+
+        saveCartToStorage();
+        updateCartUI();
+
+        showCartToast(
+            `${currentProduct.name} (x${quantity}) added to your cart!`,
+            "success"
+        );
+
+        if (addToCartModal) addToCartModal.hide();
+    });
+
+    function updateCartUI() {
+        if (!cartItemsContainer.length) return;
+
+        cartItemsContainer.empty();
+        if (cart.length === 0) {
+            emptyCartMessage.removeClass("d-none");
+            cartSummary.addClass("d-none");
+            cartCount.text("0");
+            return;
+        }
+
+        emptyCartMessage.addClass("d-none");
+        cartSummary.removeClass("d-none");
 
         let subtotal = 0,
             discount = 0;
@@ -165,84 +166,75 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? ((item.price * item.discount) / 100) * item.quantity
                 : 0;
 
-            const el = document.createElement("div");
-            el.className = "cart-item mb-3";
-            el.dataset.index = index;
-            el.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <img src="${
-                        item.img
-                    }" class="cart-item-img rounded me-3" style="width:80px;height:80px;">
-                    <div class="cart-item-details flex-grow-1">
-                        <p class="mb-1 fw-bold">${item.name}</p>
-                        ${
-                            item.discount
-                                ? `
-                            <p class="mb-0">
-                                <span class="fw-bold">$${(
-                                    itemPrice * item.quantity
-                                ).toFixed(2)}</span><br>
-                                <span class="text-muted text-decoration-line-through small">$${(
-                                    item.price * item.quantity
-                                ).toFixed(2)}</span><br>
-                                <span class="badge bg-danger">-${
-                                    item.discount
-                                }%</span>
-                            </p>`
-                                : `<p class="mb-0 fw-bold">$${(
-                                      item.price * item.quantity
-                                  ).toFixed(2)}</p>`
-                        }
+            const el = $(`
+                <div class="cart-item mb-3" data-index="${index}">
+                    <div class="d-flex align-items-center">
+                        <img src="${
+                            item.img
+                        }" class="cart-item-img rounded me-3" style="width:80px;height:80px;">
+                        <div class="cart-item-details flex-grow-1">
+                            <p class="mb-1 fw-bold">${item.name}</p>
+                            ${
+                                item.discount
+                                    ? `
+                                <p class="mb-0">
+                                    <span class="fw-bold">$${(
+                                        itemPrice * item.quantity
+                                    ).toFixed(2)}</span><br>
+                                    <span class="text-muted text-decoration-line-through small">$${(
+                                        item.price * item.quantity
+                                    ).toFixed(2)}</span><br>
+                                    <span class="badge bg-danger">-${
+                                        item.discount
+                                    }%</span>
+                                </p>`
+                                    : `<p class="mb-0 fw-bold">$${(
+                                          item.price * item.quantity
+                                      ).toFixed(2)}</p>`
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-sm btn-outline-secondary decrease-qty-btn"><i class="fas fa-minus"></i></button>
+                        <span class="mx-2 item-quantity">${item.quantity}</span>
+                        <button class="btn btn-sm btn-outline-secondary increase-qty-btn" ${
+                            item.quantity >= item.stock ? "disabled" : ""
+                        }><i class="fas fa-plus"></i></button>
+                        <button class="btn btn-sm btn-outline-danger remove-item-btn ms-4"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
-                <div class="d-flex align-items-center">
-                    <button class="btn btn-sm btn-outline-secondary decrease-qty-btn"><i class="fas fa-minus"></i></button>
-                    <span class="mx-2 item-quantity">${item.quantity}</span>
-                    <button class="btn btn-sm btn-outline-secondary increase-qty-btn" ${
-                        item.quantity >= item.stock ? "disabled" : ""
-                    }><i class="fas fa-plus"></i></button>
-                    <button class="btn btn-sm btn-outline-danger remove-item-btn ms-4"><i class="fas fa-trash"></i></button>
-                </div>
-            `;
-            cartItemsContainer.appendChild(el);
+            `);
+            cartItemsContainer.append(el);
         });
 
-        if (cartSubtotal) cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-        if (cartDiscount) cartDiscount.textContent = `-$${discount.toFixed(2)}`;
-        if (cartTotal)
-            cartTotal.textContent = `$${(subtotal - discount).toFixed(2)}`;
-        if (cartCount)
-            cartCount.textContent = cart.reduce((s, i) => s + i.quantity, 0);
+        cartSubtotal.text(`$${subtotal.toFixed(2)}`);
+        cartDiscount.text(`-$${discount.toFixed(2)}`);
+        cartTotal.text(`$${(subtotal - discount).toFixed(2)}`);
+        cartCount.text(cart.reduce((s, i) => s + i.quantity, 0));
 
         // Button actions
-        document.querySelectorAll(".remove-item-btn").forEach((btn) => {
-            btn.addEventListener("click", function () {
-                cart.splice(this.closest(".cart-item").dataset.index, 1);
+        $(".remove-item-btn").on("click", function () {
+            cart.splice($(this).closest(".cart-item").data("index"), 1);
+            saveCartToStorage();
+            updateCartUI();
+        });
+
+        $(".increase-qty-btn").on("click", function () {
+            const i = $(this).closest(".cart-item").data("index");
+            if (cart[i].quantity < cart[i].stock) {
+                cart[i].quantity++;
                 saveCartToStorage();
                 updateCartUI();
-            });
+            }
         });
 
-        document.querySelectorAll(".increase-qty-btn").forEach((btn) => {
-            btn.addEventListener("click", function () {
-                const i = this.closest(".cart-item").dataset.index;
-                if (cart[i].quantity < cart[i].stock) {
-                    cart[i].quantity++;
-                    saveCartToStorage();
-                    updateCartUI();
-                }
-            });
-        });
-
-        document.querySelectorAll(".decrease-qty-btn").forEach((btn) => {
-            btn.addEventListener("click", function () {
-                const i = this.closest(".cart-item").dataset.index;
-                if (cart[i].quantity > 1) {
-                    cart[i].quantity--;
-                    saveCartToStorage();
-                    updateCartUI();
-                }
-            });
+        $(".decrease-qty-btn").on("click", function () {
+            const i = $(this).closest(".cart-item").data("index");
+            if (cart[i].quantity > 1) {
+                cart[i].quantity--;
+                saveCartToStorage();
+                updateCartUI();
+            }
         });
     }
 
@@ -250,67 +242,39 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("shoppingCart", JSON.stringify(cart));
     }
 
-    // Category filtering functionality
-    document.querySelectorAll(".category-item").forEach((category) => {
-        category.addEventListener("click", function () {
-            const categoryId = this.dataset.categoryId;
-            filterProductsByCategory(categoryId);
-        });
+    // Category filtering
+    $(".category-item").on("click", function () {
+        const categoryId = $(this).data("category-id");
+        filterProductsByCategory(categoryId);
     });
 
-    // See All button functionality
-    document
-        .getElementById("see-all-btn")
-        ?.addEventListener("click", function () {
-            resetProductFilter();
-        });
+    $("#see-all-btn").on("click", function () {
+        resetProductFilter();
+    });
 
     function filterProductsByCategory(categoryId) {
-        const allProducts = document.querySelectorAll(".product-item");
-        const categoryTitle = document.querySelector(
+        const allProducts = $(".product-item");
+        const categoryTitle = $(
             `.category-item[data-category-id="${categoryId}"] h5`
-        ).textContent;
+        ).text();
 
-        // Update the products title
-        document.getElementById("products-title").textContent = categoryTitle;
+        $("#products-title").text(categoryTitle);
 
-        // Filter products
-        allProducts.forEach((product) => {
-            if (product.dataset.categoryId === categoryId) {
-                product.style.display = "block";
-            } else {
-                product.style.display = "none";
-            }
+        allProducts.each(function () {
+            $(this).toggle($(this).data("category-id") === categoryId);
         });
 
-        // Show the "See All" button
-        document.getElementById("see-all-btn").style.display = "inline-block";
+        $("#see-all-btn").show();
     }
 
     function resetProductFilter() {
-        const allProducts = document.querySelectorAll(".product-item");
-
-        // Reset products title
-        document.getElementById("products-title").textContent =
-            "Featured Products";
-
-        // Show all products
-        allProducts.forEach((product) => {
-            product.style.display = "block";
-        });
-
-        // Hide the "See All" button
-        document.getElementById("see-all-btn").style.display = "none";
+        $(".product-item").show();
+        $("#products-title").text("Featured Products");
+        $("#see-all-btn").hide();
     }
 
-    // Send cart to Laravel on checkout
-    const checkoutForm = document.getElementById("checkoutForm");
-    if (checkoutForm) {
-        checkoutForm.addEventListener("submit", function () {
-            const hiddenCartInput = document.getElementById("cartData");
-            if (hiddenCartInput) {
-                hiddenCartInput.value = JSON.stringify(cart);
-            }
-        });
-    }
+    // Checkout form
+    $("#checkoutForm").on("submit", function () {
+        $("#cartData").val(JSON.stringify(cart));
+    });
 });

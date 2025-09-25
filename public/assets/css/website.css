@@ -28,6 +28,7 @@ body {
 
 .navbar-nav .nav-link {
     position: relative;
+    font-size: 17px;
     display: inline-block;
     color: var(--dark-color);
     font-weight: 700;

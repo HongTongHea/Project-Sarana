@@ -104,7 +104,7 @@
     @media (max-width: 1080px) {
 
         .branding h1 {
-            font-size: 4rem;
+            font-size: 3.8rem;
         }
 
         .branding h2 {
@@ -145,7 +145,7 @@
                 <h1>Welcome to </h1>
                 <h2>AngkorTech Computer</h2>
                 <p class="mt-4">
-                    Please sign up to create a new account. If you already have an account, you can sign in instead.
+                    Please sign up to create a new account. If you already have an account, you can sign in.
                 </p>
             </div>
             <div class="col-12 col-md-6 text-start d-flex justify-content-center">

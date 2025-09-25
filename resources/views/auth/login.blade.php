@@ -105,7 +105,7 @@
     @media (max-width: 1080px) {
 
         .branding h1 {
-            font-size: 4rem;
+            font-size: 3.8rem;
         }
 
         .branding h2 {
@@ -138,6 +138,7 @@
         }
     }
 </style>
+    
 
 <body>
     <div class="main-container">
@@ -188,8 +189,8 @@
                         </div>
                     </form>
                     <div class="register-link">
-                        Don’t have an account? <a href="{{ route('register') }}"
-                            class="text-primary fw-bold">Sign Up</a>
+                        Don’t have an account? <a href="{{ route('register') }}" class="text-primary fw-bold">Sign
+                            Up</a>
                     </div>
                 </div>
             </div>
