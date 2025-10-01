@@ -20,12 +20,12 @@
                                 <img src="{{ Storage::url($user->picture_url) }}" alt="User Image"
                                     class="img-thumbnail rounded-circle shadow-lg"
                                     style="width: 150px; height: 150px; object-fit: cover;">
-
                             </div>
                         @else
-                            <img src="{{ asset('assets/img/Default_pfp.svg.png') }}"
-                                class="img-thumbnail rounded-circle shadow-lg"
-                                style="width: 150px; height: 150px; object-fit: cover;">
+                            <div class="img-thumbnail rounded-circle shadow-lg d-flex align-items-center justify-content-center"
+                                style="width: 150px; height: 150px; background-color: #6c757d; color: #fff; font-size: 48px; font-weight: bold;">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            </div>
                         @endif
 
                     </div>

@@ -3,82 +3,102 @@
 @section('title', 'User Details')
 
 @section('content')
+    <div class="p-3">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card shadow-sm rounded-0">
+                    <div class="card-header bg-white border-0">
+                        <h5 class="mb-0">General Information</h5>
+                    </div>
 
-    <div class="m-4 mt-4">
-        <div class="col-md-12">
-            <form action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data">
-                <div class="card card-profile card-plain rounded-0">
+                    <form action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data"
+                        class="p-4">
+                        @csrf
 
-                    <div class="card-header" style="background-image: url('/assets/img/examples/product12.jpeg')">
-                        <div class="profile-picture">
-                            <div class="avatar avatar-xl">
-
+                        <!-- Profile Picture -->
+                        <div class="row">
+                            <div class="col-4 d-flex flex-column align-items-center mb-4">
+                                <h3 class="text-muted">Profile Picture</h3>
                                 @if ($user->picture_url)
                                     <img src="{{ asset('storage/' . $user->picture_url) }}" alt="{{ $user->name }}"
-                                        class="object-fit-cover object-center avatar-img rounded-circle " width="20%">
+                                        class="rounded-circle img-thumbnail"
+                                        style="width: 100px; height: 100px; object-fit: cover;">
                                 @else
-                                    No picture available <img src="{{ asset('storage/' . $user->profile_picture) }}"
-                                        alt="">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-secondary text-white"
+                                        style="width: 100px; height: 100px; font-size: 36px; font-weight: bold;">
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    </div>
                                 @endif
+
+                                <div class="mt-3 d-flex justify-content-start">
+                                    <label for="profilePicture" class="btn btn-outline-secondary btn-hover btn-sm">
+                                        Upload Picture
+                                    </label>
+                                    <input type="file" name="profile_picture" id="profilePicture" class="d-none"
+                                        onchange="displayFileName()">
+                                    <small id="fileName" class="d-block mt-2 text-muted"></small>
+                                </div>
+                            </div>
+
+                            <!-- User Info -->
+                            <div class="col-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" value="{{ $user->name }}" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Role</label>
+                                    <input type="text" class="form-control" value="{{ $user->role }}" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" value="{{ $user->email }}" disabled>
+                                </div>
+
+                                <!-- Created / Updated -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Created At</label>
+                                        <input type="text" class="form-control" value="{{ $user->created_at }}" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Updated At</label>
+                                        <input type="text" class="form-control" value="{{ $user->updated_at }}" disabled>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm me-2">Back</a>
+                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Delete Account Section -->
+                <div class="card shadow-sm rounded-0 mt-4">
+                    <div class="card-header bg-white border-0">
+                        <h5 class="mb-0 text-danger">Account status</h5>
                     </div>
                     <div class="card-body">
-                        <div class="user-profile text-center">
-
+                        <p>Delete my account and all the information it contains.</p>
+                        <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
                             @csrf
-                            <div class="name">{{ $user->name }}</div>
-                            <div class="job">Roles: {{ $user->role }}</div>
-                            <div class="desc">Email: {{ $user->email }}</div>
-                            <div class="social-media">
-                                <a class="btn btn-info btn-twitter btn-sm btn-link" href="#">
-                                    <span class="btn-label just-icon"><i class="icon-social-twitter"></i>
-                                    </span>
-                                </a>
-                                <a class="btn btn-primary btn-sm btn-link" rel="publisher" href="#">
-                                    <span class="btn-label just-icon"><i class="icon-social-facebook"></i>
-                                    </span>
-                                </a>
-                                <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="#">
-                                    <span class="btn-label just-icon"><i class="icon-social-instagram"></i>
-                                    </span>
-                                </a>
+                            @method('DELETE')
+                            <div class="d-flex justify-content-end mb-3">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete account</button>
                             </div>
-                            <div class="view-profile">
-                                <input type="file" name="profile_picture" id="profilePicture" style="display: none;"
-                                    required onchange="displayFileName()">
-
-                                <button type="button" class="btn btn-secondary "
-                                    onclick="document.getElementById('profilePicture').click()">
-                                    Upload Picture
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer rounded-0">
-                        <div class="row user-stats text-center">
-                            <div class="col">
-                                <div class="title">Create at</div>
-                                <div class="number">{{ $user->created_at }}</div>
-                            </div>
-                            <div class="col">
-                                <div class="title">Updated at</div>
-                                <div class="number">{{ $user->updated_at }}</div>
-                            </div>
-
-                            <div class="col-12 mt-2">
-                                <button type="submit" class="btn btn-primary btn-sm float-end m-1 rounded-5">Save</button>
-                                <a href="{{ route('dashboard') }}"
-                                    class="btn btn-secondary btn-sm float-end m-1 rounded-5">Back</a>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-
-
 
     <script>
         function displayFileName() {

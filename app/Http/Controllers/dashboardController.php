@@ -26,6 +26,21 @@ class DashboardController extends Controller
         return null;
     }
 
+    private function getGreeting()
+    {
+        $hour = now('Asia/Phnom_Penh')->format('H'); // Cambodia local hour
+
+        if ($hour < 12) {
+            return 'Good Morning';
+        } elseif ($hour < 17) {
+            return 'Good Afternoon';
+        } else {
+            return 'Good Evening';
+        }
+    }
+
+
+
     /**
      * Show admin dashboard
      */
@@ -46,6 +61,8 @@ class DashboardController extends Controller
         $categories = Category::all();
         $accessories = Accessory::all();
 
+        $greeting = $this->getGreeting();
+
         return view('admin.dashboard', compact(
             'users',
             'customers',
@@ -53,7 +70,11 @@ class DashboardController extends Controller
             'products',
             'stocks',
             'categories',
-            'accessories'
+            'accessories',
+            'greeting',
+            'user'
+
+
         ));
     }
 
@@ -77,6 +98,8 @@ class DashboardController extends Controller
         $categories = Category::all();
         $accessories = Accessory::all();
 
+        $greeting = $this->getGreeting();
+
         return view('manager.dashboard', compact(
             'users',
             'customers',
@@ -84,7 +107,8 @@ class DashboardController extends Controller
             'products',
             'stocks',
             'categories',
-            'accessories'
+            'accessories',
+            'greeting'
         ));
     }
 

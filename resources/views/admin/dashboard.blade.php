@@ -7,7 +7,24 @@
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
                 <h3 class="fw-bold m-3  mb-0 mt-0">Dashboard</h3>
-                <h6 class="op-7 m-3">! Hey Admin Dashboard</h6>
+                @php
+                    $user = null;
+                    foreach (['admin', 'manager', 'cashier', 'customer', 'web'] as $guard) {
+                        if (Auth::guard($guard)->check()) {
+                            $user = Auth::guard($guard)->user();
+                            break;
+                        }
+                    }
+                @endphp
+                <p class="m-3 mt-0 mb-0">
+                    Today is {{ now('Asia/Phnom_Penh')->format('l, F j, Y') }} -
+                    {{ now('Asia/Phnom_Penh')->format('h:i A') }}
+                </p>
+                <h6 class=" m-3 mt-0">
+                    {{ $greeting }}, {{ $user?->name ?? 'Guest' }}!
+
+                </h6>
+
             </div>
             <div class="ms-md-auto py-2 py-md-0">
                 <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>

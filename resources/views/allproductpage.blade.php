@@ -4,7 +4,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4" style="margin-top: 6rem;">
             <div class="row mb-2">
                 <div class="col text-start">
-                    <h3 id="products-title" class="mb-0 text-start font-weight-bold text-black">All Products & Accessories
+                    <h3 id="products-title" class="mb-0 text-start fw-bold text-black">All Products & Accessories
                     </h3>
                     <p class="text-muted">Browse our selection of all products and accessories</p>
                 </div>

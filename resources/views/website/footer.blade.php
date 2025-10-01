@@ -17,10 +17,14 @@
             <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4">
                 <h5 class="text-uppercase fw-bold mb-3">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Laptop</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">All Products</a></li>
+                    <li class="mb-2"><a href="{{ route('homepage.index') }}"
+                            class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="{{ route('allproductpage.index') }}"
+                            class="text-white text-decoration-none">All Products</a></li>
+                    <li class="mb-2"><a href="{{ route('productpage.index') }}"
+                            class="text-white text-decoration-none">Laptop</a></li>
                     <li class="mb-2"><a href="#" class="text-white text-decoration-none">About</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -43,7 +47,6 @@
         </div>
 
         <hr class="border-secondary">
-
         <!-- Copyright -->
         <div class="text-center">
             <p class="mb-0 small">
