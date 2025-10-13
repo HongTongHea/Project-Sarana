@@ -48,9 +48,10 @@
                 </div>
             @endforeach
         </div>
+
         <!-- Products Section -->
         <section class="mb-5" id="products-section">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex justify-content-between align-items-center">
                 <div class="row mb-2">
                     <div class="col text-start">
                         <h3 class="mb-0 text-start font-weight-bold" id="products-title">Products</h3>
@@ -124,10 +125,85 @@
                 @endforeach
             </div>
         </section>
+        <!-- ROG Banner Section -->
+        <section class="rog-banner-section ">
+            <div class="container py-4">
+                <div class="row g-4">
+                    <!-- Left Side (Big Banner) -->
+                    <div class="col-lg-8 mb-4 mb-lg-0">
+                        <div class="rog-banner-wrapper">
+                            <div class="rog-main-banner">
+                                <img src="{{ asset('assets/victor/maxresdefault.jpg') }}" alt="acer predator"
+                                    style="height: 390px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side (Products) -->
+                    <div class="col-lg-4 mb-4 mb-lg-0">
+                        <div class="rog-products-wrapper">
+                            <div class="rog-product-item">
+                                <div class="rog-product-thumb">
+                                    <img src="{{ asset('assets/victor/rog_zyphyrus.png') }}" alt="Rog Zephyrus G16">
+                                </div>
+                                <div class="rog-product-info">
+                                    <h6 class="rog-product-title">Rog Zephyrus G16</h6>
+                                    <div class="rog-product-price">$ 1144</div>
+                                    <div class="rog-product-stars">★★★★★</div>
+                                    <button class="rog-buy-button">Buy Now</button>
+                                </div>
+                            </div>
+
+                            <div class="rog-product-item">
+                                <div class="rog-product-thumb">
+                                    <img src="{{ asset('assets/victor/rog_zyphyrus_g16.png') }}"
+                                        alt="Rog Zephyrus G16 White">
+                                </div>
+                                <div class="rog-product-info">
+                                    <h6 class="rog-product-title">Rog Zephyrus G16 White</h6>
+                                    <div class="rog-product-price">$ 1144</div>
+                                    <div class="rog-product-stars">★★★★★</div>
+                                    <button class="rog-buy-button">Buy Now</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <!-- Brand Scrolling Section -->
+        <div class="brand-section mt-2 mb-2">
+            <div class="container">
+                <h2 class="section-title">Our Branding</h2>
+                <div class="brand-scroller">
+                    <div class="brand-track">
+                        <img src="{{ asset('assets/logo/dell-logo.png') }}" alt="Dell",
+                            style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/asus-logo.png') }}" alt="Asus">
+                        <img src="{{ asset('assets/logo/apple-logo.png') }}" alt="Apple">
+                        <img src="{{ asset('assets/logo/samsung-logo.png') }}" alt="Samsung">
+                        <img src="{{ asset('assets/logo/lenovo-logo.png') }}" alt="Lenovo"
+                            style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/acer-logo.png') }}" alt="Acer">
+
+                        <!-- Duplicate for seamless loop -->
+                        <img src="{{ asset('assets/logo/dell-logo.png') }}" alt="Dell"
+                            style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/asus-logo.png') }}" alt="Asus">
+                        <img src="{{ asset('assets/logo/apple-logo.png') }}" alt="Apple">
+                        <img src="{{ asset('assets/logo/samsung-logo.png') }}" alt="Samsung">
+                        <img src="{{ asset('assets/logo/lenovo-logo.png') }}" alt="Lenovo"
+                            style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/acer-logo.png') }}" alt="Acer">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Accessories Section -->
         <section>
-            <div class="row mb-2">
+            <div class="row mb-2 mt-2">
                 <div class="col text-start">
                     <h3 class="mb-0 text-start font-weight-bold">Accessories</h3>
                     <p class="text-muted">Browse our selection of accessories</p>
@@ -138,15 +214,15 @@
                     @if ($index >= 10)
                         @break
                     @endif
-                    <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 accessory-item">
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 accessory-item">
                         <div class="card border-0 position-relative product-card">
                             @if ($accessory->discount_percentage > 0)
                                 <span
                                     class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">-{{ $accessory->discount_percentage }}%</span>
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
-                                <img src="{{ asset('storage/' . $accessory->picture_url) }}" alt="{{ $accessory->name }}"
-                                    class="card-img-top img-fluid product-image mt-2">
+                                <img src="{{ asset('storage/' . $accessory->picture_url) }}"
+                                    alt="{{ $accessory->name }}" class="card-img-top img-fluid product-image mt-2">
 
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
@@ -198,10 +274,125 @@
                 @endforeach
             </div>
         </section>
+        <section>
+            <div class="container">
+                <div class="service-section">
+                    <div class="row mt-2">
+                        <div class="col text-start">
+                            <h3 class="mb-0 text-start font-weight-bold">Our Services</h3>
+                            <p class="text-muted">Explore our range of services</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-0 mt-3">
+                        <!-- Left Large Card -->
+                        <div class="col-lg-6 mb-2">
+                            <div class="service-card left-card">
+                                <img src="{{ asset('assets/victor/camera-installation-2.jpg') }}" alt="Plumbing Service">
+                                <div class="service-overlay">
+                                    <h4>Plumbing Services</h4>
+                                    <p>Professional plumbing installation and repair services</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side Column -->
+                        <div class="col-lg-6 ml-2">
+                            <!-- Top Right Card -->
+                            <div class="row g-0">
+                                <div class="col-12">
+                                    <div class="service-card top-right-card">
+                                        <img src="{{ asset('assets/victor/custome_pc.png') }}" alt="Gaming PC Setup">
+                                        <div class="service-overlay">
+                                            <h4>Gaming PC Setup</h4>
+                                            <p>Custom gaming stations with premium peripherals</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Two Cards -->
+                            <div class="row g-2 mt-2">
+                                <div class="col-6">
+                                    <div class="service-card bottom-card">
+                                        <img src="{{ asset('assets/victor/build_system.png') }}" alt="Custom PC Build">
+                                        <div class="service-overlay">
+                                            <h5>Custom PC Build</h5>
+                                            <p>High-performance builds</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="service-card bottom-card">
+                                        <img src="{{ asset('assets/victor/build_system_unite.png') }}"
+                                            alt="RGB Gaming Rigs">
+                                        <div class="service-overlay">
+                                            <h5>RGB Gaming Rigs</h5>
+                                            <p>Premium lighting setups</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- our new product section -->
+        <section class="new-products-banner mb-5">
+            <div class="row mb-2 mt-4">
+                <div class="col text-start">
+                    <h3 class="mb-0 text-start font-weight-bold">Our New Products</h3>
+                    <p class="text-muted">Browse our selection of new products</p>
+                </div>
+            </div>
+
+            <div class="custom-banner-slider">
+                {{-- <button class="custom-prev-btn"><i class="fa-solid fa-chevron-left"></i></button> --}}
+
+                <div class="custom-slides-wrapper">
+                    <div class="custom-slides">
+                        <!-- Slide 1 -->
+                        <div class="custom-slide">
+                            <img src="{{ asset('assets/victor/asus_rog.jpg') }}" alt="ASUS ROG">
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="custom-slide">
+                            <img src="{{ asset('assets/victor/msi_hx.jpg') }}" alt="MSI HX">
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="custom-slide">
+                            <img src="{{ asset('assets/victor/acer_predator.jpg') }}" alt="Acer Predator">
+                        </div>
+                          <!-- Slide 4 -->
+                        <div class="custom-slide">
+                            <img src="{{ asset('assets/victor/asus_rog.jpg') }}" alt="ASUS ROG">
+                        </div>
+
+                        <!-- Slide 5 -->
+                        <div class="custom-slide">
+                            <img src="{{ asset('assets/victor/msi_hx.jpg') }}" alt="MSI HX">
+                        </div>
+
+                        <!-- Slide 6 -->
+                        <div class="custom-slide">
+                            <img src="{{ asset('assets/victor/acer_predator.jpg') }}" alt="Acer Predator">
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <button class="custom-next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </section>
+
 
         @include('website.shoppingcart')
+
     </div>
 
-    <!-- ✅ Toast container -->
     <div id="cartToastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
 @endsection
