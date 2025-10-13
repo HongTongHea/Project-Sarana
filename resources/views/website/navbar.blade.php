@@ -52,16 +52,18 @@
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                             id="userDropdownDesktop" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{-- Desktop Avatar --}}
                             @if ($user->picture_url)
                                 <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
                                     class="avatar-img rounded-5" width="40" height="40"
                                     style="object-fit: cover;">
                             @else
                                 <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px;">
-                                    <i class="fas fa-user text-white"></i>
+                                    style="width: 40px; height: 40px; font-weight: bold; color: white;">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                             @endif
+
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="userDropdownDesktop">
                             {{-- User info at top --}}
@@ -123,8 +125,7 @@
             aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
                 <a class="navbar-brand d-flex align-items-center" href="#">
-                    <img src="{{ asset('assets/img/logo-Company.png') }}" alt="" height="50"
-                        class="me-2">
+                    <img src="{{ asset('assets/img/logo-Company.png') }}" alt="" height="50" class="me-2">
                 </a>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -139,8 +140,8 @@
                                 style="object-fit: cover;">
                         @else
                             <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-2"
-                                style="width: 45px; height: 45px;">
-                                <i class="fas fa-user text-white"></i>
+                                style="width: 45px; height: 45px; font-weight: bold; color: white;">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
                             </div>
                         @endif
                         <div>

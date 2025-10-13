@@ -23,16 +23,19 @@
     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
         <div class="container-fluid">
             <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                <div class="row">
-                    <div class="p-3">
-                        <i class="fa-regular fa-calendar-days"></i> <strong class="text-center fs-6"
-                            id="date"></strong>
-                        <i class="fa-regular fa-clock"></i> <strong class="text-center fs-6" id="time"></strong>
+                <div class="row justify-content-end">
+                    <div class="col-md-12">
+                        {{-- <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Search ..." />
+                        </div> --}}
                     </div>
                 </div>
-
             </nav>
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <i id="fullscreen-toggle" class="fa-solid fa-expand fs-5"></i>
                 <li class="nav-item topbar-user dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                         aria-expanded="false">
@@ -51,15 +54,18 @@
                             @endphp
 
                             @if ($user)
-                                <span class="">Welcome {{ $user->name }}</span>
+
+                                <span>{{ $user->name }}</span>
                         </span>
                         <div class="avatar">
                             @if ($user->picture_url)
                                 <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
                                     class="avatar-img  rounded-5 oject-fit-cover object-center" width="100%">
                             @else
-                                <img src="{{ asset('assets/img/Default_pfp.svg.png') }}"class="avatar-img rounded-5"
-                                    width="100">
+                                <div class="avatar-img rounded-5 d-flex align-items-center justify-content-center bg-secondary"
+                                    style="width: 45px; height: 45px; color: #fff; font-size: 20px; font-weight: bold;">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                </div>
                             @endif
                         </div>
                         @endif
@@ -75,8 +81,10 @@
                                                 <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
                                                     class="avatar-img rounded-5" width="100">
                                             @else
-                                                <img src="{{ asset('assets/img/Default_pfp.svg.png') }}"class="avatar-img rounded-5"
-                                                    width="100">
+                                                <div class="avatar-img rounded-5 d-flex align-items-center justify-content-center bg-secondary"
+                                                    style="width: 50px; height: 50px;color: #fff; font-size: 20px; font-weight: bold;">
+                                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                </div>
                                             @endif
                                     </div>
                                     <div class="u-text">
@@ -121,3 +129,23 @@
     </nav>
     <!-- End Navbar -->
 </div>
+<script>
+    const fullscreenToggle = document.getElementById("fullscreen-toggle");
+
+    fullscreenToggle.addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            fullscreenToggle.classList.replace("fa-expand", "fa-compress");
+        } else {
+            document.exitFullscreen();
+            fullscreenToggle.classList.replace("fa-compress", "fa-expand");
+        }
+    });
+
+    // Optional: detect Esc key (exit fullscreen)
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+            fullscreenToggle.classList.replace("fa-compress", "fa-expand");
+        }
+    });
+</script>

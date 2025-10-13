@@ -54,7 +54,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="row mb-2">
                     <div class="col text-start">
-                        <h3 class="mb-0 text-start font-weight-bold" id="products-title">Products</h3>
+                        <h3 class="mb-0 text-start fw-bold" id="products-title">Products</h3>
                         <p class="text-muted">Browse our selection of Products</p>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
         <section>
             <div class="row mb-2 mt-2">
                 <div class="col text-start">
-                    <h3 class="mb-0 text-start font-weight-bold">Accessories</h3>
+                    <h3 class="mb-0 text-start fw-bold">Accessories</h3>
                     <p class="text-muted">Browse our selection of accessories</p>
                 </div>
             </div>
