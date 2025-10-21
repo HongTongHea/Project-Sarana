@@ -11,6 +11,12 @@
                 <p class="small">
                     Your trusted source for laptops, accessories, <br>and tech gear in Cambodia.
                 </p>
+                {{-- <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p class="text-center">We accept payment:</p>
+                    <img src="assets/img/KH-QR.png" alt="" style="height: 50px; width: auto;">
+                    <img src="assets/img/ABA.png" alt="" style="height: 65px; width: auto;">
+                    <img src="assets/img/mastercard.png" alt="" style="height: 50px; width: auto;">
+                </div> --}}
             </div>
 
             <!-- Quick Links -->
@@ -45,6 +51,13 @@
                 </div>
             </div>
         </div>
+        {{-- <div class="d-flex justify-content-center align-items-center">
+            <p class="text-center m-2">We accept payment:</p>
+            <img src="assets/img/KH-QR.png" alt="" style="height: 50px; width: auto;">
+            <img src="assets/img/ABA.png" alt="" style="height: 65px; width: auto;">
+            <img src="assets/img/mastercard.png" alt="" style="height: 50px; width: auto;">
+
+        </div> --}}
 
         <hr class="border-secondary">
         <!-- Copyright -->

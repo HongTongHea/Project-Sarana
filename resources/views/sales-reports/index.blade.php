@@ -14,10 +14,12 @@
 
                 <div class="row p-2">
                     <div class="col-md-6">
-                        <div class="d-flex gap-2">
-                            <a href="{{ route('sales-reports.create') }}" class="btn btn-primary btn-sm">
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <button type="button" class="btn btn-primary mb-3 btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#createModal">
                                 <i class="bi bi-file-earmark-plus"></i> Custom Report
-                            </a>
+                            </button>
 
                             <form action="{{ route('sales-reports.generate.weekly') }}" method="POST" class="d-inline">
                                 @csrf
@@ -49,7 +51,12 @@
                                     <i class="bi bi-file-earmark-bar-graph"></i> Report All
                                 </button>
                             </form>
+
+                            
                         </div>
+                        <a href="{{ route('sales-reports.top.items') }}" class="btn btn-info btn-sm mb-3">
+                                <i class="fas fa-chart-line"></i> View Top Selling Items
+                            </a>
                     </div>
 
                     <div class="col-md-6">
@@ -133,4 +140,5 @@
             </div>
         </div>
     </div>
+    @include('sales-reports.create')
 @endsection

@@ -24,17 +24,9 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        // Separate users by role
-        $adminAuthors = User::whereIn('role', ['admin', 'manager'])->get();
-        $customers = User::where('role', 'customer')->get();
+        $users = User::all();
 
-        // For editing if needed
-        $user = null;
-        if ($request->has('edit')) {
-            $user = User::find($request->input('edit'));
-        }
-
-        return view('users.index', compact('adminAuthors', 'customers', 'user'));
+        return view('users.index', compact('users'));
     }
 
 

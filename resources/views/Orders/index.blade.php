@@ -12,7 +12,7 @@
             </div>
             <div class="card-body">
                 <a href="{{ route('orders.create') }}" class="btn btn-primary btn-sm mb-3 ml-3">
-                    <i class="fas fa-plus"></i> New Order
+                    <i class="fas fa-plus"></i> New Sale
                 </a>
                 <div class="table-responsive">
                     <table id="DataTable" class="table mt-3 table-border table-hover">

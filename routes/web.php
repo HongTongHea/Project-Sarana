@@ -20,7 +20,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SalesReportController;
-
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CheckoutOrderController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -121,8 +122,35 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
         Route::post('/generate-yearly', [SalesReportController::class, 'generateYearly'])->name('generate.yearly');
         Route::post('/regenerate-all', [SalesReportController::class, 'regenerateAll'])->name('regenerate.all');
         Route::get('/top-items', [SalesReportController::class, 'topSellingItems'])->name('top.items');
+        
     });
 });
 
 // Legacy dashboard route for backward compatibility
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');;
+
+// Route::middleware(['auth'])->group(function () {
+//     // Online Orders
+//     Route::get('/checkout', [OnlineOrderController::class, 'checkout'])->name('checkout');
+//     Route::post('/online-orders', [OnlineOrderController::class, 'store'])->name('online-orders.store');
+//     Route::get('/order-confirmation/{order}', [OnlineOrderController::class, 'confirmation'])->name('order.confirmation');
+//     Route::get('/my-orders', [OnlineOrderController::class, 'index'])->name('online-orders.index');
+//     Route::get('/my-orders/{onlineOrder}', [OnlineOrderController::class, 'show'])->name('online-orders.show');
+// });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CheckoutOrderController::class, 'checkout'])->name('checkout');
+    Route::post('/online-orders', [CheckoutOrderController::class, 'store'])->name('online-orders.store');
+    Route::get('/order-confirmation/{order}', [CheckoutOrderController::class, 'confirmation'])->name('order.confirmation');
+    Route::get('/my-orders', [CheckoutOrderController::class, 'index'])->name('online-orders.index');
+    Route::get('/my-orders/{onlineOrder}', [CheckoutOrderController::class, 'show'])->name('online-orders.show');
+});
+
+
+// Route::get('/checkout', [OnlineOrderController::class, 'checkout'])->name('checkout');
+// Route::post('/online-orders', [OnlineOrderController::class, 'store'])->name('online-orders.store');
+// Route::get('/order-confirmation/{order}', [OnlineOrderController::class, 'confirmation'])->name('order.confirmation');
+// Route::get('/order-confirmation', [OnlineOrderController::class, 'confirmationPage'])->name('order.confirmation.page');
+// Route::get('/online-orders', [OnlineOrderController::class, 'index'])->name('online-orders.index');
+// Route::get('/online-orders/{onlineOrder}', [OnlineOrderController::class, 'show'])->name('online-orders.show');

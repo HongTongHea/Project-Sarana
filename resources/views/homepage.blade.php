@@ -279,7 +279,7 @@
                 <div class="service-section">
                     <div class="row mt-2">
                         <div class="col text-start">
-                            <h3 class="mb-0 text-start font-weight-bold">Our Services</h3>
+                            <h3 class="mb-0 text-start fw-bold">Our Services</h3>
                             <p class="text-muted">Explore our range of services</p>
                         </div>
                     </div>
@@ -343,7 +343,7 @@
         <section class="new-products-banner mb-5">
             <div class="row mb-2 mt-4">
                 <div class="col text-start">
-                    <h3 class="mb-0 text-start font-weight-bold">Our New Products</h3>
+                    <h3 class="mb-0 text-start fw-bold">Our New Products</h3>
                     <p class="text-muted">Browse our selection of new products</p>
                 </div>
             </div>

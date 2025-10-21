@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: successMessage,
                 confirmButtonText: "OK",
             },
-            500
+            200
         );
     }
 
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: errorMessage,
                 confirmButtonText: "OK",
             },
-            500
+            200
         );
     }
 });

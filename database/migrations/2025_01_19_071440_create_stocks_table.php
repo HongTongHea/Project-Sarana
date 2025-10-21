@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('quantity')->default(0);
             $table->integer('initial_quantity')->default(0);
             $table->string('type')->default('purchase');
+            $table->integer('change_amount')->default(0);
             $table->timestamps();
 
             // Index for better performance

@@ -142,5 +142,5 @@
     </div>
 
     <!-- ✅ Toast container (center top) -->
-    <div id="cartToastContainer" class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"></div>
+    <div id="cartToastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
 @endsection

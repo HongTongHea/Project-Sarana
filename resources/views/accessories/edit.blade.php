@@ -63,7 +63,7 @@
 
                         <div class="col-12 col-md-4 p-0 mt-md-0 mt-3">
                             <div class="form-group">
-                                <label for="picture_url">Accessory Image:</label>
+                                <label for="picture_url">Click to upload Image:</label>
                                 @if ($errors->has('picture_url'))
                                     <label class="text-danger mt-1">{{ $errors->first('picture_url') }}</label>
                                 @endif
