@@ -13,7 +13,7 @@
             <div class="card-body">
                 <button type="button" class="btn btn-primary mb-3 ml-3 btn-sm" data-bs-toggle="modal"
                     data-bs-target="#createModal">
-                    <i class="fas fa-plus"></i> New Employee 
+                    <i class="fas fa-plus"></i> New Employee
                 </button>
 
                 <div class="table-responsive">
@@ -21,7 +21,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
-                                <th>Photo</th>
+                                <th>Profile</th>
                                 <th>Full Name</th>
                                 <th>Position</th>
                                 <th>Emial</th>
@@ -41,10 +41,10 @@
                                                 class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
                                                 width="80">
                                         @else
-                                            <img src="{{ asset('assets/img/Default_pfp.svg.png') }}"
-                                                alt="{{ $employee->name }}"
-                                                class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
-                                                width="80">
+                                            <div class="avatar-img rounded-5 d-flex align-items-center justify-content-center bg-secondary"
+                                                style="width: 50px; height: 50px;color: #fff; font-size: 20px; font-weight: bold;">
+                                                {{ strtoupper(substr($employee->name, 0, 1)) }}
+                                            </div>
                                         @endif
                                     </td>
                                     <td>{{ $employee->name }}</td>

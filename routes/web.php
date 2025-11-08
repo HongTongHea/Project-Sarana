@@ -9,7 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
@@ -20,8 +20,10 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SalesReportController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CheckoutOrderController;
+use App\Models\OnlineOrder;
+use App\Models\Sale;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -69,10 +71,11 @@ Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])
 
 Route::middleware(['auth:admin,manager,cashier,customer'])->group(function () {
 
-    // Orders
-    Route::get('orders/search-products', [OrderController::class, 'searchProducts'])->name('orders.search-products');
-    Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
-    Route::get('/orders/{order}/print-invoice', [OrderController::class, 'printInvoice'])->name('orders.print-invoice');
+    // Sales
+    Route::get('sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.search-products');
+    Route::get('sales/search-accessories', [SaleController::class, 'searchAccessories'])->name('sales.search-accessories');
+    Route::get('/sales/{sale}/invoice', [SaleController::class, 'invoice'])->name('sales.invoice');
+    Route::get('/sales/{sale}/print-invoice', [SaleController::class, 'printInvoice'])->name('sales.print-invoice');
 
     Route::post('/purchase_orders/{purchase_order}/mark-received', [PurchaseOrderController::class, 'markAsReceived'])
         ->name('purchase_orders.markReceived');
@@ -109,48 +112,39 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::resource('stocks', StockController::class);
     Route::resource('products', ProductController::class);
     Route::resource('accessories', AccessoryController::class);
-    Route::resource('orders', OrderController::class);
+    Route::resource('sales', SaleController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('purchase_orders', PurchaseOrderController::class);
 
-    Route::prefix('sales-reports')->name('sales-reports.')->group(function () {
-        Route::get('/', [SalesReportController::class, 'index'])->name('index');
-        Route::get('/create', [SalesReportController::class, 'create'])->name('create');
-        Route::post('/generate', [SalesReportController::class, 'generate'])->name('generate');
-        Route::post('/generate-weekly', [SalesReportController::class, 'generateWeekly'])->name('generate.weekly');
-        Route::post('/generate-monthly', [SalesReportController::class, 'generateMonthly'])->name('generate.monthly');
-        Route::post('/generate-yearly', [SalesReportController::class, 'generateYearly'])->name('generate.yearly');
-        Route::post('/regenerate-all', [SalesReportController::class, 'regenerateAll'])->name('regenerate.all');
-        Route::get('/top-items', [SalesReportController::class, 'topSellingItems'])->name('top.items');
-        
-    });
+
+    Route::get('/sales-reports', [SalesReportController::class, 'index'])->name('sales-reports.index');
+    Route::get('/sales-reports/{id}', [SalesReportController::class, 'show'])->name('sales-reports.show');
+    Route::get('/sales-reports/{id}/data', [SalesReportController::class, 'getReportData'])->name('sales-reports.data');
+
+    Route::post('/sales-reports/weekly', [SalesReportController::class, 'generateWeeklyReport'])->name('sales-reports.weekly');
+    Route::post('/sales-reports/monthly', [SalesReportController::class, 'generateMonthlyReport'])->name('sales-reports.monthly');
+    Route::post('/sales-reports/yearly', [SalesReportController::class, 'generateYearlyReport'])->name('sales-reports.yearly');
+
+    Route::delete('/sales-reports/{id}', [SalesReportController::class, 'destroy'])->name('sales-reports.destroy');
 });
 
 // Legacy dashboard route for backward compatibility
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');;
 
-// Route::middleware(['auth'])->group(function () {
-//     // Online Orders
-//     Route::get('/checkout', [OnlineOrderController::class, 'checkout'])->name('checkout');
-//     Route::post('/online-orders', [OnlineOrderController::class, 'store'])->name('online-orders.store');
-//     Route::get('/order-confirmation/{order}', [OnlineOrderController::class, 'confirmation'])->name('order.confirmation');
-//     Route::get('/my-orders', [OnlineOrderController::class, 'index'])->name('online-orders.index');
-//     Route::get('/my-orders/{onlineOrder}', [OnlineOrderController::class, 'show'])->name('online-orders.show');
-// });
-
-
+// Public checkout routes (accessible by all authenticated users)
 Route::middleware(['auth'])->group(function () {
+    // Checkout Process
     Route::get('/checkout', [CheckoutOrderController::class, 'checkout'])->name('checkout');
     Route::post('/online-orders', [CheckoutOrderController::class, 'store'])->name('online-orders.store');
     Route::get('/order-confirmation/{order}', [CheckoutOrderController::class, 'confirmation'])->name('order.confirmation');
-    Route::get('/my-orders', [CheckoutOrderController::class, 'index'])->name('online-orders.index');
-    Route::get('/my-orders/{onlineOrder}', [CheckoutOrderController::class, 'show'])->name('online-orders.show');
+
+    // Customer-facing routes (website) - for customers only
+    Route::get('/my-orders', [CheckoutOrderController::class, 'myOrders'])->name('my-orders.index');
+    Route::get('/my-orders/{order}', [CheckoutOrderController::class, 'myOrderShow'])->name('my-orders.show');
 });
 
-
-// Route::get('/checkout', [OnlineOrderController::class, 'checkout'])->name('checkout');
-// Route::post('/online-orders', [OnlineOrderController::class, 'store'])->name('online-orders.store');
-// Route::get('/order-confirmation/{order}', [OnlineOrderController::class, 'confirmation'])->name('order.confirmation');
-// Route::get('/order-confirmation', [OnlineOrderController::class, 'confirmationPage'])->name('order.confirmation.page');
-// Route::get('/online-orders', [OnlineOrderController::class, 'index'])->name('online-orders.index');
-// Route::get('/online-orders/{onlineOrder}', [OnlineOrderController::class, 'show'])->name('online-orders.show');
+// Admin system routes (only for admin, manager, cashier)
+Route::middleware(['auth:admin,manager,cashier'])->group(function () {
+    Route::get('/online-orders', [CheckoutOrderController::class, 'index'])->name('online-orders.index');
+    Route::get('/online-orders/{onlineOrder}', [CheckoutOrderController::class, 'show'])->name('online-orders.show');
+});

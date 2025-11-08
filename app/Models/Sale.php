@@ -7,21 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Order extends Model
+class Sale extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'customer_id',
-        'employee_id', // Added employee_id
+        'employee_id',
         'subtotal',
+        'item_discounts',
+        'additional_discount',
         'tax_amount',
         'total',
         'status',
         'payment_status'
     ];
 
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
@@ -31,9 +33,9 @@ class Order extends Model
         return $this->belongsTo(Employee::class);
     }
 
-    public function items()
+    public function items(): HasMany
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(SaleItem::class);
     }
 
     public function payments(): HasMany

@@ -13,21 +13,17 @@ return new class extends Migration
     {
         Schema::create('sales_reports', function (Blueprint $table) {
             $table->id();
-            $table->string('period_type'); // daily, weekly, monthly, yearly
-            $table->string('period_value'); // 2024-01, 2024-W1, 2024, etc.
+            $table->enum('report_type', ['weekly', 'monthly', 'yearly']);
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('total_orders');
-            $table->decimal('total_subtotal', 15, 2);
-            $table->decimal('total_tax_amount', 15, 2);
-            $table->decimal('total_discount_amount', 15, 2)->default(0);
-            $table->decimal('total_revenue', 15, 2);
+            $table->decimal('total_sales', 15, 2);
+            $table->decimal('total_tax', 15, 2);
             $table->decimal('average_order_value', 15, 2);
+            $table->json('report_data')->nullable(); // For storing detailed breakdown
             $table->timestamps();
 
-            // Index for quick lookups
-            $table->index(['period_type', 'period_value']);
-            $table->index(['start_date', 'end_date']);
+            $table->index(['report_type', 'start_date']);
         });
     }
 

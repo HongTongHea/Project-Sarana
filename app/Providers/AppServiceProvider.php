@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Providers\HybridUserProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Services\SalesReportService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(SalesReportService::class, function ($app) {
+            return new SalesReportService();
+        });
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\Sale;
+use App\Models\SaleItem;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Accessory;
@@ -13,7 +13,7 @@ use App\Models\Employee;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class SaleController extends Controller
 {
     public function index()
     {
@@ -22,9 +22,9 @@ class OrderController extends Controller
         $employees = Employee::where('status', 1)->get();
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
-        $orders = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->get();
+        $sales = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->get();
 
-        return view('orders.index', compact('orders', 'customers', 'employees', 'products', 'accessories', 'categories'));
+        return view('sales.index', compact('sales', 'customers', 'employees', 'products', 'accessories', 'categories'));
     }
 
     public function create()
@@ -34,7 +34,7 @@ class OrderController extends Controller
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
         $categories = Category::all();
-        return view('orders.create', compact('customers', 'employees', 'products', 'accessories', 'categories'));
+        return view('sales.create', compact('customers', 'employees', 'products', 'accessories', 'categories'));
     }
 
     public function store(Request $request)
@@ -104,8 +104,8 @@ class OrderController extends Controller
         $additionalDiscount = $validatedData['additional_discount'] ?? 0;
         $total = $discountedSubtotal + $taxAmount - $additionalDiscount;
 
-        // Create order
-        $order = Order::create([
+        // Create sale
+        $sale = Sale::create([
             'customer_id' => $validatedData['customer_id'],
             'employee_id' => $validatedData['employee_id'],
             'subtotal' => $subtotal,
@@ -117,7 +117,7 @@ class OrderController extends Controller
             'payment_status' => 'paid',
         ]);
 
-        // Add order items and update stock
+        // Add sale items and update stock
         foreach ($items as $index => $item) {
             $itemType = $itemTypes[$index];
             $model = $itemType === 'product' ? Product::class : Accessory::class;
@@ -128,9 +128,9 @@ class OrderController extends Controller
                 ? $item['price'] * (1 - $discountPercentage / 100)
                 : $item['price'];
 
-            // Create order item
-            OrderItem::create([
-                'order_id' => $order->id,
+            // Create sale item
+            SaleItem::create([
+                'sale_id' => $sale->id,
                 'item_type' => $model,
                 'item_id' => $item['item_id'],
                 'quantity' => $item['quantity'],
@@ -140,7 +140,7 @@ class OrderController extends Controller
                 'total' => $item['quantity'] * $discountedPrice,
             ]);
 
-            // Update stock using Stock model (FIXED)
+            // Update stock using Stock model
             Stock::updateStock(
                 $model,
                 $item['item_id'],
@@ -154,7 +154,7 @@ class OrderController extends Controller
             $paymentData = json_decode($request->input('payment_data'), true);
 
             $payment = Payment::create([
-                'order_id' => $order->id,
+                'sale_id' => $sale->id,
                 'method' => $paymentData['method'],
                 'amount' => $paymentData['amount'],
                 'received_amount' => $paymentData['received'] ?? null,
@@ -164,35 +164,35 @@ class OrderController extends Controller
             ]);
         }
 
-        return redirect()->route('orders.invoice', $order->id)
-            ->with('success', 'Order created successfully.');
+        return redirect()->route('sales.invoice', $sale->id)
+            ->with('success', 'Sale created successfully.');
     }
 
     public function show($id)
     {
-        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->findOrFail($id);
-        return view('orders.show', compact('order'));
+        $sale = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->findOrFail($id);
+        return view('sales.show', compact('sale'));
     }
 
     public function invoice($id)
     {
-        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
+        $sale = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
             ->findOrFail($id);
 
-        return view('orders.invoice', compact('order'));
+        return view('sales.invoice', compact('sale'));
     }
 
     public function printInvoice($id)
     {
-        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
+        $sale = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
             ->findOrFail($id);
 
-        return view('orders.print-invoice', compact('order'));
+        return view('sales.print-invoice', compact('sale'));
     }
 
     public function edit($id)
     {
-        $order = Order::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
+        $sale = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
             ->findOrFail($id);
 
         $customers = Customer::all();
@@ -201,12 +201,12 @@ class OrderController extends Controller
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
         $categories = Category::all();
 
-        return view('orders.edit', compact('order', 'customers', 'employees', 'products', 'accessories', 'categories'));
+        return view('sales.edit', compact('sale', 'customers', 'employees', 'products', 'accessories', 'categories'));
     }
 
     public function update(Request $request, $id)
     {
-        $order = Order::with(['items'])->findOrFail($id);
+        $sale = Sale::with(['items'])->findOrFail($id);
 
         // Decode new items
         $items = json_decode($request->input('items'), true);
@@ -223,8 +223,8 @@ class OrderController extends Controller
             'additional_discount' => 'nullable|numeric|min:0',
         ]);
 
-        // Restore stock from old items before re-calculation (FIXED)
-        foreach ($order->items as $oldItem) {
+        // Restore stock from old items before re-calculation
+        foreach ($sale->items as $oldItem) {
             $model = $oldItem->item_type;
             Stock::updateStock(
                 $model,
@@ -232,7 +232,7 @@ class OrderController extends Controller
                 $oldItem->quantity, // Positive to restore
                 'return'
             );
-            $oldItem->delete(); // remove old order items
+            $oldItem->delete(); // remove old sale items
         }
 
         // Calculate new totals
@@ -268,8 +268,8 @@ class OrderController extends Controller
         $additionalDiscount = $validatedData['additional_discount'] ?? 0;
         $total = $discountedSubtotal + $taxAmount - $additionalDiscount;
 
-        // Update order
-        $order->update([
+        // Update sale
+        $sale->update([
             'customer_id' => $validatedData['customer_id'],
             'employee_id' => $validatedData['employee_id'],
             'subtotal' => $subtotal,
@@ -279,7 +279,7 @@ class OrderController extends Controller
             'total' => $total,
         ]);
 
-        // Add new items and update stock (FIXED)
+        // Add new items and update stock
         foreach ($items as $index => $item) {
             $itemType = $itemTypes[$index];
             $model = $itemType === 'product' ? Product::class : Accessory::class;
@@ -290,8 +290,8 @@ class OrderController extends Controller
                 ? $item['price'] * (1 - $discountPercentage / 100)
                 : $item['price'];
 
-            OrderItem::create([
-                'order_id' => $order->id,
+            SaleItem::create([
+                'sale_id' => $sale->id,
                 'item_type' => $model,
                 'item_id' => $item['item_id'],
                 'quantity' => $item['quantity'],
@@ -301,7 +301,7 @@ class OrderController extends Controller
                 'total' => $item['quantity'] * $discountedPrice,
             ]);
 
-            // Update stock using Stock model (FIXED)
+            // Update stock using Stock model
             Stock::updateStock(
                 $model,
                 $item['item_id'],
@@ -310,8 +310,8 @@ class OrderController extends Controller
             );
         }
 
-        return redirect()->route('orders.invoice', $order->id)
-            ->with('success', 'Order updated successfully.');
+        return redirect()->route('sales.invoice', $sale->id)
+            ->with('success', 'Sale updated successfully.');
     }
 
     public function searchProducts(Request $request)
@@ -339,15 +339,15 @@ class OrderController extends Controller
 
     public function destroy($id)
     {
-        $order = Order::findOrFail($id);
+        $sale = Sale::findOrFail($id);
 
-        // Add any validation logic here (e.g., only allow deletion of certain status orders)
-        if ($order->status !== 'pending') {
-            return redirect()->back()->with('error', 'Only pending orders can be deleted.');
+        // Add any validation logic here (e.g., only allow deletion of certain status sales)
+        if ($sale->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending sales can be deleted.');
         }
 
-        // Restore stock before deletion (FIXED)
-        foreach ($order->items as $item) {
+        // Restore stock before deletion
+        foreach ($sale->items as $item) {
             $model = $item->item_type;
             Stock::updateStock(
                 $model,
@@ -358,12 +358,12 @@ class OrderController extends Controller
         }
 
         // Delete related records
-        $order->items()->delete();
-        $order->payments()->delete();
+        $sale->items()->delete();
+        $sale->payments()->delete();
 
-        // Delete the order
-        $order->delete();
+        // Delete the sale
+        $sale->delete();
 
-        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
+        return redirect()->route('sales.index')->with('success', 'Sale deleted successfully.');
     }
 }

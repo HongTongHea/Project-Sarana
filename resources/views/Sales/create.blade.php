@@ -1,6 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Angkor Tech Computer | Edit Sale & Transaction')
+
+@section('title', 'Angkor Tech Computer | Sale & Transaction')
+
 @section('content')
+
     <div class="container-fluid mt-3">
         @if ($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -15,26 +18,27 @@
             </div>
         @endif
         <div class="row">
-            <!-- Order Column -->
+
+            <!-- Sale Column -->
             <div class="col-md-8 mb-3">
-                <div class="card rounded-0 h-100 ">
-                    <!-- Added h-100 here -->
+                <div class="card rounded-0 h-100"> <!-- Added h-100 here -->
                     <div class="card-body d-flex flex-column" style="height: 100vh;">
                         <!-- Changed to flex column layout -->
-                        <form action="{{ route('orders.update', $order->id) }}" method="POST" id="order-form"
-                            class="d-flex flex-column h-100">
-                            <!-- Added flex classes -->
-                            @csrf @method('PUT')
+                        <form action="{{ route('sales.store') }}" method="POST" id="sale-form"
+                            class="d-flex flex-column h-100"> <!-- Added flex classes -->
+                            @csrf
                             <div class="d-flex justify-content-start align-items-center">
                                 <button type="button" class="btn btn-primary mb-3 btn-sm me-2" data-bs-toggle="modal"
                                     data-bs-target="#createModal">
                                     <i class="fas fa-plus"></i> New Customer
                                 </button>
-                                <a href="{{ route('orders.index') }}" class="btn btn-primary mb-3 btn-sm">
+                                <a href="{{ route('sales.index') }}" class="btn btn-primary mb-3 btn-sm">
                                     <i class="fas fa-list"></i> Sale History</a>
                             </div>
+
                             <div class="row">
                                 <div class="form-group mb-3 col-md-6">
+
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">
                                             <i class="fa-solid fa-users-line"></i>
@@ -42,8 +46,7 @@
                                         <select name="customer_id" id="customer_id" class="form-control" required>
                                             <option value="">Enter Customer Name</option>
                                             @foreach ($customers as $customer)
-                                                <option value="{{ $customer->id }}"
-                                                    {{ $order->customer_id == $customer->id ? 'selected' : '' }}>
+                                                <option value="{{ $customer->id }}">
                                                     {{ $customer->name }}
                                                 </option>
                                             @endforeach
@@ -58,8 +61,7 @@
                                         <select name="employee_id" id="employee_id" class="form-control" required>
                                             <option value="">Select Sales Person</option>
                                             @foreach ($employees as $employee)
-                                                <option value="{{ $employee->id }}"
-                                                    {{ $order->employee_id == $employee->id ? 'selected' : '' }}>
+                                                <option value="{{ $employee->id }}">
                                                     {{ $employee->name }} ({{ $employee->position }})
                                                 </option>
                                             @endforeach
@@ -67,9 +69,10 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
                                 <!-- Made table scrollable -->
-                                <table class="table table-bordered" id="order-items">
+                                <table class="table table-bordered" id="sale-items">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Item</th>
@@ -86,61 +89,58 @@
                                     </tbody>
                                 </table>
                             </div>
+
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="additional_discount">Additional Discount ($)</label>
                                         <input type="number" name="additional_discount" id="additional_discount"
-                                            class="form-control" value="{{ $order->additional_discount }}" min="0"
-                                            step="0.01">
+                                            class="form-control" value="0" min="0" step="0.01">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tax_rate">Tax Rate (%)</label>
                                         <input type="number" name="tax_rate" id="tax_rate" class="form-control"
-                                            value="{{ ($order->tax_amount / ($order->subtotal - $order->item_discounts)) * 100 }}"
-                                            min="0" max="100" step="0.01">
+                                            value="12" min="0" max="100" step="0.01">
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card mt-3">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <strong>Subtotal:</strong>
-                                        <span id="subtotal">${{ number_format($order->subtotal, 2) }}</span>
+                                        <span id="subtotal">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <strong>Item Discounts:</strong>
-                                        <span id="item-discounts">${{ number_format($order->item_discounts, 2) }}</span>
+                                        <span id="item-discounts">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <strong>Additional Discount:</strong>
-                                        <span
-                                            id="additional-discount-display">${{ number_format($order->additional_discount, 2) }}</span>
+                                        <span id="additional-discount-display">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <strong>Tax:</strong>
-                                        <span id="tax">${{ number_format($order->tax_amount, 2) }}</span>
+                                        <span id="tax">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <strong>Total:</strong>
-                                        <span id="total"
-                                            class="font-weight-bold">${{ number_format($order->total, 2) }}</span>
+                                        <span id="total" class="font-weight-bold">$0.00</span>
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="items" id="order-items-data" value="[]">
-                            <input type="hidden" name="item_types" id="order-item-types" value="[]">
-                            <div class="mt-auto pt-3">
-                                <!-- Added mt-auto to push to bottom -->
+
+                            <input type="hidden" name="items" id="sale-items-data" value="[]">
+                            <input type="hidden" name="item_types" id="sale-item-types" value="[]">
+
+                            <div class="mt-auto pt-3"> <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-danger me-2" id="clear-order">Clear
-                                        Order</button>
-                                    <button type="button" class="btn btn-primary" id="submit-order">Update
-                                        Order</button>
-                                    @include('Orders.payment')
-                                    <!-- Include payment modal -->
+                                    <button type="button" class="btn btn-danger me-2" id="clear-sale">Clear
+                                        Sale</button>
+                                    <button type="button" class="btn btn-primary" id="submit-sale">Check Out</button>
+                                    @include('Sales.payment') <!-- Include payment modal -->
                                 </div>
                             </div>
                         </form>
@@ -161,6 +161,7 @@
                                     data-bs-target="#accessories" type="button" role="tab">Accessories</button>
                             </li>
                         </ul>
+
                         <div class="tab-content mt-3" id="productTabsContent">
                             <div class="tab-pane fade show active" id="products" role="tabpanel">
                                 <div class="form-group mb-3">
@@ -172,6 +173,7 @@
                                             placeholder="Search products...">
                                     </div>
                                 </div>
+
                                 <div id="product-results" class="list-group"
                                     style="max-height: 800px; overflow-y: auto;">
                                     @foreach ($products as $product)
@@ -211,6 +213,7 @@
                                                                 ${{ number_format($product->price * (1 - $product->discount_percentage / 100), 2) }}</span>
                                                         @endif
                                                     </span>
+
                                                     <br>
                                                     <div class="badge bg-info mt-1 stock-badge"
                                                         data-product-id="{{ $product->id }}">
@@ -222,6 +225,7 @@
                                     @endforeach
                                 </div>
                             </div>
+
                             <div class="tab-pane fade" id="accessories" role="tabpanel">
                                 <div class="form-group mb-3">
                                     <div class="input-group">
@@ -232,6 +236,7 @@
                                             placeholder="Search accessories...">
                                     </div>
                                 </div>
+
                                 <div id="accessory-results" class="list-group"
                                     style="max-height: 800px; overflow-y: auto;">
                                     @foreach ($accessories as $accessory)
@@ -284,52 +289,12 @@
             </div>
         </div>
     </div>
-    @include('Customers.create')
-    <!-- Include customer creation modal -->
+    @include('Customers.create') <!-- Include customer creation modal -->
 
     <script>
-        let orderItems = [];
+        let saleItems = [];
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize with existing order items
-            @foreach ($order->items as $item)
-                @php
-                    $itemType = $item->item_type === 'App\Models\Product' ? 'product' : 'accessory';
-
-                    // Check if item still exists in database
-                    if ($itemType === 'product') {
-                        $itemModel = $item->product;
-                    } else {
-                        $itemModel = $item->accessory;
-                    }
-
-                    // Use data from order item (not current database)
-                    $itemName = addslashes($item->name);
-                    $stockNo = $item->stock_no ?? '';
-                    $stockQuantity = $itemModel ? $itemModel->stock_quantity : 0;
-                    $pictureUrl = $itemModel && $itemModel->picture_url ? asset('storage/' . $itemModel->picture_url) : '';
-                    $discountPercentage = $item->discount_percentage;
-                @endphp
-
-                orderItems.push({
-                    type: '{{ $itemType }}',
-                    item_id: {{ $item->item_id }},
-                    name: '{{ $itemName }}',
-                    stock_no: '{{ $stockNo }}',
-                    price: {{ $item->price }},
-                    discountedPrice: {{ $item->discounted_price }},
-                    discountPercentage: {{ $discountPercentage }},
-                    quantity: {{ $item->quantity }},
-                    total: {{ $item->total }},
-                    currentStock: {{ $stockQuantity }},
-                    originalStock: {{ $stockQuantity + $item->quantity }},
-                    picture_url: '{{ $pictureUrl }}',
-                    existsInDb: {{ $itemModel ? 'true' : 'false' }}
-                });
-            @endforeach
-
-            updateOrderTable();
-            calculateTotals();
-
             // Product search functionality
             $('#product-search').on('input', function() {
                 const search = $(this).val().toLowerCase(); // convert input to string
@@ -350,16 +315,17 @@
                 });
             });
 
-            $('#submit-order').on('click', function(e) {
+            $('#submit-sale').on('click', function(e) {
                 e.preventDefault();
-                if (orderItems.length === 0) {
-                    alert('Please add items to the order');
+
+                if (saleItems.length === 0) {
+                    alert('Please add items to the sale');
                     return;
                 }
 
                 // Validate stock before proceeding
                 let outOfStockItems = [];
-                orderItems.forEach(item => {
+                saleItems.forEach(item => {
                     if (item.quantity > item.originalStock) {
                         outOfStockItems.push(
                             `${item.name} (Requested: ${item.quantity}, Available: ${item.originalStock})`
@@ -380,9 +346,10 @@
                 $('#paymentModal').modal('show');
             });
 
-            // Add product/accessory to order
+            // Add product/accessory to sale
             $(document).on('click', '.product-item, .accessory-item', function(e) {
                 e.preventDefault();
+
                 const itemType = $(this).data('type');
                 const itemId = $(this).data('id');
                 const itemName = $(this).data('name');
@@ -394,12 +361,15 @@
                 const discountPercentage = parseFloat($(this).data('discount-percentage')) || 0;
 
                 // Calculate discounted price
-                const discountedPrice = discountPercentage > 0 ? itemPrice * (1 - discountPercentage /
-                    100) : itemPrice;
+                const discountedPrice = discountPercentage > 0 ?
+                    itemPrice * (1 - discountPercentage / 100) :
+                    itemPrice;
 
-                // Check if item already exists in order
-                const existingItem = orderItems.find(item => item.item_id === itemId && item.type ===
-                    itemType);
+                // Check if item already exists in sale
+                const existingItem = saleItems.find(item =>
+                    item.item_id === itemId && item.type === itemType
+                );
+
                 const requestedQty = existingItem ? existingItem.quantity + 1 : 1;
 
                 // Check stock availability
@@ -413,7 +383,7 @@
                     existingItem.total = existingItem.quantity * existingItem.discountedPrice;
                     existingItem.currentStock = currentStock - 1;
                 } else {
-                    orderItems.push({
+                    saleItems.push({
                         type: itemType,
                         item_id: itemId,
                         name: itemName,
@@ -431,7 +401,7 @@
 
                 // Update stock display
                 updateStockDisplay(itemType, itemId, currentStock - 1);
-                updateOrderTable();
+                updateSaleTable();
                 calculateTotals();
             });
 
@@ -441,89 +411,90 @@
                     `.stock-badge[data-accessory-id="${itemId}"]`;
 
                 const badge = $(selector);
-                if (badge.length) {
-                    badge.text(`Stock: ${newStock}`);
+                badge.text(`Stock: ${newStock}`);
 
-                    // Update the data attribute for the item
-                    const itemElement = itemType === 'product' ?
-                        $(`.product-item[data-id="${itemId}"]`) :
-                        $(`.accessory-item[data-id="${itemId}"]`);
+                // Update the data attribute for the item
+                const itemElement = itemType === 'product' ?
+                    $(`.product-item[data-id="${itemId}"]`) :
+                    $(`.accessory-item[data-id="${itemId}"]`);
 
-                    itemElement.data('stock-quantity', newStock);
+                itemElement.data('stock-quantity', newStock);
 
-                    // Update any existing items in the order table
-                    orderItems.forEach(item => {
-                        if (item.item_id === itemId && item.type === itemType) {
-                            item.currentStock = newStock;
-                        }
-                    });
-
-                    // Change badge color if stock is low
-                    if (newStock <= 0) {
-                        badge.removeClass('bg-info').addClass('bg-danger');
-                        itemElement.addClass('disabled').css('opacity', '0.6');
-                    } else if (newStock <= 5) {
-                        badge.removeClass('bg-info').addClass('bg-warning');
-                        itemElement.removeClass('disabled').css('opacity', '1');
-                    } else {
-                        badge.removeClass('bg-danger bg-warning').addClass('bg-info');
-                        itemElement.removeClass('disabled').css('opacity', '1');
+                // Update any existing items in the sale table
+                saleItems.forEach(item => {
+                    if (item.item_id === itemId && item.type === itemType) {
+                        item.currentStock = newStock;
                     }
+                });
+
+                // Change badge color if stock is low
+                if (newStock <= 0) {
+                    badge.removeClass('bg-info').addClass('bg-danger');
+                    itemElement.addClass('disabled').css('opacity', '0.6');
+                } else if (newStock <= 5) {
+                    badge.removeClass('bg-info').addClass('bg-warning');
+                    itemElement.removeClass('disabled').css('opacity', '1');
+                } else {
+                    badge.removeClass('bg-danger bg-warning').addClass('bg-info');
+                    itemElement.removeClass('disabled').css('opacity', '1');
                 }
             }
 
-            function updateOrderTable() {
-                const tbody = $('#order-items tbody');
+            function updateSaleTable() {
+                const tbody = $('#sale-items tbody');
                 tbody.empty();
 
-                orderItems.forEach((item, index) => {
+                saleItems.forEach((item, index) => {
                     const imageHtml = item.picture_url ?
                         `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">` :
                         `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f0f0f0;">
-                <i class="fas fa-image text-muted"></i>
-            </div>`;
+                        <i class="fas fa-image text-muted"></i>
+                    </div>`;
 
                     const discountBadge = item.discountPercentage > 0 ?
-                        `<span class="badge bg-success">${item.discountPercentage}% off</span>` : '';
+                        `<span class="badge bg-success">${item.discountPercentage}% off</span>` :
+                        '';
 
                     const row = `
-        <tr>
-            <td>
-                <div class="d-flex align-items-center">
-                    ${imageHtml}
-                    <div>
-                        ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
-                        <div>${item.name} ${discountBadge}</div>
-                        <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
-                    </div>
-                </div>
-            </td>
-            <td>
-                $${item.price.toFixed(2)}
-                ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
-            </td>
-            <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
-            <td>
-                <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
-            </td>
-            <td>$${item.total.toFixed(2)}</td>
-            <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
-            <td>
-                <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        </tr>`;
-
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                ${imageHtml}
+                                <div>
+                                    ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
+                                    <div>${item.name} ${discountBadge}</div>
+                                    <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            $${item.price.toFixed(2)}
+                            ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
+                        </td>
+                        <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
+                        <td>
+                            <input type="number" class="form-control qty-input" 
+                                   data-index="${index}" 
+                                   value="${item.quantity}" min="1" max="${item.originalStock}">
+                        </td>
+                        <td>$${item.total.toFixed(2)}</td>
+                        <td>${item.currentStock}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger remove-item" 
+                                    data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
                     tbody.append(row);
                 });
-
 
                 // Add event listeners for quantity changes
                 $('.qty-input').on('change', function() {
                     const index = $(this).data('index');
                     const newQty = parseInt($(this).val());
-                    const item = orderItems[index];
+                    const item = saleItems[index];
 
                     if (newQty < 1) {
                         $(this).val(1);
@@ -535,7 +506,6 @@
 
                     // Check if we have enough stock
                     const availableStock = item.currentStock + item.quantity; // Original available stock
-
                     if (newQty > availableStock) {
                         alert(`Cannot order more than available stock: ${availableStock}`);
                         $(this).val(availableStock);
@@ -549,29 +519,31 @@
 
                     // Update stock display in product/accessory list
                     updateStockDisplay(item.type, item.item_id, item.currentStock);
-                    updateOrderTable();
+
+                    updateSaleTable();
                     calculateTotals();
                 });
 
                 // Add event listeners for remove buttons
                 $('.remove-item').on('click', function() {
                     const index = $(this).data('index');
-                    const item = orderItems[index];
+                    const item = saleItems[index];
 
                     // Restore stock quantity in product/accessory list
                     const restoredStock = item.currentStock + item.quantity;
                     updateStockDisplay(item.type, item.item_id, restoredStock);
 
-                    orderItems.splice(index, 1);
-                    updateOrderTable();
+                    saleItems.splice(index, 1);
+                    updateSaleTable();
                     calculateTotals();
                 });
             }
 
             function calculateTotals() {
-                const subtotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const discountedSubtotal = orderItems.reduce((sum, item) => sum + item.total, 0);
+                const subtotal = saleItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const discountedSubtotal = saleItems.reduce((sum, item) => sum + item.total, 0);
                 const itemDiscounts = subtotal - discountedSubtotal;
+
                 const taxRate = parseFloat($('#tax_rate').val()) || 0;
                 const additionalDiscount = parseFloat($('#additional_discount').val()) || 0;
                 const tax = discountedSubtotal * (taxRate / 100);
@@ -583,8 +555,8 @@
                 $('#tax').text(`$${tax.toFixed(2)}`);
                 $('#total').text(`$${total.toFixed(2)}`);
 
-                // Update hidden fields with order data
-                const formattedItems = orderItems.map(item => ({
+                // Update hidden fields with sale data
+                const formattedItems = saleItems.map(item => ({
                     type: item.type,
                     item_id: item.item_id,
                     quantity: item.quantity,
@@ -592,20 +564,20 @@
                     discount_percentage: item.discountPercentage
                 }));
 
-                $('#order-items-data').val(JSON.stringify(formattedItems));
-                $('#order-item-types').val(JSON.stringify(orderItems.map(item => item.type)));
+                $('#sale-items-data').val(JSON.stringify(formattedItems));
+                $('#sale-item-types').val(JSON.stringify(saleItems.map(item => item.type)));
             }
 
-            // Clear order
-            $('#clear-order').on('click', function() {
+            // Clear sale
+            $('#clear-sale').on('click', function() {
                 // Restore all stock quantities
-                orderItems.forEach(item => {
+                saleItems.forEach(item => {
                     const restoredStock = item.currentStock + item.quantity;
                     updateStockDisplay(item.type, item.item_id, restoredStock);
                 });
 
-                orderItems = [];
-                updateOrderTable();
+                saleItems = [];
+                updateSaleTable();
                 calculateTotals();
                 $('#customer_id').val('');
                 $('#additional_discount').val(0);
@@ -616,34 +588,37 @@
             $('#tax_rate, #additional_discount').on('change', calculateTotals);
 
             // Handle payment form submission
+            // Handle payment form submission
             $('#payment-form').on('submit', function(e) {
                 e.preventDefault();
 
                 const formData = {
                     customer_id: $('#customer_id').val(),
-                    items: $('#order-items-data').val(),
+                    employee_id: $('#employee_id').val(), // Add this line
+                    items: $('#sale-items-data').val(),
                     subtotal: parseFloat($('#subtotal').text().replace('$', '')),
+                    // Remove item_discounts from here
+                    additional_discount: parseFloat($('#additional-discount-display').text().replace(
+                        '$', '')),
                     tax_amount: parseFloat($('#tax').text().replace('$', '')),
-                    discount_amount: parseFloat($('#additional-discount-display').text().replace('$',
-                        '')),
                     total: parseFloat($('#total').text().replace('$', '')),
+                    status: 'completed', // Add status
                     payment_status: $('input[name="payment_method"]:checked').val(),
                 };
 
                 $.ajax({
-                    url: '{{ route('orders.update', $order->id) }}',
+                    url: '{{ route('sales.store') }}',
                     method: 'POST',
                     data: formData,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        'X-HTTP-Method-Override': 'PUT'
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
                         if (response.success) {
                             $('#paymentModal').modal('hide');
-                            alert('Order updated successfully!');
-                            // Redirect to order details or invoice
-                            window.location.href = '{{ route('orders.invoice', $order->id) }}';
+                            alert('Sale created successfully!');
+                            // Reset the form
+                            $('#clear-sale').click();
                         } else {
                             alert('Error: ' + response.message);
                         }

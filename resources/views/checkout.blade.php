@@ -292,10 +292,6 @@
                             <span>Shipping:</span>
                             <span id="checkoutShipping">$0.00</span>
                         </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Tax:</span>
-                            <span id="checkoutTax">$0.00</span>
-                        </div>
                         <hr>
                         <div class="d-flex justify-content-between fw-bold fs-5">
                             <span>Total:</span>
@@ -399,7 +395,6 @@
             const subtotalElement = document.getElementById('checkoutSubtotal');
             const discountElement = document.getElementById('checkoutDiscount');
             const shippingElement = document.getElementById('checkoutShipping');
-            const taxElement = document.getElementById('checkoutTax');
             const totalElement = document.getElementById('checkoutTotal');
 
             if (cart.length === 0) {
@@ -452,17 +447,15 @@
                 `;
             });
 
-            // Calculate totals
+            // Calculate totals (without tax)
             const shipping = 10.00; // Fixed shipping cost
-            const tax = (subtotal - totalDiscount) * 0.08; // 8% tax
-            const total = (subtotal - totalDiscount) + shipping + tax;
+            const total = (subtotal - totalDiscount) + shipping;
 
             // Update the UI
             orderItemsContainer.innerHTML = html;
             subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
             discountElement.textContent = `-$${totalDiscount.toFixed(2)}`;
             shippingElement.textContent = `$${shipping.toFixed(2)}`;
-            taxElement.textContent = `$${tax.toFixed(2)}`;
             totalElement.textContent = `$${total.toFixed(2)}`;
 
             // Store the calculated totals for the order submission
@@ -470,7 +463,6 @@
                 subtotal: subtotal,
                 discount_amount: totalDiscount,
                 shipping_amount: shipping,
-                tax_amount: tax,
                 total_amount: total,
                 items: cart
             };
@@ -541,7 +533,6 @@
                 subtotal: window.cartTotals?.subtotal || 0,
                 discount_amount: window.cartTotals?.discount_amount || 0,
                 shipping_amount: window.cartTotals?.shipping_amount || 0,
-                tax_amount: window.cartTotals?.tax_amount || 0,
                 total_amount: window.cartTotals?.total_amount || 0
             };
 
@@ -574,7 +565,6 @@
             formData.append('subtotal', orderData.subtotal);
             formData.append('discount_amount', orderData.discount_amount);
             formData.append('shipping_amount', orderData.shipping_amount);
-            formData.append('tax_amount', orderData.tax_amount);
             formData.append('total_amount', orderData.total_amount);
             formData.append('_token', '{{ csrf_token() }}');
 

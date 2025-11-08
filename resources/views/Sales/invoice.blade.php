@@ -18,10 +18,10 @@
 
                 <div class="d-flex justify-content-between border-top border-bottom py-2 mb-3">
                     <div class="text-start">
-                        <p class="mb-0"><strong>Invoice #</strong> {{ $order->id }}</p>
+                        <p class="mb-0"><strong>Invoice #</strong> {{ $sale->id }}</p>
                     </div>
                     <div class="text-end">
-                        <p class="mb-0"><strong>Date:</strong> {{ $order->created_at->format('d M Y') }}</p>
+                        <p class="mb-0"><strong>Date:</strong> {{ $sale->created_at->format('d M Y') }}</p>
                     </div>
                 </div>
             </div>
@@ -31,27 +31,27 @@
                 <div class="col-md-6">
                     <h5 class="card-title  border-bottom pb-2"><strong>Customer Information</strong></h5>
                     <div class="row">
-                        <div><strong>Name: {{ $order->customer->name ?? 'N/A' }}</strong></div>
+                        <div><strong>Name: {{ $sale->customer->name ?? 'N/A' }}</strong></div>
                     </div>
                     <div class="row">
-                        <div><strong>Email: {{ $order->customer->email ?? 'N/A' }}</strong></div>
+                        <div><strong>Email: {{ $sale->customer->email ?? 'N/A' }}</strong></div>
                     </div>
                     <div class="row">
-                        <div><strong>Phone: {{ $order->customer->phone ?? 'N/A' }}</strong></div>
+                        <div><strong>Phone: {{ $sale->customer->phone ?? 'N/A' }}</strong></div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h5 class="card-title border-bottom pb-2"><strong>Order Summary</strong></h5>
+                    <h5 class="card-title border-bottom pb-2"><strong>Sale Summary</strong></h5>
                     <div class="row">
-                        <div><strong>Items: {{ $order->items->count() ?? 0 }}</strong></div>
+                        <div><strong>Items: {{ $sale->items->count() ?? 0 }}</strong></div>
                     </div>
                     <div class="row">
                         <div class="col-6"><strong>Status: <span class="badge bg-success">Completed</span></strong></div>
                     </div>
                     <div class="row">
                         <div class="col-6"><strong>Payment:
-                                @if ($order->payments->isNotEmpty())
-                                    @php $paymentMethod = $order->payments->first()->method; @endphp
+                                @if ($sale->payments->isNotEmpty())
+                                    @php $paymentMethod = $sale->payments->first()->method; @endphp
                                     @switch($paymentMethod)
                                         @case('cash')
                                             Cash
@@ -76,10 +76,10 @@
                 </div>
             </div>
 
-            <!-- Ordered Items -->
+            <!-- Sale Items -->
             <div class="mb-4">
-                <h5 class="mb-3"><strong>Order Details</strong></h5>
-                @if ($order->items && $order->items->count())
+                <h5 class="mb-3"><strong>Sale Details</strong></h5>
+                @if ($sale->items && $sale->items->count())
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead class="table-light">
@@ -93,7 +93,7 @@
                             </thead>
                             <tbody>
                                 @php $total = 0; @endphp
-                                @foreach ($order->items as $index => $item)
+                                @foreach ($sale->items as $index => $item)
                                     @php
                                         $name = 'No Item';
                                         if ($item->item_type === 'App\Models\Product' && $item->item) {
@@ -116,7 +116,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="alert alert-info">No items in this order.</div>
+                    <div class="alert alert-info">No items in this sale.</div>
                 @endif
             </div>
 
@@ -127,15 +127,23 @@
                         <tbody>
                             <tr>
                                 <td><strong>Subtotal</strong></td>
-                                <td class="text-end">${{ number_format($total ?? 0, 2) }}</td>
+                                <td class="text-end">${{ number_format($sale->subtotal, 2) }}</td>
                             </tr>
                             <tr>
-                                <td><strong>Tax (0%)</strong></td>
-                                <td class="text-end">$0.00</td>
+                                <td><strong>Item Discounts</strong></td>
+                                <td class="text-end">${{ number_format($sale->item_discounts, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Additional Discount</strong></td>
+                                <td class="text-end">${{ number_format($sale->additional_discount, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tax</strong></td>
+                                <td class="text-end">${{ number_format($sale->tax_amount, 2) }}</td>
                             </tr>
                             <tr class="table-active">
                                 <td><strong>Total Amount</strong></td>
-                                <td class="text-end"><strong>${{ number_format($total ?? 0, 2) }}</strong></td>
+                                <td class="text-end"><strong>${{ number_format($sale->total, 2) }}</strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -153,7 +161,7 @@
                 <button onclick="printInvoice()" class="btn btn-primary px-4">
                     <i class="fas fa-print me-2"></i> Print Invoice
                 </button>
-                <a href="{{ route('orders.index')}}" class="btn btn-outline-secondary px-4 ms-2">
+                <a href="{{ route('sales.index') }}" class="btn btn-outline-secondary px-4 ms-2">
                     <i class="fas fa-arrow-left me-2"></i> Back
                 </a>
             </div>

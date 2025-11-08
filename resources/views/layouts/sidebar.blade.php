@@ -48,7 +48,8 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('products.index') }}">
-                        <i class="fa-brands fa-product-hunt"></i>
+                        {{-- <i class="fa-brands fa-product-hunt"></i> --}}
+                        <i class="fa-solid fa-bag-shopping"></i>
                         <p>Products</p>
                     </a>
                 </li>
@@ -125,20 +126,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#base2">
+                    <a href="{{ route('online-orders.index') }}">
                         <i class="fa-solid fa-cart-shopping"></i>
+                        <p>Orders</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#base2">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
                         <p>Sales & Transactions</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="base2">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="{{ route('orders.create') }}">
+                                <a href="{{ route('sales.create') }}">
                                     <span class="sub-item">Sale</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('orders.index') }}">
+                                <a href="{{ route('sales.index') }}">
                                     <span class="sub-item">Sale History</span>
                                 </a>
                             </li>

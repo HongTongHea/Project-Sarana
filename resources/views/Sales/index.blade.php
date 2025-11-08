@@ -11,14 +11,14 @@
                 </div>
             </div>
             <div class="card-body">
-                <a href="{{ route('orders.create') }}" class="btn btn-primary btn-sm mb-3 ml-3">
+                <a href="{{ route('sales.create') }}" class="btn btn-primary btn-sm mb-3 ml-3">
                     <i class="fas fa-plus"></i> New Sale
                 </a>
                 <div class="table-responsive">
                     <table id="DataTable" class="table mt-3 table-border table-hover">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Order #</th>
+                                <th>Sale #</th>
                                 <th>Customer</th>
                                 <th>Date</th>
                                 <th>Product</th>
@@ -33,13 +33,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($orders as $order)
+                            @foreach ($sales as $sale)
                                 <tr>
-                                    <td>ORD-{{ str_pad($order->id, 2, '0', STR_PAD_LEFT) }}</td>
-                                    <td>{{ $order->customer->name }}</td>
-                                    <td>{{ $order->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}</td>
+                                    <td>SALE-{{ str_pad($sale->id, 2, '0', STR_PAD_LEFT) }}</td>
+                                    <td>{{ $sale->customer->name }}</td>
+                                    <td>{{ $sale->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}</td>
                                     <td>
-                                        @foreach ($order->items as $item)
+                                        @foreach ($sale->items as $item)
                                             @if ($item->item)
                                                 @if ($item->item_type === 'App\Models\Product')
                                                     {{ $item->item->name }}&nbsp; <br>
@@ -51,38 +51,38 @@
                                             @endif
                                         @endforeach
                                     </td>
-                                    <td>{{ $order->items->count() }}</td>
-                                    <td>${{ number_format($order->subtotal, 2) }}</td>
-                                    <td>${{ number_format($order->tax_amount, 2) }}</td>
-                                    <td>${{ number_format($order->discount_amount, 2) }}</td>
-                                    <td>${{ number_format($order->total, 2) }}</td>
+                                    <td>{{ $sale->items->count() }}</td>
+                                    <td>${{ number_format($sale->subtotal, 2) }}</td>
+                                    <td>${{ number_format($sale->tax_amount, 2) }}</td>
+                                    <td>${{ number_format($sale->additional_discount, 2) }}</td>
+                                    <td>${{ number_format($sale->total, 2) }}</td>
                                     <td>
                                         <span
-                                            class="badge {{ $order->status == 'completed' ? 'bg-success' : 'bg-warning' }}">
-                                            {{ ucfirst($order->status) }}
+                                            class="badge {{ $sale->status == 'completed' ? 'bg-success' : 'bg-warning' }}">
+                                            {{ ucfirst($sale->status) }}
                                         </span>
                                     </td>
                                     <td class="text-nowrap text-center">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                                id="dropdownMenuButton{{ $order->id }}" data-bs-toggle="dropdown"
+                                                id="dropdownMenuButton{{ $sale->id }}" data-bs-toggle="dropdown"
                                                 aria-expanded="false" title="Actions">
                                                 <i class="fas fa-ellipsis-v fs-6"></i>
                                             </button>
                                             <ul class="dropdown-menu"
-                                                aria-labelledby="dropdownMenuButton{{ $order->id }}">
-                                                <!-- View Order -->
+                                                aria-labelledby="dropdownMenuButton{{ $sale->id }}">
+                                                <!-- View Sale -->
                                                 <li>
-                                                    <a href="{{ route('orders.show', $order->id) }}"
+                                                    <a href="{{ route('sales.show', $sale->id) }}"
                                                         class="dropdown-item d-flex align-items-center">
                                                         <i class="fa-solid fa-file-invoice me-2 text-info"></i>
                                                         View Invoice
                                                     </a>
                                                 </li>
 
-                                                <!-- Edit Order -->
+                                                <!-- Edit Sale -->
                                                 <li>
-                                                    <a href="{{ route('orders.edit', $order->id) }}"
+                                                    <a href="{{ route('sales.edit', $sale->id) }}"
                                                         class="dropdown-item d-flex align-items-center">
                                                         <i class="fas fa-edit me-2 text-warning"></i>
                                                         Edit
@@ -92,7 +92,7 @@
                                                 <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal{{ $order->id }}">
+                                                        data-bs-target="#deleteModal{{ $sale->id }}">
                                                         <i class="fa-solid fa-trash me-2 text-danger"></i>
                                                         Delete
                                                     </button>
@@ -103,7 +103,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                @include('Orders.delete', ['order' => $order])
+                                @include('Sales.delete', ['sale' => $sale])
                             @endforeach
                         </tbody>
                     </table>

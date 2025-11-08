@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained();
+            $table->foreignId('sale_id')->constrained();
             $table->string('method'); // cash, aba, credit_card
             $table->decimal('amount', 10, 2);
             $table->decimal('received_amount', 10, 2)->nullable(); // For cash

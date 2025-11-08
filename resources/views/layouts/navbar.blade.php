@@ -35,7 +35,7 @@
                 </div>
             </nav>
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                <i id="fullscreen-toggle" class="fa-solid fa-expand fs-5"></i>
+                <i id="fullscreen-toggle" class="fa-solid fa-expand fs-5" style="cursor: pointer;"></i>
                 <li class="nav-item topbar-user dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                         aria-expanded="false">

@@ -1,7 +1,35 @@
 @extends('website.app')
 @section('content')
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4" style="margin-top: 6rem;">
+        <!-- Brand Scrolling Section -->
+        <div class="brand-section mt-2 mb-2">
+            <div class="container">
+                <h2 class="mb-0 text-center fw-bold text-black mt-5">Our Branding</h2> 
+                <p class="text-muted text-center">Discover a wide range of top-notch products from our trusted brands</p>
+                <div class="brand-scroller">
+                    <div class="brand-track">
+                        <img src="{{ asset('assets/logo/dell-logo.png') }}" alt="Dell", style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/asus-logo.png') }}" alt="Asus">
+                        <img src="{{ asset('assets/logo/apple-logo.png') }}" alt="Apple">
+                        <img src="{{ asset('assets/logo/samsung-logo.png') }}" alt="Samsung">
+                        <img src="{{ asset('assets/logo/lenovo-logo.png') }}" alt="Lenovo"
+                            style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/acer-logo.png') }}" alt="Acer">
+
+                        <!-- Duplicate for seamless loop -->
+                        <img src="{{ asset('assets/logo/dell-logo.png') }}" alt="Dell"
+                            style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/asus-logo.png') }}" alt="Asus">
+                        <img src="{{ asset('assets/logo/apple-logo.png') }}" alt="Apple">
+                        <img src="{{ asset('assets/logo/samsung-logo.png') }}" alt="Samsung">
+                        <img src="{{ asset('assets/logo/lenovo-logo.png') }}" alt="Lenovo"
+                            style="height: 30px; width: auto;">
+                        <img src="{{ asset('assets/logo/acer-logo.png') }}" alt="Acer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="row mb-2">
                 <div class="col text-start">
                     <h3 id="products-title" class="mb-0 text-start fw-bold text-black">All Products & Accessories

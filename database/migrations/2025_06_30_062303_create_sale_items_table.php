@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('sale_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sale_id')->constrained()->onDelete('cascade');
 
             // Polymorphic relationship fields
             $table->string('item_type'); // Will store 'App\Models\Product' or 'App\Models\Accessory'
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('sale_items');
     }
 };

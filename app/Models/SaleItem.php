@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model
+class SaleItem extends Model
 {
     protected $fillable = [
-        'order_id',
+        'sale_id',
         'item_type', // For polymorphic relationship (Product or Accessory)
         'item_id',   // For polymorphic relationship (product_id or accessory_id)
         'quantity',
@@ -34,8 +34,8 @@ class OrderItem extends Model
         return $this->morphTo('item', Accessory::class, 'item_type', 'item_id');
     }
 
-    public function order()
+    public function sale()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Sale::class);
     }
 }

@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Customer;
-use App\Models\Order;
+use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Category;
 use App\Models\Accessory;
+use App\Models\Supplier;
+use App\Models\PurchaseOrder;
+use App\Models\OnlineOrder;
 
 class DashboardController extends Controller
 {
@@ -55,7 +58,7 @@ class DashboardController extends Controller
         // Admin sees all data
         $users = User::all();
         $customers = Customer::all();
-        $orders = Order::all();
+        $sales = Sale::all();
         $products = Product::all();
         $stocks = Stock::all();
         $categories = Category::all();
@@ -66,7 +69,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact(
             'users',
             'customers',
-            'orders',
+            'sales',
             'products',
             'stocks',
             'categories',
@@ -92,7 +95,7 @@ class DashboardController extends Controller
         // Manager sees limited data (example: exclude sensitive user info)
         $users = User::all();
         $customers = Customer::all();
-        $orders = Order::all();
+        $sales = Sale::all();
         $products = Product::all();
         $stocks = Stock::all();
         $categories = Category::all();
@@ -103,7 +106,7 @@ class DashboardController extends Controller
         return view('manager.dashboard', compact(
             'users',
             'customers',
-            'orders',
+            'sales',
             'products',
             'stocks',
             'categories',
@@ -124,11 +127,11 @@ class DashboardController extends Controller
         }
 
         // Cashier sees only what they need (orders and products)
-        $orders = Order::where('status', 'pending')->get();
+        $sales = Sale::where('status', 'pending')->get();
         $products = Product::where('stock', '>', 0)->get();
 
         return view('cashier.dashboard', compact(
-            'orders',
+            'sales',
             'products'
         ));
     }

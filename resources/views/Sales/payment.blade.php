@@ -67,12 +67,12 @@
 
 <script>
     $(document).ready(function() {
-        // Show payment modal on submit-order click
-        $('#submit-order').on('click', function(e) {
+        // Show payment modal on submit-sale click
+        $('#submit-sale').on('click', function(e) {
             e.preventDefault();
 
-            if (typeof orderItems === 'undefined' || orderItems.length === 0) {
-                alert('Please add at least one item to the order');
+            if (typeof saleItems === 'undefined' || saleItems.length === 0) {
+                alert('Please add at least one item to the sale');
                 return;
             }
 
@@ -139,12 +139,12 @@
             }
 
             // Add hidden input to form
-            $('#order-form').append(
+            $('#sale-form').append(
                 `<input type="hidden" name="payment_data" value='${JSON.stringify(paymentData)}'>`
             );
 
             // Submit the form
-            $('#order-form').off('submit').submit();
+            $('#sale-form').off('submit').submit();
         });
     });
 </script>

@@ -49,7 +49,7 @@ class OnlineOrder extends Model
      */
     public function items(): HasMany
     {
-        return $this->hasMany(OnlineOrderItem::class);
+        return $this->hasMany(OnlineOrderItem::class, 'online_order_id');
     }
 
     /**

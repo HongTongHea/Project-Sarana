@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\SalesReportService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class SalesReportController extends Controller
 {
@@ -16,90 +19,123 @@ class SalesReportController extends Controller
 
     public function index(Request $request)
     {
-        $period = $request->get('period', 'monthly');
-        $year = $request->get('year', date('Y'));
-        $startDate = $request->get('start_date');
-        $endDate = $request->get('end_date');
+        $type = $request->get('type');
+        $reports = $this->salesReportService->getReports($type);
 
-        $reports = $this->salesReportService->getStoredReports($period, $startDate, $endDate);
-
-        return view('sales-reports.index', [
-            'reports' => $reports,
-            'period' => $period,
-            'year' => $year,
-            'startDate' => $startDate,
-            'endDate' => $endDate
-        ]);
+        return view('sales-reports.index', compact('reports'));
     }
 
-    public function generate(Request $request)
+    public function generateWeeklyReport(Request $request): JsonResponse
     {
         $request->validate([
-            'period' => 'required|in:daily,weekly,monthly,yearly',
             'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date'
+            'end_date' => 'nullable|date|after:start_date',
         ]);
 
-        $report = $this->salesReportService->generateAndStoreReport(
-            $request->period,
-            $request->start_date,
-            $request->end_date
-        );
+        Log::info('Generate Weekly Report Request:', $request->all());
 
-        return redirect()->route('sales-reports.index')
-            ->with('success', 'Report generated successfully!')
-            ->withInput();
+        try {
+            $report = $this->salesReportService->generateWeeklyReport(
+                $request->start_date ? Carbon::parse($request->start_date) : null,
+                $request->end_date ? Carbon::parse($request->end_date) : null
+            );
+
+            Log::info('Weekly Report Generated:', ['id' => $report->id]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Weekly report generated successfully',
+                'report' => $report
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to generate weekly report:', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate weekly report: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function generateWeekly(Request $request)
+    public function generateMonthlyReport(Request $request): JsonResponse
     {
-        $year = $request->get('year', date('Y'));
-        $this->salesReportService->generateWeeklyReports($year);
-
-        return redirect()->route('sales-reports.index', ['period' => 'weekly', 'year' => $year])
-            ->with('success', 'Weekly reports generated successfully!');
-    }
-
-    public function generateMonthly(Request $request)
-    {
-        $year = $request->get('year', date('Y'));
-        $this->salesReportService->generateMonthlyReports($year);
-
-        return redirect()->route('sales-reports.index', ['period' => 'monthly', 'year' => $year])
-            ->with('success', 'Monthly reports generated successfully!');
-    }
-
-    public function generateYearly(Request $request)
-    {
-        $yearsBack = $request->get('years_back', 5);
-        $this->salesReportService->generateYearlyReports($yearsBack);
-
-        return redirect()->route('sales-reports.index', ['period' => 'yearly'])
-            ->with('success', 'Yearly reports generated successfully!');
-    }
-
-    public function topSellingItems(Request $request)
-    {
-        $period = $request->get('period', 'monthly');
-        $limit = $request->get('limit', 10);
-        $items = $this->salesReportService->getTopSellingItems($period, $limit);
-
-        return view('sales-reports.top-items', [
-            'items' => $items,
-            'period' => $period
+        $request->validate([
+            'year' => 'nullable|integer|min:2020|max:2030',
+            'month' => 'nullable|integer|min:1|max:12',
         ]);
+
+        try {
+            $report = $this->salesReportService->generateMonthlyReport(
+                $request->year,
+                $request->month
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Monthly report generated successfully',
+                'report' => $report
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate monthly report: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function regenerateAll()
+    public function generateYearlyReport(Request $request): JsonResponse
     {
-        $count = $this->salesReportService->regenerateAllReports();
+        $request->validate([
+            'year' => 'nullable|integer|min:2020|max:2030',
+        ]);
 
-        return redirect()->route('sales-reports.index')
-            ->with('success', "All reports regenerated successfully! Total: {$count} reports");
+        try {
+            $report = $this->salesReportService->generateYearlyReport($request->year);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Yearly report generated successfully',
+                'report' => $report
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate yearly report: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function create()
+    public function show($id)
     {
-        return view('sales-reports.create');
+        $report = \App\Models\SalesReport::findOrFail($id);
+
+        return view('sales-reports.show', compact('report'));
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        try {
+            $this->salesReportService->deleteReport($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Report deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete report: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getReportData($id): JsonResponse
+    {
+        $report = \App\Models\SalesReport::findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'report' => $report
+        ]);
     }
 }

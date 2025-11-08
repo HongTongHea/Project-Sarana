@@ -46,7 +46,6 @@ class CheckoutOrderController extends Controller
             'subtotal' => 'required|numeric|min:0',
             'discount_amount' => 'required|numeric|min:0',
             'shipping_amount' => 'required|numeric|min:0',
-            'tax_amount' => 'required|numeric|min:0',
             'total_amount' => 'required|numeric|min:0.01',
         ], [
             'shipping_address.min' => 'Please provide a complete shipping address',
@@ -81,7 +80,6 @@ class CheckoutOrderController extends Controller
                 'customer_email' => $request->customer_email,
                 'customer_phone' => $request->customer_phone ?? '',
                 'subtotal' => $request->subtotal,
-                'tax_amount' => $request->tax_amount,
                 'discount_amount' => $request->discount_amount,
                 'shipping_amount' => $request->shipping_amount,
                 'total_amount' => $request->total_amount,
@@ -143,9 +141,21 @@ class CheckoutOrderController extends Controller
     }
 
     /**
-     * Get user's online orders
+     * ADMIN: Get all online orders (System View)
      */
     public function index()
+    {
+        $onlineOrders = OnlineOrder::with(['user', 'items']) // Make sure 'items' is included
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('online-orders.index', compact('onlineOrders'));
+    }
+
+    /**
+     * CUSTOMER: Get customer's orders (Website View)
+     */
+    public function myOrders()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -156,19 +166,28 @@ class CheckoutOrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('online-orders.index', compact('orders'));
+        return view('website.my-orders', compact('orders'));
     }
 
     /**
-     * Show specific online order
+     * ADMIN: Show specific online order (System View)
      */
     public function show(OnlineOrder $onlineOrder)
     {
-        if ($onlineOrder->user_id !== Auth::id()) {
+        $onlineOrder->load(['user', 'items']);
+        return view('online-orders.show', compact('onlineOrder'));
+    }
+
+    /**
+     * CUSTOMER: Show specific order for customer (Website View)
+     */
+    public function myOrderShow(OnlineOrder $order)
+    {
+        if ($order->user_id !== Auth::id()) {
             abort(403, 'Unauthorized access to this order.');
         }
 
-        $onlineOrder->load('items');
-        return view('online-orders.show', compact('onlineOrder'));
+        $order->load('items');
+        return view('website.my-order-detail', compact('order'));
     }
 }

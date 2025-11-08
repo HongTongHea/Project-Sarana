@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained();
             $table->unsignedBigInteger('employee_id');
             $table->decimal('subtotal', 10, 2)->default(0);
+            $table->decimal('item_discounts', 10, 2)->default(0); // Add this line
             $table->decimal('tax_amount', 10, 2)->default(0);
             $table->decimal('discount_amount', 10, 2)->default(0);
             $table->decimal('total', 10, 2)->default(0);
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('sales');
     }
 };

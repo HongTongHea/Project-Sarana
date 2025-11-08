@@ -18,6 +18,7 @@
 
     body {
         font-family: 'Poppins', sans-serif;
+        overflow-x  : hidden;
     }
 
     .product-card {
@@ -243,7 +244,6 @@
     }
 
     .rog-buy-button {
-        background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
         color: white;
         border: none;
         border-radius: 8px;
@@ -255,7 +255,6 @@
     }
 
     .rog-buy-button:hover {
-        background: linear-gradient(135deg, #ff6348 0%, #ff4757 100%);
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
         color: white;
@@ -531,81 +530,6 @@
         }
     }
 
-    /* our new product */
-    /* .new-products-banner {
-        background-color: #f1f1f1;
-        padding: 20px;
-        border-radius: 8px;
-    } */
-
-    .custom-banner-slider {
-        position: relative;
-        max-width: 1100px;
-        margin: 0 auto;
-        overflow: hidden;
-        border-radius: 12px;
-        background: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .custom-slides-wrapper {
-        overflow: hidden;
-    }
-
-    .custom-slides {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
-
-    .custom-slide {
-        min-width: 100%;
-    }
-
-    .custom-slide img {
-        width: 100%;
-        max-height: 400px;
-        object-fit: cover;
-        border-radius: 12px;
-    }
-
-    .custom-next-btn {
-        position: absolute;
-        top: 50%;
-        width: 50px;
-        height: 50px;
-        transform: translateY(-50%);
-        background-color: rgba(181, 175, 175, 0.5);
-        color: #fff;
-        border: none;
-        font-size: 24px;
-        padding: 5px 12px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    .custom-prev-btn:hover,
-    .custom-next-btn:hover {
-        background-color: rgba(0, 0, 0, 0.7);
-    }
-
-    /* .custom-prev-btn {
-        left: 20px;
-    } */
-
-    .custom-next-btn {
-        right: 20px;
-    }
-
-    @media (max-width: 768px) {
-
-        .custom-prev-btn,
-        .custom-next-btn {
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
-        }
-    }
 </style>
 
 <body>

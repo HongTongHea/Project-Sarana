@@ -23,6 +23,7 @@
                                 <th>Supplier</th>
                                 <th>Order Date</th>
                                 <th>Items</th>
+                                <th>Qty</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
                                 <th>Created By</th>
@@ -49,6 +50,10 @@
                                             @endif
                                         @endforeach
                                     </td>
+                                    <td>
+                                        {{ $order->items->sum('quantity') }}
+                                    </td>
+
                                     <td>${{ number_format($order->total_amount, 2) }}</td>
                                     <td>
                                         <span class="badge bg-{{ $order->status == 'pending' ? 'warning' : 'success' }}">
