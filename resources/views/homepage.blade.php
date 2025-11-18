@@ -134,7 +134,7 @@
                         <div class="rog-banner-wrapper">
                             <div class="rog-main-banner">
                                 <img src="{{ asset('assets/victor/asus_rog.jpg') }}" alt="acer predator"
-                                    style="height: 360px">
+                                    style="height: 370px">
                             </div>
                         </div>
                     </div>
@@ -170,16 +170,7 @@
                                         <div class="rog-product-stars">
                                             ★★★★★
                                         </div>
-
-                                        <button class="rog-buy-button add-to-cart-btn btn btn-primary" data-id="{{ $product->id }}"
-                                            data-name="{{ $product->name }}" data-price="{{ $product->price }}"
-                                            data-discount="{{ $product->discount_percentage }}"
-                                            data-img="{{ asset('storage/' . $product->picture_url) }}"
-                                            data-stock="{{ $product->stock_quantity }}"
-                                            data-barcode="{{ $product->barcode }}"
-                                            data-description="{{ $product->description }}">
-                                            Buy Now
-                                        </button>
+                                        <a href="{{ route('allproductpage.index') }}" class="rog-buy-button add-to-cart-btn btn btn-primary">Buy Now</a>
                                     </div>
                                 </div>
                             @endforeach

@@ -6,7 +6,6 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="mb-0 fw-semibold text-uppercase">Sales Reports</h4>
-
                 </div>
             </div>
             <div class="card-body">
@@ -21,8 +20,6 @@
                         <option value="monthly">Monthly</option>
                         <option value="yearly">Yearly</option>
                     </select>
-                    <!-- Generate Report Button -->
-
                 </div>
                 <div class="table-responsive">
                     <table id="DataTableReports" class="table mt-3 table-border table-hover">
@@ -246,13 +243,9 @@
             </div>
         </div>
     </div>
-
-
-
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     $(document).ready(function() {
         // Initialize DataTable

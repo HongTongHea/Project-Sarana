@@ -23,6 +23,11 @@ class Sale extends Model
         'payment_status'
     ];
 
+    public function getTotalPriceAttribute()
+    {
+        return $this->total;
+    }
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

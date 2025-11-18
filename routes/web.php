@@ -21,8 +21,8 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CheckoutOrderController;
-use App\Models\OnlineOrder;
-use App\Models\Sale;
+use App\Http\Controllers\ContactController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ use App\Models\Sale;
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
 Route::get('/allproductpage', [AllproductpageController::class, 'index'])->name('allproductpage.index');
-Route::get('/search', [SearchController::class, 'search']);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -120,11 +120,9 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::get('/sales-reports', [SalesReportController::class, 'index'])->name('sales-reports.index');
     Route::get('/sales-reports/{id}', [SalesReportController::class, 'show'])->name('sales-reports.show');
     Route::get('/sales-reports/{id}/data', [SalesReportController::class, 'getReportData'])->name('sales-reports.data');
-
     Route::post('/sales-reports/weekly', [SalesReportController::class, 'generateWeeklyReport'])->name('sales-reports.weekly');
     Route::post('/sales-reports/monthly', [SalesReportController::class, 'generateMonthlyReport'])->name('sales-reports.monthly');
     Route::post('/sales-reports/yearly', [SalesReportController::class, 'generateYearlyReport'])->name('sales-reports.yearly');
-
     Route::delete('/sales-reports/{id}', [SalesReportController::class, 'destroy'])->name('sales-reports.destroy');
 });
 
@@ -147,4 +145,19 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::get('/online-orders', [CheckoutOrderController::class, 'index'])->name('online-orders.index');
     Route::get('/online-orders/{onlineOrder}', [CheckoutOrderController::class, 'show'])->name('online-orders.show');
+});
+
+// Contact routes
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Admin contact management routes
+Route::middleware(['auth:admin,manager,cashier'])->group(function () {
+    Route::get('/admin/contacts', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('/admin/contacts/{contact}', [ContactController::class, 'show'])->name('contact.show');
+    Route::delete('/admin/contacts/{contact}', [ContactController::class, 'destroy'])->name('contact.destroy');
+
+    // Contact notification routes
+    Route::get('/contacts/unread-count', [ContactController::class, 'unreadCount'])->name('contact.unread-count');
+    Route::post('/admin/contacts/{contact}/mark-read', [ContactController::class, 'markAsRead'])->name('contact.mark-read');
 });

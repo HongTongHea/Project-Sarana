@@ -28,4 +28,37 @@ class SalesReport extends Model
         'start_date' => 'date',
         'end_date' => 'date',
     ];
+
+    /**
+     * Get formatted report period
+     */
+    public function getPeriodAttribute()
+    {
+        return $this->start_date->format('M j, Y') . ' - ' . $this->end_date->format('M j, Y');
+    }
+
+    /**
+     * Get report type in readable format
+     */
+    public function getReportTypeFormattedAttribute()
+    {
+        return ucfirst($this->report_type);
+    }
+
+    /**
+     * Scope queries by report type
+     */
+    public function scopeType($query, $type)
+    {
+        return $query->where('report_type', $type);
+    }
+
+    /**
+     * Scope queries by date range
+     */
+    public function scopeDateRange($query, $startDate, $endDate)
+    {
+        return $query->where('start_date', '>=', $startDate)
+            ->where('end_date', '<=', $endDate);
+    }
 }

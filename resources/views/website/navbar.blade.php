@@ -20,7 +20,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Pc</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a></li>
             </ul>
 
             {{-- Cart + Auth (Desktop) --}}

@@ -74,7 +74,7 @@
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#showModal{{ $order->id }}">
                                                         <i class="fa-solid fa-circle-info me-2 text-info"></i>
-                                                        View Details
+                                                        Order Details
                                                     </button>
                                                 </li>
                                                 @if (Auth::user()->role === 'admin')

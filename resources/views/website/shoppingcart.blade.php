@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header bg-light border-bottom">
                 <h5 class="modal-title fw-bold" id="addToCartModalLabel">
-                    <i class="bi bi-bag-plus me-2"></i>Product Details
+                    Product Details
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -99,7 +99,6 @@
         </div>
     </div>
 </div>
-
 <!-- JS Fix -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {

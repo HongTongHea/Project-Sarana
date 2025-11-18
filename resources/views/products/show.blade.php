@@ -4,8 +4,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="d-flex justify-content-center align-items-center">
-                        {{-- <img src="{{ asset('assets/img/logostore2.png') }}" alt="" class="navbar-brand"
-                            height="30"> --}}
                         <h6 class="mt-4 ms-1 text-black" style="font-weight: 700; font-size: 16px">
                             <span class="text-dark text-uppercase">Product Detail</span>
                         </h6>

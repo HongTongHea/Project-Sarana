@@ -9,7 +9,9 @@
                     {{-- <span class="fw-bold">AngkorTech Computer</span> --}}
                 </a>
                 <p class="small">
-                    Your trusted source for laptops, accessories, <br>and tech gear in Cambodia.
+                    {{-- Welcom to Angkor Tech Computer Your trusted source for <br>laptops, accessories, and tech gear in Cambodia. --}}
+                    Welcome to Angkor Tech Computer — your trusted technology partner in Cambodia for quality laptops,
+                    accessories, and digital solutions.
                 </p>
                 <p class="text-start text-uppercase fw-bold">We accept payment:</p>
                 <div class="d-flex  align-items-center">
@@ -38,33 +40,28 @@
             <!-- Social Media -->
             <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4">
                 <h5 class="text-uppercase fw-bold mb-3">Contact Us</h5>
-                <p class="small mb-1"><i class="fas fa-map-marker-alt me-2"></i>123 Tech Street, Phnom Penh, Cambodia
+                <p class="small mb-1"><i class="fas fa-map-marker-alt me-2"></i>Mondul 1 Village, Sangkat Svay Dangkum,
+                    Siem Reap City
                 </p>
-                <p class="small mb-1"><i class="fas fa-phone me-2"></i>+855 123 456 789</p>
+                <p class="small mb-1"><i class="fas fa-phone me-2"></i>Tel: 063 6666 777</p>
                 <p class="small mb-3"><i class="fas fa-envelope me-2"></i>info@angkortechcomputer.com</p>
 
                 <h5 class="text-uppercase fw-bold mb-3">Follow Us</h5>
                 <div>
-                    <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fab fa-telegram fa-lg"></i></a>
-                    <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                    <a href="#" class="text-white me-3"> <i class="fa-brands fa-facebook fa-2x" style="color: #3b5998;"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-telegram fa-2x " style="color: #1da1f2;"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-instagram fa-2x " style="color: #e1306c;"></i></a>
+                    <a href="#" class="text-white me-3"> <i class="fa-brands fa-youtube fa-2x" style="color: #0077b5;"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-tiktok fa-2x " style="color: #e1306c;"></i></a>
                 </div>
             </div>
         </div>
-        {{-- <div class="d-flex justify-content-center align-items-center">
-            <p class="text-center m-2">We accept payment:</p>
-            <img src="assets/img/KH-QR.png" alt="" style="height: 50px; width: auto;">
-            <img src="assets/img/ABA.png" alt="" style="height: 65px; width: auto;">
-            <img src="assets/img/mastercard.png" alt="" style="height: 50px; width: auto;">
-
-        </div> --}}
 
         <hr class="border-secondary">
         <!-- Copyright -->
         <div class="text-center">
             <p class="mb-0 small">
-                &copy; {{ date('Y') }} <strong>AngkorTech Computer</strong>. All rights reserved.
+                &copy; {{ date('Y') }} <strong>Angkor Tech Computer</strong>. All rights reserved.
             </p>
         </div>
     </div>

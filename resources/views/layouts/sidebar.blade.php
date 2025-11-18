@@ -2,7 +2,7 @@
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo text-primary ">
+            <a href="{{ route('admin.dashboard') }}" class="logo text-primary ">
                 <img src="{{ asset('assets/img/logo-Company1.png') }}" alt="" class="navbar-brand" height="50">
             </a>
             <div class="nav-toggle">
@@ -42,7 +42,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('accessories.index') }}">
-                        <i class="fa-solid fa-keyboard"></i>
+                        <i class="bi bi-basket2-fill"></i>
                         <p>Accessories</p>
                     </a>
                 </li>
@@ -158,27 +158,12 @@
                         <p>Reports</p>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#base1">
-                        <i class="fa-solid fa-chart-column"></i>
-                        <p>Reports</p>
-                        <span class="caret"></span>
+                  <li class="nav-item">
+                    <a href="{{ route('contact.index') }}">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        <p>Contact</p>
                     </a>
-                    <div class="collapse" id="base1">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('sales.index') }}">
-                                    <span class="sub-item">Sale Data</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('sales_reports.index') }}">
-                                    <span class="sub-item">Sale Report</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> --}}
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}">
                         <i class="fa-solid fa-user-gear"></i>

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Order;
 use App\Models\Sale;
 use App\Models\SalesReport;
 use Carbon\Carbon;
@@ -79,18 +78,18 @@ class SalesReportService
             ->groupBy('date')
             ->get();
 
-        // Get top products
-        $topProducts = DB::table('order_items')
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->whereBetween('orders.created_at', [$startDate, $endDate])
-            ->where('orders.status', 'completed')
+        // Get top products - UPDATED: Changed from order_items to sale_items
+        $topProducts = DB::table('sale_items')
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->whereBetween('sales.created_at', [$startDate, $endDate])
+            ->where('sales.status', 'completed')
             ->select([
-                'order_items.item_type',
-                'order_items.item_id',
-                DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_quantity'),
-                DB::raw('COALESCE(SUM(order_items.total), 0) as total_revenue'),
+                'sale_items.item_type',
+                'sale_items.item_id',
+                DB::raw('COALESCE(SUM(sale_items.quantity), 0) as total_quantity'),
+                DB::raw('COALESCE(SUM(sale_items.total), 0) as total_revenue'),
             ])
-            ->groupBy('order_items.item_type', 'order_items.item_id')
+            ->groupBy('sale_items.item_type', 'sale_items.item_id')
             ->orderByDesc('total_revenue')
             ->limit(10)
             ->get();

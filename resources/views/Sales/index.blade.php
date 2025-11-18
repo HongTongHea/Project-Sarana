@@ -18,7 +18,7 @@
                     <table id="DataTable" class="table mt-3 table-border table-hover">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Sale #</th>
+                                <th>Sale</th>
                                 <th>Customer</th>
                                 <th>Date</th>
                                 <th>Product</th>
@@ -73,11 +73,18 @@
                                                 aria-labelledby="dropdownMenuButton{{ $sale->id }}">
                                                 <!-- View Sale -->
                                                 <li>
-                                                    <a href="{{ route('sales.show', $sale->id) }}"
+                                                    {{-- <a href="{{ route('sales.show', $sale->id) }}"
                                                         class="dropdown-item d-flex align-items-center">
                                                         <i class="fa-solid fa-file-invoice me-2 text-info"></i>
                                                         View Invoice
-                                                    </a>
+                                                    </a> --}}
+
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#invoiceModal{{ $sale->id }}">
+                                                        <i class="fa-solid fa-receipt me-2 text-info"></i>
+                                                        View Invoice
+                                                    </button>
                                                 </li>
 
                                                 <!-- Edit Sale -->
@@ -97,16 +104,17 @@
                                                         Delete
                                                     </button>
                                                 </li>
-
-
                                             </ul>
                                         </div>
                                     </td>
                                 </tr>
-                                @include('Sales.delete', ['sale' => $sale])
                             @endforeach
                         </tbody>
                     </table>
+                    @foreach ($sales as $sale)
+                        @include('Sales.show ', ['sale' => $sale])
+                        @include('Sales.delete', ['sale' => $sale])
+                    @endforeach
                 </div>
             </div>
         </div>

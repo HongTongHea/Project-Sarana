@@ -135,10 +135,10 @@
                             <div class="mt-auto pt-3">
                                 <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-danger me-2" id="clear-sale">Clear
-                                        Sale</button>
-                                    <button type="button" class="btn btn-primary" id="submit-sale">Update
-                                        Sale</button>
+                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale">Clear
+                                        </button>
+                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale">Update
+                                       </button>
                                     @include('Sales.payment')
                                     <!-- Include payment modal -->
                                 </div>
