@@ -31,8 +31,8 @@ class SaleController extends Controller
     {
         $customers = Customer::all();
         $employees = Employee::where('status', 1)->get();
-        $products = Product::where('stock_quantity', '>', 0)->get();
-        $accessories = Accessory::where('stock_quantity', '>', 0)->get();
+        $products = \App\Models\Product::where('stock_quantity', '>', 0)->paginate(12);
+        $accessories = \App\Models\Accessory::where('stock_quantity', '>', 0)->paginate(12);
         $categories = Category::all();
         return view('sales.create', compact('customers', 'employees', 'products', 'accessories', 'categories'));
     }
@@ -197,8 +197,8 @@ class SaleController extends Controller
 
         $customers = Customer::all();
         $employees = Employee::where('status', 1)->get();
-        $products = Product::where('stock_quantity', '>', 0)->get();
-        $accessories = Accessory::where('stock_quantity', '>', 0)->get();
+        $products = Product::where('stock_quantity', '>', 0)->paginate(12);
+        $accessories = Accessory::where('stock_quantity', '>', 0)->paginate(12);
         $categories = Category::all();
 
         return view('sales.edit', compact('sale', 'customers', 'employees', 'products', 'accessories', 'categories'));

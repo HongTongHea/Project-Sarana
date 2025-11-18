@@ -143,7 +143,7 @@
                     <div class="col-lg-4 mb-4 mb-lg-0">
                         <div class="rog-products-wrapper">
                             @foreach ($products as $index => $product)
-                                @if ($index >= 5)
+                                @if ($index >= 2)
                                     @break
                                 @endif
                                 <div class="rog-product-item">
@@ -170,7 +170,8 @@
                                         <div class="rog-product-stars">
                                             ★★★★★
                                         </div>
-                                        <a href="{{ route('allproductpage.index') }}" class="rog-buy-button add-to-cart-btn btn btn-primary">Buy Now</a>
+                                        <a href="{{ route('allproductpage.index') }}"
+                                            class="rog-buy-button add-to-cart-btn btn btn-primary">Buy Now</a>
                                     </div>
                                 </div>
                             @endforeach

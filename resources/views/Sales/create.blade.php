@@ -20,7 +20,7 @@
         <div class="row">
 
             <!-- Sale Column -->
-            <div class="col-md-8 mb-3">
+            <div class="col-md-7 mb-3">
                 <div class="card rounded-0 h-100"> <!-- Added h-100 here -->
                     <div class="card-body d-flex flex-column" style="height: 100vh;">
                         <!-- Changed to flex column layout -->
@@ -138,8 +138,9 @@
                             <div class="mt-auto pt-3"> <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale">Clear
-                                      </button>
-                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale">Check Out</button>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale">Check
+                                        Out</button>
                                     @include('Sales.payment') <!-- Include payment modal -->
                                 </div>
                             </div>
@@ -148,7 +149,7 @@
                 </div>
             </div>
             <!-- Product Selection Column -->
-            <div class="col-md-4 mb-3">
+            <div class="col-md-5 mb-3">
                 <div class="card rounded-0 h-100">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="productTabs" role="tablist">
@@ -174,56 +175,97 @@
                                     </div>
                                 </div>
 
-                                <div id="product-results" class="list-group"
-                                    style="max-height: 800px; overflow-y: auto;">
-                                    @foreach ($products as $product)
-                                        <a href="#" class="list-group-item list-group-item-action product-item"
-                                            data-id="{{ $product->id }}" data-name="{{ $product->name }}"
-                                            data-price="{{ $product->price }}" data-stock="{{ $product->stock_no }}"
-                                            data-barcode="{{ $product->barcode }}"
-                                            data-stock-quantity="{{ $product->stock_quantity }}"
-                                            data-picture-url="{{ $product->picture_url ? asset('storage/' . $product->picture_url) : '' }}"
-                                            data-original-stock="{{ $product->stock_quantity }}"
-                                            data-discount-percentage="{{ $product->discount_percentage }}"
-                                            data-type="product">
-                                            <div class="d-flex align-items-center">
-                                                @if ($product->picture_url)
-                                                    <img src="{{ asset('storage/' . $product->picture_url) }}"
-                                                        alt="{{ $product->name }}" class="img-thumbnail me-3 rounded-0"
-                                                        style="width: 60px; height: 60px; object-fit: cover;">
-                                                @else
-                                                    <div class="img-thumbnail me-3 d-flex align-items-center justify-content-center"
-                                                        style="width: 60px; height: 60px; background: #f0f0f0;">
-                                                        <i class="fas fa-image text-muted"></i>
-                                                    </div>
-                                                @endif
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex justify-content-between">
-                                                        <div>Name: {{ $product->name }}</div>
-                                                        <strong>{{ $product->stock_no }}</strong>
-                                                        @if ($product->discount_percentage > 0)
-                                                            <span class="badge bg-success ms-2">
-                                                                {{ $product->discount_percentage }}% off</span>
-                                                        @endif
-                                                    </div>
-                                                    <span>Price: ${{ number_format($product->price, 2) }}</span><br>
-                                                    <span>
-                                                        @if ($product->discount_percentage > 0)
-                                                            <span class="text-success">Discounted:
-                                                                ${{ number_format($product->price * (1 - $product->discount_percentage / 100), 2) }}</span>
-                                                        @endif
-                                                    </span>
-
-                                                    <br>
-                                                    <div class="badge bg-info mt-1 stock-badge"
+                                <div id="product-results" class="row g-2" style="max-height: 800px; overflow-y: auto;">
+                                    @if ($products->count() > 0)
+                                        @foreach ($products as $product)
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                                                <div class="card product-item h-100" data-id="{{ $product->id }}"
+                                                    data-name="{{ $product->name }}" data-price="{{ $product->price }}"
+                                                    data-stock="{{ $product->stock_no }}"
+                                                    data-barcode="{{ $product->barcode }}"
+                                                    data-stock-quantity="{{ $product->stock_quantity }}"
+                                                    data-picture-url="{{ $product->picture_url ? asset('storage/' . $product->picture_url) : '' }}"
+                                                    data-original-stock="{{ $product->stock_quantity }}"
+                                                    data-discount-percentage="{{ $product->discount_percentage }}"
+                                                    data-type="product"
+                                                    style="cursor: pointer; transition: all 0.3s ease; position: relative;">
+                                                    <!-- Stock Badge - Top Left -->
+                                                    <div class="stock-badge position-absolute top-0 start-0 m-1"
                                                         data-product-id="{{ $product->id }}">
-                                                        Stock: {{ $product->stock_quantity }}
+                                                        @if ($product->stock_quantity > 10)
+                                                            <span class="badge bg-success"
+                                                                style="font-size: 0.65rem;">{{ $product->stock_quantity }}</span>
+                                                        @elseif ($product->stock_quantity > 0)
+                                                            <span class="badge bg-warning"
+                                                                style="font-size: 0.65rem;">{{ $product->stock_quantity }}</span>
+                                                        @else
+                                                            <span class="badge bg-danger"
+                                                                style="font-size: 0.65rem;">0</span>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="card-body p-2">
+                                                        <div class="text-center">
+                                                            @if ($product->picture_url)
+                                                                <img src="{{ asset('storage/' . $product->picture_url) }}"
+                                                                    alt="{{ $product->name }}"
+                                                                    class="img-fluid mb-2 rounded-0"
+                                                                    style="height: 80px; width: 100%; object-fit: cover;">
+                                                            @else
+                                                                <div class="d-flex align-items-center justify-content-center bg-light mb-2"
+                                                                    style="height: 80px;">
+                                                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                        <h4 class="card-title mb-1 text-truncate"
+                                                            title="{{ $product->name }}">
+                                                            {{ $product->name }}
+                                                        </h4>
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center mb-1">
+                                                            <div>
+                                                                @if ($product->discount_percentage > 0)
+                                                                    <span class="text-danger text-decoration-line-through"
+                                                                        style="font-size: 0.8rem;">
+                                                                        ${{ number_format($product->price, 2) }}
+                                                                    </span>
+                                                                    <span class="text-success fw-bold ms-1"
+                                                                        style="font-size: 0.8rem;">
+                                                                        ${{ number_format($product->price * (1 - $product->discount_percentage / 100), 2) }}
+                                                                    </span>
+                                                                @else
+                                                                    <span class="fw-bold text-success"
+                                                                        style="font-size: 0.8rem;">
+                                                                        ${{ number_format($product->price, 2) }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                            @if ($product->discount_percentage > 0)
+                                                                <span
+                                                                    class="badge bg-success position-absolute top-0 end-0 m-2"
+                                                                    style="font-size: 0.6rem;">
+                                                                    {{ $product->discount_percentage }}% OFF
+                                                                </span>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </a>
-                                    @endforeach
+                                        @endforeach
+                                    @else
+                                        <div class="col-12 text-center py-4">
+                                            <p class="text-muted">No products found.</p>
+                                        </div>
+                                    @endif
                                 </div>
+
+                                <!-- Products Pagination -->
+                                @if ($products->hasPages())
+                                    <div class="mt-3">
+                                        {{ $products->links() }}
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="tab-pane fade" id="accessories" role="tabpanel">
@@ -237,51 +279,96 @@
                                     </div>
                                 </div>
 
-                                <div id="accessory-results" class="list-group"
-                                    style="max-height: 800px; overflow-y: auto;">
-                                    @foreach ($accessories as $accessory)
-                                        <a href="#" class="list-group-item list-group-item-action accessory-item"
-                                            data-id="{{ $accessory->id }}" data-name="{{ $accessory->name }}"
-                                            data-price="{{ $accessory->price }}"
-                                            data-stock-quantity="{{ $accessory->stock_quantity }}"
-                                            data-picture-url="{{ $accessory->picture_url ? asset('storage/' . $accessory->picture_url) : '' }}"
-                                            data-original-stock="{{ $accessory->stock_quantity }}"
-                                            data-discount-percentage="{{ $accessory->discount_percentage }}"
-                                            data-type="accessory">
-                                            <div class="d-flex align-items-center">
-                                                @if ($accessory->picture_url)
-                                                    <img src="{{ asset('storage/' . $accessory->picture_url) }}"
-                                                        alt="{{ $accessory->name }}" class="img-thumbnail me-3 rounded-0"
-                                                        style="width: 60px; height: 60px; object-fit: cover;">
-                                                @else
-                                                    <div class="img-thumbnail me-3 d-flex align-items-center justify-content-center"
-                                                        style="width: 60px; height: 60px; background: #f0f0f0;">
-                                                        <i class="fas fa-image text-muted"></i>
-                                                    </div>
-                                                @endif
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex justify-content-between">
-                                                        <div>Name: {{ $accessory->name }}</div>
-                                                        @if ($accessory->discount_percentage > 0)
-                                                            <span class="badge bg-success">
-                                                                {{ $accessory->discount_percentage }}% off</span>
+                                <div id="accessory-results" class="row g-2" style="max-height: 800px; overflow-y: auto;">
+                                    @if ($accessories->count() > 0)
+                                        @foreach ($accessories as $accessory)
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                                                <div class="card accessory-item h-100" data-id="{{ $accessory->id }}"
+                                                    data-name="{{ $accessory->name }}"
+                                                    data-price="{{ $accessory->price }}"
+                                                    data-stock-quantity="{{ $accessory->stock_quantity }}"
+                                                    data-picture-url="{{ $accessory->picture_url ? asset('storage/' . $accessory->picture_url) : '' }}"
+                                                    data-original-stock="{{ $accessory->stock_quantity }}"
+                                                    data-discount-percentage="{{ $accessory->discount_percentage }}"
+                                                    data-type="accessory"
+                                                    style="cursor: pointer; transition: all 0.3s ease; position: relative;">
+                                                    <!-- Stock Badge - Top Left -->
+                                                    <div class="stock-badge position-absolute top-0 start-0 m-1"
+                                                        data-accessory-id="{{ $accessory->id }}">
+                                                        @if ($accessory->stock_quantity > 10)
+                                                            <span class="badge bg-success"
+                                                                style="font-size: 0.65rem;">{{ $accessory->stock_quantity }}</span>
+                                                        @elseif ($accessory->stock_quantity > 0)
+                                                            <span class="badge bg-warning"
+                                                                style="font-size: 0.65rem;">{{ $accessory->stock_quantity }}</span>
+                                                        @else
+                                                            <span class="badge bg-danger"
+                                                                style="font-size: 0.65rem;">0</span>
                                                         @endif
                                                     </div>
-                                                    <span>Price: ${{ number_format($accessory->price, 2) }}</span><br>
-                                                    @if ($accessory->discount_percentage > 0)
-                                                        <span class="text-success">Discounted:
-                                                            ${{ number_format($accessory->price * (1 - $accessory->discount_percentage / 100), 2) }}</span>
-                                                    @endif
-                                                    <br>
-                                                    <div class="badge bg-info mt-1 stock-badge"
-                                                        data-accessory-id="{{ $accessory->id }}">
-                                                        Stock: {{ $accessory->stock_quantity }}
+
+                                                    <div class="card-body p-2">
+                                                        <div class="text-center">
+                                                            @if ($accessory->picture_url)
+                                                                <img src="{{ asset('storage/' . $accessory->picture_url) }}"
+                                                                    alt="{{ $accessory->name }}"
+                                                                    class="img-fluid mb-2 rounded-0"
+                                                                    style="height: 80px; width: 100%; object-fit: cover;">
+                                                            @else
+                                                                <div class="d-flex align-items-center justify-content-center bg-light mb-2"
+                                                                    style="height: 80px;">
+                                                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                        <h4 class="card-title mb-1 text-truncate"
+                                                            title="{{ $accessory->name }}">
+                                                            {{ $accessory->name }}
+                                                        </h4>
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center mb-1">
+                                                            <div>
+                                                                @if ($accessory->discount_percentage > 0)
+                                                                    <span class="text-danger text-decoration-line-through"
+                                                                        style="font-size: 0.8rem;">
+                                                                        ${{ number_format($accessory->price, 2) }}
+                                                                    </span>
+                                                                    <span class="text-success fw-bold ms-1"
+                                                                        style="font-size: 0.8rem;">
+                                                                        ${{ number_format($accessory->price * (1 - $accessory->discount_percentage / 100), 2) }}
+                                                                    </span>
+                                                                @else
+                                                                    <span class="fw-bold text-success"
+                                                                        style="font-size: 0.8rem;">
+                                                                        ${{ number_format($accessory->price, 2) }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                            @if ($accessory->discount_percentage > 0)
+                                                                <span
+                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-2"
+                                                                    style="font-size: 0.6rem;">
+                                                                    {{ $accessory->discount_percentage }}% OFF
+                                                                </span>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </a>
-                                    @endforeach
+                                        @endforeach
+                                    @else
+                                        <div class="col-12 text-center py-4">
+                                            <p class="text-muted">No accessories found.</p>
+                                        </div>
+                                    @endif
                                 </div>
+
+                                <!-- Accessories Pagination -->
+                                @if ($accessories->hasPages())
+                                    <div class="mt-3">
+                                        {{ $accessories->links() }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -291,18 +378,71 @@
     </div>
     @include('Customers.create') <!-- Include customer creation modal -->
 
+    <style>
+        .product-item:hover,
+        .accessory-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            border: 1px solid #dee2e6;
+            position: relative;
+        }
+
+        .card-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .text-truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Stock Badge Styles */
+        .stock-badge {
+            z-index: 1;
+        }
+
+        .stock-badge .badge {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Pagination Styles */
+        .pagination {
+            margin-bottom: 0;
+        }
+
+        .page-link {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .col-lg-3 {
+            width: 25%;
+            height: 25%;
+        }
+    </style>
+
     <script>
         let saleItems = [];
 
         document.addEventListener('DOMContentLoaded', function() {
             // Product search functionality
             $('#product-search').on('input', function() {
-                const search = $(this).val().toLowerCase(); // convert input to string
+                const search = $(this).val().toLowerCase();
                 $('.product-item').each(function() {
-                    const name = $(this).data('name').toString().toLowerCase(); // ensure string
-                    const barcode = $(this).data('barcode').toString()
-                        .toLowerCase(); // convert number to string
-                    $(this).toggle(name.includes(search) || barcode.includes(search));
+                    const name = $(this).data('name').toString().toLowerCase();
+                    const barcode = $(this).data('barcode').toString().toLowerCase();
+                    $(this).closest('.col-lg-3').toggle(name.includes(search) || barcode.includes(
+                        search));
                 });
             });
 
@@ -310,8 +450,8 @@
             $('#accessory-search').on('input', function() {
                 const search = $(this).val().toLowerCase();
                 $('.accessory-item').each(function() {
-                    const text = $(this).text().toLowerCase();
-                    $(this).toggle(text.includes(search));
+                    const name = $(this).data('name').toString().toLowerCase();
+                    $(this).closest('.col-lg-3').toggle(name.includes(search));
                 });
             });
 
@@ -411,7 +551,14 @@
                     `.stock-badge[data-accessory-id="${itemId}"]`;
 
                 const badge = $(selector);
-                badge.text(`Stock: ${newStock}`);
+
+                if (newStock > 10) {
+                    badge.html(`<span class="badge bg-success" style="font-size: 0.65rem;">${newStock}</span>`);
+                } else if (newStock > 0) {
+                    badge.html(`<span class="badge bg-warning" style="font-size: 0.65rem;">${newStock}</span>`);
+                } else {
+                    badge.html(`<span class="badge bg-danger" style="font-size: 0.65rem;">0</span>`);
+                }
 
                 // Update the data attribute for the item
                 const itemElement = itemType === 'product' ?
@@ -427,16 +574,11 @@
                     }
                 });
 
-                // Change badge color if stock is low
+                // Disable item if out of stock
                 if (newStock <= 0) {
-                    badge.removeClass('bg-info').addClass('bg-danger');
-                    itemElement.addClass('disabled').css('opacity', '0.6');
-                } else if (newStock <= 5) {
-                    badge.removeClass('bg-info').addClass('bg-warning');
-                    itemElement.removeClass('disabled').css('opacity', '1');
+                    itemElement.css('opacity', '0.6').css('cursor', 'not-allowed');
                 } else {
-                    badge.removeClass('bg-danger bg-warning').addClass('bg-info');
-                    itemElement.removeClass('disabled').css('opacity', '1');
+                    itemElement.css('opacity', '1').css('cursor', 'pointer');
                 }
             }
 
@@ -588,21 +730,19 @@
             $('#tax_rate, #additional_discount').on('change', calculateTotals);
 
             // Handle payment form submission
-            // Handle payment form submission
             $('#payment-form').on('submit', function(e) {
                 e.preventDefault();
 
                 const formData = {
                     customer_id: $('#customer_id').val(),
-                    employee_id: $('#employee_id').val(), // Add this line
+                    employee_id: $('#employee_id').val(),
                     items: $('#sale-items-data').val(),
                     subtotal: parseFloat($('#subtotal').text().replace('$', '')),
-                    // Remove item_discounts from here
                     additional_discount: parseFloat($('#additional-discount-display').text().replace(
                         '$', '')),
                     tax_amount: parseFloat($('#tax').text().replace('$', '')),
                     total: parseFloat($('#total').text().replace('$', '')),
-                    status: 'completed', // Add status
+                    status: 'completed',
                     payment_status: $('input[name="payment_method"]:checked').val(),
                 };
 

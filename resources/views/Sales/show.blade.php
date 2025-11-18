@@ -22,8 +22,8 @@
                     <!-- Company Header -->
                     <div class="text-center mb-4 pb-3 border-bottom">
                         <h2 class="mb-2 fw-bold">Angkor Tech Computer</h2>
-                        <p class="text-muted mb-1">123 Street, Phnom Penh, Cambodia</p>
-                        <p class="text-muted mb-0">Tel: +855 12 345 678 | Email: info@angkortech.com</p>
+                        <p class="text-muted mb-1">Mondul 1 Village, Sangkat Svay Dangkum,Siem Reap City</p>
+                        <p class="text-muted mb-0">Tel: 063 6666 777 | Email: info@angkortechcomputer.com</p>
                     </div>
 
                     <!-- Info Cards -->
