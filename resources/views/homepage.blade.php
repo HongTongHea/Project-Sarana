@@ -63,17 +63,26 @@
                 </div>
             </div>
             <div class="row" id="products-container">
-                @foreach ($products as $index => $product)
+                @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                     @if ($index >= 10)
                         @break
                     @endif
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">
+
                         <div class="card border-0 position-relative product-card">
-                            @if ($product->discount_percentage > 0)
-                                <span
-                                    class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">-{{ $product->discount_percentage }}%</span>
+
+                            @if ($product->created_at->gt(now()->subDays(7)))
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-3">
+                                    NEW
+                                </span>
                             @endif
+                            @if ($product->discount_percentage > 0)
+                                <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">
+                                    -{{ $product->discount_percentage }}%
+                                </span>
+                            @endif
+
                             <div class="overflow-hidden product-image-container position-relative">
                                 <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
                                     class="card-img-top img-fluid product-image mt-2">
@@ -86,6 +95,7 @@
                             </div>
 
                             <div class="card-body p-2">
+
                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                     @if ($product->discount_percentage > 0)
                                         <span class="text-danger fw-bold me-1">
@@ -100,6 +110,7 @@
                                         </span>
                                     @endif
                                 </div>
+
                                 <p class="mb-1 small {{ $product->stock_quantity > 0 ? 'text-warning' : 'text-danger' }}">
                                     {!! $product->stock_quantity > 0
                                         ? '<i class="fas fa-check-circle me-1"></i>In stock'
@@ -119,11 +130,14 @@
                                     <i class="fas fa-shopping-cart me-1"></i>
                                     Add to Cart
                                 </button>
+
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
+
+
         </section>
         <!-- ROG Banner Section -->
         <section class="rog-banner-section ">
@@ -134,7 +148,7 @@
                         <div class="rog-banner-wrapper">
                             <div class="rog-main-banner">
                                 <img src="{{ asset('assets/victor/asus_rog.jpg') }}" alt="acer predator"
-                                    style="height: 370px">
+                                    style="height: 340px">
                             </div>
                         </div>
                     </div>
@@ -142,11 +156,16 @@
                     <!-- Right Side (Products) -->
                     <div class="col-lg-4 mb-4 mb-lg-0">
                         <div class="rog-products-wrapper">
-                            @foreach ($products as $index => $product)
+                            @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                                 @if ($index >= 2)
                                     @break
                                 @endif
-                                <div class="rog-product-item">
+                                <div class="rog-product-item  position-relative product-card">
+                                    @if ($product->created_at->gt(now()->subDays(7)))
+                                        <span class="badge bg-primary position-absolute top-0 start-0 m-2 z-3">
+                                            NEW
+                                        </span>
+                                    @endif
                                     <div class="rog-product-thumb">
                                         <img src="{{ asset('storage/' . $product->picture_url) }}"
                                             alt="{{ $product->name }}">
@@ -167,9 +186,9 @@
                                             </div>
                                         @endif
 
-                                        <div class="rog-product-stars">
+                                        {{-- <div class="rog-product-stars">
                                             ★★★★★
-                                        </div>
+                                        </div> --}}
                                         <a href="{{ route('allproductpage.index') }}"
                                             class="rog-buy-button add-to-cart-btn btn btn-primary">Buy Now</a>
                                     </div>
@@ -220,12 +239,17 @@
                 </div>
             </div>
             <div class="row" id="accessories-container">
-                @foreach ($accessories as $index => $accessory)
+                @foreach ($accessories->sortByDesc('created_at')->values() as $index => $accessory)
                     @if ($index >= 10)
                         @break
                     @endif
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 accessory-item">
                         <div class="card border-0 position-relative product-card">
+                            @if ($accessory->created_at->gt(now()->subDays(7)))
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-3">
+                                    NEW
+                                </span>
+                            @endif
                             @if ($accessory->discount_percentage > 0)
                                 <span
                                     class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">-{{ $accessory->discount_percentage }}%</span>
@@ -297,8 +321,8 @@
 
                     <div class="row g-0 mt-3">
                         <!-- Left Large Card -->
-                        <div class="col-lg-6 mb-2">
-                            <div class="service-card left-card">
+                        <div class="col-lg-6">
+                            <div class="service-card left-card mb-2">
                                 <img src="{{ asset('assets/victor/camera-installation-2.jpg') }}" alt="Plumbing Service">
                                 <div class="service-overlay">
                                     <h4>Plumbing Services</h4>
@@ -324,7 +348,7 @@
 
                             <!-- Bottom Two Cards -->
                             <div class="row g-2 mt-2">
-                                <div class="col-6">
+                                <div class="col-6 col-md-6">
                                     <div class="service-card bottom-card">
                                         <img src="{{ asset('assets/victor/build_system.png') }}" alt="Custom PC Build">
                                         <div class="service-overlay">

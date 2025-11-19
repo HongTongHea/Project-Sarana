@@ -243,7 +243,7 @@
                                                             </div>
                                                             @if ($product->discount_percentage > 0)
                                                                 <span
-                                                                    class="badge bg-success position-absolute top-0 end-0 m-2"
+                                                                    class="badge bg-success position-absolute top-0 end-0 m-1"
                                                                     style="font-size: 0.6rem;">
                                                                     {{ $product->discount_percentage }}% OFF
                                                                 </span>
@@ -346,7 +346,7 @@
                                                             </div>
                                                             @if ($accessory->discount_percentage > 0)
                                                                 <span
-                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-2"
+                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-1"
                                                                     style="font-size: 0.6rem;">
                                                                     {{ $accessory->discount_percentage }}% OFF
                                                                 </span>

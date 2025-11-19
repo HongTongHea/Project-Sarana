@@ -96,8 +96,9 @@
 
     .hero-slideshow {
         position: relative;
+        margin-top: 3%;
         width: 100vw;
-        height: 100vh;
+        height: 90vh;
         overflow: hidden;
     }
 
@@ -518,6 +519,7 @@
         .left-card,
         .top-right-card,
         .bottom-card {
+            margin: 0;
             height: 300px;
         }
     }
@@ -527,6 +529,7 @@
         .left-card,
         .top-right-card,
         .bottom-card {
+            margin: 0;
             height: 200px;
         }
     }

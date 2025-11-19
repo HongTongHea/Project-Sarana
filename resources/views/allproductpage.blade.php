@@ -4,7 +4,7 @@
         <!-- Brand Scrolling Section -->
         <div class="brand-section mt-2 mb-2">
             <div class="container">
-                <h2 class="mb-0 text-center fw-bold text-black mt-5">Our Branding</h2> 
+                <h2 class="mb-0 text-center fw-bold text-black mt-5">Our Branding</h2>
                 <p class="text-muted text-center">Discover a wide range of top-notch products from our trusted brands</p>
                 <div class="brand-scroller">
                     <div class="brand-track">
@@ -41,10 +41,15 @@
 
         <section id="products-section">
             <div class="row" id="products-container">
-                @foreach ($products as $index => $product)
+                @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">
                         <div class="card border-0 position-relative product-card">
+                            @if ($product->created_at->gt(now()->subDays(7)))
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-3">
+                                    NEW
+                                </span>
+                            @endif
                             @if ($product->discount_percentage > 0)
                                 <span
                                     class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">-{{ $product->discount_percentage }}%</span>
@@ -105,9 +110,14 @@
         <!-- Accessories Section -->
         <section>
             <div class="row" id="accessories-container">
-                @foreach ($accessories as $index => $accessory)
+                @foreach ($accessories->sortByDesc('created_at')->values() as $index => $accessory)
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 accessory-item">
                         <div class="card border-0 position-relative product-card">
+                            @if ($accessory->created_at->gt(now()->subDays(7)))
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-3">
+                                    NEW
+                                </span>
+                            @endif
                             @if ($accessory->discount_percentage > 0)
                                 <span
                                     class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">-{{ $accessory->discount_percentage }}%</span>
@@ -154,7 +164,8 @@
                                     data-price="{{ $accessory->price }}"
                                     data-discount="{{ $accessory->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $accessory->picture_url) }}"
-                                    data-stock="{{ $accessory->stock_quantity }}" data-barcode="{{ $accessory->barcode }}"
+                                    data-stock="{{ $accessory->stock_quantity }}"
+                                    data-barcode="{{ $accessory->barcode }}"
                                     data-description="{{ $accessory->description }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
                                     Add to Cart

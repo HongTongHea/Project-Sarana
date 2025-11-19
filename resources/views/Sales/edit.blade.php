@@ -220,10 +220,6 @@
                                                             title="{{ $product->name }}">
                                                             {{ $product->name }}
                                                         </h6>
-                                                        {{-- <div class="mb-1">
-                                                            <small class="text-muted">Stock No:
-                                                                {{ $product->stock_no }}</small>
-                                                        </div> --}}
                                                         <div
                                                             class="d-flex justify-content-between align-items-center mb-1">
                                                             <div>
@@ -244,7 +240,7 @@
                                                             </div>
                                                             @if ($product->discount_percentage > 0)
                                                                 <span
-                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-2"
+                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-1"
                                                                     style="font-size: 0.6rem;">
                                                                     {{ $product->discount_percentage }}% OFF
                                                                 </span>
@@ -346,7 +342,7 @@
                                                             </div>
                                                             @if ($accessory->discount_percentage > 0)
                                                                 <span
-                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-2"
+                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-1"
                                                                     style="font-size: 0.6rem;">
                                                                     {{ $accessory->discount_percentage }}% OFF
                                                                 </span>

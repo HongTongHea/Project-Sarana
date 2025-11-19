@@ -4,7 +4,7 @@
         <div class="modal-content">
             <form action="{{ route('sales-reports.generate') }}" method="POST">
                 @csrf
-                <div class="modal-header">
+                <div class="modal-header bg-light">
                     <div class="d-flex justify-content-center align-items-center">
                         <h6 class="mt-3 ms-1 text-black text-uppercase" style="font-weight: 700; font-size: 16px">
                             Generate Sales Report
@@ -12,7 +12,6 @@
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body p-2">
                     <div class="row m-2">
                         <div class="form-group col-12 col-md-6">
