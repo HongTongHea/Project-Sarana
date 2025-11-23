@@ -98,7 +98,7 @@
         position: relative;
         margin-top: 3%;
         width: 100vw;
-        height: 90vh;
+        height: 80vh;
         overflow: hidden;
     }
 

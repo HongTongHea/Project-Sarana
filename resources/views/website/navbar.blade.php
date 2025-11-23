@@ -19,7 +19,7 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Pc</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a></li>
             </ul>
 
@@ -42,10 +42,10 @@
                 @endphp
 
                 @if (!$user)
-                    <a href="{{ route('login') }}" class="btn btn-primary me-2">
+                    <a href="{{ route('login') }}" class="btn btn-primary me-2 fw-bold">
                         <i class="fas fa-sign-in-alt me-1"></i> Sign In
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-primary">
+                    <a href="{{ route('register') }}" class="btn btn-primary fw-bold">
                         <i class="fas fa-user-plus me-1"></i> Sign Up
                     </a>
                 @else

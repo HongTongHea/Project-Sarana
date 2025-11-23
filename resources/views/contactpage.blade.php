@@ -3,12 +3,12 @@
 @section('title', 'Contact Us')
 
 @section('content')
-    <div class="container mt-5" style="margin-top: 100px !important; margin-bottom: 50px !important;">
+    <div class="container  mt-5" style="margin-top: 100px !important; margin-bottom: 50px !important;">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-10">
                 <!-- Header Section -->
                 <div class="text-center mb-5">
-                    <h1 class="fw-bold text-primary mb-3 text-uppercase" style="font-size: 2.5rem;">Get in touch</h1>
+                    <h1 class="fw-bold mb-3 text-uppercase" style="font-size: 2.5rem;">Get in touch</h1>
                     <p class="text-muted mb-0 mx-auto" style="max-width: 600px;">
                         We'd love to hear from you! Whether you have a question about features.
                         pricing, or simply want to say hello, our friendly team is here to help.
@@ -20,7 +20,7 @@
                     <div class="col-lg-6 col-md-6 mb-5">
                         <!-- Address Office -->
                         <div class="mb-4">
-                            <h3 class="fw-bold text-primary mb-3"><i class="fas fa-map-marker-alt me-2 text-p"></i>Angkor
+                            <h3 class="fw-bold mb-3"><i class="fas fa-map-marker-alt me-2 text-p"></i>Angkor
                                 Tech
                                 Computer Office</h3>
                             <p class="text-muted mb-0">
@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <h3 class="fw-bold text-primary mb-3"> <i class="fas fa-clock me-2"></i>Open Time</h3>
+                            <h3 class="fw-bold mb-3"> <i class="fas fa-clock me-2"></i>Open Time</h3>
                             <p class="text-muted mb-0">
                                 Monday - Friday: 8:00 AM - 5:00 PM <br>
                                 Saturday - Sunday: 9:00 AM - 1:00 PM
@@ -37,7 +37,7 @@
                         </div>
                         <!-- Phone Section -->
                         <div class="mb-4">
-                            <h3 class="fw-bold text-primary mb-3"><i class="fas fa-phone me-2"></i>Phone</h3>
+                            <h3 class="fw-bold mb-3"><i class="fas fa-phone me-2"></i>Phone</h3>
                             <p class="text-muted mb-0">
                                 Tel: 063 6666 777
                             </p>
@@ -45,13 +45,13 @@
 
                         <!-- Email Section -->
                         <div class="mb-4">
-                            <h3 class="fw-bold text-primary mb-3"> <i class="fas fa-envelope me-2"></i>Email</h3>
+                            <h3 class="fw-bold mb-3"> <i class="fas fa-envelope me-2"></i>Email</h3>
                             <p class="text-muted mb-1">info@angkortechcomputer.com</p>
                         </div>
 
 
                         <div class="mb-5">
-                            <h3 class="fw-bold text-primary mb-3">Follow Our Social Media</h3>
+                            <h3 class="fw-bold mb-3">Follow Our Social Media</h3>
                             <a href="#" class="text-white me-3"> <i class="fa-brands fa-facebook fa-2x"
                                     style="color: #3b5998;"></i></a>
                             <a href="#" class="text-white me-3"><i class="fa-brands fa-telegram fa-2x "
@@ -154,6 +154,7 @@
             </div>
         </div>
     </div>
+
     <style>
         .form-control {
             font-size: 1rem;
