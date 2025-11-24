@@ -47,7 +47,7 @@
             </div>
 
             <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" id="confirmAddToCart">
                     <i class="bi bi-cart-plus me-1"></i>Add to Cart
                 </button>

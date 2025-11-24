@@ -39,10 +39,15 @@
                 </div>
             </div>
             <div class="row" id="products-container">
-                @foreach ($products as $product)
+                @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">
                         <div class="card border-0 position-relative product-card">
+                            @if ($product->created_at->gt(now()->subDays(7)))
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2 z-3">
+                                    NEW
+                                </span>
+                            @endif
                             @if ($product->discount_percentage > 0)
                                 <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">
                                     -{{ $product->discount_percentage }}%

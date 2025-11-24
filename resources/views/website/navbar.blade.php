@@ -42,10 +42,10 @@
                 @endphp
 
                 @if (!$user)
-                    <a href="{{ route('login') }}" class="btn btn-primary me-2">
+                    <a href="{{ route('login') }}" class="btn btn-primary me-2 fw-bold">
                         <i class="fas fa-sign-in-alt me-1"></i> Sign In
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-primary">
+                    <a href="{{ route('register') }}" class="btn btn-primary fw-bold">
                         <i class="fas fa-user-plus me-1"></i> Sign Up
                     </a>
                 @else
