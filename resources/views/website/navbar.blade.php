@@ -45,7 +45,7 @@
                     <a href="{{ route('login') }}" class="btn btn-primary me-2 fw-bold">
                         <i class="fas fa-sign-in-alt me-1"></i> Sign In
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-primary fw-bold">
+                    <a href="{{ route('register') }}" class="btn btn-success fw-bold">
                         <i class="fas fa-user-plus me-1"></i> Sign Up
                     </a>
                 @else
@@ -132,8 +132,20 @@
 
             <div class="offcanvas-body">
                 {{-- User info (Mobile) --}}
+                @if (!$user)
+                    <div class="mb-3 d-flex gap-2">
+                        <a href="{{ route('login') }}" class="btn btn-primary w-100 fw-bold">
+                            <i class="fas fa-sign-in-alt me-1"></i> Sign In
+                        </a>
+                        <a href="{{ route('register') }}" class="btn btn-success w-100 fw-bold">
+                            <i class="fas fa-user-plus me-1"></i> Sign Up
+                        </a>
+                    </div>
+                    <hr>
+                @endif
                 @if ($user)
                     <div class="d-flex align-items-center mb-3">
+
                         @if ($user->picture_url)
                             <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
                                 class="avatar-img rounded-5 me-2" width="45" height="45"
@@ -192,8 +204,9 @@
                             Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Pc</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a>
+                    </li>
                 </ul>
 
                 {{-- Cart (Mobile) --}}

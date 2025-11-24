@@ -156,46 +156,52 @@
                     <!-- Right Side (Products) -->
                     <div class="col-lg-4 mb-4 mb-lg-0">
                         <div class="rog-products-wrapper">
-                            @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
-                                @if ($index >= 2)
-                                    @break
-                                @endif
-                                <div class="rog-product-item  position-relative product-card">
-                                    @if ($product->created_at->gt(now()->subDays(7)))
-                                        <span class="badge bg-primary position-absolute top-0 start-0 m-2 z-3">
-                                            NEW
-                                        </span>
+                            <div class="row g-3">
+                                @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
+                                    @if ($index >= 2)
+                                        @break
                                     @endif
-                                    <div class="rog-product-thumb">
-                                        <img src="{{ asset('storage/' . $product->picture_url) }}"
-                                            alt="{{ $product->name }}">
-                                    </div>
-                                    <div class="rog-product-info">
-                                        <h6 class="rog-product-title">{{ $product->name }}</h6>
 
-                                        @if ($product->discount_percentage > 0)
-                                            <div class="rog-product-price text-danger fw-bold">
-                                                ${{ number_format($product->price - ($product->price * $product->discount_percentage) / 100, 2) }}
-                                                <small class="text-muted text-decoration-line-through">
-                                                    ${{ number_format($product->price, 2) }}
-                                                </small>
-                                            </div>
-                                        @else
-                                            <div class="rog-product-price fw-bold">
-                                                ${{ number_format($product->price, 2) }}
-                                            </div>
-                                        @endif
+                                    <div class="col-6 col-md-6 col-lg-12"> <!-- Responsive: mobile 2-col, desktop full -->
+                                        <div class="rog-product-item position-relative product-card">
 
-                                        {{-- <div class="rog-product-stars">
-                                            ★★★★★
-                                        </div> --}}
-                                        <a href="{{ route('allproductpage.index') }}"
-                                            class="rog-buy-button add-to-cart-btn btn btn-primary">Buy Now</a>
+                                            @if ($product->created_at->gt(now()->subDays(7)))
+                                                <span
+                                                    class="badge bg-primary position-absolute top-0 start-0 m-2 z-3">NEW</span>
+                                            @endif
+
+                                            <div class="rog-product-thumb">
+                                                <img src="{{ asset('storage/' . $product->picture_url) }}"
+                                                    alt="{{ $product->name }}">
+                                            </div>
+
+                                            <div class="rog-product-info">
+                                                <h6 class="rog-product-title">{{ $product->name }}</h6>
+
+                                                @if ($product->discount_percentage > 0)
+                                                    <div class="rog-product-price text-danger fw-bold">
+                                                        ${{ number_format($product->price - ($product->price * $product->discount_percentage) / 100, 2) }}
+                                                        <small class="text-muted text-decoration-line-through">
+                                                            ${{ number_format($product->price, 2) }}
+                                                        </small>
+                                                    </div>
+                                                @else
+                                                    <div class="rog-product-price fw-bold">
+                                                        ${{ number_format($product->price, 2) }}
+                                                    </div>
+                                                @endif
+
+                                                <a href="{{ route('allproductpage.index') }}"
+                                                    class="rog-buy-button add-to-cart-btn btn btn-primary">Buy Now</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </div>
+
+
 
                 </div>
         </section>
@@ -374,11 +380,7 @@
                 </div>
             </div>
         </section>
-
-
-
         @include('website.shoppingcart')
-
     </div>
 
     <div id="cartToastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>

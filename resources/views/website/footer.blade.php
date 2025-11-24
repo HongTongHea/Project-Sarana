@@ -32,8 +32,10 @@
                             class="text-white text-decoration-none">All Products</a></li>
                     <li class="mb-2"><a href="{{ route('productpage.index') }}"
                             class="text-white text-decoration-none">Laptop</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">About</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Contact Us</a></li>
+                    <li class="mb-2"><a href="{{ route('aboutpage.index') }}"
+                            class="text-white text-decoration-none">About</a></li>
+                    <li class="mb-2"><a href="{{ route('contact.create') }}"
+                            class="text-white text-decoration-none">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -48,11 +50,16 @@
 
                 <h5 class="text-uppercase fw-bold mb-3">Follow Us</h5>
                 <div>
-                    <a href="#" class="text-white me-3"> <i class="fa-brands fa-facebook fa-2x" style="color: #3b5998;"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fa-brands fa-telegram fa-2x " style="color: #1da1f2;"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fa-brands fa-instagram fa-2x " style="color: #e1306c;"></i></a>
-                    <a href="#" class="text-white me-3"> <i class="fa-brands fa-youtube fa-2x" style="color: #0077b5;"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fa-brands fa-tiktok fa-2x " style="color: #e1306c;"></i></a>
+                    <a href="#" class="text-white me-3"> <i class="fa-brands fa-facebook fa-2x"
+                            style="color: #3b5998;"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-telegram fa-2x "
+                            style="color: #1da1f2;"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-instagram fa-2x "
+                            style="color: #e1306c;"></i></a>
+                    <a href="#" class="text-white me-3"> <i class="fa-brands fa-youtube fa-2x"
+                            style="color: #0077b5;"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-tiktok fa-2x "
+                            style="color: #e1306c;"></i></a>
                 </div>
             </div>
         </div>

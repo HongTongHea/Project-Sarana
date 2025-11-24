@@ -6,6 +6,7 @@
     <style>
         .section-title {
             color: #000000;
+            margin-bottom: 20px;
         }
 
 
@@ -142,6 +143,10 @@
             .right {
                 left: 0;
             }
+
+            .img-company {
+                width: 100% !important;
+            }
         }
     </style>
 
@@ -154,6 +159,7 @@
             <p class=" text-center">Our History and About Us</p>
             <div class="row align-items-center">
                 <div class="col-lg-6">
+                    <img src="{{ asset('assets/img/IMG_6421.jpg') }}" alt="" width="70%" class="img-company mb-4">
                     <p class="mb-4"><strong>AngkorTech Computer </strong>Shop is located in Mondol 1 Village, Svay Dangkum
                         Commune,
                         Siem Reap City, Siem Reap Province, approximately 1.8 kilometers from Build Bright University.
@@ -253,8 +259,7 @@
             <h2 class="section-title">Shop Structure</h2>
             <div class="row">
                 <div class="col-md-8 mx-auto text-center mb-4">
-                    <img src="https://via.placeholder.com/600x400?text=AngkorTech+Shop+Structure"
-                        alt="AngkorTech Shop Structure" class="img-fluid rounded shadow">
+                    <img src="{{ asset('assets/img/Picture1.png') }}" alt="AngkorTech Shop Structure" width="80%">
                     <p class="text-muted mt-2">Source: AngkorTech Computer (2025)</p>
                 </div>
             </div>
