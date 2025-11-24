@@ -22,6 +22,7 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CheckoutOrderController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AboutpageController;
 
 
 /*
@@ -33,6 +34,7 @@ use App\Http\Controllers\ContactController;
 Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
 Route::get('/allproductpage', [AllproductpageController::class, 'index'])->name('allproductpage.index');
+Route::get('/aboutpage', [AboutpageController::class, 'index'])->name('aboutpage.index');
 
 
 /*
