@@ -162,7 +162,7 @@
                                         @break
                                     @endif
 
-                                    <div class="col-6 col-md-6 col-lg-12"> <!-- Responsive: mobile 2-col, desktop full -->
+                                    <div class="col-6 col-md-6 col-lg-12">
                                         <div class="rog-product-item position-relative product-card">
 
                                             @if ($product->created_at->gt(now()->subDays(7)))

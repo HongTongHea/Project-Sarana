@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-light fixed-top">
     <div class="container">
         {{-- Brand --}}
-        <a class="navbar-brand d-flex align-items-center" href="#">
+        <a class="navbar-brand d-flex align-items-center" href="{{ route('homepage.index') }}">
             <img src="{{ asset('assets/img/logo-Company.png') }}" alt="" height="50" class="me-2">
         </a>
 
@@ -18,7 +18,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('allproductpage.index') }}">All Products</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Pc</a></li>
+                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('') }}">Pc</a></li> --}}
                 <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a></li>
             </ul>
@@ -45,7 +45,7 @@
                     <a href="{{ route('login') }}" class="btn btn-primary me-2 fw-bold">
                         <i class="fas fa-sign-in-alt me-1"></i> Sign In
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-success fw-bold">
+                    <a href="{{ route('register') }}" class="btn btn-primary fw-bold">
                         <i class="fas fa-user-plus me-1"></i> Sign Up
                     </a>
                 @else
@@ -137,7 +137,7 @@
                         <a href="{{ route('login') }}" class="btn btn-primary w-100 fw-bold">
                             <i class="fas fa-sign-in-alt me-1"></i> Sign In
                         </a>
-                        <a href="{{ route('register') }}" class="btn btn-success w-100 fw-bold">
+                        <a href="{{ route('register') }}" class="btn btn-primary w-100 fw-bold">
                             <i class="fas fa-user-plus me-1"></i> Sign Up
                         </a>
                     </div>
@@ -203,7 +203,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('allproductpage.index') }}">All
                             Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Pc</a></li>
+                    {{-- <li class="nav-item"><a class="nav-link" href="{{ route('') }}">Pc</a></li> --}}
                     <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a>
                     </li>

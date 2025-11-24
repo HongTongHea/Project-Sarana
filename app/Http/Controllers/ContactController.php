@@ -17,8 +17,15 @@ class ContactController extends Controller
         return view('contactpage');
     }
 
- public function store(Request $request)
+   /**
+     * Store a newly created contact message
+     */
+
+    public function store(Request $request)
     {
+        // Debug: Log the incoming request
+        Log::info('Contact form submission started', $request->all());
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -33,37 +40,42 @@ class ContactController extends Controller
         ]);
 
         if ($validator->fails()) {
+            Log::error('Validation failed', $validator->errors()->toArray());
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
 
         try {
-            Log::info('Contact form submitted', $request->all());
+            Log::info('Contact form validation passed', $request->all());
 
             // Store the contact message in database
-            $contact = Contact::create($request->all());
+            $contact = Contact::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'message' => $request->message,
+            ]);
+            
             Log::info('Contact saved to database', ['contact_id' => $contact->id]);
 
-            // Prepare and send Telegram message
-            $telegramMessage = $this->formatTelegramMessage($request);
-            Log::info('Attempting to send Telegram message');
+            // Create Telegram deep link with pre-filled message in the input field
+            $telegramMessage = $this->formatUserTelegramMessage($request);
+            $telegramUrl = $this->createTelegramDeepLink($telegramMessage);
             
-            $telegramSent = $this->sendToTelegram($telegramMessage);
+            Log::info('Redirecting to Telegram', ['url' => $telegramUrl]);
 
-            if ($telegramSent) {
-                Log::info('Telegram message sent successfully');
-                // Redirect to personal Telegram account - USING YOUR ACTUAL USERNAME
-                return redirect('https://t.me/Tonghear')
-                    ->with('success', 'Thank you for your message! Redirecting to our Telegram...');
-            } else {
-                Log::warning('Telegram message failed to send, but contact was saved');
-                return redirect()->route('contact.create')
-                    ->with('success', 'Thank you for your message! We have received your message and will get back to you soon.');
-            }
+            // Always redirect to Telegram with the pre-filled message
+            return redirect($telegramUrl)
+                ->with('success', 'Thank you for your message! Redirecting to Telegram...');
 
         } catch (\Exception $e) {
-            Log::error('Contact form error: ' . $e->getMessage());
+            Log::error('Contact form error: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return redirect()->back()
                 ->with('error', 'Sorry, there was an error sending your message. Please try again.')
                 ->withInput();
@@ -71,81 +83,54 @@ class ContactController extends Controller
     }
 
     /**
-     * Format message for Telegram
+     * Format message for user to send via Telegram
      */
-    private function formatTelegramMessage(Request $request)
+    private function formatUserTelegramMessage(Request $request)
     {
-        $message = "🆕 *NEW CONTACT FORM SUBMISSION*\n\n";
-        $message .= "👤 *Name:* {$request->name}\n";
-        $message .= "📧 *Email:* {$request->email}\n";
-        $message .= "📞 *Phone:* " . ($request->phone_number ?: 'Not provided') . "\n";
-        $message .= "💬 *Message:*\n{$request->message}\n\n";
-        $message .= "⏰ *Submitted:* " . now()->format('M j, Y g:i A');
-        $message .= "\n🌐 *From:* Angkor Tech Computer Website";
+        $message = "👋 Hello! I contacted you through your website.\n\n";
+        $message .= "📋 Contact Details:\n";
+        $message .= "👤 Name: {$request->name}\n";
+        $message .= "✉️ Email: {$request->email}\n";
+        $message .= "📞 Phone: " . ($request->phone_number ?: 'Not provided') . "\n\n";
+        $message .= "💬 My Message:\n";
+        $message .= "{$request->message}\n\n";
+        $message .= "⏰ Sent:" . now()->format('M j, Y g:i A');
 
         return $message;
     }
 
     /**
-     * Send message to Telegram
+     * Create Telegram deep link with pre-filled message in the input field
      */
-    private function sendToTelegram($message)
+    private function createTelegramDeepLink($message)
     {
-        $botToken = env('TELEGRAM_BOT_TOKEN');
-        $chatId = env('TELEGRAM_CHAT_ID');
-
-        Log::info('Telegram Configuration Check', [
-            'bot_token_length' => $botToken ? strlen($botToken) : 0,
-            'chat_id' => $chatId,
-            'has_bot_token' => !empty($botToken),
-            'has_chat_id' => !empty($chatId)
-        ]);
-
-        // Check if credentials are set
-        if (!$botToken || !$chatId) {
-            Log::error('Telegram credentials missing from .env file');
-            return false;
-        }
-
-        // Validate token format (should contain colon)
-        if (strpos($botToken, ':') === false) {
-            Log::error('Invalid Telegram token format - missing colon');
-            return false;
-        }
-
-        $url = "https://api.telegram.org/bot{$botToken}/sendMessage";
+        $username = 'Tonghear'; // Your Telegram username without @
         
-        $data = [
-            'chat_id' => $chatId,
-            'text' => $message,
-            'parse_mode' => 'Markdown'
-        ];
-
-        try {
-            $client = new \GuzzleHttp\Client();
-            $response = $client->post($url, [
-                'form_params' => $data,
-                'timeout' => 10,
-                'verify' => false,
-                'http_errors' => false
-            ]);
-
-            $statusCode = $response->getStatusCode();
-            $responseBody = $response->getBody()->getContents();
-            $responseData = json_decode($responseBody, true);
-
-            Log::info('Telegram API Response', [
-                'status_code' => $statusCode,
-                'response' => $responseData
-            ]);
-
-            return $responseData['ok'] ?? false;
-
-        } catch (\Exception $e) {
-            Log::error('Telegram API connection error: ' . $e->getMessage());
-            return false;
-        }
+        // URL encode the message
+        $encodedMessage = urlencode($message);
+        
+        // Method 1: Using the "text" parameter (most reliable for pre-filling message input)
+        $telegramUrl = "https://t.me/{$username}?text={$encodedMessage}";
+        
+        Log::info('Generated Telegram URL', [
+            'username' => $username,
+            'message_length' => strlen($message),
+            'url' => $telegramUrl
+        ]);
+        
+        return $telegramUrl;
     }
+
+    /**
+     * Alternative method using share URL (opens share dialog with pre-filled text)
+     */
+    private function createTelegramShareLink($message)
+    {
+        $encodedMessage = urlencode($message);
+        return "https://t.me/share/url?url=&text={$encodedMessage}";
+    }
+
+
 
     /**
      * Display a listing of contact messages (admin)
