@@ -17,6 +17,10 @@
 
                         <!-- Profile Picture -->
                         <div class="row">
+                            <div class="detail-item d-flex align-items-center">
+                                <i class="fas fa-user-circle text-primary me-2"></i>
+                                <label class="text-muted small mb-1">Profile</label>
+                            </div>
                             <div class="col-4 d-flex flex-column align-items-center mb-4">
                                 <h3 class="text-muted">Profile Picture</h3>
                                 @if ($user->picture_url)
@@ -61,11 +65,15 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Created At</label>
-                                        <input type="text" class="form-control" value="{{ $user->created_at }}" disabled>
+                                        <input type="text" class="form-control"
+                                            value="{{ $user->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}"
+                                            disabled>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Updated At</label>
-                                        <input type="text" class="form-control" value="{{ $user->updated_at }}" disabled>
+                                        <input type="text" class="form-control"
+                                            value="{{ $user->updated_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}"
+                                            disabled>
                                     </div>
                                 </div>
                             </div>

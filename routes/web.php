@@ -122,9 +122,9 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::get('/sales-reports', [SalesReportController::class, 'index'])->name('sales-reports.index');
     Route::get('/sales-reports/{id}', [SalesReportController::class, 'show'])->name('sales-reports.show');
     Route::get('/sales-reports/{id}/data', [SalesReportController::class, 'getReportData'])->name('sales-reports.data');
-    Route::post('/sales-reports/weekly', [SalesReportController::class, 'generateWeeklyReport'])->name('sales-reports.weekly');
-    Route::post('/sales-reports/monthly', [SalesReportController::class, 'generateMonthlyReport'])->name('sales-reports.monthly');
-    Route::post('/sales-reports/yearly', [SalesReportController::class, 'generateYearlyReport'])->name('sales-reports.yearly');
+    Route::post('/sales-reports/weekly', [SalesReportController::class, 'generateWeeklyReport'])->name('sales-reports.generate-weekly');
+    Route::post('/sales-reports/monthly', [SalesReportController::class, 'generateMonthlyReport'])->name('sales-reports.generate-monthly');
+    Route::post('/sales-reports/yearly', [SalesReportController::class, 'generateYearlyReport'])->name('sales-reports.generate-yearly');
     Route::delete('/sales-reports/{id}', [SalesReportController::class, 'destroy'])->name('sales-reports.destroy');
 });
 

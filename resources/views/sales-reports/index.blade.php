@@ -27,12 +27,12 @@
                             <tr>
                                 <th>No</th>
                                 <th>Report Type</th>
-                                <th>Period</th>
+                                <th>Date & Time</th>
                                 <th>Total Orders</th>
                                 <th>Total Sales</th>
-                                <th>Total Tax</th>
+                                {{-- <th>Total Tax</th> --}}
                                 <th>Avg Order Value</th>
-                                <th>Generated Date</th>
+                                <th>Report Date & Time</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -50,8 +50,8 @@
                                         </span>
                                     </td>
                                     <td>
-                                        {{ $report->start_date->format('M d, Y') }} -
-                                        {{ $report->end_date->format('M d, Y') }}
+                                        {{ $report->start_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }} -
+                                        {{ $report->end_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
                                     </td>
                                     <td class="text-center">
                                         <span class="fw-bold">{{ number_format($report->total_orders) }}</span>
@@ -59,13 +59,14 @@
                                     <td class="text-success fw-bold">
                                         ${{ number_format($report->total_sales, 2) }}
                                     </td>
-                                    <td class="text-warning">
+                                    {{-- <td class="text-warning">
                                         ${{ number_format($report->total_tax, 2) }}
-                                    </td>
+                                    </td> --}}
                                     <td class="text-info fw-bold">
                                         ${{ number_format($report->average_order_value, 2) }}
                                     </td>
-                                    <td>{{ $report->created_at->format('M d, Y H:i') }}</td>
+                                    <td>{{ $report->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
+                                    </td>
                                     <td class="text-nowrap text-center">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
@@ -77,11 +78,12 @@
                                                 aria-labelledby="dropdownMenuButton{{ $report->id }}">
                                                 <!-- View Report -->
                                                 <li>
-                                                    <a class="dropdown-item d-flex align-items-center"
-                                                        href="{{ route('sales-reports.show', $report->id) }}">
-                                                        <i class="fa-solid fa-eye me-2 text-info"></i>
-                                                        View Report
-                                                    </a>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#showModal{{ $report->id }}">
+                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
+                                                        Report Details
+                                                    </button>
                                                 </li>
 
                                                 <!-- Download Report -->
@@ -107,7 +109,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                @include('sales-reports.delete', ['report' => $report])
+                                <!-- Include Modals for each report -->
                             @endforeach
                         </tbody>
                     </table>
@@ -128,134 +130,29 @@
             </div>
         </div>
     </div>
-
-    <!-- Generate Report Modal -->
-    <div class="modal fade" id="generateReportModal" tabindex="-1" aria-labelledby="generateReportModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="mt-3 ms-1 text-black text-uppercase" style="font-weight: 700; font-size: 16px"
-                            id="generateReportModalLabel">Generate Sales Report</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="list-group">
-                        <button type="button" class="list-group-item list-group-item-action generate-report-btn"
-                            data-type="weekly">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong class="d-block"> <i class="fas fa-calendar text-danger"></i> Weekly
-                                        Report</strong>
-                                    <small class="text-muted">Generate report for current week or custom date range</small>
-                                </div>
-
-                            </div>
-                        </button>
-
-                        <button type="button" class="list-group-item list-group-item-action generate-report-btn"
-                            data-type="monthly">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong class="d-block"> <i class="fas fa-calendar-alt text-success"></i> Monthly
-                                        Report</strong>
-                                    <small class="text-muted">Generate report for specific month</small>
-                                </div>
-
-                            </div>
-                        </button>
-
-                        <button type="button" class="list-group-item list-group-item-action generate-report-btn"
-                            data-type="yearly">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong class="d-block"> <i class="fas fa-calendar text-info"></i> Yearly
-                                        Report</strong>
-                                    <small class="text-muted">Generate report for specific year</small>
-                                </div>
-
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Date Range Modal -->
-    <div class="modal fade" id="customDateModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Custom Date Range</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="customDateForm" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <input type="hidden" id="reportType" name="report_type">
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">Start Date</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="end_date" class="form-label">End Date</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Generate Report</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Year/Month Picker Modal -->
-    <div class="modal fade" id="yearMonthModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Select Report Period</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form id="yearMonthForm" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <input type="hidden" id="reportTypeSelect" name="report_type">
-
-                        <div class="mb-3">
-                            <label for="report_year" class="form-label fw-semibold">Year</label>
-                            <input type="number" id="report_year" name="year" class="form-control" min="2000"
-                                max="2100" value="{{ date('Y') }}" required>
-                        </div>
-
-                        <div class="mb-3" id="monthPickerWrapper">
-                            <label for="report_month" class="form-label fw-semibold">Month</label>
-                            <input type="month" id="report_month" name="month" class="form-control">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm">Generate</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    @foreach ($reports as $report)
+        @include('sales-reports.show', ['report' => $report])
+        @include('sales-reports.delete', ['report' => $report])
+    @endforeach
+    <!-- Include Generate Report Modals -->
+    @include('sales-reports.create')
 @endsection
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
         // Initialize DataTable
-        $('#DataTableReports').DataTable({
-            "pageLength": 25,
-            "order": [
-                [7, 'desc']
-            ]
-        });
+        // $('#DataTableReports').DataTable({
+        //     "pageLength": 25,
+        //     "order": [
+        //         [7, 'desc']
+        //     ],
+        //     "language": {
+        //         "search": "Search reports:",
+        //         "lengthMenu": "Show _MENU_ entries"
+        //     }
+        // });
 
         // Filter by report type
         $('#reportTypeFilter').on('change', function() {
@@ -288,6 +185,16 @@
             const year = $('#report_year').val();
             const month = $('#report_month').val();
 
+            if (type === 'monthly' && !month) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Please select a month',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
             $('#yearMonthModal').modal('hide');
 
             if (type === 'monthly') {
@@ -299,8 +206,10 @@
 
         // Generate weekly report
         function generateWeeklyReport() {
+            showLoading('Generating weekly report...');
+
             $.ajax({
-                url: '{{ route('sales-reports.weekly') }}',
+                url: '{{ route('sales-reports.generate-weekly') }}',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}'
@@ -312,13 +221,15 @@
 
         // Generate monthly report
         function generateMonthlyReport(year, month) {
+            showLoading('Generating monthly report...');
+
             $.ajax({
-                url: '{{ route('sales-reports.monthly') }}',
+                url: '{{ route('sales-reports.generate-monthly') }}',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
                     year: year,
-                    month: new Date(month).getMonth() + 1 // Correct month number
+                    month: month ? new Date(month).getMonth() + 1 : null
                 },
                 success: handleReportResponse,
                 error: handleAjaxError
@@ -327,8 +238,10 @@
 
         // Generate yearly report
         function generateYearlyReport(year) {
+            showLoading('Generating yearly report...');
+
             $.ajax({
-                url: '{{ route('sales-reports.yearly') }}',
+                url: '{{ route('sales-reports.generate-yearly') }}',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -341,6 +254,7 @@
 
         // ✅ SweetAlert for success/error messages
         function handleReportResponse(response) {
+            hideLoading();
             if (response.success) {
                 Swal.fire({
                     icon: 'success',
@@ -361,6 +275,7 @@
         }
 
         function handleAjaxError(xhr) {
+            hideLoading();
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
@@ -368,5 +283,63 @@
                 confirmButtonText: 'OK'
             });
         }
+
+        // Loading functions
+        function showLoading(message = 'Loading...') {
+            Swal.fire({
+                title: message,
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
+
+        function hideLoading() {
+            Swal.close();
+        }
     });
+
+    // Print report function
+    function printReport(reportId) {
+        const modalContent = document.querySelector(`#showModal${reportId} .modal-content`).cloneNode(true);
+        const printWindow = window.open('', '_blank');
+
+        // Remove buttons from print version
+        const modalFooter = modalContent.querySelector('.modal-footer');
+        if (modalFooter) {
+            modalFooter.remove();
+        }
+
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Sales Report - ${reportId}</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { padding: 20px; font-family: Arial, sans-serif; }
+                        @media print {
+                            .no-print { display: none !important; }
+                            .table { border-collapse: collapse; }
+                            .table-bordered th, .table-bordered td { border: 1px solid #dee2e6 !important; }
+                        }
+                        .modal-content { border: none !important; box-shadow: none !important; }
+                        .modal-header { border-bottom: 2px solid #dee2e6; }
+                        pre { white-space: pre-wrap; word-wrap: break-word; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container-fluid">
+                        ${modalContent.innerHTML}
+                    </div>
+                    <div class="no-print mt-4 text-center">
+                        <button onclick="window.print()" class="btn btn-primary me-2">Print</button>
+                        <button onclick="window.close()" class="btn btn-secondary">Close</button>
+                    </div>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+    }
 </script>

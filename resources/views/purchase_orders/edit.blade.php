@@ -125,8 +125,10 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                            class="fas fa-times me-1"></i>Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm"><i
+                            class="fa-solid fa-floppy-disk me-1"></i>Update</button>
                 </div>
             </form>
         </div>

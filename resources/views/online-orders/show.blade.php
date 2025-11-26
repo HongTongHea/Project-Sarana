@@ -273,7 +273,8 @@
             </div>
 
             <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                        class="fas fa-times me-2"></i> Close</button>
                 <button type="button" class="btn btn-primary btn-sm">
                     <i class="fas fa-print me-1"></i>Print Receipt
                 </button>

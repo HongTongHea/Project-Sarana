@@ -66,14 +66,14 @@
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton{{ $employee->id }}">
                                                 <!-- View Details -->
-                                                {{-- <li>
+                                                <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#showModal{{ $employee->id }}">
                                                         <i class="fa-solid fa-circle-info me-2 text-info"></i>
                                                         View Details
                                                     </button>
-                                                </li> --}}
+                                                </li>
 
                                                 <!-- Edit -->
                                                 <li>
@@ -99,12 +99,12 @@
                                     </td>
                                 </tr>
 
-                                {{-- <!-- Show Modal -->
-                                @include('employees.detail', ['employee' => $employee]) --}}
+                                <!-- Show Modal -->
+                                @include('employees.show', ['employee' => $employee])
                                 <!-- Edit Modal -->
                                 @include('employees.edit', ['employee' => $employee])
-                                {{-- <!-- Delete Modal -->
-                                @include('employees.delete', ['employee' => $employee]) --}}
+                                <!-- Delete Modal -->
+                                @include('employees.delete', ['employee' => $employee])
                             @endforeach
                         </tbody>
                     </table>

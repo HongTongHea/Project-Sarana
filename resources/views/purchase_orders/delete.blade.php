@@ -21,9 +21,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                        Cancel
+                        <i class="fas fa-times me-1"></i>Cancel
                     </button>
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    <button type="submit" class="btn btn-danger btn-sm"><i
+                            class="fa-solid fa-trash me-1"></i>Delete</button>
                 </div>
             </form>
         </div>

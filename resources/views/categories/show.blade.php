@@ -22,7 +22,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                        class="fas fa-times me-1"></i>Close</button>
             </div>
         </div>
     </div>
