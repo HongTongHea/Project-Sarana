@@ -46,7 +46,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                        class="fas fa-times me-1"></i>Cancel</button>
                 <button type="button" class="btn btn-primary btn-sm" id="confirm-payment">Complete Payment</button>
             </div>
         </div>

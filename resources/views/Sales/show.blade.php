@@ -213,7 +213,7 @@
 
             <div class="modal-footer border-top-0 bg-light py-3">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
-                    Close
+                    <i class="fas fa-times me-1"></i>Close
                 </button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="printInvoice('{{ $sale->id }}')">
                     <i class="fas fa-print me-2"></i>Print Invoice
