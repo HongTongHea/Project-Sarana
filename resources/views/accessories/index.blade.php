@@ -61,14 +61,14 @@
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton{{ $accessory->id }}">
                                                 <!-- View Details -->
-                                                {{-- <li>
+                                                <li>
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#showModal{{ $accessory->id }}">
                                                         <i class="fa-solid fa-circle-info me-2 text-info"></i>
                                                         View Details
                                                     </button>
-                                                </li> --}}
+                                                </li>
 
                                                 <!-- Edit -->
                                                 <li>
@@ -93,7 +93,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                {{-- @include('accessories.show', ['accessory' => $accessory]) --}}
+                                @include('accessories.show', ['accessory' => $accessory])
                                 @include('accessories.edit', ['accessory' => $accessory])
                                 @include('accessories.delete', ['accessory' => $accessory])
                             @endforeach
