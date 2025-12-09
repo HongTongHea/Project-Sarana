@@ -181,15 +181,12 @@
                                 </div>
                             </li>
                             <li>
-                                @if ($user)
-                                    @if ($user->role === 'admin')
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{{ route('users.index') }}">
-                                            <i class="fa-solid fa-gear"></i> Account Setting
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                    @endif
-
+                                @if ($user->role === 'admin')
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('users.index') }}">
+                                        <i class="fa-solid fa-gear"></i> Account Setting
+                                    </a>
+                                    <div class="dropdown-divider"></div>
                                     <form action="{{ route('logout') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="dropdown-item"
@@ -197,11 +194,16 @@
                                             <i class="bi bi-escape"></i> Logout
                                         </button>
                                     </form>
-                                @else
-                                    {{-- Optionally show login link if not authenticated --}}
-                                    <a class="dropdown-item" href="{{ route('login') }}">
-                                        <i class="bi bi-box-arrow-in-right"></i> Login
-                                    </a>
+                                @endif
+                                @if ($user->role === 'manager' || $user->role === 'cashier')
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item"
+                                            onclick="return confirm('Are you sure you want to logout?')">
+                                            <i class="bi bi-escape"></i> Logout
+                                        </button>
+                                    </form>
                                 @endif
                             </li>
                         </div>

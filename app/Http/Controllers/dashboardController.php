@@ -163,10 +163,55 @@ class DashboardController extends Controller
         $stocks = Stock::all();
         $categories = Category::all();
         $accessories = Accessory::all();
+        $onlineOrders = OnlineOrder::all();
+
+        $totalSales = $sales->sum('total');
+        // Calculate total stock value
+        $totalStockValue = 0;
+
+        foreach ($products as $product) {
+            $totalStockValue += $product->stock_quantity * ($product->price ?? 0);
+        }
+
+        foreach ($accessories as $accessory) {
+            $totalStockValue += $accessory->stock_quantity * ($accessory->price ?? 0);
+        }
+
+        // Real stock movement data for the last 30 days
+        $stockMovementDates = [];
+        $productStockData = [];
+        $accessoryStockData = [];
+
+        // Get current stock levels
+        $currentProductStock = Product::sum('stock_quantity');
+        $currentAccessoryStock = Accessory::sum('stock_quantity');
+
+        // Build data for each day (going backwards from today)
+        for ($i = 0; $i <= 30; $i++) {
+            $date = now()->subDays($i);
+            $dateString = $date->format('M j');
+
+            // For real implementation, you would query the stock levels for each specific date
+            // This is a simplified version that uses the current stock minus recent changes
+            $daysAgo = $i;
+
+            // Calculate estimated stock for this date based on recent changes
+            $productStockForDate = $this->calculateStockForDate(Product::class, $date);
+            $accessoryStockForDate = $this->calculateStockForDate(Accessory::class, $date);
+
+            $stockMovementDates[] = $dateString;
+            $productStockData[] = $productStockForDate;
+            $accessoryStockData[] = $accessoryStockForDate;
+        }
+
+        // Reverse the arrays to show chronological order
+        $stockMovementDates = array_reverse($stockMovementDates);
+        $productStockData = array_reverse($productStockData);
+        $accessoryStockData = array_reverse($accessoryStockData);
 
         $greeting = $this->getGreeting();
 
-        return view('manager.dashboard', compact(
+        return view('admin.dashboard', compact(
             'users',
             'customers',
             'sales',
@@ -174,7 +219,14 @@ class DashboardController extends Controller
             'stocks',
             'categories',
             'accessories',
-            'greeting'
+            'greeting',
+            'user',
+            'onlineOrders',
+            'totalStockValue',
+            'stockMovementDates',
+            'productStockData',
+            'accessoryStockData',
+            'totalSales',
         ));
     }
 
@@ -189,13 +241,77 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-        // Cashier sees only what they need (orders and products)
-        $sales = Sale::where('status', 'pending')->get();
-        $products = Product::where('stock', '>', 0)->get();
+        $users = User::all();
+        $customers = Customer::all();
+        $sales = Sale::all();
+        $products = Product::all();
+        $stocks = Stock::all();
+        $categories = Category::all();
+        $accessories = Accessory::all();
+        $onlineOrders = OnlineOrder::all();
 
-        return view('cashier.dashboard', compact(
+        $totalSales = $sales->sum('total');
+        // Calculate total stock value
+        $totalStockValue = 0;
+
+        foreach ($products as $product) {
+            $totalStockValue += $product->stock_quantity * ($product->price ?? 0);
+        }
+
+        foreach ($accessories as $accessory) {
+            $totalStockValue += $accessory->stock_quantity * ($accessory->price ?? 0);
+        }
+
+        // Real stock movement data for the last 30 days
+        $stockMovementDates = [];
+        $productStockData = [];
+        $accessoryStockData = [];
+
+        // Get current stock levels
+        $currentProductStock = Product::sum('stock_quantity');
+        $currentAccessoryStock = Accessory::sum('stock_quantity');
+
+        // Build data for each day (going backwards from today)
+        for ($i = 0; $i <= 30; $i++) {
+            $date = now()->subDays($i);
+            $dateString = $date->format('M j');
+
+            // For real implementation, you would query the stock levels for each specific date
+            // This is a simplified version that uses the current stock minus recent changes
+            $daysAgo = $i;
+
+            // Calculate estimated stock for this date based on recent changes
+            $productStockForDate = $this->calculateStockForDate(Product::class, $date);
+            $accessoryStockForDate = $this->calculateStockForDate(Accessory::class, $date);
+
+            $stockMovementDates[] = $dateString;
+            $productStockData[] = $productStockForDate;
+            $accessoryStockData[] = $accessoryStockForDate;
+        }
+
+        // Reverse the arrays to show chronological order
+        $stockMovementDates = array_reverse($stockMovementDates);
+        $productStockData = array_reverse($productStockData);
+        $accessoryStockData = array_reverse($accessoryStockData);
+
+        $greeting = $this->getGreeting();
+
+        return view('admin.dashboard', compact(
+            'users',
+            'customers',
             'sales',
-            'products'
+            'products',
+            'stocks',
+            'categories',
+            'accessories',
+            'greeting',
+            'user',
+            'onlineOrders',
+            'totalStockValue',
+            'stockMovementDates',
+            'productStockData',
+            'accessoryStockData',
+            'totalSales',
         ));
     }
 
