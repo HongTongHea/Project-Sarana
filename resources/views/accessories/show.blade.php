@@ -1,4 +1,5 @@
-<div class="modal fade" id="showModal{{ $product->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
+<div class="modal fade" id="showModal{{ $accessory->id }}" tabindex="-1" aria-labelledby="showModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header border-0 pb-0">
@@ -18,11 +19,11 @@
                     <div class="col-md-4">
                         <div class="card border-0 bg-light-subtle h-100">
                             <div class="card-body d-flex flex-column justify-content-center h-100">
-                                @if ($product->picture_url)
+                                @if ($accessory->picture_url)
                                     <div
                                         class="text-center flex-grow-1 d-flex align-items-center justify-content-center">
-                                        <img src="{{ Storage::url($product->picture_url) }}" alt="{{ $product->name }}"
-                                            class="img-fluid"
+                                        <img src="{{ Storage::url($accessory->picture_url) }}"
+                                            alt="{{ $accessory->name }}" class="img-fluid"
                                             style="max-height: 220px; width: auto; object-fit: contain;">
                                     </div>
                                 @else
@@ -48,25 +49,25 @@
                                     <label class="small text-muted d-block mb-1">Product Name</label>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-tag text-primary me-2"></i>
-                                        <span class="fw-medium">{{ $product->name }}</span>
+                                        <span class="fw-medium">{{ $accessory->name }}</span>
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small text-muted d-block mb-1">Category</label>
-                                    <div>
+                                    <label class="small text-muted d-block mb-1">Brand</label>
+                                    <div class="d-flex align-items-center">
                                         <i class="fas fa-layer-group text-primary me-2"></i>
-                                        <span class="fw-medium">{{ $product->category->name }}</span>
+                                        <span class="fw-medium">{{ $accessory->brand }}</span>
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label class="small text-muted d-block mb-1">Barcode</label>
-                                    <div>
+                                    <div class="d-flex align-items-center">
                                         <i class="fas fa-barcode text-primary me-2"></i>
                                         <span class="fw-medium">{{ $product->barcode }}</span>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -83,17 +84,17 @@
                                     <label class="small text-muted d-block mb-1">Price</label>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-dollar-sign text-success me-2"></i>
-                                        <span class="fw-bold fs-5">${{ number_format($product->price, 2) }}</span>
+                                        <span class="fw-bold fs-5">${{ number_format($accessory->price, 2) }}</span>
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small text-muted d-block mb-1">Discount</label>
+                                    <label class="small text-muted d-block">Discount</label>
                                     <div>
-                                        <i class="fas fa-percent text-warning me-2"></i>
-                                        @if ($product->discount_percentage > 0)
+                                        <i class="fas fa-percent text-warning  me-1"></i>
+                                        @if ($accessory->discount_percentage > 0)
                                             <span class="badge bg-warning text-dark fw-medium">
-                                                {{ $product->discount_percentage }}% OFF
+                                                {{ $accessory->discount_percentage }}% OFF
                                             </span>
                                         @else
                                             <span class="text-muted fw-medium">No Discount</span>
@@ -102,15 +103,15 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small text-muted d-block mb-1">Stock Quantity</label>
-                                    <div class="d-flex align-items-center">
+                                    <label class="small text-muted d-block">Stock Quantity</label>
+                                    <div>
                                         <i class="fas fa-boxes text-info me-2"></i>
                                         <span
-                                            class="fw-bold {{ $product->stock_quantity < 10 ? 'text-danger' : 'text-dark' }}">
-                                            {{ $product->stock_quantity }}
+                                            class="fw-bold  me-2 {{ $accessory->stock_quantity < 10 ? 'text-danger' : 'text-dark' }}">
+                                            {{ $accessory->stock_quantity }}
                                         </span>
-                                        @if ($product->stock_quantity < 10)
-                                            <span class="badge bg-danger ms-2">Low Stock</span>
+                                        @if ($accessory->stock_quantity < 10)
+                                            <span class="badge bg-danger">Low Stock</span>
                                         @endif
                                     </div>
                                 </div>
@@ -126,8 +127,8 @@
                             <i class="fas fa-align-left me-2"></i>Description
                         </h6>
                         <div class="p-3 bg-light rounded-2">
-                            @if ($product->description)
-                                <p class="mb-0 text-dark">{{ $product->description }}</p>
+                            @if ($accessory->description)
+                                <p class="mb-0 text-dark">{{ $accessory->description }}</p>
                             @else
                                 <p class="mb-0 text-muted fst-italic">No description available</p>
                             @endif
