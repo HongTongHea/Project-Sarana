@@ -139,36 +139,6 @@
     <script>
         let successMessage = @json(session('success'));
         let errorMessage = @json(session('error'));
-
-        // function updateDateTime() {
-        //     const now = new Date();
-
-        //     const options = {
-        //         timeZone: 'Asia/Phnom_Penh',
-        //         year: 'numeric',
-        //         month: '2-digit',
-        //         day: '2-digit',
-        //         hour: '2-digit',
-        //         minute: '2-digit',
-        //         second: '2-digit',
-        //         hour12: false
-        //     };
-
-        //     const formatter = new Intl.DateTimeFormat('en-GB', options);
-        //     const parts = formatter.formatToParts(now);
-
-        //     let date =
-        //         `${parts.find(p => p.type === 'day').value}-${parts.find(p => p.type === 'month').value}-${parts.find(p => p.type === 'year').value}`;
-        //     let time =
-        //         `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value}:${parts.find(p => p.type === 'second').value}`;
-
-        //     document.getElementById("date").textContent = date;
-        //     document.getElementById("time").textContent = time;
-        // }
-
-        // // Run once and then every second
-        // updateDateTime();
-        // setInterval(updateDateTime, 1000);
     </script>
 
 </body>

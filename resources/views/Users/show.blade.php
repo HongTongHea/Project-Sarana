@@ -17,10 +17,6 @@
 
                         <!-- Profile Picture -->
                         <div class="row">
-                            <div class="detail-item d-flex align-items-center">
-                                <i class="fas fa-user-circle text-primary me-2"></i>
-                                <label class="text-muted small mb-1">Profile</label>
-                            </div>
                             <div class="col-4 d-flex flex-column align-items-center mb-4">
                                 <h3 class="text-muted">Profile Picture</h3>
                                 @if ($user->picture_url)
@@ -82,7 +78,8 @@
                         <!-- Action Buttons -->
                         <div class="d-flex justify-content-end">
                             <a href="{{ route('dashboard') }}" class="btn btn-secondary btn-sm me-2">Back</a>
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i
+                                    class="fa-solid fa-floppy-disk me-1"></i>Save</button>
                         </div>
                     </form>
                 </div>
@@ -99,7 +96,8 @@
                             @csrf
                             @method('DELETE')
                             <div class="d-flex justify-content-end mb-3">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete account</button>
+                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                        class="fa-solid fa-trash me-1"></i>Delete account</button>
                             </div>
                         </form>
                     </div>
