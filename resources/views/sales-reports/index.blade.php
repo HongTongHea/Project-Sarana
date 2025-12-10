@@ -98,12 +98,14 @@
 
                                                 <!-- Delete Report -->
                                                 <li>
-                                                    <button class="dropdown-item d-flex align-items-center"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal{{ $report->id }}">
-                                                        <i class="fa-solid fa-trash me-2 text-danger"></i>
-                                                        Delete
-                                                    </button>
+                                                    @if (Auth::user()->role === 'admin')
+                                                        <button class="dropdown-item d-flex align-items-center"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal{{ $report->id }}">
+                                                            <i class="fa-solid fa-trash me-2 text-danger"></i>
+                                                            Delete
+                                                        </button>
+                                                    @endif
                                                 </li>
                                             </ul>
                                         </div>

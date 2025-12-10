@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'AngkorTech Computer | Products List')
 @section('content')
-     <div class="container-fluid mt-3">
+    <div class="container-fluid mt-3">
         <div class="card shadow rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
@@ -85,12 +85,14 @@
 
                                                 <!-- Delete -->
                                                 <li>
-                                                    <button class="dropdown-item d-flex align-items-center"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal{{ $product->id }}">
-                                                        <i class="fa-solid fa-trash me-2 text-danger"></i>
-                                                        Delete
-                                                    </button>
+                                                    @if (Auth::user()->role === 'admin')
+                                                        <button class="dropdown-item d-flex align-items-center"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal{{ $product->id }}">
+                                                            <i class="fa-solid fa-trash me-2 text-danger"></i>
+                                                            Delete
+                                                        </button>
+                                                    @endif
                                                 </li>
                                             </ul>
                                         </div>

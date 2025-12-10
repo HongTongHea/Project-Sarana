@@ -38,11 +38,12 @@
                     }
                 }
 
-                // Determine role
+                // Determine role - FIXED: Admin and Manager are SEPARATE
                 if ($user) {
-                    $isAdmin = in_array($user->role, ['admin', 'manager']);
-                    $isCashier = $user->role === 'cashier';
-                    $isManager = $user->role === 'manager';
+                    $isAdmin = $user->role === 'admin'; // Only admin
+                    $isManager = $user->role === 'manager'; // Only manager
+                    $isCashier = $user->role === 'cashier'; // Only cashier
+                    $isAdminOrManager = $isAdmin || $isManager; // Both admin and manager
                 }
             @endphp
 
@@ -58,7 +59,7 @@
                 @endif
 
                 <!-- ADMIN & MANAGER ONLY MENU ITEMS -->
-                @if ($isAdmin || $isManager)
+                @if ($isAdminOrManager)
                     <li class="nav-section">
                         <span class="sidebar-mini-icon">
                             <i class="fa fa-ellipsis-h"></i>
@@ -121,8 +122,8 @@
                     </li>
                 @endif
 
-                <!-- SALES & TRANSACTIONS - Show to BOTH Admin and Cashier -->
-                @if ($isAdmin || $isCashier)
+                <!-- SALES & TRANSACTIONS - Show to Admin, Manager, AND Cashier -->
+                @if ($isAdmin || $isManager || $isCashier)
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base2">
                             <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -131,11 +132,16 @@
                         </a>
                         <div class="collapse" id="base2">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="{{ route('sales.create') }}">
-                                        <span class="sub-item">Sale</span>
-                                    </a>
-                                </li>
+                                <!-- Sale (Create New Sale) - Admin and Cashier only -->
+                                @if ($isAdmin || $isCashier)
+                                    <li>
+                                        <a href="{{ route('sales.create') }}">
+                                            <span class="sub-item">Create Sale</span>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                <!-- Sale History - All three roles -->
                                 <li>
                                     <a href="{{ route('sales.index') }}">
                                         <span class="sub-item">Sale History</span>
@@ -181,6 +187,7 @@
                             <p>Contact</p>
                         </a>
                     </li>
+                    <!-- NO User menu for manager -->
                 @endif
 
                 <!-- SETTINGS/LOGOUT - Show to ALL authenticated users -->
