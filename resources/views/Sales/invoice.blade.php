@@ -151,7 +151,7 @@
             </div>
 
             <!-- Footer -->
-            <div class="mt-5 pt-4 border-top text-center text-muted">
+            <div class="mt-2 pt-4 border-top text-center text-muted">
                 <p class="mb-1">Thank you for your business!</p>
                 <p class="mb-0">For any inquiries, please contact us at info@angkortech.com</p>
             </div>

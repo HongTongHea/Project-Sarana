@@ -97,7 +97,7 @@
                                                 @endif
 
                                                 <!-- Delete -->
-                                                <li>`
+                                                <li>
                                                     @if (Auth::user()->role === 'admin')
                                                         <button class="dropdown-item d-flex align-items-center"
                                                             data-bs-toggle="modal"

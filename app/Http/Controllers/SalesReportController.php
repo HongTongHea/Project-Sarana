@@ -138,4 +138,20 @@ class SalesReportController extends Controller
             'report' => $report
         ]);
     }
+      public function topItems(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after:start_date',
+            'limit' => 'nullable|integer|min:1|max:50',
+        ]);
+
+        $startDate = $request->start_date ? Carbon::parse($request->start_date) : null;
+        $endDate = $request->end_date ? Carbon::parse($request->end_date) : null;
+        $limit = $request->limit ?? 10;
+
+        $topItems = $this->salesReportService->getTopItems($limit, $startDate, $endDate);
+
+        return view('sales-reports.top-items', compact('topItems'));
+    }
 }

@@ -51,16 +51,27 @@
 
                                 <!-- Password -->
                                 <div class="form-group col-12 col-md-12">
-                                    <label for="password">Password</label>
-                                    <input type="password" name="password" id="password" class="form-control"
-                                        placeholder="Enter new password or keep existing">
+                                    <label for="password_{{ $user->id }}">Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" name="password" id="password_{{ $user->id }}"
+                                            class="form-control" placeholder="Enter new password or keep existing">
+                                        <i class="fa-solid fa-lock position-absolute"
+                                            id="togglePassword_{{ $user->id }}"
+                                            style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                                    </div>
                                 </div>
 
                                 <!-- Password Confirmation -->
                                 <div class="form-group col-12 col-md-12">
-                                    <label for="password_confirmation">Confirm Password</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control" placeholder="Confirm password">
+                                    <label for="password_confirmation_{{ $user->id }}">Confirm Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" name="password_confirmation"
+                                            id="password_confirmation_{{ $user->id }}" class="form-control"
+                                            placeholder="Confirm password">
+                                        <i class="fa-solid fa-lock position-absolute"
+                                            id="togglePasswordConfirm_{{ $user->id }}"
+                                            style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                                    </div>
                                 </div>
 
                             </div>
@@ -124,4 +135,46 @@
         const fileInput = document.getElementById(`edit_picture_url_${productId}`);
         fileInput.click(); // Trigger the file input dialog
     }
+
+    // Toggle Password Visibility for Edit Modal
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all edit modals
+        const editModals = document.querySelectorAll('[id^="editModal"]');
+
+        editModals.forEach(modal => {
+            modal.addEventListener('shown.bs.modal', function() {
+                const userId = this.id.replace('editModal', '');
+
+                // Password toggle
+                const togglePassword = document.getElementById(`togglePassword_${userId}`);
+                const passwordInput = document.getElementById(`password_${userId}`);
+
+                if (togglePassword && passwordInput) {
+                    togglePassword.addEventListener('click', function() {
+                        const type = passwordInput.getAttribute('type') === 'password' ?
+                            'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+                        this.classList.toggle('fa-lock');
+                        this.classList.toggle('fa-unlock');
+                    });
+                }
+
+                // Password confirmation toggle
+                const togglePasswordConfirm = document.getElementById(
+                    `togglePasswordConfirm_${userId}`);
+                const passwordConfirmInput = document.getElementById(
+                    `password_confirmation_${userId}`);
+
+                if (togglePasswordConfirm && passwordConfirmInput) {
+                    togglePasswordConfirm.addEventListener('click', function() {
+                        const type = passwordConfirmInput.getAttribute('type') ===
+                            'password' ? 'text' : 'password';
+                        passwordConfirmInput.setAttribute('type', type);
+                        this.classList.toggle('fa-lock');
+                        this.classList.toggle('fa-unlock');
+                    });
+                }
+            });
+        });
+    });
 </script>

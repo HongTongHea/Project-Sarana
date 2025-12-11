@@ -4,7 +4,6 @@
 
 @section('content')
     <div class="m-3 mt-4">
-
         <!-- Users Table -->
         <div class="card rounded-0 mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -106,7 +105,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
     </div>
 
     @include('users.create')

@@ -31,7 +31,7 @@
                                     <i class="fas fa-plus"></i> New Customer
                                 </button>
                                 <a href="{{ route('sales.index') }}" class="btn btn-primary mb-3 btn-sm">
-                                    <i class="fas fa-list"></i> Sale History</a>
+                                    <i class="bi bi-arrow-left-circle"></i> Back Sale History</a>
                             </div>
                             <div class="row">
                                 <div class="form-group mb-3 col-md-6">
@@ -135,9 +135,11 @@
                             <div class="mt-auto pt-3">
                                 <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale">Clear
+                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale"><i
+                                            class="fas fa-times me-1"></i> Clear
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale">Update
+                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale"><i
+                                            class="fa-solid fa-floppy-disk me-1"></i> Update
                                     </button>
                                     @include('Sales.payment')
                                     <!-- Include payment modal -->
@@ -427,7 +429,22 @@
             height: 25%;
         }
     </style>
+    <script>
+        // Mark this form as edit mode and pass existing payment data
+        $('#sale-form').data('edit-mode', true);
 
+        @if (isset($payment))
+            const salePayment = {
+                method: '{{ $payment->method }}',
+                amount: {{ $payment->amount }},
+                notes: '{{ $payment->notes ?? '' }}',
+                @if ($payment->method === 'cash')
+                    received: {{ $payment->received ?? 0 }},
+                    change: {{ $payment->change ?? 0 }}
+                @endif
+            };
+        @endif
+    </script>
     <script>
         let saleItems = [];
         document.addEventListener('DOMContentLoaded', function() {

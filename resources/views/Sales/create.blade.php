@@ -33,7 +33,7 @@
                                     <i class="fas fa-plus"></i> New Customer
                                 </button>
                                 <a href="{{ route('sales.index') }}" class="btn btn-primary mb-3 btn-sm">
-                                    <i class="fas fa-list"></i> Sale History</a>
+                                    <i class="bi bi-arrow-left-circle"></i> Back Sale History</a>
                             </div>
 
                             <div class="row">
@@ -137,9 +137,11 @@
 
                             <div class="mt-auto pt-3"> <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale">Clear
+                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale"><i
+                                            class="fas fa-times me-1"></i> Clear
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale">Check
+                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale"> <i
+                                            class="bi bi-check-lg"></i> Check
                                         Out</button>
                                     @include('Sales.payment') <!-- Include payment modal -->
                                 </div>

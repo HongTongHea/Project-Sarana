@@ -20,6 +20,9 @@
                         <option value="monthly">Monthly</option>
                         <option value="yearly">Yearly</option>
                     </select>
+                    <a href="{{ route('sales-reports.top.items') }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-chart-line"></i> View Top Items
+                    </a>
                 </div>
                 <div class="table-responsive">
                     <table id="DataTableReports" class="table mt-3 table-border table-hover">

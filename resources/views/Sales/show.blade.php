@@ -201,7 +201,7 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="text-center mt-5 pt-4 border-top">
+                    <div class="text-center mt-2 pt-4 border-top">
                         <p class="text-muted mb-2">
                             <i class="fas fa-heart text-danger me-1"></i>Thank you for your business!
                         </p>

@@ -1,11 +1,11 @@
 <div class="modal fade" id="showModal{{ $accessory->id }}" tabindex="-1" aria-labelledby="showModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0">
-            <div class="modal-header border-0 pb-0">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
                 <div class="d-flex justify-content-center align-items-center">
                     <h6 class="text-uppercase mt-3 ms-1 text-black" style="font-weight: 700; font-size: 16px">
-                        Product Details
+                        Accessory Details
                     </h6>
                 </div>
                 <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"
@@ -13,7 +13,7 @@
             </div>
 
             <div class="modal-body">
-                <!-- Product Information in Grid Layout -->
+                <!-- Accessory Information in Grid Layout -->
                 <div class="row g-3">
                     <!-- Image Column -->
                     <div class="col-md-4">
@@ -46,7 +46,7 @@
                                 </h6>
 
                                 <div class="mb-3">
-                                    <label class="small text-muted d-block mb-1">Product Name</label>
+                                    <label class="small text-muted d-block mb-1">Accessory Name</label>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-tag text-primary me-2"></i>
                                         <span class="fw-medium">{{ $accessory->name }}</span>
@@ -65,7 +65,7 @@
                                     <label class="small text-muted d-block mb-1">Barcode</label>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-barcode text-primary me-2"></i>
-                                        <span class="fw-medium">{{ $product->barcode }}</span>
+                                        <span class="fw-medium">{{ $Accessory->barcode }}</span>
                                     </div>
                                 </div> --}}
                             </div>

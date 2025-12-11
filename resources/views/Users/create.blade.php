@@ -57,9 +57,15 @@
                                             <label class="text-danger mt-1">{{ $errors->first('password') }}</label>
                                         @endif
                                     </label>
-                                    <input type="password" name="password" id="password" class="form-control"
-                                        {{ isset($user) ? '' : 'required' }} required placeholder="Enter password" />
+                                    <div class="position-relative">
+                                        <input type="password" name="password" id="password" class="form-control"
+                                            {{ isset($user) ? '' : 'required' }} required
+                                            placeholder="Enter password" />
+                                        <i class="fa-solid fa-lock position-absolute" id="togglePassword"
+                                            style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                                    </div>
                                 </div>
+
                                 <div class="form-group col-12 col-md-12">
                                     <label for="password_confirmation">Confirm Password
                                         @if ($errors->has('password_confirmation'))
@@ -67,9 +73,13 @@
                                                 class="text-danger mt-1">{{ $errors->first('password_confirmation') }}</label>
                                         @endif
                                     </label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control" {{ isset($user) ? '' : 'required' }} required
-                                        placeholder="Enter confirm password" />
+                                    <div class="position-relative">
+                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                            class="form-control" {{ isset($user) ? '' : 'required' }} required
+                                            placeholder="Enter confirm password" />
+                                        <i class="fa-solid fa-lock position-absolute" id="togglePasswordConfirm"
+                                            style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +115,7 @@
         </div>
     </div>
 </div>
-</div>
+
 <script>
     function triggerFileInput() {
         document.getElementById('picture_url').click();
@@ -122,4 +132,30 @@
             reader.readAsDataURL(file);
         }
     }
+
+    // Toggle Password Visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        // Toggle eye icon
+        this.classList.toggle('fa-lock');
+        this.classList.toggle('fa-unlock');
+    });
+
+    // Toggle Password Confirmation Visibility
+    const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+    const passwordConfirmInput = document.getElementById('password_confirmation');
+
+    togglePasswordConfirm.addEventListener('click', function() {
+        const type = passwordConfirmInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordConfirmInput.setAttribute('type', type);
+
+        // Toggle eye icon
+        this.classList.toggle('fa-lock');
+        this.classList.toggle('fa-unlock');
+    });
 </script>

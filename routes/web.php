@@ -66,13 +66,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 // Profile
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-Route::post('/profile/picture', [AuthController::class, 'updateProfilePicture'])->name('profile.picture.update');
+
 
 Route::middleware(['auth:admin,manager,cashier,customer'])->group(function () {
-
+    Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
+    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profile/picture', [UserController::class, 'updateProfilePicture'])->name('profile.picture.update');
     // Sales
     Route::get('sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.search-products');
     Route::get('sales/search-accessories', [SaleController::class, 'searchAccessories'])->name('sales.search-accessories');
@@ -118,7 +118,7 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::resource('suppliers', SupplierController::class);
     Route::resource('purchase_orders', PurchaseOrderController::class);
 
-
+    Route::get('/sales-reports/top-items', [SalesReportController::class, 'topItems'])->name('sales-reports.top.items');
     Route::get('/sales-reports', [SalesReportController::class, 'index'])->name('sales-reports.index');
     Route::get('/sales-reports/{id}', [SalesReportController::class, 'show'])->name('sales-reports.show');
     Route::get('/sales-reports/{id}/data', [SalesReportController::class, 'getReportData'])->name('sales-reports.data');
@@ -127,6 +127,7 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::post('/sales-reports/yearly', [SalesReportController::class, 'generateYearlyReport'])->name('sales-reports.generate-yearly');
     Route::delete('/sales-reports/{id}', [SalesReportController::class, 'destroy'])->name('sales-reports.destroy');
 });
+
 
 // Legacy dashboard route for backward compatibility
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');;

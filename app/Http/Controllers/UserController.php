@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 
@@ -22,15 +24,17 @@ class UserController extends Controller
         return view('dashboard', compact('users'));
     }
 
+    protected function getAuthenticatedUser()
+    {
+        return Auth::user();
+    }
+
     public function index(Request $request)
     {
         $users = User::all();
 
         return view('users.index', compact('users'));
     }
-
-
-
 
     public function create()
     {
@@ -75,6 +79,45 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
+
+
+    /**
+     * Update profile picture
+     */
+    public function updateProfilePicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        $user = $this->getAuthenticatedUser(); // Now this will work
+
+        if (!$user) {
+            return back()->withErrors(['profile_picture' => 'No authenticated user found.']);
+        }
+
+        if ($user->picture_url) {
+            Storage::disk('public')->delete($user->picture_url);
+        }
+
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $user->picture_url = $path;
+        $user->save();
+
+        return redirect()->route('profile')->with('success', 'Profile picture updated successfully.');
+    }
+
+    public function showProfile()
+    {
+    $user = Auth::user(); // This is correct
+    
+    if (!$user) {
+        return redirect()->route('login')->with('error', 'Please login to view your profile.');
+    }
+    
+    return view('users.show', compact('user'));
+    }
+    
     public function edit(User $user)
     {
         return view('users.edit', compact('user'));

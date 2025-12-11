@@ -1,7 +1,7 @@
 <div class="modal fade" id="showModal{{ $product->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0">
-            <div class="modal-header border-0 pb-0">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
                 <div class="d-flex justify-content-center align-items-center">
                     <h6 class="text-uppercase mt-3 ms-1 text-black" style="font-weight: 700; font-size: 16px">
                         Product Details

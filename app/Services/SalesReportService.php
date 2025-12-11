@@ -136,4 +136,70 @@ class SalesReportService
 
         return $query->orderBy('created_at', 'desc')->paginate($limit);
     }
+
+    public function getTopItems($limit = 10, $startDate = null, $endDate = null)
+    {
+        if (!$startDate) {
+            $startDate = Carbon::now()->startOfMonth();
+        }
+        if (!$endDate) {
+            $endDate = Carbon::now()->endOfMonth();
+        }
+
+        // Get top items from sale_items table
+        $topItems = DB::table('sale_items')
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->whereBetween('sales.created_at', [$startDate, $endDate])
+            ->where('sales.status', 'completed')
+            ->select([
+                'sale_items.item_type',
+                'sale_items.item_id',
+                DB::raw('SUM(sale_items.quantity) as total_quantity'),
+                DB::raw('SUM(sale_items.total) as total_revenue'),
+            ])
+            ->groupBy('sale_items.item_type', 'sale_items.item_id')
+            ->orderByDesc('total_quantity')
+            ->limit($limit)
+            ->get();
+
+        // Process items to get details and images
+        $processedItems = [];
+        
+        foreach ($topItems as $item) {
+            $itemDetails = null;
+            $imageUrl = null;
+            
+            if ($item->item_type === 'product' && class_exists(Product::class)) {
+                $product = Product::find($item->item_id);
+                if ($product) {
+                    $itemDetails = $product;
+                    $imageUrl = $product->image_url ?? 
+                               ($product->image ? asset('storage/' . $product->image) : 
+                               asset('images/default-product.png'));
+                }
+            } elseif ($item->item_type === 'accessory' && class_exists(Accessory::class)) {
+                $accessory = Accessory::find($item->item_id);
+                if ($accessory) {
+                    $itemDetails = $accessory;
+                    $imageUrl = $accessory->image_url ?? 
+                               ($accessory->image ? asset('storage/' . $accessory->image) : 
+                               asset('images/default-accessory.png'));
+                }
+            }
+            
+            if ($itemDetails) {
+                $processedItems[] = [
+                    'type' => $item->item_type,
+                    'id' => $item->item_id,
+                    'name' => $itemDetails->name ?? 'Unknown Item',
+                    'image_url' => $imageUrl,
+                    'total_quantity' => $item->total_quantity,
+                    'total_revenue' => $item->total_revenue,
+                    'item' => $itemDetails
+                ];
+            }
+        }
+
+        return $processedItems;
+    }
 }
