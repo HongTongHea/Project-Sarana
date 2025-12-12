@@ -23,9 +23,9 @@
                                 <th>Date</th>
                                 <th>Product</th>
                                 <th>Items</th>
-                                {{-- <th>Qty</th> --}}
+                                <th>Qty</th>
                                 <th>Subtotal</th>
-                                <th>Tax</th>
+                                {{-- <th>Tax</th> --}}
                                 <th>Discount</th>
                                 <th>Total</th>
                                 <th>Status</th>
@@ -52,8 +52,9 @@
                                         @endforeach
                                     </td>
                                     <td>{{ $sale->items->count() }}</td>
+                                    <td>{{ $sale->items->sum('quantity') }}</td>
                                     <td>${{ number_format($sale->subtotal, 2) }}</td>
-                                    <td>${{ number_format($sale->tax_amount, 2) }}</td>
+                                    {{-- <td>${{ number_format($sale->tax_amount, 2) }}</td> --}}
                                     <td>${{ number_format($sale->additional_discount, 2) }}</td>
                                     <td>${{ number_format($sale->total, 2) }}</td>
                                     <td>

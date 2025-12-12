@@ -23,6 +23,7 @@ use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CheckoutOrderController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AboutpageController;
+use App\Http\Controllers\SaleAnalysisController;
 
 
 /*
@@ -105,6 +106,8 @@ Route::middleware(['auth:cashier'])->group(function () {
 | Admin, Manager, Cashier shared resources
 |--------------------------------------------------------------------------
 */
+  
+
 Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     // Shared resources with role-based authorization in controllers
     Route::resource('users', UserController::class);
@@ -118,7 +121,15 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::resource('suppliers', SupplierController::class);
     Route::resource('purchase_orders', PurchaseOrderController::class);
 
-    Route::get('/sales-reports/top-items', [SalesReportController::class, 'topItems'])->name('sales-reports.top.items');
+    // Sale Analysis Routes
+    Route::prefix('sale-analysis')->name('sale-analysis.')->group(function () {
+    Route::get('/', [SaleAnalysisController::class, 'index'])->name('index');
+    Route::get('/report', [SaleAnalysisController::class, 'topItemsReport'])->name('report');
+    Route::get('/item/{itemType}/{itemId}', [SaleAnalysisController::class, 'itemDetail'])->name('item-detail');
+    });
+
+
+    // Sales Report Routes
     Route::get('/sales-reports', [SalesReportController::class, 'index'])->name('sales-reports.index');
     Route::get('/sales-reports/{id}', [SalesReportController::class, 'show'])->name('sales-reports.show');
     Route::get('/sales-reports/{id}/data', [SalesReportController::class, 'getReportData'])->name('sales-reports.data');

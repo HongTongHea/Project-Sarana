@@ -156,6 +156,12 @@
                 @if ($isAdmin)
                     <!-- Admin sees Reports, Contact, AND User -->
                     <li class="nav-item">
+                        <a href="{{ route('sale-analysis.index') }}">
+                            <i class="bi bi-bar-chart-fill"></i>
+                            <p>Top Sales Items</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('sales-reports.index') }}">
                             <i class="fa-solid fa-chart-column"></i>
                             <p>Reports</p>
@@ -175,6 +181,13 @@
                     </li>
                 @elseif ($isManager)
                     <!-- Manager sees Reports and Contact (NO User) -->
+                    <li class="nav-item">
+                        <a href="{{ route('sale-analysis.index') }}">
+                            <i class="bi bi-bar-chart-fill"></i>
+                            <p>Top Sales Items</p>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sales-reports.index') }}">
                             <i class="fa-solid fa-chart-column"></i>

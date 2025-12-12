@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Sale;
 use App\Models\SalesReport;
+use App\Models\Product;
+use App\Models\Accessory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +56,7 @@ class SalesReportService
             return $existingReport;
         }
 
-        // Get sales data - fix the query to handle null values
+        // Get sales data
         $salesData = Sale::whereBetween('created_at', [$startDate, $endDate])
             ->where('status', 'completed')
             ->select([
@@ -78,25 +80,12 @@ class SalesReportService
             ->groupBy('date')
             ->get();
 
-        // Get top products - UPDATED: Changed from order_items to sale_items
-        $topProducts = DB::table('sale_items')
-            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
-            ->whereBetween('sales.created_at', [$startDate, $endDate])
-            ->where('sales.status', 'completed')
-            ->select([
-                'sale_items.item_type',
-                'sale_items.item_id',
-                DB::raw('COALESCE(SUM(sale_items.quantity), 0) as total_quantity'),
-                DB::raw('COALESCE(SUM(sale_items.total), 0) as total_revenue'),
-            ])
-            ->groupBy('sale_items.item_type', 'sale_items.item_id')
-            ->orderByDesc('total_revenue')
-            ->limit(10)
-            ->get();
+        // Get top items (products + accessories)
+        $topItems = $this->getTopItems(10, $startDate, $endDate);
 
         $reportData = [
             'daily_breakdown' => $dailyBreakdown,
-            'top_products' => $topProducts,
+            'top_items' => $topItems,
             'unique_customers' => $salesData->unique_customers ?? 0,
             'paid_amount' => $salesData->paid_amount ?? 0,
             'pending_amount' => ($salesData->total_sales ?? 0) - ($salesData->paid_amount ?? 0),
@@ -146,7 +135,7 @@ class SalesReportService
             $endDate = Carbon::now()->endOfMonth();
         }
 
-        // Get top items from sale_items table
+        // Get top items from sale_items table (both products and accessories)
         $topItems = DB::table('sale_items')
             ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
             ->whereBetween('sales.created_at', [$startDate, $endDate])
@@ -168,11 +157,15 @@ class SalesReportService
         foreach ($topItems as $item) {
             $itemDetails = null;
             $imageUrl = null;
+            $itemName = 'Unknown Item';
+            $itemTypeFormatted = ucfirst($item->item_type);
             
+            // Get item details based on type
             if ($item->item_type === 'product' && class_exists(Product::class)) {
                 $product = Product::find($item->item_id);
                 if ($product) {
                     $itemDetails = $product;
+                    $itemName = $product->name;
                     $imageUrl = $product->image_url ?? 
                                ($product->image ? asset('storage/' . $product->image) : 
                                asset('images/default-product.png'));
@@ -181,6 +174,7 @@ class SalesReportService
                 $accessory = Accessory::find($item->item_id);
                 if ($accessory) {
                     $itemDetails = $accessory;
+                    $itemName = $accessory->name;
                     $imageUrl = $accessory->image_url ?? 
                                ($accessory->image ? asset('storage/' . $accessory->image) : 
                                asset('images/default-accessory.png'));
@@ -190,16 +184,48 @@ class SalesReportService
             if ($itemDetails) {
                 $processedItems[] = [
                     'type' => $item->item_type,
+                    'type_formatted' => $itemTypeFormatted,
                     'id' => $item->item_id,
-                    'name' => $itemDetails->name ?? 'Unknown Item',
+                    'name' => $itemName,
                     'image_url' => $imageUrl,
                     'total_quantity' => $item->total_quantity,
                     'total_revenue' => $item->total_revenue,
+                    'average_price' => $item->total_quantity > 0 ? $item->total_revenue / $item->total_quantity : 0,
                     'item' => $itemDetails
                 ];
             }
         }
 
         return $processedItems;
+    }
+
+    public function getTopItemsReport($startDate = null, $endDate = null, $limit = 10)
+    {
+        if (!$startDate) {
+            $startDate = Carbon::now()->subMonth()->startOfMonth();
+        }
+        if (!$endDate) {
+            $endDate = Carbon::now()->endOfMonth();
+        }
+
+        $topItems = $this->getTopItems($limit, $startDate, $endDate);
+
+        // Get sales summary for the period
+        $salesSummary = Sale::whereBetween('created_at', [$startDate, $endDate])
+            ->where('status', 'completed')
+            ->select([
+                DB::raw('COUNT(*) as total_orders'),
+                DB::raw('COALESCE(SUM(total), 0) as total_sales'),
+                DB::raw('COALESCE(COUNT(DISTINCT customer_id), 0) as unique_customers'),
+            ])
+            ->first();
+
+        return [
+            'top_items' => $topItems,
+            'sales_summary' => $salesSummary,
+            'start_date' => $startDate->format('Y-m-d'),
+            'end_date' => $endDate->format('Y-m-d'),
+            'period_formatted' => $startDate->format('M d, Y') . ' to ' . $endDate->format('M d, Y')
+        ];
     }
 }
