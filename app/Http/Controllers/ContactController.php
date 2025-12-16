@@ -163,28 +163,28 @@ class ContactController extends Controller
             ->with('success', 'Contact message deleted successfully.');
     }
 
-    /**
-     * Get unread contact messages count
-     */
-    public function unreadCount()
-    {
-        $count = Contact::where('read_status', false)->count();
+    // /**
+    //  * Get unread contact messages count
+    //  */
+    // public function unreadCount()
+    // {
+    //     $count = Contact::where('read_status', false)->count();
 
-        return response()->json([
-            'unread_count' => $count
-        ]);
-    }
+    //     return response()->json([
+    //         'unread_count' => $count
+    //     ]);
+    // }
 
-    /**
-     * Mark a contact message as read
-     */
-    public function markAsRead(Contact $contact)
-    {
-        $contact->update(['read_status' => true]);
+    // /**
+    //  * Mark a contact message as read
+    //  */
+    // public function markAsRead(Contact $contact)
+    // {
+    //     $contact->update(['read_status' => true]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Message marked as read'
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Message marked as read'
+    //     ]);
+    // }
 }

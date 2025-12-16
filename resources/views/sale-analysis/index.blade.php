@@ -35,9 +35,11 @@
                                     <option value="all" {{ request('item_type') == 'all' ? 'selected' : '' }}>All Types
                                     </option>
                                     <option value="product" {{ request('item_type') == 'product' ? 'selected' : '' }}>
-                                        Products Only</option>
+                                        Products Only
+                                    </option>
                                     <option value="accessory" {{ request('item_type') == 'accessory' ? 'selected' : '' }}>
-                                        Accessories Only</option>
+                                        Accessories Only
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -247,11 +249,6 @@
             font-weight: 500;
             padding: 0.375rem 0.75rem;
         }
-
-        /* .card-header {
-                                                                                                                                                                                                                                                                                                border-bottom: none;
-                                                                                                                                                                                                                                                                                                padding: 1rem 1.25rem;
-                                                                                                                                                                                                                                                                                            } */
 
         .card-footer {
             border-top: 1px solid rgba(0, 0, 0, 0.05);

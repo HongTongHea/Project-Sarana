@@ -27,6 +27,42 @@
     <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Store initial state
+            const initialProductCount = {{ $products->count() }};
+            const initialAccessoryCount = {{ $accessories->count() }};
+            const initialProductUpdate = '{{ $products->max('updated_at') }}';
+            const initialAccessoryUpdate = '{{ $accessories->max('updated_at') }}';
+
+            // Check every 10 seconds
+            setInterval(function() {
+                fetch('{{ route('check.updates') }}', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Check for INSERT (count changed)
+                        const countChanged = data.productCount !== initialProductCount ||
+                            data.accessoryCount !== initialAccessoryCount;
+
+                        // Check for UPDATE (timestamp changed)
+                        const productUpdated = data.latestProductUpdate !== initialProductUpdate;
+                        const accessoryUpdated = data.latestAccessoryUpdate !== initialAccessoryUpdate;
+
+                        // Refresh if anything changed
+                        if (countChanged || productUpdated || accessoryUpdated) {
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }, 10000); // Check every 10 seconds
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             // Get current page URL
             const currentUrl = window.location.href;
 

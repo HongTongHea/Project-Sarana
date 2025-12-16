@@ -11,14 +11,22 @@ use Illuminate\Support\Str;
 
 class SaleAnalysisController extends Controller
 {
-    // public function __construct()
-    // {
-    //     // Apply auth middleware to all methods
-    //     $this->middleware('auth:admin,manager,cashier');
-    // }
     
     public function index(Request $request)
     {
+        $period = $request->get('period', 'all');
+        $itemType = $request->get('item_type', 'all');
+        $minRevenue = $request->get('min_revenue');
+
+        $query = SaleItem::query();
+    
+        // Handle item_type filter
+        if ($itemType === 'product') {
+            $query->where('item_type', 'App\Models\Product');
+        } elseif ($itemType === 'accessory') {
+            $query->where('item_type', 'App\Models\Accessory');
+        }
+        
         // Get period from request or default to 'all'
         $period = $request->get('period', 'all');
         

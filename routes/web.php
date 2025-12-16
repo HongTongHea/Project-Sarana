@@ -36,6 +36,7 @@ Route::get('/', [HomepageController::class, 'index'])->name('homepage.index');
 Route::get('/productpage', [ProductpageController::class, 'index'])->name('productpage.index');
 Route::get('/allproductpage', [AllproductpageController::class, 'index'])->name('allproductpage.index');
 Route::get('/aboutpage', [AboutpageController::class, 'index'])->name('aboutpage.index');
+Route::get('/check-updates', [HomepageController::class, 'checkUpdates'])->name('check.updates');
 
 
 /*

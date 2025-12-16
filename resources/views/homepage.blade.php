@@ -84,8 +84,13 @@
                             @endif
 
                             <div class="overflow-hidden product-image-container position-relative">
-                                <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
-                                    class="card-img-top img-fluid product-image mt-2">
+                                @if ($product->picture_url)
+                                    <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
+                                        class="card-img-top img-fluid product-image mt-2">
+                                @else
+                                    <img src="{{ asset('assets/img/image.png') }}"
+                                        class="card-img-top img-fluid product-image mt-2">
+                                @endif
 
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
@@ -171,8 +176,14 @@
                                             @endif
 
                                             <div class="rog-product-thumb">
-                                                <img src="{{ asset('storage/' . $product->picture_url) }}"
-                                                    alt="{{ $product->name }}">
+                                                @if ($product->picture_url)
+                                                    <img src="{{ asset('storage/' . $product->picture_url) }}"
+                                                        alt="{{ $product->name }}"
+                                                        class="card-img-top img-fluid product-image mt-2">
+                                                @else
+                                                    <img src="{{ asset('assets/img/image.png') }}"
+                                                        class="card-img-top img-fluid product-image mt-2">
+                                                @endif
                                             </div>
 
                                             <div class="rog-product-info">
@@ -258,9 +269,13 @@
                                     class="badge bg-danger position-absolute top-0 start-0 m-2 z-3">-{{ $accessory->discount_percentage }}%</span>
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
-                                <img src="{{ asset('storage/' . $accessory->picture_url) }}"
-                                    alt="{{ $accessory->name }}" class="card-img-top img-fluid product-image mt-2">
-
+                                @if ($accessory->picture_url)
+                                    <img src="{{ asset('storage/' . $accessory->picture_url) }}"
+                                        alt="{{ $accessory->name }}" class="card-img-top img-fluid product-image mt-2">
+                                @else
+                                    <img src="{{ asset('assets/img/image.png') }}"
+                                        class="card-img-top img-fluid product-image mt-2">
+                                @endif
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
                                     style="margin-top: 8rem !important;">
@@ -381,4 +396,22 @@
     </div>
 
     <div id="cartToastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const initialProductCount = {{ $products->count() }};
+            const initialAccessoryCount = {{ $accessories->count() }};
+
+            setInterval(function() {
+                fetch('{{ route('check.updates') }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.productCount > initialProductCount || data.accessoryCount >
+                            initialAccessoryCount) {
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }, 10000);
+        });
+    </script>
 @endsection

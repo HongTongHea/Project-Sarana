@@ -62,7 +62,7 @@
                                 <div class="form-group col-12 col-md-4">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
-                                        value="{{ old('stock_quantity') }}" required min="0"
+                                        value="{{ old('stock_quantity', 0) }}" min="0"
                                         placeholder="Enter stock quantity">
                                 </div>
 
