@@ -180,11 +180,19 @@
                                 placeholder="Password" required>
                             <i class="fa-solid fa-lock icon toggle-password" data-target="password"></i>
                         </div>
+                        <p id="passwordHint" class="form-text text-muted d-none mt-2">
+                            Password must be at least 8 characters.
+                        </p>
+
                         <div class="mb-3 position-relative">
                             <input type="password" class="form-control" id="password_confirmation"
                                 name="password_confirmation" placeholder="Confirm Password" required>
                             <i class="fa-solid fa-lock icon toggle-password" data-target="password_confirmation"></i>
                         </div>
+                        <p id="passwordConfirmHint" class="form-text text-muted d-none mt-2">
+                            Password must match the confirmation field.
+                        </p>
+
 
                         <button type="submit" class="btn btn-primary w-100 fw-bold">Sign Up</button>
 
@@ -206,6 +214,21 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const passwordHint = document.getElementById('passwordHint');
+
+            const confirmInput = document.getElementById('password_confirmation');
+            const confirmHint = document.getElementById('passwordConfirmHint');
+
+            // Show hint on focus
+            passwordInput.addEventListener('focus', () => passwordHint.classList.remove('d-none'));
+            passwordInput.addEventListener('blur', () => passwordHint.classList.add('d-none'));
+
+            confirmInput.addEventListener('focus', () => confirmHint.classList.remove('d-none'));
+            confirmInput.addEventListener('blur', () => confirmHint.classList.add('d-none'));
+        });;
+
         document.addEventListener('DOMContentLoaded', () => {
             // Select all toggle password icons
             const toggleIcons = document.querySelectorAll('.toggle-password');
