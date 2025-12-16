@@ -59,6 +59,12 @@
                                             id="togglePassword_{{ $user->id }}"
                                             style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                                     </div>
+                                    <small id="passwordHint_{{ $user->id }}" class="text-muted d-none">
+                                        Password is required, must be at least 8 characters.
+                                    </small>
+                                    @if ($errors->has('password'))
+                                        <label class="text-danger mt-1">{{ $errors->first('password') }}</label>
+                                    @endif
                                 </div>
 
                                 <!-- Password Confirmation -->
@@ -72,8 +78,14 @@
                                             id="togglePasswordConfirm_{{ $user->id }}"
                                             style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                                     </div>
+                                    <small id="passwordConfirmHint_{{ $user->id }}" class="text-muted d-none">
+                                        Password must match the confirmation field.
+                                    </small>
+                                    @if ($errors->has('password_confirmation'))
+                                        <label
+                                            class="text-danger mt-1">{{ $errors->first('password_confirmation') }}</label>
+                                    @endif
                                 </div>
-
                             </div>
                         </div>
 
@@ -116,65 +128,75 @@
 </div>
 
 <script>
-    // Function to show the image preview when a file is selected
-    function showEditPreview(event, productId) {
-        const fileInput = event.target;
-        const previewImage = document.getElementById(`edit_imagePreview_${productId}`);
-
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImage.src = e.target.result; // Update preview with the selected image
-            };
-            reader.readAsDataURL(fileInput.files[0]); // Read the file as a Data URL
-        }
-    }
-
-    // Function to trigger the file input click when the preview is clicked
-    function triggerEditFileInput(productId) {
-        const fileInput = document.getElementById(`edit_picture_url_${productId}`);
-        fileInput.click(); // Trigger the file input dialog
-    }
-
-    // Toggle Password Visibility for Edit Modal
     document.addEventListener('DOMContentLoaded', function() {
-        // Get all edit modals
-        const editModals = document.querySelectorAll('[id^="editModal"]');
 
-        editModals.forEach(modal => {
-            modal.addEventListener('shown.bs.modal', function() {
-                const userId = this.id.replace('editModal', '');
+        // ---- PASSWORD HINTS ----
+        document.querySelectorAll('[id^="password_"]').forEach(passwordInput => {
+            const userId = passwordInput.id.replace('password_', '');
+            const passwordHint = document.getElementById('passwordHint_' + userId);
 
-                // Password toggle
-                const togglePassword = document.getElementById(`togglePassword_${userId}`);
-                const passwordInput = document.getElementById(`password_${userId}`);
-
-                if (togglePassword && passwordInput) {
-                    togglePassword.addEventListener('click', function() {
-                        const type = passwordInput.getAttribute('type') === 'password' ?
-                            'text' : 'password';
-                        passwordInput.setAttribute('type', type);
-                        this.classList.toggle('fa-lock');
-                        this.classList.toggle('fa-unlock');
-                    });
-                }
-
-                // Password confirmation toggle
-                const togglePasswordConfirm = document.getElementById(
-                    `togglePasswordConfirm_${userId}`);
-                const passwordConfirmInput = document.getElementById(
-                    `password_confirmation_${userId}`);
-
-                if (togglePasswordConfirm && passwordConfirmInput) {
-                    togglePasswordConfirm.addEventListener('click', function() {
-                        const type = passwordConfirmInput.getAttribute('type') ===
-                            'password' ? 'text' : 'password';
-                        passwordConfirmInput.setAttribute('type', type);
-                        this.classList.toggle('fa-lock');
-                        this.classList.toggle('fa-unlock');
-                    });
-                }
-            });
+            if (passwordHint) {
+                passwordInput.addEventListener('focus', () => passwordHint.classList.remove('d-none'));
+                passwordInput.addEventListener('blur', () => passwordHint.classList.add('d-none'));
+            }
         });
+
+        document.querySelectorAll('[id^="password_confirmation_"]').forEach(confirmInput => {
+            const userId = confirmInput.id.replace('password_confirmation_', '');
+            const confirmHint = document.getElementById('passwordConfirmHint_' + userId);
+
+            if (confirmHint) {
+                confirmInput.addEventListener('focus', () => confirmHint.classList.remove('d-none'));
+                confirmInput.addEventListener('blur', () => confirmHint.classList.add('d-none'));
+            }
+        });
+
+        // ---- TOGGLE PASSWORD VISIBILITY ----
+        document.querySelectorAll('[id^="togglePassword_"]').forEach(toggle => {
+            const userId = toggle.id.replace('togglePassword_', '');
+            const passwordInput = document.getElementById('password_' + userId);
+
+            if (passwordInput) {
+                toggle.addEventListener('click', function() {
+                    const type = passwordInput.type === 'password' ? 'text' : 'password';
+                    passwordInput.type = type;
+                    this.classList.toggle('fa-lock');
+                    this.classList.toggle('fa-unlock');
+                });
+            }
+        });
+
+        document.querySelectorAll('[id^="togglePasswordConfirm_"]').forEach(toggle => {
+            const userId = toggle.id.replace('togglePasswordConfirm_', '');
+            const confirmInput = document.getElementById('password_confirmation_' + userId);
+
+            if (confirmInput) {
+                toggle.addEventListener('click', function() {
+                    const type = confirmInput.type === 'password' ? 'text' : 'password';
+                    confirmInput.type = type;
+                    this.classList.toggle('fa-lock');
+                    this.classList.toggle('fa-unlock');
+                });
+            }
+        });
+
+        // ---- IMAGE PREVIEW FUNCTIONS ----
+        window.showEditPreview = function(event, userId) {
+            const fileInput = event.target;
+            const previewImage = document.getElementById(`edit_imagePreview_${userId}`);
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        window.triggerEditFileInput = function(userId) {
+            const fileInput = document.getElementById(`edit_picture_url_${userId}`);
+            fileInput.click();
+        }
+
     });
 </script>

@@ -427,6 +427,7 @@
         .col-lg-3 {
             width: 25%;
             height: 25%;
+            padding: 5px;
         }
     </style>
     <script>

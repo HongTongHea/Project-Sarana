@@ -56,7 +56,7 @@
 
                                     <td>${{ number_format($order->total_amount, 2) }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $order->status == 'pending' ? 'warning' : 'success' }}">
+                                        <span class="badge bg-{{ $order->status == 'pending' ? 'danger' : 'success' }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>

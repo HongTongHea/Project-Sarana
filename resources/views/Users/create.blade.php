@@ -59,11 +59,13 @@
                                     </label>
                                     <div class="position-relative">
                                         <input type="password" name="password" id="password" class="form-control"
-                                            {{ isset($user) ? '' : 'required' }} required
-                                            placeholder="Enter password" />
+                                            {{ isset($user) ? '' : 'required' }} placeholder="Enter password" />
                                         <i class="fa-solid fa-lock position-absolute" id="togglePassword"
                                             style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                                     </div>
+                                    <small id="passwordHint" class="text-muted d-none">
+                                        Password is required, must be at least 8 characters.
+                                    </small>
                                 </div>
 
                                 <div class="form-group col-12 col-md-12">
@@ -75,12 +77,16 @@
                                     </label>
                                     <div class="position-relative">
                                         <input type="password" name="password_confirmation" id="password_confirmation"
-                                            class="form-control" {{ isset($user) ? '' : 'required' }} required
+                                            class="form-control" {{ isset($user) ? '' : 'required' }}
                                             placeholder="Enter confirm password" />
                                         <i class="fa-solid fa-lock position-absolute" id="togglePasswordConfirm"
                                             style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                                     </div>
+                                    <small id="passwordConfirmHint" class="text-muted d-none">
+                                        Password must match the confirmation field.
+                                    </small>
                                 </div>
+
                             </div>
                         </div>
                         <div class="col-12 col-md-5 p-0 mt-md-0 mt-3">
@@ -117,6 +123,21 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const passwordHint = document.getElementById('passwordHint');
+
+        const confirmInput = document.getElementById('password_confirmation');
+        const confirmHint = document.getElementById('passwordConfirmHint');
+
+        // Show hint on focus
+        passwordInput.addEventListener('focus', () => passwordHint.classList.remove('d-none'));
+        passwordInput.addEventListener('blur', () => passwordHint.classList.add('d-none'));
+
+        confirmInput.addEventListener('focus', () => confirmHint.classList.remove('d-none'));
+        confirmInput.addEventListener('blur', () => confirmHint.classList.add('d-none'));
+    });;
+
     function triggerFileInput() {
         document.getElementById('picture_url').click();
     }

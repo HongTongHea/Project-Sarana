@@ -4,11 +4,11 @@
     {{-- Hero Section --}}
     <section>
         <div class="hero-slideshow">
-            <div class="slide slide-1 active" style="background-image: url('assets/img/slide (7).png');">
+            <div class="slide slide-1 active" style="background-image: url('assets/img/slide (9).png');">
             </div>
             <div class="slide slide-2" style="background-image: url('assets/img/slide (6).png');">
             </div>
-            <div class="slide slide-3" style="background-image: url('assets/img/slide (9).png');">
+            <div class="slide slide-3" style="background-image: url('assets/img/slide (7).png');">
             </div>
             <div class="slide-nav">
                 <button class="slide-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -33,9 +33,9 @@
         </div>
         <div class="row" id="categories-section">
             @foreach ($categories as $index => $category)
-                @if ($index >= 5)
+                {{-- @if ($index >= 5)
                     @break
-                @endif
+                @endif --}}
                 <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-5">
                     <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
                         data-category-id="{{ $category->id }}" style="cursor: pointer;">
@@ -398,20 +398,38 @@
     <div id="cartToastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Store initial state
             const initialProductCount = {{ $products->count() }};
             const initialAccessoryCount = {{ $accessories->count() }};
+            const initialProductUpdate = '{{ $products->max('updated_at') }}';
+            const initialAccessoryUpdate = '{{ $accessories->max('updated_at') }}';
 
+            // Check every 10 seconds
             setInterval(function() {
-                fetch('{{ route('check.updates') }}')
+                fetch('{{ route('check.updates') }}', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.productCount > initialProductCount || data.accessoryCount >
-                            initialAccessoryCount) {
+                        // Check for INSERT (count changed)
+                        const countChanged = data.productCount !== initialProductCount ||
+                            data.accessoryCount !== initialAccessoryCount;
+
+                        // Check for UPDATE (timestamp changed)
+                        const productUpdated = data.latestProductUpdate !== initialProductUpdate;
+                        const accessoryUpdated = data.latestAccessoryUpdate !== initialAccessoryUpdate;
+
+                        // Refresh if anything changed
+                        if (countChanged || productUpdated || accessoryUpdated) {
                             location.reload();
                         }
                     })
                     .catch(error => console.error('Error:', error));
-            }, 10000);
+            }, 10000); // Check every 10 seconds
         });
     </script>
 @endsection
