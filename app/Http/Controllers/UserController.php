@@ -109,7 +109,7 @@ class UserController extends Controller
 
     public function showProfile()
     {
-    $user = Auth::user(); // This is correct
+    $user = Auth::user(); 
     
     if (!$user) {
         return redirect()->route('login')->with('error', 'Please login to view your profile.');

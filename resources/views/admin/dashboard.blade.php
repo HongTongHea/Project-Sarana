@@ -97,7 +97,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                <div class="icon-big text-center icon-success bubble-shadow-small">
                                     <i class="far fa-check-circle"></i>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                <div class="icon-big text-center icon-info bubble-shadow-small">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                <div class="icon-big text-center icon-success bubble-shadow-small">
                                     <i class="fa-solid fa-bag-shopping"></i>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                <div class="icon-big text-center icon-success bubble-shadow-small">
                                     <i class="bi bi-basket2-fill"></i>
                                 </div>
                             </div>
@@ -206,7 +206,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                <div class="icon-big text-center icon-info bubble-shadow-small">
                                     <i class="fa-solid fa-boxes-stacked"></i>
                                 </div>
                             </div>

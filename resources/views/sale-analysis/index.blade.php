@@ -90,7 +90,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-info bubble-shadow-small">
+                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
                                     <i class="fas fa-box"></i>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-info bubble-shadow-small">
+                                <div class="icon-big text-center icon-success bubble-shadow-small">
                                     <i class="fas fa-shopping-cart"></i>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-icon">
-                                <div class="icon-big text-center icon-info bubble-shadow-small">
+                                <div class="icon-big text-center icon-success bubble-shadow-small">
                                     <i class="fas fa-chart-line"></i>
                                 </div>
                             </div>
@@ -151,22 +151,22 @@
             <div class="card-header">
                 <h4 class="mb-0 fw-semibold text-uppercase">Top Sale Items</h4>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-4">
                 <a href="{{ route('sale-analysis.report') }}?sort_by=revenue&period={{ $period }}"
-                    class="btn btn-primary btn-sm mb-3 ml-3 mt-3">
+                    class="btn btn-primary btn-sm mb-3">
                     <i class="fas fa-chart-bar"></i> View Full Report
                 </a>
                 <div class="table-responsive">
-                    <table id="DataTable" class="table table-hover mb-0">
+                    <table id="DataTable" class="table mt-3 table-border table-hover">
                         <thead class="table-dark">
                             <tr>
-                                <th class="text-center" style="width: 50px;">no</th>
+                                <th>no</th>
                                 <th>Image</th>
                                 <th>Item Name</th>
-                                <th class="text-center" style="width: 100px;">Type</th>
-                                <th class="text-end" style="width: 100px;">Quantity</th>
-                                <th class="text-end" style="width: 120px;">Revenue</th>
-                                <th class="text-end" style="width: 100px;">Sales Out</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th>Revenue</th>
+                                <th>Sales Out</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -207,7 +207,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">
+                                    <td colspan="12" class="text-center py-4 text-muted">
                                         <i class="fas fa-inbox fa-2x mb-2"></i>
                                         <p class="mb-0">No data available for this period</p>
                                     </td>

@@ -10,6 +10,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/check-product-updates', [ProductCheckController::class, 'checkUpdates']);
 Route::apiResource('products', ProductController::class);
 

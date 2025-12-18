@@ -56,7 +56,7 @@
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
                                 <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
-                                    class="card-img-top img-fluid product-image mt-2">
+                                    class="card-img-top img-fluid product-image">
 
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
@@ -124,8 +124,7 @@
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
                                 <img src="{{ asset('storage/' . $accessory->picture_url) }}" alt="{{ $accessory->name }}"
-                                    class="card-img-top img-fluid product-image mt-2">
-
+                                    class="card-img-top img-fluid product-image">
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
                                     style="margin-top: 8rem !important;">

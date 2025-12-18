@@ -15,4 +15,6 @@ class ProductpageController extends Controller
         $categories = Category::all();
         return view('productpage', compact('products', 'categories'));
     }
+
+
 }

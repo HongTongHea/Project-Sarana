@@ -10,9 +10,9 @@
         </div>
         <div class="row" id="categories-section">
             @foreach ($categories as $index => $category)
-                @if ($index >= 5)
+                {{-- @if ($index >= 5)
                     @break
-                @endif
+                @endif --}}
                 <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-3">
                     <div class="card category-card h-100 border-0 shadow-sm hover-effect rounded-3 category-item"
                         data-category-id="{{ $category->id }}" style="cursor: pointer;">
@@ -55,7 +55,7 @@
                             @endif
                             <div class="overflow-hidden product-image-container position-relative">
                                 <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
-                                    class="card-img-top img-fluid product-image mt-2">
+                                    class="card-img-top img-fluid product-image">
 
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
@@ -102,8 +102,14 @@
                         </div>
                     </div>
                 @endforeach
+                <div id="no-products-message" class="col-12 text-center py-2 d-none">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-search fa-2x mb-3"></i>
+                        <h4>No Products Found</h4>
+                        <p>There are no products available in this category.</p>
+                    </div>
+                </div>
             </div>
-
         </section>
         @include('website.shoppingcart')
     </div>

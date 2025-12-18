@@ -257,12 +257,27 @@ $(document).ready(function () {
         const categoryTitle = $(
             `.category-item[data-category-id="${categoryId}"] h5`
         ).text();
+        
+        let foundProducts = 0;
 
         $("#products-title").text(categoryTitle);
 
+        // Hide all products first, then show only matching ones
+        allProducts.hide();
+        
         allProducts.each(function () {
-            $(this).toggle($(this).data("category-id") === categoryId);
+            if ($(this).data("category-id") === categoryId) {
+                $(this).show();
+                foundProducts++;
+            }
         });
+
+        // Show/hide the "no products" message
+        if (foundProducts === 0) {
+            $("#no-products-message").removeClass("d-none");
+        } else {
+            $("#no-products-message").addClass("d-none");
+        }
 
         $("#see-all-btn").show();
     }
@@ -271,6 +286,7 @@ $(document).ready(function () {
         $(".product-item").show();
         $("#products-title").text("Featured Products");
         $("#see-all-btn").hide();
+        $("#no-products-message").addClass("d-none"); // Hide the message
     }
 
     // Checkout form

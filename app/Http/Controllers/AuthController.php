@@ -119,45 +119,7 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Registration successful.');
     }
 
-    // /**
-    //  * Update profile picture
-    //  */
-    // public function updateProfilePicture(Request $request)
-    // {
-    //     $request->validate([
-    //     'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:2048'
-    //     ]);
-
-    //     $user = $this->getAuthenticatedUser();
-
-    //     if (!$user) {
-    //         return back()->withErrors(['profile_picture' => 'No authenticated user found.']);
-    //     }
-
-    //     if ($user->picture_url) {
-    //         Storage::disk('public')->delete($user->picture_url);
-    //     }
-
-    //     $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-    //     $user->picture_url = $path;
-    //     $user->save();
-
-    // return redirect()->route('profile')->with('success', 'Profile picture updated successfully.');
-    // }
-
-    // public function showProfile()
-    // {
-    //     $user = Auth::user(); // or use your getAuthenticatedUser() method
-        
-    //     if (!$user) {
-    //         return redirect()->route('login')->with('error', 'Please login to view your profile.');
-    //     }
-        
-    //     return view('profile.show', compact('user'));
-    // }
-    /**
-     * Logout user from all guards
-     */
+ 
     public function logout()
     {
         session()->forget(config('services.google.token_name'));

@@ -60,11 +60,14 @@
                 </div>
                 <div class="d-flex align-items-center mb-2">
                     <button class="btn btn-outline-primary btn-sm" id="see-all-btn" style="display: none;">See All</button>
+                    {{-- <button class="btn btn-outline-primary mt-2" onclick="resetProductFilter()">
+                        View All Products
+                    </button> --}}
                 </div>
             </div>
             <div class="row" id="products-container">
                 @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
-                    @if ($index >= 10)
+                    @if ($index >= 20)
                         @break
                     @endif
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 product-item"
@@ -86,10 +89,10 @@
                             <div class="overflow-hidden product-image-container position-relative">
                                 @if ($product->picture_url)
                                     <img src="{{ asset('storage/' . $product->picture_url) }}" alt="{{ $product->name }}"
-                                        class="card-img-top img-fluid product-image mt-2">
+                                        class="card-img-top img-fluid product-image">
                                 @else
                                     <img src="{{ asset('assets/img/image.png') }}"
-                                        class="card-img-top img-fluid product-image mt-2">
+                                        class="card-img-top img-fluid product-image">
                                 @endif
 
                                 <button
@@ -140,6 +143,13 @@
                         </div>
                     </div>
                 @endforeach
+                <div id="no-products-message" class="col-12 text-center py-2 d-none">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-search fa-2x mb-3"></i>
+                        <h4>No Products Found</h4>
+                        <p>There are no products available in this category.</p>
+                    </div>
+                </div>
             </div>
 
 
@@ -179,10 +189,10 @@
                                                 @if ($product->picture_url)
                                                     <img src="{{ asset('storage/' . $product->picture_url) }}"
                                                         alt="{{ $product->name }}"
-                                                        class="card-img-top img-fluid product-image mt-2">
+                                                        class="card-img-top img-fluid product-image">
                                                 @else
                                                     <img src="{{ asset('assets/img/image.png') }}"
-                                                        class="card-img-top img-fluid product-image mt-2">
+                                                        class="card-img-top img-fluid product-image">
                                                 @endif
                                             </div>
 
@@ -254,7 +264,7 @@
             </div>
             <div class="row" id="accessories-container">
                 @foreach ($accessories->sortByDesc('created_at')->values() as $index => $accessory)
-                    @if ($index >= 10)
+                    @if ($index >= 20)
                         @break
                     @endif
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 accessory-item">
@@ -271,10 +281,10 @@
                             <div class="overflow-hidden product-image-container position-relative">
                                 @if ($accessory->picture_url)
                                     <img src="{{ asset('storage/' . $accessory->picture_url) }}"
-                                        alt="{{ $accessory->name }}" class="card-img-top img-fluid product-image mt-2">
+                                        alt="{{ $accessory->name }}" class="card-img-top img-fluid product-image">
                                 @else
                                     <img src="{{ asset('assets/img/image.png') }}"
-                                        class="card-img-top img-fluid product-image mt-2">
+                                        class="card-img-top img-fluid product-image">
                                 @endif
                                 <button
                                     class="btn btn-sm position-absolute top-5 end-0 m-2 border-0 bg-white rounded-circle shadow-sm"
