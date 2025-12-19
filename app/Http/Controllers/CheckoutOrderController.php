@@ -174,8 +174,11 @@ class CheckoutOrderController extends Controller
      */
     public function show(OnlineOrder $onlineOrder)
     {
-        $onlineOrder->load(['user', 'items']);
-        return view('online-orders.show', compact('onlineOrder'));
+        $onlineOrder->load(['user', 'items' => function($query) {
+        $query->with('item');
+    }]);
+    
+    return view('online-orders.show', compact('onlineOrder'));
     }
 
     /**
@@ -183,11 +186,15 @@ class CheckoutOrderController extends Controller
      */
     public function myOrderShow(OnlineOrder $order)
     {
-        if ($order->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized access to this order.');
-        }
+       if ($order->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized access to this order.');
+    }
 
-        $order->load('items');
-        return view('website.my-order-detail', compact('order'));
+
+    $order->load(['items' => function($query) {
+        $query->with('item'); 
+    }]);
+    
+    return view('website.my-order-detail', compact('order'));
     }
 }

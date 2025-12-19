@@ -32,10 +32,18 @@ class Product extends Model
         return $this->morphMany(Stock::class, 'stockable');
     }
 
-
+public function item()
+{
+    return $this->morphTo();
+}
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function onlineOrderItems()
+    {
+        return $this->morphMany(OnlineOrderItem::class, 'item');
     }
 
     // Add this method to check stock availability
