@@ -219,47 +219,4 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .card {
-            border: none;
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-        }
-
-        .table thead th {
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .table tbody tr {
-            transition: background-color 0.2s;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .badge {
-            font-weight: 500;
-            padding: 0.375rem 0.75rem;
-        }
-
-        .card-footer {
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        @media print {
-
-            .btn,
-            .card-footer {
-                display: none !important;
-            }
-        }
-    </style>
 @endsection

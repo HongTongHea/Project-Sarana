@@ -37,56 +37,103 @@
             color: #dc3545;
         }
 
-        .payment-method-card {
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
+        /* Telegram Modal Styles */
+
+        .icon-order i {
+            font-size: 40px;
+            color: #ffffff;
             margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 50%;
+            padding: 10px 20px;
+            background-color: #0088cc;
         }
 
-        .payment-method-card:hover {
-            border-color: #6c757d;
-        }
-
-        .payment-method-card.selected {
-            border-color: #0d6efd;
-            background-color: #f8f9fa;
-        }
-
-        .payment-method-card input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        .payment-method-details {
+        .telegram-modal {
             display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
         }
 
-        .payment-method-card.selected .payment-method-details {
+        .telegram-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .telegram-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
             display: block;
         }
 
-        .payment-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-            object-fit: contain;
+
+        .telegram-note {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 0.9em;
         }
 
-        .payment-title {
-            display: flex;
-            align-items: center;
-            font-weight: 600;
+        .countdown-timer {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #dc3545;
+            text-align: center;
+            margin: 10px 0;
         }
     </style>
 
     <!-- Toast Container for Notifications -->
     <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Telegram Confirmation Modal -->
+    <div id="telegramModal" class="telegram-modal">
+        <div class="telegram-modal-content">
+            <button type="button" class="btn-close float-end" aria-label="Close" onclick="cancelOrder()"></button>
+            <div class="d-flex justify-content-center align-items-center icon-order">
+                <i class="bi bi-bag-check"></i>
+            </div>
+
+            <h3 class="text-center mb-2 fw-bold">Confirm Order with Telegram</h3>
+            <p class="text-center">Click the button below to open Telegram with your order details pre-filled. Just hit send
+                to confirm your order!</p>
+
+            <div class="countdown-timer" id="countdownTimer">30</div>
+            <div class=" d-flex justify-content-center mt-3">
+                <button class="btn btn-primary me-2 fw-bold" onclick="confirmTelegramOrder()" id="telegramConfirmBtn">
+                    <i class="fab fa-telegram"></i>
+                    Confirm Order
+                </button>
+                <button class="btn btn-outline-danger fw-bold" onclick="cancelOrder()"><i
+                        class="fas fa-times me-1"></i>Cancel Order</button>
+            </div>
+            <div class="telegram-note">
+                <p><strong>Note:</strong> Your order will be processed only after sending the message on Telegram We will
+                    contact back to you soon. Please
+                    make sure to:</p>
+                <ul class="mb-0">
+                    <li>Have Telegram installed on your device</li>
+                    <li>Be logged into your Telegram account</li>
+                    <li>Send the pre-filled message when Telegram opens</li>
+                </ul>
+            </div>
+            <div class="text-center mt-3">
+                <st class="text-muted">Thank you for ordering!</small>
+            </div>
+        </div>
+    </div>
 
     <!-- Checkout Page Content -->
     <div class="container" style="margin-top: 100px;">
@@ -130,9 +177,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="customer_phone" class="form-label">Phone Number</label>
+                                        <label for="customer_phone" class="form-label">Phone Number *</label>
                                         <input type="tel" class="form-control" id="customer_phone" name="customer_phone"
-                                            value="{{ $user->phone ?? '' }}">
+                                            value="{{ $user->phone ?? '' }}" required>
+                                        <div class="invalid-feedback">Please provide your phone number.</div>
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +193,8 @@
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label for="shipping_address" class="form-label">Complete Shipping Address *</label>
+                                <label for="shipping_address" class="form-label">Please Complete Real Shipping Address
+                                    *</label>
                                 <textarea class="form-control" id="shipping_address" name="shipping_address" rows="4" required
                                     placeholder="Street address, City, State, ZIP Code, Country">{{ $user->address ?? '' }}</textarea>
                                 <div class="invalid-feedback">Please provide your shipping address.</div>
@@ -173,81 +222,6 @@
                         </div>
                     </div>
 
-                    <!-- Payment Method Section -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Payment Method</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="payment-method-card" id="aba-payment-card">
-                                <div class="payment-title">
-                                    <input type="radio" id="aba_payment" name="payment_method" value="aba" required>
-                                    <img src="/images/aba-logo.png" alt="ABA Bank" class="payment-icon">
-                                    <label for="aba_payment" class="form-check-label fw-bold">ABA Bank</label>
-                                </div>
-                                <div class="payment-method-details">
-                                    <p>Pay securely with ABA Bank. You will be redirected to ABA's payment gateway to
-                                        complete your transaction.</p>
-                                    <div class="mb-3">
-                                        <label for="aba_account_name" class="form-label">Account Name (Optional)</label>
-                                        <input type="text" class="form-control" id="aba_account_name"
-                                            name="aba_account_name" placeholder="Enter account name">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment-method-card" id="acleda-payment-card">
-                                <div class="payment-title">
-                                    <input type="radio" id="acleda_payment" name="payment_method" value="acleda"
-                                        required>
-                                    <img src="/images/acleda-logo.png" alt="ACLEDA Bank" class="payment-icon">
-                                    <label for="acleda_payment" class="form-check-label fw-bold">ACLEDA Bank</label>
-                                </div>
-                                <div class="payment-method-details">
-                                    <p>Pay securely with ACLEDA Bank. You will be redirected to ACLEDA's payment gateway to
-                                        complete your transaction.</p>
-                                    <div class="mb-3">
-                                        <label for="acleda_account_name" class="form-label">Account Name
-                                            (Optional)</label>
-                                        <input type="text" class="form-control" id="acleda_account_name"
-                                            name="acleda_account_name" placeholder="Enter account name">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="payment-method-card" id="other-payment-card">
-                                <div class="payment-title">
-                                    <input type="radio" id="other_payment" name="payment_method" value="other"
-                                        required>
-                                    <img src="/images/other-payment.png" alt="Other Payment" class="payment-icon">
-                                    <label for="other_payment" class="form-check-label fw-bold">Other Payment
-                                        Method</label>
-                                </div>
-                                <div class="payment-method-details">
-                                    <p>Choose from other available payment options.</p>
-                                    <div class="mb-3">
-                                        <label for="other_payment_type" class="form-label">Select Payment Type</label>
-                                        <select class="form-select" id="other_payment_type" name="other_payment_type">
-                                            <option value="wing">Wing</option>
-                                            <option value="pipay">PiPay</option>
-                                            <option value="cash_on_delivery">Cash on Delivery</option>
-                                            <option value="credit_card">Credit Card</option>
-                                            <option value="paypal">PayPal</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="other_payment_details" class="form-label">Payment Details
-                                            (Optional)</label>
-                                        <textarea class="form-control" id="other_payment_details" name="other_payment_details" rows="3"
-                                            placeholder="Any additional payment information"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="invalid-feedback" id="payment-method-error">Please select a payment method.</div>
-                        </div>
-                    </div>
-
                     <div class="card mb-4">
                         <div class="card-header">
                             <h5>Additional Information</h5>
@@ -264,7 +238,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card sticky-top" style="top: 20px;">
+                <div class="card sticky-top" style="top: 85px; margin-top: 45px;">
                     <div class="card-header">
                         <h5>Order Summary</h5>
                     </div>
@@ -289,7 +263,7 @@
                             <span id="checkoutDiscount">-$0.00</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Shipping:</span>
+                            <span>Shipping provided <br>for Cambodia only in 25 provinces</span>
                             <span id="checkoutShipping">$0.00</span>
                         </div>
                         <hr>
@@ -311,8 +285,16 @@
     <!-- Bootstrap & jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
     <script>
+        // Global variables
+        let currentOrderData = null;
+        let countdownInterval = null;
+        let countdownSeconds = 30;
+        let telegramMessage = '';
+
         // Toast function for notifications
         function showToast(message, type = "success") {
             const toastContainer = document.getElementById('toastContainer');
@@ -348,46 +330,7 @@
                     billingAddress.value = '';
                 }
             });
-
-            // Payment method selection
-            setupPaymentMethodSelection();
         });
-
-        function setupPaymentMethodSelection() {
-            const paymentCards = document.querySelectorAll('.payment-method-card');
-
-            paymentCards.forEach(card => {
-                const radio = card.querySelector('input[type="radio"]');
-
-                // When card is clicked, select the radio button
-                card.addEventListener('click', function(e) {
-                    if (e.target.type !== 'radio' && e.target.tagName !== 'INPUT' && e.target.tagName !==
-                        'LABEL') {
-                        radio.checked = true;
-                    }
-
-                    // Update UI for all cards
-                    paymentCards.forEach(c => {
-                        c.classList.remove('selected');
-                        const paymentError = document.getElementById('payment-method-error');
-                        if (paymentError) paymentError.style.display = 'none';
-                    });
-
-                    // Add selected class to current card
-                    card.classList.add('selected');
-                });
-
-                // When radio is clicked directly, update UI
-                radio.addEventListener('change', function() {
-                    if (this.checked) {
-                        paymentCards.forEach(c => c.classList.remove('selected'));
-                        card.classList.add('selected');
-                        const paymentError = document.getElementById('payment-method-error');
-                        if (paymentError) paymentError.style.display = 'none';
-                    }
-                });
-            });
-        }
 
         function loadCartSummary() {
             const cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
@@ -448,7 +391,7 @@
             });
 
             // Calculate totals (without tax)
-            const shipping = 10.00; // Fixed shipping cost
+            const shipping = 5.00; // Fixed shipping cost
             const total = (subtotal - totalDiscount) + shipping;
 
             // Update the UI
@@ -473,7 +416,8 @@
             const cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
 
             // Basic validation
-            const requiredFields = ['customer_first_name', 'customer_last_name', 'customer_email', 'shipping_address',
+            const requiredFields = ['customer_first_name', 'customer_last_name', 'customer_email', 'customer_phone',
+                'shipping_address',
                 'billing_address'
             ];
             let isValid = true;
@@ -488,14 +432,6 @@
                 }
             });
 
-            // Payment method validation
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
-            if (!paymentMethod) {
-                const paymentError = document.getElementById('payment-method-error');
-                if (paymentError) paymentError.style.display = 'block';
-                isValid = false;
-            }
-
             if (!isValid) {
                 showToast('Please fill in all required fields.', 'danger');
                 return;
@@ -506,21 +442,17 @@
                 return;
             }
 
-            // Collect payment method details
-            const paymentDetails = {
-                method: paymentMethod.value
-            };
-
-            if (paymentMethod.value === 'aba') {
-                paymentDetails.account_name = document.getElementById('aba_account_name').value;
-            } else if (paymentMethod.value === 'acleda') {
-                paymentDetails.account_name = document.getElementById('acleda_account_name').value;
-            } else if (paymentMethod.value === 'other') {
-                paymentDetails.type = document.getElementById('other_payment_type').value;
-                paymentDetails.details = document.getElementById('other_payment_details').value;
+            // Email validation
+            const email = document.getElementById('customer_email').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('customer_email').classList.add('is-invalid');
+                showToast('Please enter a valid email address.', 'danger');
+                return;
             }
 
-            const orderData = {
+            // Prepare order data
+            currentOrderData = {
                 customer_first_name: document.getElementById('customer_first_name').value,
                 customer_last_name: document.getElementById('customer_last_name').value,
                 customer_email: document.getElementById('customer_email').value,
@@ -528,15 +460,183 @@
                 shipping_address: document.getElementById('shipping_address').value,
                 billing_address: document.getElementById('billing_address').value,
                 customer_notes: document.getElementById('customer_notes').value,
-                payment_method: paymentDetails,
                 cart_items: cart,
                 subtotal: window.cartTotals?.subtotal || 0,
                 discount_amount: window.cartTotals?.discount_amount || 0,
                 shipping_amount: window.cartTotals?.shipping_amount || 0,
-                total_amount: window.cartTotals?.total_amount || 0
+                total_amount: window.cartTotals?.total_amount || 0,
+                payment_method: 'telegram_confirmation',
+                order_date: new Date().toISOString()
             };
 
-            submitOrder(orderData);
+            // Generate order ID
+            const orderId = 'ORD-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            currentOrderData.order_id = orderId;
+
+            // Generate Telegram message using the contact-style format
+            telegramMessage = formatOrderTelegramMessage(currentOrderData);
+
+            // Show Telegram confirmation modal
+            showTelegramModal();
+        }
+
+        function formatOrderTelegramMessage(orderData) {
+            // Format similar to your contact page message
+            let message = "🛒 Hello! I want to place an order through your website.\n\n";
+
+            // Order Information
+            message += "📋 Order Details:\n";
+            message += "🆔 Order ID: " + orderData.order_id + "\n";
+            message += "👤 Name: " + orderData.customer_first_name + " " + orderData.customer_last_name + "\n";
+            message += "✉️ Email: " + orderData.customer_email + "\n";
+            message += "📞 Phone: " + orderData.customer_phone + "\n\n";
+
+            // Addresses
+            message += "📍 Shipping Address:\n";
+            message += orderData.shipping_address + "\n\n";
+
+            message += "📋 Billing Address:\n";
+            message += orderData.billing_address + "\n\n";
+
+            // Order Items
+            message += "📦 Order Items:\n";
+            orderData.cart_items.forEach((item, index) => {
+                const itemPrice = item.discount ?
+                    item.price * (1 - item.discount / 100) :
+                    item.price;
+                const itemTotal = itemPrice * item.quantity;
+
+                message += (index + 1) + ". " + item.name + "\n";
+                message += "   Quantity: " + item.quantity + "\n";
+                message += "   Price: $" + itemPrice.toFixed(2) + " each\n";
+                if (item.discount) {
+                    message += "   Discount: " + item.discount + "% OFF\n";
+                }
+                message += "   Subtotal: $" + itemTotal.toFixed(2) + "\n";
+            });
+            message += "\n";
+
+            // Order Summary
+            message += "💰 Order Summary:\n";
+            message += "Subtotal: $" + orderData.subtotal.toFixed(2) + "\n";
+            message += "Discount: -$" + orderData.discount_amount.toFixed(2) + "\n";
+            message += "Shipping: $" + orderData.shipping_amount.toFixed(2) + "\n";
+            message += "Total: $" + orderData.total_amount.toFixed(2) + "\n\n";
+
+            // Customer Notes
+            if (orderData.customer_notes && orderData.customer_notes.trim() !== '') {
+                message += "💬 Additional Notes:\n";
+                message += orderData.customer_notes + "\n\n";
+            }
+
+            // Footer
+            message += "⏰ Order Date: " + new Date().toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) + "\n\n";
+
+            message += "✅ Please confirm if you can process this order. Thank you!";
+
+            return message;
+        }
+
+        function showTelegramModal() {
+            const modal = document.getElementById('telegramModal');
+            modal.style.display = 'flex';
+
+            // Reset countdown
+            countdownSeconds = 30;
+            document.getElementById('countdownTimer').textContent = countdownSeconds;
+
+            // Start countdown
+            countdownInterval = setInterval(() => {
+                countdownSeconds--;
+                document.getElementById('countdownTimer').textContent = countdownSeconds;
+
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownInterval);
+                    cancelOrder();
+                    showToast('Order confirmation timeout. Please try again.', 'warning');
+                }
+            }, 1000);
+        }
+
+        function hideTelegramModal() {
+            const modal = document.getElementById('telegramModal');
+            modal.style.display = 'none';
+
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+
+        function createTelegramDeepLink(message) {
+            const username = 'Tonghear'; // Your Telegram username without @
+
+            // URL encode the message
+            const encodedMessage = encodeURIComponent(message);
+
+            // Using the "text" parameter (most reliable for pre-filling message input)
+            const telegramUrl = `https://t.me/${username}?text=${encodedMessage}`;
+
+            console.log('Generated Telegram URL:', {
+                username: username,
+                message_length: message.length,
+                url: telegramUrl
+            });
+
+            return telegramUrl;
+        }
+
+        function createTelegramShareLink(message) {
+            const encodedMessage = encodeURIComponent(message);
+            return `https://t.me/share/url?url=&text=${encodedMessage}`;
+        }
+
+        function confirmTelegramOrder() {
+            // Disable the button to prevent double-clicks
+            const telegramBtn = document.getElementById('telegramConfirmBtn');
+            telegramBtn.disabled = true;
+            telegramBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening Telegram...';
+
+            // Create Telegram deep link with pre-filled message
+            const telegramUrl = createTelegramDeepLink(telegramMessage);
+
+            // Also create share link as fallback
+            const shareLink = createTelegramShareLink(telegramMessage);
+
+            // Try to open Telegram app first (using the deep link)
+            window.open(telegramUrl, '_blank', 'noopener,noreferrer');
+
+            // Check if Telegram app opened successfully
+            setTimeout(() => {
+                // If we're still on the page after 1 second, try the share link
+                if (document.hasFocus()) {
+                    window.open(shareLink, '_blank', 'noopener,noreferrer');
+                    showToast('Opening Telegram in browser...', 'info');
+                }
+            }, 1000);
+
+            // Submit the order to the server
+            setTimeout(() => {
+                submitOrder(currentOrderData);
+            }, 1500);
+        }
+
+        function cancelOrder() {
+            hideTelegramModal();
+            currentOrderData = null;
+            telegramMessage = '';
+            showToast('Order cancelled.', 'info');
+
+            // Reset Telegram button
+            const telegramBtn = document.getElementById('telegramConfirmBtn');
+            telegramBtn.disabled = false;
+            telegramBtn.innerHTML = '<i class="fab fa-telegram"></i> Confirm Order';
         }
 
         function submitOrder(orderData) {
@@ -547,18 +647,22 @@
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Processing...';
             submitBtn.disabled = true;
 
-            // Create FormData instead of JSON for better compatibility
+            // Hide the modal
+            hideTelegramModal();
+
+            // Create FormData for submission
             const formData = new FormData();
 
             // Add all form fields
             formData.append('customer_first_name', orderData.customer_first_name);
             formData.append('customer_last_name', orderData.customer_last_name);
             formData.append('customer_email', orderData.customer_email);
-            formData.append('customer_phone', orderData.customer_phone || '');
+            formData.append('customer_phone', orderData.customer_phone);
             formData.append('shipping_address', orderData.shipping_address);
             formData.append('billing_address', orderData.billing_address);
             formData.append('customer_notes', orderData.customer_notes || '');
-            formData.append('payment_method', JSON.stringify(orderData.payment_method));
+            formData.append('payment_method', orderData.payment_method);
+            formData.append('order_id', orderData.order_id);
 
             // Add cart and totals
             formData.append('cart_items', JSON.stringify(orderData.cart_items));
@@ -566,9 +670,8 @@
             formData.append('discount_amount', orderData.discount_amount);
             formData.append('shipping_amount', orderData.shipping_amount);
             formData.append('total_amount', orderData.total_amount);
+            formData.append('telegram_message', telegramMessage);
             formData.append('_token', '{{ csrf_token() }}');
-
-            console.log('Sending order data:', orderData); // Debug log
 
             // Make actual AJAX request to the server
             fetch('{{ route('online-orders.store') }}', {
@@ -580,27 +683,28 @@
                     body: formData
                 })
                 .then(response => {
-                    console.log('Response status:', response.status); // Debug log
                     if (!response.ok) {
                         return response.json().then(err => {
-                            console.log('Error response:', err); // Debug log
                             throw err;
                         });
                     }
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Success response:', data); // Debug log
                     if (data.success) {
-                        showToast(data.message, 'success');
+                        showToast('Order placed successfully! Redirecting to confirmation...', 'success');
 
                         // Clear the cart from localStorage
                         localStorage.removeItem("shoppingCart");
 
                         // Redirect to confirmation page
                         setTimeout(() => {
-                            window.location.href = data.redirect_url;
-                        }, 1500);
+                            if (data.redirect_url) {
+                                window.location.href = data.redirect_url;
+                            } else {
+                                window.location.href = '/order-confirmation?order_id=' + orderData.order_id;
+                            }
+                        }, 2000);
                     } else {
                         throw new Error(data.error || 'Unknown error occurred');
                     }
@@ -624,6 +728,8 @@
                         });
                     } else if (error.error) {
                         errorMessage = error.error;
+                    } else if (error.message) {
+                        errorMessage = error.message;
                     }
 
                     showToast(errorMessage, 'danger');
@@ -631,6 +737,11 @@
                     // Reset button
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
+
+                    // Reset Telegram button
+                    const telegramBtn = document.getElementById('telegramConfirmBtn');
+                    telegramBtn.disabled = false;
+                    telegramBtn.innerHTML = '<i class="fab fa-telegram"></i> Confirm Order';
                 });
         }
     </script>

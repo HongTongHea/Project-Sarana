@@ -47,7 +47,8 @@
             </div>
 
             <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"><i
+                        class="fas fa-times me-1"></i>Cancel</button>
                 <button type="button" class="btn btn-primary" id="confirmAddToCart">
                     <i class="bi bi-cart-plus me-1"></i>Add to Cart
                 </button>
@@ -60,12 +61,12 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas"
     data-is-logged-in="{{ auth()->check() ? 'true' : 'false' }}">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Your Shopping Cart</h5>
+        <h5 class="offcanvas-title"><i class="fas fa-shopping-cart me-1"></i> Your Shopping Cart</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
         <div class="cart-items">
-            <div class="text-center py-4 empty-cart-message">
+            <div class="text-center py-4">
                 <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
                 <p>Your cart is empty</p>
             </div>
@@ -90,13 +91,14 @@
             <button class="btn btn-primary w-100 mt-3" id="proceedToCheckout">
                 Proceed to Checkout
             </button>
-
-            <!-- Login Required Alert -->
-            <div class="alert alert-warning mt-3 d-none" id="loginRequiredAlert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                Please <a href="/login" class="alert-link">login</a> to proceed with your purchase.
-            </div>
         </div>
+        <!-- Login Required Alert - Shown when user is not logged in -->
+        <div class="alert alert-warning mt-3 {{ auth()->check() ? 'd-none' : '' }}" id="loginRequiredAlert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Please <a href="/login" class="alert-link">login</a> or
+            <a href="/register" class="alert-link">register</a> to proceed with your purchase.
+        </div>
+
     </div>
 </div>
 <!-- JS Fix -->
@@ -107,29 +109,88 @@
         const checkoutBtn = document.getElementById('proceedToCheckout');
         const loginAlert = document.getElementById('loginRequiredAlert');
 
-        // Redirect on checkout
-        checkoutBtn.addEventListener('click', function() {
+        // Show/hide login alert based on login status
+        if (!isLoggedIn) {
+            // Show login alert when user is not logged in
+            loginAlert.classList.remove('d-none');
+        } else {
+            // Hide login alert when user is logged in
+            loginAlert.classList.add('d-none');
+        }
+
+        // Handle checkout button click
+        checkoutBtn.addEventListener('click', function(e) {
             if (!isLoggedIn) {
-                // Show login required
+                // Prevent checkout and scroll to login alert
+                e.preventDefault();
                 loginAlert.classList.remove('d-none');
                 loginAlert.scrollIntoView({
-                    behavior: 'smooth'
+                    behavior: 'smooth',
+                    block: 'center'
                 });
+
+                // Optional: Add highlight effect to the alert
+                loginAlert.classList.add('alert-highlight');
+                setTimeout(() => {
+                    loginAlert.classList.remove('alert-highlight');
+                }, 1500);
             } else {
-                // ✅ Redirect to Laravel checkout route
+                // User is logged in, redirect to checkout
                 window.location.href = '/checkout';
             }
         });
 
-        // Hide alert when clicking login link
-        loginAlert.querySelector('a').addEventListener('click', function() {
-            loginAlert.classList.add('d-none');
-        });
+        // Optional: Add CSS for highlight effect
+        const style = document.createElement('style');
+        style.textContent = `
+            .alert-highlight {
+                animation: pulse 1.5s ease-in-out;
+                border: 2px solid #ffc107;
+            }
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
+                70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+            }
+        `;
+        document.head.appendChild(style);
     });
 
-    // Sync login status dynamically if needed
+    // Function to update login status dynamically (if user logs in/out without page reload)
     function updateCartLoginStatus(isLoggedIn) {
         const cartOffcanvas = document.getElementById('cartOffcanvas');
+        const loginAlert = document.getElementById('loginRequiredAlert');
+        const checkoutBtn = document.getElementById('proceedToCheckout');
+
+        // Update data attribute
         cartOffcanvas.dataset.isLoggedIn = isLoggedIn;
+
+        // Show/hide alert based on new login status
+        if (!isLoggedIn) {
+            loginAlert.classList.remove('d-none');
+            checkoutBtn.disabled = false; // Keep button enabled but will show alert on click
+        } else {
+            loginAlert.classList.add('d-none');
+            checkoutBtn.disabled = false;
+        }
+    }
+
+    // Optional: Function to show cart and focus on login alert for non-logged users
+    function showCartWithLoginAlert() {
+        const cartOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'));
+        const isLoggedIn = document.getElementById('cartOffcanvas').dataset.isLoggedIn === 'true';
+        const loginAlert = document.getElementById('loginRequiredAlert');
+
+        cartOffcanvas.show();
+
+        // If not logged in, focus on the login alert after a short delay
+        if (!isLoggedIn) {
+            setTimeout(() => {
+                loginAlert.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 300);
+        }
     }
 </script>

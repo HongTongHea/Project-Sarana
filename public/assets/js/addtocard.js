@@ -62,6 +62,7 @@ $(document).ready(function () {
             stock: parseInt($(this).data("stock")),
             description: $(this).data("description") || "",
             barcode: $(this).data("barcode") || "",
+            type: $(this).closest('.accessory-item').length ? 'accessory' : 'product' // Add type to distinguish
         };
 
         modalProductImg.attr("src", currentProduct.img);
@@ -123,11 +124,24 @@ $(document).ready(function () {
             return;
         }
 
-        const index = cart.findIndex((item) => item.id === currentProduct.id);
+        // Generate a unique ID combining product/accessory type and ID
+        const uniqueId = `${currentProduct.type}_${currentProduct.id}`;
+        
+        // Check if item already exists in cart (with same type and ID)
+        const index = cart.findIndex((item) => 
+            `${item.type}_${item.id}` === uniqueId
+        );
+        
         if (index > -1) {
+            // If item exists, update quantity
             cart[index].quantity += quantity;
         } else {
-            cart.push({ ...currentProduct, quantity });
+            // If new item, add to cart with uniqueId property
+            cart.push({ 
+                ...currentProduct, 
+                quantity,
+                uniqueId: uniqueId
+            });
         }
 
         saveCartToStorage();
@@ -169,37 +183,24 @@ $(document).ready(function () {
             const el = $(`
                 <div class="cart-item mb-3" data-index="${index}">
                     <div class="d-flex align-items-center">
-                        <img src="${
-                            item.img
-                        }" class="cart-item-img rounded me-3" style="width:80px;height:80px;">
+                        <img src="${item.img}" class="cart-item-img rounded me-3" style="width:80px;height:80px;">
                         <div class="cart-item-details flex-grow-1">
                             <p class="mb-1 fw-bold">${item.name}</p>
-                            ${
-                                item.discount
-                                    ? `
+                            ${item.discount
+                                ? `
                                 <p class="mb-0">
-                                    <span class="fw-bold">$${(
-                                        itemPrice * item.quantity
-                                    ).toFixed(2)}</span><br>
-                                    <span class="text-muted text-decoration-line-through small">$${(
-                                        item.price * item.quantity
-                                    ).toFixed(2)}</span><br>
-                                    <span class="badge bg-danger">-${
-                                        item.discount
-                                    }%</span>
+                                    <span class="fw-bold">$${(itemPrice * item.quantity).toFixed(2)}</span><br>
+                                    <span class="text-muted text-decoration-line-through small">$${(item.price * item.quantity).toFixed(2)}</span><br>
+                                    <span class="badge bg-danger">-${item.discount}%</span>
                                 </p>`
-                                    : `<p class="mb-0 fw-bold">$${(
-                                          item.price * item.quantity
-                                      ).toFixed(2)}</p>`
+                                : `<p class="mb-0 fw-bold">$${(item.price * item.quantity).toFixed(2)}</p>`
                             }
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
                         <button class="btn btn-sm btn-outline-secondary decrease-qty-btn"><i class="fas fa-minus"></i></button>
                         <span class="mx-2 item-quantity">${item.quantity}</span>
-                        <button class="btn btn-sm btn-outline-secondary increase-qty-btn" ${
-                            item.quantity >= item.stock ? "disabled" : ""
-                        }><i class="fas fa-plus"></i></button>
+                        <button class="btn btn-sm btn-outline-secondary increase-qty-btn" ${item.quantity >= item.stock ? "disabled" : ""}><i class="fas fa-plus"></i></button>
                         <button class="btn btn-sm btn-outline-danger remove-item-btn ms-4"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
@@ -210,7 +211,10 @@ $(document).ready(function () {
         cartSubtotal.text(`$${subtotal.toFixed(2)}`);
         cartDiscount.text(`-$${discount.toFixed(2)}`);
         cartTotal.text(`$${(subtotal - discount).toFixed(2)}`);
-        cartCount.text(cart.reduce((s, i) => s + i.quantity, 0));
+        
+        // FIXED: Calculate total items in cart (sum of all quantities)
+        const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+        cartCount.text(totalItems);
 
         // Button actions
         $(".remove-item-btn").on("click", function () {
@@ -254,9 +258,7 @@ $(document).ready(function () {
 
     function filterProductsByCategory(categoryId) {
         const allProducts = $(".product-item");
-        const categoryTitle = $(
-            `.category-item[data-category-id="${categoryId}"] h5`
-        ).text();
+        const categoryTitle = $(`.category-item[data-category-id="${categoryId}"] h5`).text();
         
         let foundProducts = 0;
 
