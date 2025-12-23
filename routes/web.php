@@ -122,6 +122,8 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::resource('suppliers', SupplierController::class);
     Route::resource('purchase_orders', PurchaseOrderController::class);
 
+    Route::post('/purchase-orders/{purchaseOrder}/mark-as-received', [PurchaseOrderController::class, 'markAsReceived'])
+    ->name('purchase_orders.markAsReceived');
     // Sale Analysis Routes
     Route::prefix('sale-analysis')->name('sale-analysis.')->group(function () {
     Route::get('/', [SaleAnalysisController::class, 'index'])->name('index');

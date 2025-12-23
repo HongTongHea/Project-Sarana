@@ -16,7 +16,7 @@
                     <i class="fas fa-plus"></i> New Purchase Order
                 </button>
                 <div class="table-responsive">
-                    <table id="DataTable" class="table mt-3 table-border table-hover ">
+                    <table id="DataTable" class="table mt-3 table-border table-hover">
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
@@ -70,8 +70,17 @@
                                             </button>
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton{{ $order->id }}">
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#showModal{{ $order->id }}">
+                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
+                                                        View Details
+                                                    </button>
+                                                </li>
                                                 <!-- Edit -->
                                                 <li>
+
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#editModal{{ $order->id }}">
@@ -125,6 +134,7 @@
             'products' => $products,
             'employees' => $employees,
         ])
+        @include('purchase_orders.show', ['purchaseOrder' => $order])
         @include('purchase_orders.delete', ['purchaseOrder' => $order])
     @endforeach
     <!-- Create Purchase Order Modal -->
