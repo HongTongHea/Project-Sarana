@@ -204,7 +204,7 @@
                                                         @endif
                                                     </div>
 
-                                                    <div class="card-body">
+                                                    <div class="card-body p-2">
                                                         <div class="text-center">
                                                             @if ($product->picture_url)
                                                                 <img src="{{ asset('storage/' . $product->picture_url) }}"
@@ -306,7 +306,7 @@
                                                         @endif
                                                     </div>
 
-                                                    <div class="card-body">
+                                                    <div class="card-body p-2">
                                                         <div class="text-center">
                                                             @if ($accessory->picture_url)
                                                                 <img src="{{ asset('storage/' . $accessory->picture_url) }}"
@@ -376,7 +376,6 @@
     </div>
     @include('Customers.create')
     <!-- Include customer creation modal -->
-
     <style>
         .product-item:hover,
         .accessory-item:hover {
