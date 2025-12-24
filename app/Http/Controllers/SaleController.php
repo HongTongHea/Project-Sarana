@@ -190,25 +190,36 @@ class SaleController extends Controller
         return view('sales.print-invoice', compact('sale'));
     }
 
- public function edit($id)
-{
-    $sale = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
-        ->findOrFail($id);
+    public function edit($id)
+    {
+        $sale = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
+            ->findOrFail($id);
 
-    $customers = Customer::all();
-    $employees = Employee::where('status', 1)->get();
-    $products = Product::where('stock_quantity', '>', 0)->paginate(12);
-    $accessories = Accessory::where('stock_quantity', '>', 0)->paginate(12);
-    $categories = Category::all();
-    
-    // Get the first payment (assuming one payment per sale)
-    $payment = $sale->payments->first();
+        // Load all items with their images
+        foreach ($sale->items as $item) {
+            if ($item->item_type === 'App\Models\Product' && $item->product) {
+                $item->picture_url = $item->product->picture_url ?? $item->picture_url;
+                $item->stock_quantity = $item->product->stock_quantity;
+            } elseif ($item->item_type === 'App\Models\Accessory' && $item->accessory) {
+                $item->picture_url = $item->accessory->picture_url ?? $item->picture_url;
+                $item->stock_quantity = $item->accessory->stock_quantity;
+            }
+        }
 
-    return view('sales.edit', compact('sale', 'customers', 'employees', 'products', 'accessories', 'categories', 'payment'));
-}
+        $customers = Customer::all();
+        $employees = Employee::where('status', 1)->get();
+        $products = Product::where('stock_quantity', '>', 0)->paginate(12);
+        $accessories = Accessory::where('stock_quantity', '>', 0)->paginate(12);
+        $categories = Category::all();
+        
+        // Get the first payment (assuming one payment per sale)
+        $payment = $sale->payments->first();
+
+        return view('sales.edit', compact('sale', 'customers', 'employees', 'products', 'accessories', 'categories', 'payment'));
+    }
 
     public function update(Request $request, $id)
-{
+    {
     $sale = Sale::with(['items', 'payments'])->findOrFail($id);
 
     // Decode new items

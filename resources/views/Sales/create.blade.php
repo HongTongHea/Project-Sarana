@@ -102,7 +102,7 @@
                                     <div class="form-group">
                                         <label for="tax_rate">Tax Rate (%)</label>
                                         <input type="number" name="tax_rate" id="tax_rate" class="form-control"
-                                            value="12" min="0" max="100" step="0.01">
+                                            value="0" min="0" max="100" step="0.01">
                                     </div>
                                 </div>
                             </div>

@@ -18,12 +18,9 @@
             <!-- Sale Column -->
             <div class="col-md-7 mb-3">
                 <div class="card rounded-0 h-100 ">
-                    <!-- Added h-100 here -->
                     <div class="card-body d-flex flex-column" style="height: 100vh;">
-                        <!-- Changed to flex column layout -->
                         <form action="{{ route('sales.update', $sale->id) }}" method="POST" id="sale-form"
                             class="d-flex flex-column h-100">
-                            <!-- Added flex classes -->
                             @csrf @method('PUT')
                             <div class="d-flex justify-content-start align-items-center">
                                 <button type="button" class="btn btn-primary mb-3 btn-sm me-2" data-bs-toggle="modal"
@@ -68,7 +65,6 @@
                                 </div>
                             </div>
                             <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
-                                <!-- Made table scrollable -->
                                 <table class="table table-bordered" id="sale-items">
                                     <thead class="thead-dark">
                                         <tr>
@@ -99,7 +95,7 @@
                                     <div class="form-group">
                                         <label for="tax_rate">Tax Rate (%)</label>
                                         <input type="number" name="tax_rate" id="tax_rate" class="form-control"
-                                            value="{{ ($sale->tax_amount / ($sale->subtotal - $sale->item_discounts)) * 100 }}"
+                                            value="{{ $sale->tax_amount > 0 ? ($sale->tax_amount / ($sale->subtotal - $sale->item_discounts)) * 100 : 0 }}"
                                             min="0" max="100" step="0.01">
                                     </div>
                                 </div>
@@ -133,16 +129,14 @@
                             <input type="hidden" name="items" id="sale-items-data" value="[]">
                             <input type="hidden" name="item_types" id="sale-item-types" value="[]">
                             <div class="mt-auto pt-3">
-                                <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale"><i
-                                            class="fas fa-times me-1"></i> Clear
+                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale">
+                                        <i class="fas fa-times me-1"></i> Clear
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale"><i
-                                            class="fa-solid fa-floppy-disk me-1"></i> Update
+                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale">
+                                        <i class="fa-solid fa-floppy-disk me-1"></i> Update
                                     </button>
                                     @include('Sales.payment')
-                                    <!-- Include payment modal -->
                                 </div>
                             </div>
                         </form>
@@ -152,7 +146,7 @@
             <!-- Product Selection Column -->
             <div class="col-md-5 mb-3">
                 <div class="card rounded-0 h-100">
-                    <div class="card-body p-2">
+                    <div class="card-body">
                         <ul class="nav nav-tabs" id="productTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="products-tab" data-bs-toggle="tab"
@@ -259,7 +253,6 @@
                                     @endif
                                 </div>
 
-                                <!-- Products Pagination -->
                                 @if ($products->hasPages())
                                     <div class="mt-3">
                                         {{ $products->links() }}
@@ -306,7 +299,7 @@
                                                         @endif
                                                     </div>
 
-                                                    <div class="card-body p-2">
+                                                    <div class="card-body">
                                                         <div class="text-center">
                                                             @if ($accessory->picture_url)
                                                                 <img src="{{ asset('storage/' . $accessory->picture_url) }}"
@@ -361,7 +354,6 @@
                                     @endif
                                 </div>
 
-                                <!-- Accessories Pagination -->
                                 @if ($accessories->hasPages())
                                     <div class="mt-3">
                                         {{ $accessories->links() }}
@@ -375,7 +367,6 @@
         </div>
     </div>
     @include('Customers.create')
-    <!-- Include customer creation modal -->
 
     <style>
         .product-item:hover,
@@ -400,7 +391,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Stock Badge Styles */
         .stock-badge {
             z-index: 1;
         }
@@ -409,7 +399,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Pagination Styles */
         .pagination {
             margin-bottom: 0;
         }
@@ -430,6 +419,7 @@
             padding: 5px;
         }
     </style>
+
     <script>
         // Mark this form as edit mode and pass existing payment data
         $('#sale-form').data('edit-mode', true);
@@ -446,6 +436,7 @@
             };
         @endif
     </script>
+
     <script>
         let saleItems = [];
         document.addEventListener('DOMContentLoaded', function() {
@@ -465,7 +456,15 @@
                     $itemName = addslashes($item->name);
                     $stockNo = $item->stock_no ?? '';
                     $stockQuantity = $itemModel ? $itemModel->stock_quantity : 0;
-                    $pictureUrl = $itemModel && $itemModel->picture_url ? asset('storage/' . $itemModel->picture_url) : '';
+
+                    // FIXED: Get picture URL properly
+                    $pictureUrl = '';
+                    if (!empty($item->picture_url)) {
+                        $pictureUrl = asset('storage/' . $item->picture_url);
+                    } elseif ($itemModel && !empty($itemModel->picture_url)) {
+                        $pictureUrl = asset('storage/' . $itemModel->picture_url);
+                    }
+
                     $discountPercentage = $item->discount_percentage;
                 @endphp
 
@@ -485,6 +484,9 @@
                     existsInDb: {{ $itemModel ? 'true' : 'false' }}
                 });
             @endforeach
+
+            // Debug: Check loaded items
+            console.log('Loaded sale items:', saleItems);
 
             updateSaleTable();
             calculateTotals();
@@ -636,47 +638,57 @@
                 tbody.empty();
 
                 saleItems.forEach((item, index) => {
-                    const imageHtml = item.picture_url ?
-                        `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">` :
-                        `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f0f0f0;">
-                <i class="fas fa-image text-muted"></i>
-            </div>`;
+                    // Create image HTML with proper fallback
+                    let imageHtml = '';
+                    if (item.picture_url && item.picture_url.trim() !== '') {
+                        // Make sure the URL is properly formatted
+                        let imageUrl = item.picture_url;
+                        // Remove any duplicate asset() calls
+                        if (imageUrl.includes("asset('")) {
+                            imageUrl = imageUrl.match(/asset\('([^']+)'\)/)?.[1] || imageUrl;
+                        }
+                        imageHtml =
+                            `<img src="${imageUrl}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">`;
+                    } else {
+                        imageHtml = `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: #f0f0f0;">
+                            <i class="fas fa-image text-muted"></i>
+                        </div>`;
+                    }
 
                     const discountBadge = item.discountPercentage > 0 ?
                         `<span class="badge bg-success">${item.discountPercentage}% off</span>` : '';
 
                     const row = `
-        <tr>
-            <td>
-                <div class="d-flex align-items-center">
-                    ${imageHtml}
-                    <div>
-                        ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
-                        <div>${item.name} ${discountBadge}</div>
-                        <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
-                    </div>
-                </div>
-            </td>
-            <td>
-                $${item.price.toFixed(2)}
-                ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
-            </td>
-            <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
-            <td>
-                <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
-            </td>
-            <td>$${item.total.toFixed(2)}</td>
-            <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
-            <td>
-                <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        </tr>`;
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                ${imageHtml}
+                                <div>
+                                    ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
+                                    <div>${item.name} ${discountBadge}</div>
+                                    <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            $${item.price.toFixed(2)}
+                            ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
+                        </td>
+                        <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
+                        <td>
+                            <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
+                        </td>
+                        <td>$${item.total.toFixed(2)}</td>
+                        <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`;
 
                     tbody.append(row);
                 });
-
 
                 // Add event listeners for quantity changes
                 $('.qty-input').on('change', function() {
