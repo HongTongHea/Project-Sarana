@@ -640,39 +640,39 @@
                         `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">` :
                         `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f0f0f0;">
                 <i class="fas fa-image text-muted"></i>
-            </div>`;
+                    </div>`;
 
                     const discountBadge = item.discountPercentage > 0 ?
                         `<span class="badge bg-success">${item.discountPercentage}% off</span>` : '';
 
                     const row = `
-        <tr>
-            <td>
-                <div class="d-flex align-items-center">
-                    ${imageHtml}
-                    <div>
-                        ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
-                        <div>${item.name} ${discountBadge}</div>
-                        <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
-                    </div>
-                </div>
-            </td>
-            <td>
-                $${item.price.toFixed(2)}
-                ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
-            </td>
-            <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
-            <td>
-                <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
-            </td>
-            <td>$${item.total.toFixed(2)}</td>
-            <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
-            <td>
-                <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        </tr>`;
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            ${imageHtml}
+                            <div>
+                                ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
+                                <div>${item.name} ${discountBadge}</div>
+                                <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        $${item.price.toFixed(2)}
+                        ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
+                    </td>
+                    <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
+                    <td>
+                        <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
+                    </td>
+                    <td>$${item.total.toFixed(2)}</td>
+                    <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
 
                     tbody.append(row);
                 });
