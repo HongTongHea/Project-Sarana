@@ -98,9 +98,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="tax_rate">Tax Rate (%)</label>
+                                        @php
+                                            $taxableAmount = $sale->subtotal - $sale->item_discounts;
+                                            $taxRate =
+                                                $taxableAmount != 0 ? ($sale->tax_amount / $taxableAmount) * 100 : 0;
+                                        @endphp
                                         <input type="number" name="tax_rate" id="tax_rate" class="form-control"
-                                            value="{{ ($sale->tax_amount / ($sale->subtotal - $sale->item_discounts)) * 100 }}"
-                                            min="0" max="100" step="0.01">
+                                            value="{{ number_format($taxRate, 2) }}" min="0" max="100"
+                                            step="0.01">
                                     </div>
                                 </div>
                             </div>
@@ -444,7 +449,7 @@
                 @endif
             };
         @endif
-    </script>
+    </script>x
     <script>
         let saleItems = [];
         document.addEventListener('DOMContentLoaded', function() {
@@ -460,19 +465,33 @@
                         $itemModel = $item->accessory;
                     }
 
-                    // Use data from sale item (not current database)
-                    $itemName = addslashes($item->name);
+                    // Get name safely - handle null/empty
+                    $itemName = $item->name ?? ($itemModel->name ?? 'Unknown Item');
                     $stockNo = $item->stock_no ?? '';
+
+                    // Get stock quantity - use item model if available, otherwise use 0
                     $stockQuantity = $itemModel ? $itemModel->stock_quantity : 0;
-                    $pictureUrl = $itemModel && $itemModel->picture_url ? asset('storage/' . $itemModel->picture_url) : '';
-                    $discountPercentage = $item->discount_percentage;
+
+                    // Get picture URL - check both item model and item
+                    $pictureUrl = '';
+                    if ($itemModel && $itemModel->picture_url) {
+                        $pictureUrl = asset('storage/' . $itemModel->picture_url);
+                    } elseif ($item->picture_url ?? false) {
+                        $pictureUrl = asset('storage/' . $item->picture_url);
+                    }
+
+                    $discountPercentage = $item->discount_percentage ?? 0;
+
+                    // Escape for JavaScript
+                    $itemNameEscaped = addslashes($itemName);
+                    $pictureUrlEscaped = addslashes($pictureUrl);
                 @endphp
 
                 saleItems.push({
                     type: '{{ $itemType }}',
                     item_id: {{ $item->item_id }},
-                    name: '{{ $itemName }}',
-                    stock_no: '{{ $stockNo }}',
+                    name: '{{ $itemNameEscaped }}',
+                    stock_no: '{{ addslashes($stockNo) }}',
                     price: {{ $item->price }},
                     discountedPrice: {{ $item->discounted_price }},
                     discountPercentage: {{ $discountPercentage }},
@@ -480,7 +499,7 @@
                     total: {{ $item->total }},
                     currentStock: {{ $stockQuantity }},
                     originalStock: {{ $stockQuantity + $item->quantity }},
-                    picture_url: '{{ $pictureUrl }}',
+                    picture_url: '{{ $pictureUrlEscaped }}',
                     existsInDb: {{ $itemModel ? 'true' : 'false' }}
                 });
             @endforeach
@@ -493,7 +512,8 @@
                 const search = $(this).val().toLowerCase();
                 $('.product-item').each(function() {
                     const name = $(this).data('name').toString().toLowerCase();
-                    const barcode = $(this).data('barcode').toString().toLowerCase();
+                    const barcode = $(this).data('barcode') ? $(this).data('barcode').toString()
+                        .toLowerCase() : '';
                     $(this).closest('.col-lg-3').toggle(name.includes(search) || barcode.includes(
                         search));
                 });
@@ -547,7 +567,7 @@
                 const itemPrice = parseFloat($(this).data('price'));
                 const stockNo = $(this).data('stock') || '';
                 const currentStock = parseInt($(this).data('stock-quantity'));
-                const pictureUrl = $(this).data('picture-url');
+                const pictureUrl = $(this).data('picture-url') || '';
                 const originalStock = parseInt($(this).data('original-stock'));
                 const discountPercentage = parseFloat($(this).data('discount-percentage')) || 0;
 
@@ -635,47 +655,51 @@
                 tbody.empty();
 
                 saleItems.forEach((item, index) => {
-                    const imageHtml = item.picture_url ?
-                        `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">` :
-                        `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f0f0f0;">
-                <i class="fas fa-image text-muted"></i>
-                    </div>`;
+                    // Handle image display - check if picture_url exists
+                    let imageHtml;
+                    if (item.picture_url && item.picture_url !== '') {
+                        imageHtml =
+                            `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">`;
+                    } else {
+                        imageHtml = `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f0f0f0;">
+                    <i class="fas fa-image text-muted"></i>
+                </div>`;
+                    }
 
                     const discountBadge = item.discountPercentage > 0 ?
                         `<span class="badge bg-success">${item.discountPercentage}% off</span>` : '';
 
                     const row = `
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            ${imageHtml}
-                            <div>
-                                ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
-                                <div>${item.name} ${discountBadge}</div>
-                                <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
-                            </div>
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+                        ${imageHtml}
+                        <div>
+                            ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
+                            <div>${item.name} ${discountBadge}</div>
+                            <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
                         </div>
-                    </td>
-                    <td>
-                        $${item.price.toFixed(2)}
-                        ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
-                    </td>
-                    <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
-                    <td>
-                        <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
-                    </td>
-                    <td>$${item.total.toFixed(2)}</td>
-                    <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>`;
+                    </div>
+                </td>
+                <td>
+                    $${item.price.toFixed(2)}
+                    ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
+                </td>
+                <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
+                <td>
+                    <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
+                </td>
+                <td>$${item.total.toFixed(2)}</td>
+                <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>`;
 
                     tbody.append(row);
                 });
-
 
                 // Add event listeners for quantity changes
                 $('.qty-input').on('change', function() {
@@ -732,7 +756,11 @@
                 const itemDiscounts = subtotal - discountedSubtotal;
                 const taxRate = parseFloat($('#tax_rate').val()) || 0;
                 const additionalDiscount = parseFloat($('#additional_discount').val()) || 0;
-                const tax = discountedSubtotal * (taxRate / 100);
+
+                // Prevent division by zero in tax calculation
+                // Apply additional discount to discounted subtotal before tax
+                const taxableAmount = discountedSubtotal - additionalDiscount;
+                const tax = taxableAmount > 0 ? taxableAmount * (taxRate / 100) : 0;
                 const total = discountedSubtotal + tax - additionalDiscount;
 
                 $('#subtotal').text(`$${subtotal.toFixed(2)}`);
@@ -756,18 +784,20 @@
 
             // Clear sale
             $('#clear-sale').on('click', function() {
-                // Restore all stock quantities
-                saleItems.forEach(item => {
-                    const restoredStock = item.currentStock + item.quantity;
-                    updateStockDisplay(item.type, item.item_id, restoredStock);
-                });
+                if (confirm('Are you sure you want to clear all items from the sale?')) {
+                    // Restore all stock quantities
+                    saleItems.forEach(item => {
+                        const restoredStock = item.currentStock + item.quantity;
+                        updateStockDisplay(item.type, item.item_id, restoredStock);
+                    });
 
-                saleItems = [];
-                updateSaleTable();
-                calculateTotals();
-                $('#customer_id').val('');
-                $('#additional_discount').val(0);
-                $('#tax_rate').val(12);
+                    saleItems = [];
+                    updateSaleTable();
+                    calculateTotals();
+                    $('#customer_id').val('');
+                    $('#additional_discount').val(0);
+                    $('#tax_rate').val(12);
+                }
             });
 
             // Recalculate when tax or discount changes
@@ -788,8 +818,23 @@
                     tax_amount: parseFloat($('#tax').text().replace('$', '')),
                     total: parseFloat($('#total').text().replace('$', '')),
                     status: 'completed',
-                    payment_status: $('input[name="payment_method"]:checked').val(),
+                    payment_method: $('input[name="payment_method"]:checked').val(),
+                    payment_status: $('input[name="payment_status"]:checked').val(),
+                    notes: $('#payment_notes').val(),
+                    received_amount: parseFloat($('#received_amount').val()) || 0,
+                    change_amount: parseFloat($('#change_amount').val()) || 0
                 };
+
+                // Validate required fields
+                if (!formData.customer_id) {
+                    alert('Please select a customer');
+                    return;
+                }
+
+                if (!formData.employee_id) {
+                    alert('Please select a sales person');
+                    return;
+                }
 
                 $.ajax({
                     url: '{{ route('sales.update', $sale->id) }}',
@@ -810,7 +855,8 @@
                         }
                     },
                     error: function(xhr) {
-                        alert('Error: ' + xhr.responseJSON.message);
+                        alert('Error: ' + (xhr.responseJSON?.message ||
+                            'Something went wrong'));
                     }
                 });
             });

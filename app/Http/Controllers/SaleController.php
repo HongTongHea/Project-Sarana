@@ -200,7 +200,7 @@ class SaleController extends Controller
         $products = Product::where('stock_quantity', '>', 0)->paginate(12);
         $accessories = Accessory::where('stock_quantity', '>', 0)->paginate(12);
         $categories = Category::all();
-        
+
         // Get the first payment (assuming one payment per sale)
         $payment = $sale->payments->first();
 
@@ -317,10 +317,10 @@ class SaleController extends Controller
         $paymentData = $request->input('payment_data');
         if ($paymentData) {
             $paymentData = json_decode($paymentData, true);
-            
+
             // Update or create payment
             $payment = $sale->payments()->first();
-            
+
             $paymentRecord = [
                 'method' => $paymentData['method'],
                 'amount' => $paymentData['amount'],
@@ -328,7 +328,7 @@ class SaleController extends Controller
                 'received' => $paymentData['received'] ?? null,
                 'change' => $paymentData['change'] ?? null,
             ];
-            
+
             if ($payment) {
                 // Update existing payment
                 $payment->update($paymentRecord);
@@ -341,7 +341,7 @@ class SaleController extends Controller
         return redirect()->route('sales.invoice', $sale->id)
             ->with('success', 'Sale updated successfully.');
     }
-  
+
     public function searchProducts(Request $request)
     {
         $search = $request->input('search');
@@ -370,9 +370,9 @@ class SaleController extends Controller
         $sale = Sale::findOrFail($id);
 
         // Add any validation logic here (e.g., only allow deletion of certain status sales)
-        if ($sale->status !== 'pending') {
-            return redirect()->back()->with('error', 'Only pending sales can be deleted.');
-        }
+        // if ($sale->status !== 'pending') {
+        //     return redirect()->back()->with('error', 'Only pending sales can be deleted.');
+        // }
 
         // Restore stock before deletion
         foreach ($sale->items as $item) {

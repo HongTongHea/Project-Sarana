@@ -25,7 +25,6 @@
                                 <th>Items</th>
                                 <th>Qty</th>
                                 <th>Subtotal</th>
-                                {{-- <th>Tax</th> --}}
                                 <th>Discount</th>
                                 <th>Total</th>
                                 <th>Status</th>

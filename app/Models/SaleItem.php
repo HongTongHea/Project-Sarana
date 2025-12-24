@@ -8,14 +8,16 @@ class SaleItem extends Model
 {
     protected $fillable = [
         'sale_id',
-        'item_type', // For polymorphic relationship (Product or Accessory)
-        'item_id',   // For polymorphic relationship (product_id or accessory_id)
+        'item_type',
+        'item_id',
         'quantity',
         'price',
         'discount_percentage',
         'discounted_price',
-        'total'
-    ];
+        'total',
+        'picture_url',
+        'name'
+    ]; 
 
     // Polymorphic relationship
     public function item()
@@ -37,5 +39,20 @@ class SaleItem extends Model
     public function sale()
     {
         return $this->belongsTo(Sale::class);
+    }
+
+    // Accessor for picture URL
+    public function getPictureUrlAttribute($value)
+    {
+        if ($value) {
+            return asset('storage/' . $value);
+        }
+
+        // Try to get from the related item if it exists
+        if ($this->item) {
+            return $this->item->picture_url ? asset('storage/' . $this->item->picture_url) : null;
+        }
+
+        return null;
     }
 }
