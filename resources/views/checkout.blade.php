@@ -332,8 +332,10 @@
             });
         });
 
+
         function loadCartSummary() {
             const cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+
             const orderItemsContainer = document.getElementById('checkoutOrderItems');
             const subtotalElement = document.getElementById('checkoutSubtotal');
             const discountElement = document.getElementById('checkoutDiscount');
@@ -342,66 +344,66 @@
 
             if (cart.length === 0) {
                 orderItemsContainer.innerHTML = `
-                    <div class="text-center py-3">
-                        <i class="fas fa-shopping-cart fa-2x text-muted mb-2"></i>
-                        <p>Your cart is empty</p>
-                        <a href="/" class="btn btn-primary mt-2">Continue Shopping</a>
-                    </div>
-                `;
-                // Disable place order button if cart is empty
+            <div class="text-center py-3">
+                <i class="fas fa-shopping-cart fa-2x text-muted mb-2"></i>
+                <p>Your cart is empty</p>
+                <a href="/" class="btn btn-primary mt-2">Continue Shopping</a>
+            </div>
+        `;
                 document.getElementById('placeOrderBtn').disabled = true;
                 return;
             }
 
-            let subtotal = 0;
-            let totalDiscount = 0;
+            let subtotal = 0; // ✅ FINAL item totals (after discount)
+            let totalDiscount = 0; // ℹ️ informational only
             let html = '';
 
             cart.forEach((item, index) => {
-                const itemPrice = item.discount ?
-                    item.price * (1 - item.discount / 100) :
-                    item.price;
+                const originalPrice = item.price;
+                const discountedPrice = item.discount ?
+                    originalPrice * (1 - item.discount / 100) :
+                    originalPrice;
 
-                const itemTotal = itemPrice * item.quantity;
-                const itemOriginalTotal = item.price * item.quantity;
-                const itemDiscount = itemOriginalTotal - itemTotal;
+                const itemTotal = discountedPrice * item.quantity;
+                const originalTotal = originalPrice * item.quantity;
+                const discountAmount = originalTotal - itemTotal;
 
-                subtotal += itemOriginalTotal;
-                totalDiscount += itemDiscount;
+                subtotal += itemTotal; // ✅ correct subtotal
+                totalDiscount += discountAmount;
 
                 html += `
-                    <div class="d-flex justify-content-between mb-3 pb-2 border-bottom">
-                        <div class="d-flex align-items-start">
-                            <img src="${item.img}" class="cart-item-image me-3" alt="${item.name}">
-                            <div>
-                                <div class="fw-medium">${item.name}</div>
-                                <small class="text-muted">Qty: ${item.quantity}</small>
-                                ${item.discount ? `<br><small class="text-success">-${item.discount}% off</small>` : ''}
-                            </div>
-                        </div>
-                        <div class="text-end">
-                            <div class="fw-medium">$${itemTotal.toFixed(2)}</div>
-                            ${item.discount ? 
-                                `<small class="text-muted text-decoration-line-through">$${itemOriginalTotal.toFixed(2)}</small>` : 
-                                ''
-                            }
-                        </div>
+            <div class="d-flex justify-content-between mb-3 pb-2 border-bottom">
+                <div class="d-flex align-items-start">
+                    <img src="${item.img}" class="cart-item-image me-3" alt="${item.name}">
+                    <div>
+                        <div class="fw-medium">${item.name}</div>
+                        <small class="text-muted">Qty: ${item.quantity}</small>
+                        ${item.discount ? `<br><small class="text-success">-${item.discount}% off</small>` : ''}
                     </div>
-                `;
+                </div>
+                <div class="text-end">
+                    <div class="fw-medium">$${itemTotal.toFixed(2)}</div>
+                    ${item.discount
+                        ? `<small class="text-muted text-decoration-line-through">$${originalTotal.toFixed(2)}</small>`
+                        : ''}
+                </div>
+            </div>
+        `;
             });
 
-            // Calculate totals (without tax)
-            const shipping = 5.00; // Fixed shipping cost
-            const total = (subtotal - totalDiscount) + shipping;
+            const shipping = 5.00;
+            const total = subtotal + shipping;
 
-            // Update the UI
+            // ✅ Update UI
             orderItemsContainer.innerHTML = html;
             subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-            discountElement.textContent = `-$${totalDiscount.toFixed(2)}`;
+            discountElement.textContent = totalDiscount > 0 ?
+                `-$${totalDiscount.toFixed(2)}` :
+                '$0.00';
             shippingElement.textContent = `$${shipping.toFixed(2)}`;
             totalElement.textContent = `$${total.toFixed(2)}`;
 
-            // Store the calculated totals for the order submission
+            // ✅ Store for backend (matches UI exactly)
             window.cartTotals = {
                 subtotal: subtotal,
                 discount_amount: totalDiscount,

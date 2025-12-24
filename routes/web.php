@@ -162,6 +162,11 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::get('/online-orders', [CheckoutOrderController::class, 'index'])->name('online-orders.index');
     Route::get('/online-orders/{onlineOrder}', [CheckoutOrderController::class, 'show'])->name('online-orders.show');
+    Route::delete('/online-orders/{order}', [CheckoutOrderController::class, 'destroy'])->name('online-orders.destroy');
+    Route::put('/online-orders/{order}/payment',
+    [CheckoutOrderController::class, 'updatePayment'])
+    ->name('online-orders.payment.update');
+
 });
 
 // Contact routes

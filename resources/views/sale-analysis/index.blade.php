@@ -6,9 +6,8 @@
         <div class="row ">
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
-                    <h4 class="mb-0 fw-semibold text-uppercase">Sales Analysis Dashboard</h4>
+                    {{-- <h4 class="mb-0 fw-semibold text-uppercase">Sales Analysis</h4> --}}
                 </div>
-
                 <!-- Enhanced Filter Card -->
                 <div class="card shadow-sm rounded-0">
                     <div class="card-body">
@@ -152,10 +151,6 @@
                 <h4 class="mb-0 fw-semibold text-uppercase">Top Sale Items</h4>
             </div>
             <div class="card-body p-4">
-                <a href="{{ route('sale-analysis.report') }}?sort_by=revenue&period={{ $period }}"
-                    class="btn btn-primary btn-sm mb-3">
-                    <i class="fas fa-chart-bar"></i> View Full Report
-                </a>
                 <div class="table-responsive">
                     <table id="DataTable" class="table mt-3 table-border table-hover">
                         <thead class="table-dark">
@@ -206,12 +201,6 @@
                                     <td class="text-end">{{ number_format($item->sale_count) }}</td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="12" class="text-center py-4 text-muted">
-                                        <i class="fas fa-inbox fa-2x mb-2"></i>
-                                        <p class="mb-0">No data available for this period</p>
-                                    </td>
-                                </tr>
                             @endforelse
                         </tbody>
                     </table>

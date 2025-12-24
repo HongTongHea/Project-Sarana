@@ -66,7 +66,7 @@
     </div>
     <div class="offcanvas-body">
         <div class="cart-items">
-            <div class="text-center py-4">
+            <div class="text-center py-4 empty-cart-message">
                 <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
                 <p>Your cart is empty</p>
             </div>

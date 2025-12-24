@@ -62,7 +62,7 @@ $(document).ready(function () {
             stock: parseInt($(this).data("stock")),
             description: $(this).data("description") || "",
             barcode: $(this).data("barcode") || "",
-            type: $(this).closest('.accessory-item').length ? 'accessory' : 'product' // Add type to distinguish
+            type: $(this).closest('.accessory-item').length ? 'accessory' : 'product'
         };
 
         modalProductImg.attr("src", currentProduct.img);
@@ -124,19 +124,15 @@ $(document).ready(function () {
             return;
         }
 
-        // Generate a unique ID combining product/accessory type and ID
         const uniqueId = `${currentProduct.type}_${currentProduct.id}`;
         
-        // Check if item already exists in cart (with same type and ID)
         const index = cart.findIndex((item) => 
             `${item.type}_${item.id}` === uniqueId
         );
         
         if (index > -1) {
-            // If item exists, update quantity
             cart[index].quantity += quantity;
         } else {
-            // If new item, add to cart with uniqueId property
             cart.push({ 
                 ...currentProduct, 
                 quantity,
@@ -169,16 +165,28 @@ $(document).ready(function () {
         emptyCartMessage.addClass("d-none");
         cartSummary.removeClass("d-none");
 
-        let subtotal = 0,
-            discount = 0;
+        let subtotal = 0;
+        let totalDiscount = 0;
+
         cart.forEach((item, index) => {
-            const itemPrice = item.discount
-                ? item.price * (1 - item.discount / 100)
-                : item.price;
-            subtotal += item.price * item.quantity;
-            discount += item.discount
-                ? ((item.price * item.discount) / 100) * item.quantity
-                : 0;
+            // Original price per unit
+            const originalPrice = parseFloat(item.price);
+            const discount = parseFloat(item.discount) || 0;
+            const quantity = parseInt(item.quantity);
+            
+            // Calculate discounted price per unit
+            const discountedPrice = discount > 0 
+                ? originalPrice * (1 - discount / 100)
+                : originalPrice;
+            
+            // Calculate amounts for this item
+            const originalTotal = originalPrice * quantity;
+            const discountedTotal = discountedPrice * quantity;
+            const itemDiscountAmount = originalTotal - discountedTotal;
+            
+            // Add to totals
+            subtotal += originalTotal;
+            totalDiscount += itemDiscountAmount;
 
             const el = $(`
                 <div class="cart-item mb-3" data-index="${index}">
@@ -186,21 +194,21 @@ $(document).ready(function () {
                         <img src="${item.img}" class="cart-item-img rounded me-3" style="width:80px;height:80px;">
                         <div class="cart-item-details flex-grow-1">
                             <p class="mb-1 fw-bold">${item.name}</p>
-                            ${item.discount
+                            ${discount > 0
                                 ? `
                                 <p class="mb-0">
-                                    <span class="fw-bold">$${(itemPrice * item.quantity).toFixed(2)}</span><br>
-                                    <span class="text-muted text-decoration-line-through small">$${(item.price * item.quantity).toFixed(2)}</span><br>
-                                    <span class="badge bg-danger">-${item.discount}%</span>
+                                    <span class="fw-bold">$${discountedTotal.toFixed(2)}</span><br>
+                                    <span class="text-muted text-decoration-line-through small">$${originalTotal.toFixed(2)}</span><br>
+                                    <span class="badge bg-danger">-${discount}%</span>
                                 </p>`
-                                : `<p class="mb-0 fw-bold">$${(item.price * item.quantity).toFixed(2)}</p>`
+                                : `<p class="mb-0 fw-bold">$${originalTotal.toFixed(2)}</p>`
                             }
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
                         <button class="btn btn-sm btn-outline-secondary decrease-qty-btn"><i class="fas fa-minus"></i></button>
-                        <span class="mx-2 item-quantity">${item.quantity}</span>
-                        <button class="btn btn-sm btn-outline-secondary increase-qty-btn" ${item.quantity >= item.stock ? "disabled" : ""}><i class="fas fa-plus"></i></button>
+                        <span class="mx-2 item-quantity">${quantity}</span>
+                        <button class="btn btn-sm btn-outline-secondary increase-qty-btn" ${quantity >= item.stock ? "disabled" : ""}><i class="fas fa-plus"></i></button>
                         <button class="btn btn-sm btn-outline-danger remove-item-btn ms-4"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
@@ -208,15 +216,19 @@ $(document).ready(function () {
             cartItemsContainer.append(el);
         });
 
+        // Calculate final total
+        const finalTotal = subtotal - totalDiscount;
+
+        // Update cart summary with proper rounding
         cartSubtotal.text(`$${subtotal.toFixed(2)}`);
-        cartDiscount.text(`-$${discount.toFixed(2)}`);
-        cartTotal.text(`$${(subtotal - discount).toFixed(2)}`);
+        cartDiscount.text(`-$${totalDiscount.toFixed(2)}`);
+        cartTotal.text(`$${finalTotal.toFixed(2)}`);
         
-        // FIXED: Calculate total items in cart (sum of all quantities)
-        const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+        // Calculate total items in cart
+        const totalItems = cart.reduce((total, item) => total + parseInt(item.quantity), 0);
         cartCount.text(totalItems);
 
-        // Button actions
+        // Button actions (keep the same as your original code)
         $(".remove-item-btn").on("click", function () {
             cart.splice($(this).closest(".cart-item").data("index"), 1);
             saveCartToStorage();
@@ -264,7 +276,6 @@ $(document).ready(function () {
 
         $("#products-title").text(categoryTitle);
 
-        // Hide all products first, then show only matching ones
         allProducts.hide();
         
         allProducts.each(function () {
@@ -274,7 +285,6 @@ $(document).ready(function () {
             }
         });
 
-        // Show/hide the "no products" message
         if (foundProducts === 0) {
             $("#no-products-message").removeClass("d-none");
         } else {
@@ -288,7 +298,7 @@ $(document).ready(function () {
         $(".product-item").show();
         $("#products-title").text("Featured Products");
         $("#see-all-btn").hide();
-        $("#no-products-message").addClass("d-none"); // Hide the message
+        $("#no-products-message").addClass("d-none");
     }
 
     // Checkout form

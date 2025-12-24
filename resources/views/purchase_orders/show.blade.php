@@ -1,6 +1,6 @@
 <div class="modal fade" id="showModal{{ $purchaseOrder->id }}" tabindex="-1" aria-labelledby="showModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-light">
                 <div class="d-flex justify-content-center align-items-center">

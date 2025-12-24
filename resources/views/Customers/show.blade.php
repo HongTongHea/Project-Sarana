@@ -1,65 +1,126 @@
 <div class="modal fade" id="showModal{{ $customer->id }}" tabindex="-1" aria-labelledby="showModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <div class="d-flex justify-content-center align-items-center">
-                    <h6 class="text-uppercase mt-3 ms-1 text-black" style="font-weight: 700; font-size: 16px">
-                        Customer Details
-                    </h6>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header">
+                <h6 class="text-uppercase mt-3 ms-1 text-black" style="font-weight: 700; font-size: 16px">
+                    Customer Details
+                </h6>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
+
             <div class="modal-body p-4">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <div class="detail-item">
-                            <i class="fas fa-user text-primary me-2"></i>
-                            <label class="text-muted small mb-1">Name</label>
-                            <p class="mb-0 fw-semibold">{{ $customer->name }}</p>
+                <!-- Profile Section -->
+                <div class="text-center mb-4 pb-4 border-bottom">
+                    <div class="rounded-circle shadow-sm d-inline-flex align-items-center justify-content-center mb-3"
+                        style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 36px; font-weight: bold; border: 4px solid #f8f9fa;">
+                        {{ strtoupper(substr($customer->name, 0, 1)) }}
+                    </div>
+                    <h5 class="mb-1 fw-bold">{{ $customer->name }}</h5>
+                    <p class="text-muted mb-2">{{ $customer->email }}</p>
+                    <span class="badge bg-success px-3 py-2">
+                        <i class="fas fa-user-check me-1"></i>Customer
+                    </span>
+                </div>
+
+                <!-- Details Grid -->
+                <div class="row g-4">
+                    <!-- Name -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 h-100" style="background-color: #f8f9fa;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                    style="width: 35px; height: 35px; background-color: #667eea;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                                <span class="text-muted small">Customer Name</span>
+                            </div>
+                            <p class="mb-0 fw-semibold ms-1">{{ $customer->name }}</p>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="detail-item">
-                            <i class="fas fa-envelope text-primary me-2"></i>
-                            <label class="text-muted small mb-1">Email</label>
-                            <p class="mb-0 fw-semibold">{{ $customer->email }}</p>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 h-100" style="background-color: #f8f9fa;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                    style="width: 35px; height: 35px; background-color: #667eea;">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <span class="text-muted small">Email Address</span>
+                            </div>
+                            <p class="mb-0 fw-semibold ms-1 text-break">{{ $customer->email }}</p>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="detail-item">
-                            <i class="fas fa-phone text-primary me-2"></i>
-                            <label class="text-muted small mb-1">Phone</label>
-                            <p class="mb-0 fw-semibold">{{ $customer->phone }}</p>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 h-100" style="background-color: #f8f9fa;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                    style="width: 35px; height: 35px; background-color: #667eea;">
+                                    <i class="fas fa-phone text-white"></i>
+                                </div>
+                                <span class="text-muted small">Phone Number</span>
+                            </div>
+                            <p class="mb-0 fw-semibold ms-1">{{ $customer->phone }}</p>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                            <label class="text-muted small mb-1">Address</label>
-                            <p class="mb-0 fw-semibold">{{ $customer->address }}</p>
+
+                    <!-- Address -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 h-100" style="background-color: #f8f9fa;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                    style="width: 35px; height: 35px; background-color: #667eea;">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <span class="text-muted small">Address</span>
+                            </div>
+                            <p class="mb-0 fw-semibold ms-1">{{ $customer->address }}</p>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="detail-item">
-                            <i class="fas fa-calendar-plus text-primary me-2"></i>
-                            <label class="text-muted small mb-1">Created At</label>
-                            <p class="mb-0 fw-semibold">{{ $customer->created_at->format('d M Y H:i') }}</p>
+
+                    <!-- Created At -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 h-100" style="background-color: #f8f9fa;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                    style="width: 35px; height: 35px; background-color: #667eea;">
+                                    <i class="fas fa-calendar-plus text-white"></i>
+                                </div>
+                                <span class="text-muted small">Created At</span>
+                            </div>
+                            <p class="mb-0 fw-semibold ms-1">
+                                {{ $customer->created_at->format('M d, Y h:i A') }}
+                            </p>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="detail-item">
-                            <i class="fas fa-calendar-check text-primary me-2"></i>
-                            <label class="text-muted small mb-1">Updated At</label>
-                            <p class="mb-0 fw-semibold">{{ $customer->updated_at->format('d M Y H:i') }}</p>
+
+                    <!-- Updated At -->
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 h-100" style="background-color: #f8f9fa;">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
+                                    style="width: 35px; height: 35px; background-color: #667eea;">
+                                    <i class="fas fa-calendar-check text-white"></i>
+                                </div>
+                                <span class="text-muted small">Updated At</span>
+                            </div>
+                            <p class="mb-0 fw-semibold ms-1">
+                                {{ $customer->updated_at->format('M d, Y h:i A') }}
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer bg-light">
+
+            <div class="modal-footer border-0 bg-light">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i>Close
+                    <i class="fas fa-times me-2"></i>Close
                 </button>
             </div>
+
         </div>
     </div>
 </div>

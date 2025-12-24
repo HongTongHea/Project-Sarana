@@ -174,11 +174,8 @@ class CheckoutOrderController extends Controller
      */
     public function show(OnlineOrder $onlineOrder)
     {
-        $onlineOrder->load(['user', 'items' => function($query) {
-        $query->with('item');
-    }]);
-    
-    return view('online-orders.show', compact('onlineOrder'));
+        $onlineOrder->load(['user', 'items']);
+        return view('online-orders.show', compact('onlineOrder'));
     }
 
     /**
@@ -186,15 +183,50 @@ class CheckoutOrderController extends Controller
      */
     public function myOrderShow(OnlineOrder $order)
     {
-       if ($order->user_id !== Auth::id()) {
-        abort(403, 'Unauthorized access to this order.');
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access to this order.');
+        }
+
+        $order->load('items');
+        return view('website.my-order-detail', compact('order'));
+    }
+
+    public function updatePayment(Request $request, OnlineOrder $order)
+    {
+        $request->validate([
+            'payment_status' => 'required|in:pending,paid,failed,refunded',
+        ]);
+
+        // Update payment
+        $order->payment_status = $request->payment_status;
+
+        // Auto update order status when paid
+        if ($request->payment_status === 'paid') {
+            $order->status = 'processing'; // or 'completed'
+        }
+
+        // If payment failed
+        if ($request->payment_status === 'failed') {
+            $order->status = 'pending';
+        }
+
+        $order->save();
+
+        return redirect()->back()->with('success', 'Payment updated successfully');
     }
 
 
-    $order->load(['items' => function($query) {
-        $query->with('item'); 
-    }]);
-    
-    return view('website.my-order-detail', compact('order'));
+    public function destroy(OnlineOrder $order)
+    {
+        // Only allow deletion if order is pending
+        if ($order->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending orders can be deleted.');
+        }
+
+        $order->items()->delete();
+        $order->delete();
+
+        return redirect()->route('online-orders.index')
+            ->with('success', 'Online order deleted successfully.');
     }
 }

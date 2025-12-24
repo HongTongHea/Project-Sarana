@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="DataTable" class="table table-border mt-3 table-hover ">
-                        <thead class="thead-dark text-center">
+                        <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
                                 <th>Order No</th>
@@ -28,33 +28,50 @@
                                 <th>Payment</th>
                                 {{-- <th>Address</th> --}}
                                 {{-- <th>Order Date</th> --}}
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($onlineOrders as $order)
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td class="text-center">#{{ $order->order_number ?? $order->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>#{{ $order->order_number ?? $order->id }}</td>
                                     <td>{{ $order->customer_first_name }} {{ $order->customer_last_name }}</td>
                                     {{-- <td>{{ $order->customer_email }}</td> --}}
                                     <td>{{ $order->customer_phone ?? '-' }}</td>
-                                    <td class="text-end">${{ number_format($order->subtotal, 2) }}</td>
-                                    <td class="text-end">${{ number_format($order->discount_amount, 2) }}</td>
-                                    <td class="text-end">${{ number_format($order->shipping_amount, 2) }}</td>
-                                    <td class="text-end"><strong>${{ number_format($order->total_amount, 2) }}</strong>
+                                    <td>${{ number_format($order->subtotal, 2) }}</td>
+                                    <td>${{ number_format($order->discount_amount, 2) }}</td>
+                                    <td>${{ number_format($order->shipping_amount, 2) }}</td>
+                                    <td><strong>${{ number_format($order->total_amount, 2) }}</strong>
+                                    </td>
+                                    <td class="text-center">
+                                        <form action="{{ route('online-orders.payment.update', $order->id) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <div
+                                                class="d-flex justify-content-center align-items-center gap-2 card-payment">
+                                                <i class="bi bi-credit-card"></i>
+                                                <select name="payment_status "
+                                                    class="form-select form-select-sm payment-select
+                                                @if ($order->payment_status === 'paid') paid
+                                                @elseif ($order->payment_status === 'pending') pending
+                                                @elseif ($order->payment_status === 'failed') failed
+                                                @else refunded @endif"
+                                                    onchange="this.form.submit()">
+
+                                                    <option value="pending" @selected($order->payment_status == 'pending')>Pending</option>
+                                                    <option value="paid" @selected($order->payment_status == 'paid')>Paid</option>
+                                                    <option value="failed" @selected($order->payment_status == 'failed')>Failed</option>
+                                                    <option value="refunded" @selected($order->payment_status == 'refunded')>Refunded</option>
+                                                </select>
+                                            </div>
+
+
+                                        </form>
                                     </td>
 
-                                    <td class="text-center">
-                                        <span
-                                            class="badge 
-                                        @if ($order->payment_status === 'paid') bg-success 
-                                        @elseif ($order->payment_status === 'pending') bg-warning
-                                        @elseif ($order->payment_status === 'failed') bg-danger
-                                        @else bg-secondary @endif">
-                                            {{ ucfirst($order->payment_status) }}
-                                        </span>
-                                    </td>
+
 
                                     {{-- <td>{{ Str::limit($order->shipping_address, 30) }}</td> --}}
                                     {{-- <td>{{ $order->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }} --}}
@@ -96,9 +113,46 @@
                     </table>
                     @foreach ($onlineOrders as $order)
                         @include('online-orders.show')
+                        @include('online-orders.delete')
                     @endforeach
                 </div>
             </div>
         </div>
     </div>
+    <style>
+        .card-payment i {
+            font-size: 1.6rem;
+        }
+
+        .payment-select {
+            padding: 2px 12px;
+            font-weight: bolder;
+            text-align: center;
+            cursor: pointer;
+            min-width: 50px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        .payment-select.paid {
+            color: #ffc107;
+        }
+
+        .payment-select.pending {
+            color: #198754;
+        }
+
+        .payment-select.failed {
+            color: #ff0000;
+        }
+
+        .payment-select.refunded {
+            color: #6c757d;
+        }
+
+        /* Remove ugly focus */
+        .payment-select:focus {
+            box-shadow: none;
+        }
+    </style>
 @endsection
