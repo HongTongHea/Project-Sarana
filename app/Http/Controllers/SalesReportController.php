@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class SalesReportController extends Controller
 {
@@ -19,10 +20,67 @@ class SalesReportController extends Controller
 
     public function index(Request $request)
     {
-        $type = $request->get('type');
+        $type = $request->get('type') ?? $request->get('report_type');
         $reports = $this->salesReportService->getReports($type);
 
+        // If AJAX request, return JSON
+        if ($request->ajax()) {
+            // Transform reports data for JSON response
+            $reportsData = $reports->map(function ($report) {
+                return [
+                    'id' => $report->id,
+                    'report_type' => $report->report_type,
+                    'start_date' => $report->start_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A'),
+                    'end_date' => $report->end_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A'),
+                    'total_orders' => $report->total_orders,
+                    'total_sales' => $report->total_sales,
+                    'average_order_value' => $report->average_order_value,
+                    'created_at' => $report->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A'),
+                    'can_delete' => Auth::check() && Auth::user()->role === 'admin'
+                ];
+            });
+
+            // Generate modals HTML
+            $modalsHtml = '';
+            foreach ($reports as $report) {
+                $modalsHtml .= view('sales-reports.show', ['report' => $report])->render();
+                $modalsHtml .= view('sales-reports.delete', ['report' => $report])->render();
+            }
+
+            return response()->json([
+                'reports' => [
+                    'data' => $reportsData,
+                    'current_page' => $reports->currentPage(),
+                    'last_page' => $reports->lastPage(),
+                    'per_page' => $reports->perPage(),
+                    'total' => $reports->total(),
+                    'from' => $reports->firstItem(),
+                    'to' => $reports->lastItem()
+                ],
+                'modals' => $modalsHtml
+            ]);
+        }
+
         return view('sales-reports.index', compact('reports'));
+    }
+
+    public function generateWeekly(Request $request)
+    {
+        try {
+            // Your logic to generate weekly report
+            $report = $this->createWeeklyReport();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Weekly report generated successfully!',
+                'report' => $report
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate weekly report: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function generateWeeklyReport(Request $request): JsonResponse

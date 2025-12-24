@@ -18,31 +18,29 @@ class SaleAnalysisController extends Controller
         $itemType = $request->get('item_type', 'all');
         $minRevenue = $request->get('min_revenue');
 
-        $query = SaleItem::query();
-    
-        // Handle item_type filter
-        if ($itemType === 'product') {
-            $query->where('item_type', 'App\Models\Product');
-        } elseif ($itemType === 'accessory') {
-            $query->where('item_type', 'App\Models\Accessory');
-        }
-        
-        // Get period from request or default to 'all'
-        $period = $request->get('period', 'all');
-        
-        // Get top items by revenue
-        $topByRevenue = $this->getTopItemsByRevenue(10, $period);
+        // Get top items by revenue with filters
+        $topByRevenue = $this->getTopItemsByRevenue(10, $period, $itemType, $minRevenue);
         
         // Get top items by quantity
-        $topByQuantity = $this->getTopItemsByQuantity(10, $period);
+        $topByQuantity = $this->getTopItemsByQuantity(10, $period, $itemType, $minRevenue);
         
         // Get sales summary
-        $summary = $this->getSalesSummary($period);
+        $summary = $this->getSalesSummary($period, $itemType, $minRevenue);
         
         // Load item details for top items
         $topByRevenue = $this->loadItemDetails($topByRevenue);
         $topByQuantity = $this->loadItemDetails($topByQuantity);
 
+        // If AJAX request, return JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'summary' => $summary,
+                'topByRevenue' => $topByRevenue,
+                'topByQuantity' => $topByQuantity
+            ]);
+        }
+
+        // Return view for regular requests
         return view('sale-analysis.index', compact(
             'topByRevenue',
             'topByQuantity',
@@ -55,11 +53,13 @@ class SaleAnalysisController extends Controller
     {
         $period = $request->get('period', 'all');
         $sortBy = $request->get('sort_by', 'revenue');
+        $itemType = $request->get('item_type', 'all');
+        $minRevenue = $request->get('min_revenue');
         
         if ($sortBy === 'quantity') {
-            $topItems = $this->getTopItemsByQuantity(50, $period);
+            $topItems = $this->getTopItemsByQuantity(50, $period, $itemType, $minRevenue);
         } else {
-            $topItems = $this->getTopItemsByRevenue(50, $period);
+            $topItems = $this->getTopItemsByRevenue(50, $period, $itemType, $minRevenue);
         }
         
         $topItems = $this->loadItemDetails($topItems);
@@ -112,7 +112,7 @@ class SaleAnalysisController extends Controller
     /**
      * Get top items by revenue
      */
-    private function getTopItemsByRevenue($limit = 10, $period = 'all')
+    private function getTopItemsByRevenue($limit = 10, $period = 'all', $itemType = 'all', $minRevenue = null)
     {
         $query = SaleItem::query()
             ->selectRaw('
@@ -122,14 +122,28 @@ class SaleAnalysisController extends Controller
                 SUM(total) as total_revenue,
                 COUNT(DISTINCT sale_id) as sale_count
             ')
-            ->groupBy('item_type', 'item_id')
-            ->orderByDesc('total_revenue')
-            ->limit($limit);
+            ->groupBy('item_type', 'item_id');
 
+        // Apply item type filter
+        if ($itemType === 'product') {
+            $query->where('item_type', 'App\Models\Product');
+        } elseif ($itemType === 'accessory') {
+            $query->where('item_type', 'App\Models\Accessory');
+        }
+
+        // Apply period filter
         if ($period !== 'all') {
             $dateFilter = $this->getDateFilter($period);
             $query->where('created_at', '>=', $dateFilter);
         }
+
+        // Apply minimum revenue filter
+        if ($minRevenue !== null && $minRevenue > 0) {
+            $query->havingRaw('SUM(total) >= ?', [$minRevenue]);
+        }
+
+        $query->orderByDesc('total_revenue')
+            ->limit($limit);
 
         return $query->get();
     }
@@ -137,7 +151,7 @@ class SaleAnalysisController extends Controller
     /**
      * Get top items by quantity
      */
-    private function getTopItemsByQuantity($limit = 10, $period = 'all')
+    private function getTopItemsByQuantity($limit = 10, $period = 'all', $itemType = 'all', $minRevenue = null)
     {
         $query = SaleItem::query()
             ->selectRaw('
@@ -147,14 +161,28 @@ class SaleAnalysisController extends Controller
                 SUM(total) as total_revenue,
                 COUNT(DISTINCT sale_id) as sale_count
             ')
-            ->groupBy('item_type', 'item_id')
-            ->orderByDesc('total_quantity')
-            ->limit($limit);
+            ->groupBy('item_type', 'item_id');
 
+        // Apply item type filter
+        if ($itemType === 'product') {
+            $query->where('item_type', 'App\Models\Product');
+        } elseif ($itemType === 'accessory') {
+            $query->where('item_type', 'App\Models\Accessory');
+        }
+
+        // Apply period filter
         if ($period !== 'all') {
             $dateFilter = $this->getDateFilter($period);
             $query->where('created_at', '>=', $dateFilter);
         }
+
+        // Apply minimum revenue filter
+        if ($minRevenue !== null && $minRevenue > 0) {
+            $query->havingRaw('SUM(total) >= ?', [$minRevenue]);
+        }
+
+        $query->orderByDesc('total_quantity')
+            ->limit($limit);
 
         return $query->get();
     }
@@ -162,7 +190,7 @@ class SaleAnalysisController extends Controller
     /**
      * Get sales summary
      */
-    private function getSalesSummary($period = 'all')
+    private function getSalesSummary($period = 'all', $itemType = 'all', $minRevenue = null)
     {
         $query = SaleItem::query()
             ->selectRaw('
@@ -172,12 +200,43 @@ class SaleAnalysisController extends Controller
                 AVG(total) as average_sale_value
             ');
 
+        // Apply item type filter
+        if ($itemType === 'product') {
+            $query->where('item_type', 'App\Models\Product');
+        } elseif ($itemType === 'accessory') {
+            $query->where('item_type', 'App\Models\Accessory');
+        }
+
+        // Apply period filter
         if ($period !== 'all') {
             $dateFilter = $this->getDateFilter($period);
             $query->where('created_at', '>=', $dateFilter);
         }
 
-        return $query->first();
+        $result = $query->first();
+
+        // If min_revenue filter is applied, we need to recalculate
+        // This is an approximation since we're filtering at item level
+        if ($minRevenue !== null && $minRevenue > 0) {
+            // Get filtered items count
+            $filteredQuery = SaleItem::query()
+                ->selectRaw('COUNT(DISTINCT sale_id) as total_sales')
+                ->groupBy('item_type', 'item_id')
+                ->havingRaw('SUM(total) >= ?', [$minRevenue]);
+            
+            if ($itemType === 'product') {
+                $filteredQuery->where('item_type', 'App\Models\Product');
+            } elseif ($itemType === 'accessory') {
+                $filteredQuery->where('item_type', 'App\Models\Accessory');
+            }
+            
+            if ($period !== 'all') {
+                $dateFilter = $this->getDateFilter($period);
+                $filteredQuery->where('created_at', '>=', $dateFilter);
+            }
+        }
+
+        return $result;
     }
 
     /**
