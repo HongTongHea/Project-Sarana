@@ -1,5 +1,7 @@
 @extends('layouts.app')
+
 @section('title', 'AngkorTech Computer | Edit Sale & Transaction')
+
 @section('content')
     <div class="container-fluid mt-3">
         @if ($errors->any())
@@ -449,49 +451,58 @@
                 @endif
             };
         @endif
-    </script>x
+    </script>
     <script>
         let saleItems = [];
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize with existing sale items
             @foreach ($sale->items as $item)
                 @php
-                    $itemType = $item->item_type === 'App\Models\Product' ? 'product' : 'accessory';
-
-                    // Check if item still exists in database
-                    if ($itemType === 'product') {
-                        $itemModel = $item->product;
-                    } else {
-                        $itemModel = $item->accessory;
+                    $itemType = '';
+                    if ($item->item_type === 'App\Models\Product') {
+                        $itemType = 'product';
+                    } elseif ($item->item_type === 'App\Models\Accessory') {
+                        $itemType = 'accessory';
                     }
 
-                    // Get name safely - handle null/empty
-                    $itemName = $item->name ?? ($itemModel->name ?? 'Unknown Item');
+                    $itemModel = null;
+                    $itemName = $item->name ?? 'Unknown Item';
                     $stockNo = $item->stock_no ?? '';
-
-                    // Get stock quantity - use item model if available, otherwise use 0
-                    $stockQuantity = $itemModel ? $itemModel->stock_quantity : 0;
-
-                    // Get picture URL - check both item model and item
                     $pictureUrl = '';
-                    if ($itemModel && $itemModel->picture_url) {
-                        $pictureUrl = asset('storage/' . $itemModel->picture_url);
-                    } elseif ($item->picture_url ?? false) {
-                        $pictureUrl = asset('storage/' . $item->picture_url);
+                    $stockQuantity = 0;
+
+                    // FIX: Fetch the actual model to get the picture URL
+                    if ($itemType === 'product') {
+                        $itemModel = \App\Models\Product::find($item->item_id);
+                    } elseif ($itemType === 'accessory') {
+                        $itemModel = \App\Models\Accessory::find($item->item_id);
+                    }
+
+                    // If model exists, get fresh data including picture
+                    if ($itemModel) {
+                        $itemName = $itemModel->name;
+                        $stockNo = $itemModel->stock_no ?? '';
+                        $stockQuantity = $itemModel->stock_quantity ?? 0;
+
+                        // FIX: Properly check and set picture URL
+                        if (!empty($itemModel->picture_url)) {
+                            $pictureUrl = asset('storage/' . $itemModel->picture_url);
+                        }
+                    } else {
+                        $stockQuantity = $item->current_stock ?? 0;
                     }
 
                     $discountPercentage = $item->discount_percentage ?? 0;
-
-                    // Escape for JavaScript
                     $itemNameEscaped = addslashes($itemName);
                     $pictureUrlEscaped = addslashes($pictureUrl);
+                    $stockNoEscaped = addslashes($stockNo);
                 @endphp
 
                 saleItems.push({
                     type: '{{ $itemType }}',
                     item_id: {{ $item->item_id }},
                     name: '{{ $itemNameEscaped }}',
-                    stock_no: '{{ addslashes($stockNo) }}',
+                    stock_no: '{{ $stockNoEscaped }}',
                     price: {{ $item->price }},
                     discountedPrice: {{ $item->discounted_price }},
                     discountPercentage: {{ $discountPercentage }},
@@ -655,48 +666,54 @@
                 tbody.empty();
 
                 saleItems.forEach((item, index) => {
-                    // Handle image display - check if picture_url exists
+                    // FIX: Better image handling with proper validation
                     let imageHtml;
-                    if (item.picture_url && item.picture_url !== '') {
-                        imageHtml =
-                            `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;">`;
+                    if (item.picture_url && item.picture_url.trim() !== '' && item.picture_url !==
+                        'http://' && item.picture_url !== 'https://') {
+                        imageHtml = `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-thumbnail me-2 d-none align-items-center justify-content-center" style="width: 70px; height: 70px; background: #f0f0f0;">
+                            <i class="fas fa-image text-muted"></i>
+                        </div>`;
                     } else {
-                        imageHtml = `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f0f0f0;">
-                    <i class="fas fa-image text-muted"></i>
-                </div>`;
+                        imageHtml = `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: #f0f0f0;">
+                            <i class="fas fa-image text-muted"></i>
+                        </div>`;
                     }
 
                     const discountBadge = item.discountPercentage > 0 ?
                         `<span class="badge bg-success">${item.discountPercentage}% off</span>` : '';
 
+                    const stockNoHtml = item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : '';
+                    const typeLabel = item.type === 'product' ? 'Product' : 'Accessory';
+                    const priceHtml = item.discountPercentage > 0 ?
+                        `$${item.price.toFixed(2)}<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` :
+                        `$${item.price.toFixed(2)}`;
+
                     const row = `
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        ${imageHtml}
-                        <div>
-                            ${item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : ''}
-                            <div>${item.name} ${discountBadge}</div>
-                            <small class="text-muted">${item.type === 'product' ? 'Product' : 'Accessory'}</small>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    $${item.price.toFixed(2)}
-                    ${item.discountPercentage > 0 ? `<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` : ''}
-                </td>
-                <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
-                <td>
-                    <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
-                </td>
-                <td>$${item.total.toFixed(2)}</td>
-                <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>`;
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                ${imageHtml}
+                                <div>
+                                    ${stockNoHtml}
+                                    <div>${item.name} ${discountBadge}</div>
+                                    <small class="text-muted">${typeLabel}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${priceHtml}</td>
+                        <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
+                        <td>
+                            <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
+                        </td>
+                        <td>$${item.total.toFixed(2)}</td>
+                        <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`;
 
                     tbody.append(row);
                 });
