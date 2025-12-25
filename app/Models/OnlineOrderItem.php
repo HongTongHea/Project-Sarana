@@ -29,11 +29,6 @@ class OnlineOrderItem extends Model
         'total_price' => 'decimal:2',
     ];
 
-    public function details()
-    {
-        return $this->item();
-    }
-
     /**
      * Get the order that owns the item.
      */

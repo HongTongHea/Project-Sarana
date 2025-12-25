@@ -181,6 +181,7 @@ class PurchaseOrderController extends Controller
     public function markAsReceived(PurchaseOrder $purchaseOrder)
     {
         if ($purchaseOrder->markAsReceived()) {
+            
             return redirect()->route('purchase_orders.index')->with('success', 'Purchase order marked as received.');
         }
 

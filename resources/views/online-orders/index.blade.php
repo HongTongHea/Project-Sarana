@@ -52,27 +52,21 @@
                                             <div
                                                 class="d-flex justify-content-center align-items-center gap-2 card-payment">
                                                 <i class="bi bi-credit-card"></i>
-                                                <select name="payment_status "
+                                                <select name="payment_status"
                                                     class="form-select form-select-sm payment-select
                                                 @if ($order->payment_status === 'paid') paid
                                                 @elseif ($order->payment_status === 'pending') pending
                                                 @elseif ($order->payment_status === 'failed') failed
                                                 @else refunded @endif"
                                                     onchange="this.form.submit()">
-
                                                     <option value="pending" @selected($order->payment_status == 'pending')>Pending</option>
                                                     <option value="paid" @selected($order->payment_status == 'paid')>Paid</option>
                                                     <option value="failed" @selected($order->payment_status == 'failed')>Failed</option>
                                                     <option value="refunded" @selected($order->payment_status == 'refunded')>Refunded</option>
                                                 </select>
                                             </div>
-
-
                                         </form>
                                     </td>
-
-
-
                                     {{-- <td>{{ Str::limit($order->shipping_address, 30) }}</td> --}}
                                     {{-- <td>{{ $order->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }} --}}
                                     </td>

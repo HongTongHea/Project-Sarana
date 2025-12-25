@@ -57,6 +57,6 @@ class OnlineOrder extends Model
      */
     public function getOrderNumberAttribute(): string
     {
-        return 'ORD-' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
+        return 'ORD-' . str_pad($this->id, 2, '0', STR_PAD_LEFT);
     }
 }

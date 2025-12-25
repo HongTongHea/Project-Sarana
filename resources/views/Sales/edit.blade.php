@@ -670,7 +670,7 @@
                     let imageHtml;
                     if (item.picture_url && item.picture_url.trim() !== '' && item.picture_url !==
                         'http://' && item.picture_url !== 'https://') {
-                        imageHtml = `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-0" style="width: 70px; height: 70px; object-fit: cover;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        imageHtml = `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-2" style="width: 70px; height: 70px; object-fit: cover;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="img-thumbnail me-2 d-none align-items-center justify-content-center" style="width: 70px; height: 70px; background: #f0f0f0;">
                             <i class="fas fa-image text-muted"></i>
                         </div>`;

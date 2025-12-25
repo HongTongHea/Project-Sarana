@@ -130,8 +130,6 @@ class ContactController extends Controller
         return "https://t.me/share/url?url=&text={$encodedMessage}";
     }
 
-
-
     /**
      * Display a listing of contact messages (admin)
      */

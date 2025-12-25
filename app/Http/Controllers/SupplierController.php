@@ -33,6 +33,11 @@ class SupplierController extends Controller
         return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully.');
     }
 
+    public function show(Supplier $supplier)
+    {
+        return view('suppliers.show', compact('supplier'));
+    }
+
     public function edit(Supplier $supplier)
     {
         return view('suppliers.edit', compact('supplier'));

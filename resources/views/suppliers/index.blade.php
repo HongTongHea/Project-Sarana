@@ -46,6 +46,15 @@
                                             </button>
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton{{ $supplier->id }}">
+                                                <!-- View Details -->
+                                                <li>
+                                                    <button class="dropdown-item d-flex align-items-center"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#showModal{{ $supplier->id }}">
+                                                        <i class="fa-solid fa-circle-info me-2 text-info"></i>
+                                                        View Details
+                                                    </button>
+                                                </li>
                                                 <!-- Edit -->
                                                 <li>
                                                     <button class="dropdown-item d-flex align-items-center"
@@ -71,8 +80,8 @@
                                         </div>
                                     </td>
                                 </tr>
-                                {{-- <!-- View Supplier Modal -->
-                                @include('suppliers.show') --}}
+                                <!-- View Supplier Modal -->
+                                @include('suppliers.show')
                                 <!-- Edit Supplier Modal -->
                                 @include('suppliers.edit')
                                 <!-- Delete Supplier Modal -->

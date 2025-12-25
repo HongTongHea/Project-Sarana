@@ -18,6 +18,7 @@
                     <table id="DataTable" class="table mt-3 table-border table-hover">
                         <thead class="thead-dark">
                             <tr>
+                                <th>No</th>
                                 <th>Sale</th>
                                 <th>Customer</th>
                                 <th>Date</th>
@@ -34,6 +35,7 @@
                         <tbody>
                             @foreach ($sales as $sale)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>SALE-{{ str_pad($sale->id, 2, '0', STR_PAD_LEFT) }}</td>
                                     <td>{{ $sale->customer->name }}</td>
                                     <td>{{ $sale->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}</td>

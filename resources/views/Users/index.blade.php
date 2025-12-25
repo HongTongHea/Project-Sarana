@@ -8,7 +8,6 @@
         <div class="card rounded-0 mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0 fw-semibold text-uppercase">Users Management</h4>
-
             </div>
             <div class="card-body">
                 <button type="button" class="btn btn-primary btn-sm mb-3 ml-3" data-bs-toggle="modal"
@@ -105,7 +104,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     @include('users.create')

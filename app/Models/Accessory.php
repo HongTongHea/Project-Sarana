@@ -26,18 +26,9 @@ class Accessory extends Model
             ? $this->price - ($this->price * $this->discount_percentage / 100)
             : $this->price;
     }
-    public function item()
-    {
-        return $this->morphTo();
-    }
+
     public function stocks()
     {
         return $this->morphMany(Stock::class, 'stockable');
     }
-
-    public function onlineOrderItems()
-    {
-        return $this->morphMany(OnlineOrderItem::class, 'item');
-    }
-
 }

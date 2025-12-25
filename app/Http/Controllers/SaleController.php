@@ -22,7 +22,7 @@ class SaleController extends Controller
         $employees = Employee::where('status', 1)->get();
         $products = Product::where('stock_quantity', '>', 0)->get();
         $accessories = Accessory::where('stock_quantity', '>', 0)->get();
-        $sales = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->get();
+        $sales = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->latest()->get();
 
         return view('sales.index', compact('sales', 'customers', 'employees', 'products', 'accessories', 'categories'));
     }
