@@ -8,7 +8,7 @@ use App\Http\Controllers\ProductCheckController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
+
 })->middleware('auth:sanctum');
 
-Route::apiResource('products', ProductController::class);
 

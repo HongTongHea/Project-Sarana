@@ -271,18 +271,21 @@
                     </div>
                 @endif
             </div>
-
             <div class="modal-footer bg-light">
                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                         class="fas fa-times me-2"></i> Close</button>
                 <button type="button" class="btn btn-primary btn-sm">
                     <i class="fas fa-print me-1"></i>Print Receipt
                 </button>
-                @if ($order->status == 'pending')
-                    <button type="button" class="btn btn-success btn-sm">
-                        <i class="fas fa-check me-1"></i>Process Order
+                <form action="{{ route('online-orders.payment.update', $order->id) }}" method="POST"
+                    class="d-inline">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="payment_status" value="paid">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="fas fa-check me-1"></i> Process Order
                     </button>
-                @endif
+                </form>
             </div>
         </div>
     </div>
