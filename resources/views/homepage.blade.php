@@ -2,24 +2,46 @@
 @section('title', 'ANGKOR TECH COMPUTER | Home Page')
 @section('content')
     {{-- Hero Section --}}
-    <section>
-        <div class="hero-slideshow">
-            <div class="slide slide-1 active" style="background-image: url('assets/img/slide (9).png');">
-            </div>
-            <div class="slide slide-2" style="background-image: url('assets/img/slide (6).png');">
-            </div>
-            <div class="slide slide-3" style="background-image: url('assets/img/slide (7).png');">
-            </div>
-            <div class="slide-nav">
-                <button class="slide-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                <button class="slide-nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+    <section class="hero-section">
+        <div class="swiper heroSwiper">
+            <div class="swiper-wrapper">
+
+                <!-- Slide 1 -->
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (2).jpg')">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content container">
+                        <h1>AngkorTech Computer</h1>
+                        <p>High Performance Laptops, PCs & Accessories</p>
+                        <a href="#" class="btn btn-primary hero-btn">Shop Now</a>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (1).jpg')">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content container">
+                        <h1>Gaming & Office Solutions</h1>
+                        <p>Powerful machines for work and play</p>
+                        <a href="#" class="btn btn-primary hero-btn">Explore Products</a>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (4).jpg')">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content container">
+                        <h1>Best Technology Deals</h1>
+                        <p>Original products with warranty</p>
+                        <a href="#" class="btn btn-primary hero-btn">View Offers</a>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="slide-indicators">
-                <div class="indicator active" data-slide="0"></div>
-                <div class="indicator" data-slide="1"></div>
-                <div class="indicator" data-slide="2"></div>
-            </div>
+            <!-- Controls -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
         </div>
     </section>
 

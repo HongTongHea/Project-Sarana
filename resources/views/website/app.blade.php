@@ -7,7 +7,7 @@
     <link rel="icon" href="/assets/img/logo-Company2.png" type="image/x-icon" />
     <title>AngkorTech Computer</title>
     <link rel="stylesheet" href="./assets/css/website.css" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -25,7 +25,36 @@
     @include('website.footer')
 
     <!-- Scripts -->
-  
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const swiper = new Swiper(".heroSwiper", {
+            loop: true,
+            effect: "fade",
+            speed: 1000,
+
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get current page URL
@@ -60,108 +89,7 @@
                 homeLinks.forEach(link => link.classList.add('active'));
             }
         });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.slide');
-            const indicators = document.querySelectorAll('.indicator');
-            const prevBtn = document.querySelector('.prev-btn');
-            const nextBtn = document.querySelector('.next-btn');
-            let currentSlide = 0;
-            let slideInterval;
-
-            // Function to show a specific slide
-            function showSlide(index) {
-                // Hide all slides
-                slides.forEach(slide => {
-                    slide.classList.remove('active');
-                });
-
-                // Remove active class from all indicators
-                indicators.forEach(indicator => {
-                    indicator.classList.remove('active');
-                });
-
-                // Show the selected slide
-                slides[index].classList.add('active');
-                indicators[index].classList.add('active');
-
-                currentSlide = index;
-            }
-
-            // Function to show the next slide
-            function nextSlide() {
-                let newIndex = currentSlide + 1;
-                if (newIndex >= slides.length) {
-                    newIndex = 0;
-                }
-                showSlide(newIndex);
-            }
-
-            // Function to show the previous slide
-            function prevSlide() {
-                let newIndex = currentSlide - 1;
-                if (newIndex < 0) {
-                    newIndex = slides.length - 1;
-                }
-                showSlide(newIndex);
-            }
-
-            // Start automatic slideshow
-            function startSlideshow() {
-                slideInterval = setInterval(nextSlide, 5000);
-            }
-
-            // Stop automatic slideshow
-            function stopSlideshow() {
-                clearInterval(slideInterval);
-            }
-
-            // Event listeners for buttons
-            nextBtn.addEventListener('click', function() {
-                stopSlideshow();
-                nextSlide();
-                startSlideshow();
-            });
-
-            prevBtn.addEventListener('click', function() {
-                stopSlideshow();
-                prevSlide();
-                startSlideshow();
-            });
-
-            // Event listeners for indicators
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', function() {
-                    stopSlideshow();
-                    showSlide(index);
-                    startSlideshow();
-                });
-            });
-            // Start the slideshow
-            startSlideshow();
-        });
-        // side baner
-        const customSlides = document.querySelector('.custom-slides');
-        const totalSlides = document.querySelectorAll('.custom-slide').length;
-        let customIndex = 0;
-
-        document.querySelector('.custom-next-btn').addEventListener('click', () => {
-            customIndex = (customIndex + 1) % totalSlides;
-            updateSlide();
-        });
-
-        // document.querySelector('.custom-prev-btn').addEventListener('click', () => {
-        //     customIndex = (customIndex - 1 + totalSlides) % totalSlides;
-        //     updateSlide();
-        // });
-
-        function updateSlide() {
-            const offset = -customIndex * 100;
-            customSlides.style.transform = `translateX(${offset}%)`;
-        }
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/addtocard.js"></script>
     <script src="/assets/js/search.js"></script>
 </body>
