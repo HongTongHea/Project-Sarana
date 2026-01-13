@@ -7,7 +7,7 @@
         <div class="row justify-content-center w-100">
             <div class="col-12 col-lg-12">
                 <!-- Header Section -->
-                <div class="text-center mb-5">
+                <div class="text-center mb-5" data-aos="fade-down" data-aos-duration="1000">
                     <h1 class="fw-bold mb-3 text-uppercase" style="font-size: 2.5rem;">Get in touch</h1>
                     <p class="text-muted mb-0 mx-auto" style="max-width: 600px;">
                         We'd love to hear from you! Whether you have a question about features.
@@ -17,7 +17,7 @@
 
                 <div class="row">
                     <!-- Left Side - Contact Information -->
-                    <div class="col-lg-6 col-md-6 mb-5">
+                    <div class="col-lg-6 col-md-6 mb-5" data-aos="fade-right" data-aos-duration="1000">
                         <!-- Address Office -->
                         <div class="mb-4">
                             <h3 class="fw-bold mb-3"><i class="fas fa-map-marker-alt me-2 text-p"></i>Angkor
@@ -65,7 +65,7 @@
                     </div>
 
                     <!-- Right Side - Contact Form -->
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-6 col-md-6" data-aos="fade-left" data-aos-duration="1000">
                         <div class="card">
                             <div class="card-body p-4">
                                 <form method="POST" action="{{ route('contact.store') }}" class="bg-white p-0"
@@ -166,7 +166,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-5 mt-5">
+                    <div class="mb-5 mt-5" data-aos="fade-up" data-aos-duration="1000">
                         <div style="height: 300px; border-radius: 5px; overflow: hidden;">
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3881.880691252352!2d103.8562508!3d13.357694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311017702f759a9f%3A0xc1ee2fc8dfaa442f!2zQW5na29yVGVjaCBDb21wdXRlciDhnqLhnoThn5LhnoLhnprhno_hnrfhnoXhnoDhnrvhn4bhnpbhn5LhnpnhnrzhnpHhn5Dhnpo!5e0!3m2!1sen!2skh!4v1762946724581!5m2!1sen!2skh"

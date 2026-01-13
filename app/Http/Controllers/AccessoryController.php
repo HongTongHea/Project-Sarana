@@ -11,7 +11,7 @@ class AccessoryController extends Controller
 {
     public function index()
     {
-        $accessories = Accessory::all();
+        $accessories = Accessory::latest()->get();
         return view('accessories.index', compact('accessories'));
     }
 

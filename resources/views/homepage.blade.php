@@ -5,9 +5,8 @@
     <section class="hero-section">
         <div class="swiper heroSwiper">
             <div class="swiper-wrapper">
-
                 <!-- Slide 1 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (2).jpg')">
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (2).png')">
                     <div class="hero-overlay"></div>
                     <div class="hero-content container">
                         <h1>AngkorTech Computer</h1>
@@ -17,7 +16,7 @@
                 </div>
 
                 <!-- Slide 2 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (1).jpg')">
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (1).png')">
                     <div class="hero-overlay"></div>
                     <div class="hero-content container">
                         <h1>Gaming & Office Solutions</h1>
@@ -27,7 +26,7 @@
                 </div>
 
                 <!-- Slide 3 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (4).jpg')">
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (3).png')">
                     <div class="hero-overlay"></div>
                     <div class="hero-content container">
                         <h1>Best Technology Deals</h1>
@@ -47,13 +46,13 @@
 
     <div class="container">
         <div class="row mb-4">
-            <div class="col text-start">
+            <div class="col text-start" data-aos="fade-right" data-aos-duration="1000">
                 <h3 class="fw-bold">Browse by Categories</h3>
                 <p class="text-muted">Browse our wide range of categories</p>
             </div>
 
         </div>
-        <div class="row" id="categories-section">
+        <div class="row" id="categories-section" data-aos="fade-up" data-aos-duration="1000">
             @foreach ($categories as $index => $category)
                 {{-- @if ($index >= 5)
                     @break
@@ -73,7 +72,7 @@
 
         <!-- Products Section -->
         <section class="mb-5" id="products-section">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center" data-aos="fade-right" data-aos-duration="1000">
                 <div class="row mb-2">
                     <div class="col text-start">
                         <h3 class="mb-0 text-start fw-bold" id="products-title">Products</h3>
@@ -82,12 +81,9 @@
                 </div>
                 <div class="d-flex align-items-center mb-2">
                     <button class="btn btn-outline-primary btn-sm" id="see-all-btn" style="display: none;">See All</button>
-                    {{-- <button class="btn btn-outline-primary mt-2" onclick="resetProductFilter()">
-                        View All Products
-                    </button> --}}
                 </div>
             </div>
-            <div class="row" id="products-container">
+            <div class="row" id="products-container" data-aos="fade-up" data-aos-duration="1000">
                 @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                     @if ($index >= 20)
                         @break
@@ -181,24 +177,37 @@
             <div class="container py-4">
                 <div class="row g-4">
                     <!-- Left Side (Big Banner) -->
-                    <div class="col-lg-8 mb-4 mb-lg-0">
-                        <div class="rog-banner-wrapper">
-                            <div class="rog-main-banner">
-                                <img src="{{ asset('assets/victor/asus_rog.jpg') }}" alt="acer predator"
-                                    style="height: 340px">
+                    <div class="col-lg-8" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="rog-banner-wrapper h-100">
+                            <div class="swiper rogBannerSwiper rog-main-banner h-100">
+                                <div class="swiper-wrapper">
+
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('assets/victor/asus_rog.jpg') }}">
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('assets/victor/banner 2.jpg') }}">
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('assets/victor/banner 4.jpg') }}">
+                                    </div>
+
+                                </div>
+
+                                <div class="swiper-pagination text-white"></div>
                             </div>
                         </div>
                     </div>
-
                     <!-- Right Side (Products) -->
-                    <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="col-lg-4 mb-4 mb-lg-0" data-aos="fade-left" data-aos-duration="1000">
                         <div class="rog-products-wrapper">
                             <div class="row g-3">
                                 @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                                     @if ($index >= 2)
                                         @break
                                     @endif
-
                                     <div class="col-6 col-md-6 col-lg-12">
                                         <div class="rog-product-item position-relative product-card">
 
@@ -278,13 +287,13 @@
 
         <!-- Accessories Section -->
         <section>
-            <div class="row mb-2 mt-2">
+            <div class="row mb-2 mt-2" data-aos="fade-right" data-aos-duration="1000">
                 <div class="col text-start">
                     <h3 class="mb-0 text-start fw-bold">Accessories</h3>
                     <p class="text-muted">Browse our selection of accessories</p>
                 </div>
             </div>
-            <div class="row" id="accessories-container">
+            <div class="row" id="accessories-container" data-aos="fade-up" data-aos-duration="1000">
                 @foreach ($accessories->sortByDesc('created_at')->values() as $index => $accessory)
                     @if ($index >= 20)
                         @break
@@ -362,14 +371,14 @@
         <section>
             <div class="container mt-5 mb-5">
                 <div class="service-section">
-                    <div class="row mt-2">
+                    <div class="row mt-2" data-aos="fade-right" data-aos-duration="1000">
                         <div class="col text-start">
                             <h3 class="mb-0 text-start fw-bold">Our Services</h3>
                             <p class="text-muted">Explore our range of services</p>
                         </div>
                     </div>
 
-                    <div class="row g-0 mt-3">
+                    <div class="row g-0 mt-3" data-aos="fade-up" data-aos-duration="1000">
                         <!-- Left Large Card -->
                         <div class="col-lg-6">
                             <div class="service-card left-card mb-2">
@@ -382,7 +391,7 @@
                         </div>
 
                         <!-- Right Side Column -->
-                        <div class="col-lg-6 ml-2">
+                        <div class="col-lg-6 ml-2" data-aos="fade-left" data-aos-duration="1000">
                             <!-- Top Right Card -->
                             <div class="row g-0">
                                 <div class="col-12">
@@ -397,7 +406,7 @@
                             </div>
 
                             <!-- Bottom Two Cards -->
-                            <div class="row g-2 mt-2">
+                            <div class="row g-2 mt-2" data-aos="fade-up" data-aos-duration="1000">
                                 <div class="col-6 col-md-6">
                                     <div class="service-card bottom-card">
                                         <img src="{{ asset('assets/victor/build_system.png') }}" alt="Custom PC Build">

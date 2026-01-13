@@ -18,7 +18,7 @@ class UserController extends Controller
     public function dashboard()
     {
         // Fetch all users from the database
-        $users = User::all();
+        $users = User::latest()->get();
 
         // Pass users data to the dashboard view
         return view('dashboard', compact('users'));

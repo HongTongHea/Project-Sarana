@@ -155,11 +155,14 @@
     <!-- History Section -->
     <section class="history-section">
         <div class="container">
-            <h1 class="section-title mt-5">AngkorTech Computer</h1>
-            <p class=" text-center">Our History and About Us</p>
+            <div data-aos="fade-down" data-aos-duration="1000">
+                <h1 class="section-title mt-5">AngkorTech Computer</h1>
+                <p class=" text-center">Our History and About Us</p>
+            </div>
             <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <img src="{{ asset('assets/img/IMG_6421.jpg') }}" alt="" width="70%" class="img-company mb-4">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                    <img src="{{ asset('assets/img/IMG_6421.jpg') }}" alt="" width="70%"
+                        class="img-company mb-4">
                     <p class="mb-4"><strong>AngkorTech Computer </strong>Shop is located in Mondol 1 Village, Svay Dangkum
                         Commune,
                         Siem Reap City, Siem Reap Province, approximately 1.8 kilometers from Build Bright University.
@@ -168,7 +171,7 @@
                         participation of
                         collaborative partners and several computer shops (Yeum Bunthai).</p>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
                     <div class="timeline">
                         <div class="timeline-item left">
                             <div class="timeline-content">
@@ -202,7 +205,7 @@
 
     <!-- Brand Section -->
     <section class="brand-section">
-        <div class="container">
+        <div class="container" data-aos="fade-up" data-aos-duration="1000">
             <h2 class="section-title">Brand Name and Meaning</h2>
             <div class="row">
                 <div class="col-md-6 text-center mb-4">
@@ -226,7 +229,7 @@
 
     <!-- Location Section -->
     <section class="location-section">
-        <div class="container">
+        <div class="container" data-aos="fade-down" data-aos-duration="1000">
             <h2 class="section-title">Our Location</h2>
             <div class="row">
                 <div class="col-lg-6 mb-4">
@@ -256,25 +259,25 @@
     <!-- Structure Section -->
     <section class="structure-section">
         <div class="container">
-            <h2 class="section-title">Shop Structure</h2>
-            <div class="row">
+            <div class="row" data-aos="fade-up" data-aos-duration="1000">
+                <h2 class="section-title">Shop Structure</h2>
                 <div class="col-md-8 mx-auto text-center mb-4">
                     <img src="{{ asset('assets/img/Picture1.png') }}" alt="AngkorTech Shop Structure" width="80%">
                     <p class="text-muted mt-2">Source: AngkorTech Computer (2025)</p>
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center" data-aos="fade-up" data-aos-duration="1000">
                     <i class="fas fa-users service-icon"></i>
                     <h4>Management Team</h4>
                     <p>Experienced professionals overseeing operations and strategic direction</p>
                 </div>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center" data-aos="fade-down" data-aos-duration="1000">
                     <i class="fas fa-tools service-icon"></i>
                     <h4>Technical Department</h4>
                     <p>Skilled technicians providing repair and installation services</p>
                 </div>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center" data-aos="fade-up" data-aos-duration="1000">
                     <i class="fas fa-shopping-cart service-icon"></i>
                     <h4>Sales Team</h4>
                     <p>Knowledgeable staff assisting customers with product selection</p>
@@ -286,10 +289,13 @@
     <!-- Services Section -->
     <section class="services-section">
         <div class="container">
-            <h2 class="section-title">Products and Services</h2>
-            <p class="mb-5 text-center">AngkorTech Computer provides the following products and services to customers:</p>
+            <div data-aos="fade-down" data-aos-duration="1000">
+                <h2 class="section-title">Products and Services</h2>
+                <p class="mb-5 text-center">AngkorTech Computer provides the following products and services to customers:
+                </p>
+            </div>
 
-            <div class="row g-4">
+            <div class="row g-4" data-aos="fade-up" data-aos-duration="1000">
                 <div class="col-md-6 col-lg-4">
                     <div class="card service-card shadow-sm">
                         <div class="card-body text-center p-4">

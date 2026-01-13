@@ -1,14 +1,93 @@
 @extends('website.app')
 @section('content')
     <div class="container">
-        <div class="row mb-4">
-            <div class="col text-start">
-                <h3 class="fw-bold">Browse by Categories</h3>
-                <p class="text-muted">Browse our wide range of categories</p>
-            </div>
+        <section class="rog-banner-section mt-5">
+            <div class="container py-4">
+                <div class="col text-start" data-aos="fade-down" data-aos-duration="1000">
+                    <h3 class="fw-bold">New Products</h3>
+                    <p class="text-muted">The new products are now available</p>
+                </div>
+                <div class="row g-4">
+                    <!-- Left Side (Big Banner) -->
+                    <div class="col-lg-8" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="rog-banner-wrapper h-100">
+                            <div class="swiper rogBannerSwiper rog-main-banner h-100">
+                                <div class="swiper-wrapper">
 
-        </div>
-        <div class="row" id="categories-section">
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('assets/victor/asus_rog.jpg') }}">
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('assets/victor/banner 2.jpg') }}">
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('assets/victor/banner 4.jpg') }}">
+                                    </div>
+
+                                </div>
+
+                                <div class="swiper-pagination text-white"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Side (Products) -->
+                    <div class="col-lg-4 mb-4 mb-lg-0" data-aos="fade-left" data-aos-duration="1000">
+                        <div class="rog-products-wrapper">
+                            <div class="row g-3">
+                                @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
+                                    @if ($index >= 2)
+                                        @break
+                                    @endif
+                                    <div class="col-6 col-md-6 col-lg-12">
+                                        <div class="rog-product-item position-relative product-card">
+
+                                            @if ($product->created_at->gt(now()->subDays(7)))
+                                                <span
+                                                    class="badge bg-primary position-absolute top-0 start-0 m-2 z-3">NEW</span>
+                                            @endif
+
+                                            <div class="rog-product-thumb">
+                                                @if ($product->picture_url)
+                                                    <img src="{{ asset('storage/' . $product->picture_url) }}"
+                                                        alt="{{ $product->name }}"
+                                                        class="card-img-top img-fluid product-image">
+                                                @else
+                                                    <img src="{{ asset('assets/img/image.png') }}"
+                                                        class="card-img-top img-fluid product-image">
+                                                @endif
+                                            </div>
+
+                                            <div class="rog-product-info">
+                                                <h6 class="rog-product-title">{{ $product->name }}</h6>
+
+                                                @if ($product->discount_percentage > 0)
+                                                    <div class="rog-product-price text-danger fw-bold">
+                                                        ${{ number_format($product->price - ($product->price * $product->discount_percentage) / 100, 2) }}
+                                                        <small class="text-muted text-decoration-line-through">
+                                                            ${{ number_format($product->price, 2) }}
+                                                        </small>
+                                                    </div>
+                                                @else
+                                                    <div class="rog-product-price fw-bold">
+                                                        ${{ number_format($product->price, 2) }}
+                                                    </div>
+                                                @endif
+
+                                                <a href="{{ route('allproductpage.index') }}"
+                                                    class="rog-buy-button add-to-cart-btn btn btn-primary">Buy Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <!-- Categories Section -->
+        <div class="row mb-2" id="categories-section" data-aos="fade-left" data-aos-duration="1000">
             @foreach ($categories as $index => $category)
                 {{-- @if ($index >= 5)
                     @break
@@ -29,7 +108,7 @@
         <section class="mb-5" id="products-section">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="row mb-2">
-                    <div class="col text-start">
+                    <div class="col text-start" data-aos="fade-right" data-aos-duration="1000">
                         <h3 class="mb-0 text-start fw-bold" id="products-title">Featured Products</h3>
                         <p class="text-muted">Browse our selection of featured products</p>
                     </div>
@@ -38,7 +117,7 @@
                     <button class="btn btn-outline-primary btn-sm" id="see-all-btn" style="display: none;">See All</button>
                 </div>
             </div>
-            <div class="row" id="products-container">
+            <div class="row" id="products-container" data-aos="fade-up" data-aos-duration="1000">
                 @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 product-item"
                         data-category-id="{{ $product->category_id }}">

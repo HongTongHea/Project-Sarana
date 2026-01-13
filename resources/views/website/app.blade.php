@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         const swiper = new Swiper(".heroSwiper", {
             loop: true,
@@ -51,6 +51,20 @@
             navigation: {
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
+            },
+        });
+
+        const rogSwiper = new Swiper(".rogBannerSwiper", {
+            loop: true,
+            speed: 1000,
+            effect: "fade",
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".rog-main-banner .swiper-pagination",
+                clickable: true,
             },
         });
     </script>
@@ -89,6 +103,9 @@
                 homeLinks.forEach(link => link.classList.add('active'));
             }
         });
+    </script>
+    <script>
+        AOS.init();
     </script>
     <script src="/assets/js/addtocard.js"></script>
     <script src="/assets/js/search.js"></script>

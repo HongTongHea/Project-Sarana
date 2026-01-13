@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="row mb-2">
+            <div class="row mb-2" data-aos="fade-right" data-aos-duration="1000">
                 <div class="col text-start">
                     <h3 id="products-title" class="mb-0 text-start fw-bold text-black">All Products & Accessories
                     </h3>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <section id="products-section">
+        <section id="products-section" data-aos="fade-up" data-aos-duration="1000">
             <div class="row" id="products-container">
                 @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 product-item"
