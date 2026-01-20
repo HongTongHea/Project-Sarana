@@ -8,6 +8,7 @@
     <title>AngkorTech Computer | Sign Up</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <style>
@@ -141,14 +142,16 @@
 <body>
     <div class="main-container">
         <div class="row align-items-center">
-            <div class="branding  col-12 col-md-6 text-center text-md-start justify-content-center">
+            <div class="branding  col-12 col-md-6 text-center text-md-start justify-content-center"
+                data-aos="fade-right" data-aos-duration="1000">
                 <h1>Welcome to </h1>
                 <h2>AngkorTech Computer</h2>
                 <p class="mt-4">
                     Please sign up to create a new account. If you already have an account, you can sign in.
                 </p>
             </div>
-            <div class="col-12 col-md-6 text-start d-flex justify-content-center">
+            <div class="col-12 col-md-6 text-start d-flex justify-content-center" data-aos="fade-left"
+                data-aos-duration="1000">
                 <div class="login-card text-center">
                     <form action="{{ route('register') }}" method="POST" class="text-start position-relative">
                         @csrf
@@ -212,46 +215,50 @@
             </div>
         </div>
     </div>
+</body>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('password');
-            const passwordHint = document.getElementById('passwordHint');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const passwordHint = document.getElementById('passwordHint');
 
-            const confirmInput = document.getElementById('password_confirmation');
-            const confirmHint = document.getElementById('passwordConfirmHint');
+        const confirmInput = document.getElementById('password_confirmation');
+        const confirmHint = document.getElementById('passwordConfirmHint');
 
-            // Show hint on focus
-            passwordInput.addEventListener('focus', () => passwordHint.classList.remove('d-none'));
-            passwordInput.addEventListener('blur', () => passwordHint.classList.add('d-none'));
+        // Show hint on focus
+        passwordInput.addEventListener('focus', () => passwordHint.classList.remove('d-none'));
+        passwordInput.addEventListener('blur', () => passwordHint.classList.add('d-none'));
 
-            confirmInput.addEventListener('focus', () => confirmHint.classList.remove('d-none'));
-            confirmInput.addEventListener('blur', () => confirmHint.classList.add('d-none'));
-        });;
+        confirmInput.addEventListener('focus', () => confirmHint.classList.remove('d-none'));
+        confirmInput.addEventListener('blur', () => confirmHint.classList.add('d-none'));
+    });;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Select all toggle password icons
-            const toggleIcons = document.querySelectorAll('.toggle-password');
+    document.addEventListener('DOMContentLoaded', () => {
+        // Select all toggle password icons
+        const toggleIcons = document.querySelectorAll('.toggle-password');
 
-            // Add click event to each icon
-            toggleIcons.forEach(icon => {
-                icon.addEventListener('click', function() {
-                    // Get the target input field
-                    const targetId = this.getAttribute('data-target');
-                    const passwordInput = document.getElementById(targetId);
+        // Add click event to each icon
+        toggleIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                // Get the target input field
+                const targetId = this.getAttribute('data-target');
+                const passwordInput = document.getElementById(targetId);
 
-                    // Toggle the input type
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' :
-                        'password';
-                    passwordInput.setAttribute('type', type);
+                // Toggle the input type
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' :
+                    'password';
+                passwordInput.setAttribute('type', type);
 
-                    // Toggle the icon
-                    this.classList.toggle('fa-lock');
-                    this.classList.toggle('fa-unlock');
-                });
+                // Toggle the icon
+                this.classList.toggle('fa-lock');
+                this.classList.toggle('fa-unlock');
             });
         });
-    </script>
-</body>
+    });
+</script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
 
 </html>

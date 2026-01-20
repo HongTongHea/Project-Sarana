@@ -8,6 +8,7 @@
     <title>AngkorTech Computer | Sign In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <style>
@@ -141,14 +142,16 @@
 <body>
     <div class="main-container">
         <div class="row align-items-center">
-            <div class="branding  col-12 col-md-6 text-center text-md-start justify-content-center">
+            <div class="branding  col-12 col-md-6 text-center text-md-start justify-content-center"
+                data-aos="fade-right" data-aos-duration="1000">
                 <h1>Welcome to </h1>
                 <h2>AngkorTech Computer</h2>
                 <p class="mt-4">
                     Please sign in to continue. If you don't have an account, you can register for one.
                 </p>
             </div>
-            <div class="col-12 col-md-6 text-start d-flex justify-content-center">
+            <div class="col-12 col-md-6 text-start d-flex justify-content-center" data-aos="fade-left"
+                data-aos-duration="1000">
                 <div class="login-card text-center p-4 ">
                     <form action="{{ route('login') }}" method="POST" class="text-start position-relative">
                         @csrf
@@ -220,6 +223,10 @@
             localStorage.setItem("rememberMe", rememberCheckbox.checked);
         });
     });
+</script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
 </script>
 
 </html>
