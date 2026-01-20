@@ -223,80 +223,64 @@ class DashboardController extends Controller
         ));
     }
 
- 
-    private function getStockMovementData()
-    {
-        $stockMovementDates = [];
-        $productStockData = [];
-        $accessoryStockData = [];
 
-        $currentProductStock = $this->getCurrentProductStock();
-        $currentAccessoryStock = $this->getCurrentAccessoryStock();
-        
+    // Generate stock movement data for the last 30 days
+   private function getStockMovementData()
+   {
+    $stockMovementDates = [];
+    $productStockData = [];
+    $accessoryStockData = [];
 
-        $today = now();
-        
- 
-        $referenceDate = now()->setYear(2026)->setMonth(1)->setDay(15);
-        
-        
-        $hasHistoricalData = false; 
-        
-        if ($hasHistoricalData) {
+    $currentProductStock = $this->getCurrentProductStock();
+    $currentAccessoryStock = $this->getCurrentAccessoryStock();
 
-        } else {
+    $referenceDate = now()->setYear(2026)->setMonth(1)->setDay(15);
+    $hasHistoricalData = false; 
 
-            for ($i = 29; $i >= 0; $i--) {
-                $date = now()->subDays($i);
-                
+    if ($hasHistoricalData) {
 
-                $dateString = $date->format('M j');
-                
+    } else {
 
-                $daysFromReference = $date->diffInDays($referenceDate);
-                
+        for ($i = 29; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $dateString = $date->format('M j');
 
-                $baseProductStock = $currentProductStock;
-                $baseAccessoryStock = $currentAccessoryStock;
-                
-        
-                $dayOfWeek = $date->dayOfWeek;
-                $weekendFactor = ($dayOfWeek === 0 || $dayOfWeek === 6) ? 0.9 : 1.0; 
-                
+            $baseProductStock = $currentProductStock;
+            $baseAccessoryStock = $currentAccessoryStock;
 
-                $dayOfMonth = $date->day;
-                $monthEndFactor = $dayOfMonth > 25 ? 0.85 : 1.0; 
-                
+            $dayOfWeek = $date->dayOfWeek;
+            $weekendFactor = ($dayOfWeek === 0 || $dayOfWeek === 6) ? 0.9 : 1.0; 
 
-                $randomFactor = 0.95 + (mt_rand(0, 100) / 1000); 
-                
+            $dayOfMonth = $date->day;
+            $monthEndFactor = $dayOfMonth > 25 ? 0.85 : 1.0; 
 
-                $trendFactor = 1 + ($i * 0.005); 
-                
-                $productStockForDate = (int)($baseProductStock * $weekendFactor * $monthEndFactor * $randomFactor * $trendFactor);
-                $accessoryStockForDate = (int)($baseAccessoryStock * $weekendFactor * $monthEndFactor * $randomFactor * $trendFactor);
-                
+            $randomFactor = 0.95 + (mt_rand(0, 100) / 1000); 
+            $trendFactor = 1 + ($i * 0.005); 
 
-                $productStockForDate = max($baseProductStock * 0.8, $productStockForDate);
-                $accessoryStockForDate = max($baseAccessoryStock * 0.8, $accessoryStockForDate);
-                
+            $productStockForDate = (int)($baseProductStock * $weekendFactor * $monthEndFactor * $randomFactor * $trendFactor);
+            $accessoryStockForDate = (int)($baseAccessoryStock * $weekendFactor * $monthEndFactor * $randomFactor * $trendFactor);
 
-                $productStockForDate = min($baseProductStock * 1.2, $productStockForDate);
-                $accessoryStockForDate = min($baseAccessoryStock * 1.2, $accessoryStockForDate);
-                
+            $productStockForDate = max($baseProductStock * 0.8, $productStockForDate);
+            $accessoryStockForDate = max($baseAccessoryStock * 0.8, $accessoryStockForDate);
 
-                $productStockForDate = (int)round($productStockForDate);
-                $accessoryStockForDate = (int)round($accessoryStockForDate);
+            $productStockForDate = min($baseProductStock * 1.2, $productStockForDate);
+            $accessoryStockForDate = min($baseAccessoryStock * 1.2, $accessoryStockForDate);
 
-                $stockMovementDates[] = $dateString;
-                $productStockData[] = $productStockForDate;
-                $accessoryStockData[] = $accessoryStockForDate;
-            }
+            $stockMovementDates[] = $dateString;
+            $productStockData[] = (int) round($productStockForDate);
+            $accessoryStockData[] = (int) round($accessoryStockForDate);
         }
 
-        return compact('stockMovementDates', 'productStockData', 'accessoryStockData');
-    }
+        $lastIndex = count($stockMovementDates) - 1;
+        $productStockData[$lastIndex] = $currentProductStock;
+        $accessoryStockData[$lastIndex] = $currentAccessoryStock;
+    }       
 
+    // ✅ before return
+    return compact('stockMovementDates', 'productStockData', 'accessoryStockData');
+}
+
+    // Fallback method to get stock movement data from database (if historical data is available)
     private function getStockMovementDataFromDatabase()
     {
         $stockMovementDates = [];
@@ -331,7 +315,7 @@ class DashboardController extends Controller
         $currentStock = $this->getCurrentProductStock();
         $daysAgo = now()->diffInDays($date);
         
-        // Simple interpolation: assume stock was 20% lower 30 days ago
+
         $percentage = 1 - ($daysAgo / 30 * 0.2);
         return (int)($currentStock * $percentage);
     }
@@ -341,7 +325,6 @@ class DashboardController extends Controller
         $currentStock = $this->getCurrentAccessoryStock();
         $daysAgo = now()->diffInDays($date);
         
-        // Simple interpolation: assume stock was 15% lower 30 days ago
         $percentage = 1 - ($daysAgo / 30 * 0.15);
         return (int)($currentStock * $percentage);
     }
