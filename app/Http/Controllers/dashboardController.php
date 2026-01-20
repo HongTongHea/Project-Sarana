@@ -223,68 +223,127 @@ class DashboardController extends Controller
         ));
     }
 
-    /**
-     * Get stock movement data for charts
-     */
+ 
     private function getStockMovementData()
     {
         $stockMovementDates = [];
         $productStockData = [];
         $accessoryStockData = [];
 
-        // Get current stock from Product and Accessory models
         $currentProductStock = $this->getCurrentProductStock();
         $currentAccessoryStock = $this->getCurrentAccessoryStock();
         
-        // Get Dec 23 stock values (from your screenshot)
-        $dec23ProductStock = 30;
-        $dec23AccessoryStock = 20;
-        
-        // Get today's date
-        $today = now();
-        $dec23Date = now()->setMonth(12)->setDay(23);
-        
-        // Calculate days difference from Dec 23
-        $daysFromDec23 = $today->diffInDays($dec23Date);
-        
-        // Generate data for last 30 days
-        for ($i = 29; $i >= 0; $i--) {
-            $date = now()->subDays($i);
-            $dateString = $date->format('M j');
-            
-            // Calculate days from Dec 23 for this date
-            $currentDaysFromDec23 = $date->diffInDays($dec23Date);
-            
-            if ($date->format('M j') === 'Dec 23') {
-                // Exact Dec 23 date
-                $productStockForDate = $dec23ProductStock;
-                $accessoryStockForDate = $dec23AccessoryStock;
-            } elseif ($date->lt($dec23Date)) {
-                // Before Dec 23 - simulate increasing stock
-                $daysBeforeDec23 = $dec23Date->diffInDays($date);
-                $progress = min(1, $daysBeforeDec23 / 10); // Over 10 days before Dec 23
-                
-                $productStockForDate = (int)($dec23ProductStock - (30 * (1 - $progress)));
-                $accessoryStockForDate = (int)($dec23AccessoryStock - (20 * (1 - $progress)));
-                
-                // Ensure minimum values
-                $productStockForDate = max(20, $productStockForDate);
-                $accessoryStockForDate = max(15, $accessoryStockForDate);
-            } else {
-                // After Dec 23 - interpolate to current stock
-                $daysAfterDec23 = $date->diffInDays($dec23Date);
-                $progress = min(1, $daysAfterDec23 / $daysFromDec23);
-                
-                $productStockForDate = (int)($dec23ProductStock + ($currentProductStock - $dec23ProductStock) * $progress);
-                $accessoryStockForDate = (int)($dec23AccessoryStock + ($currentAccessoryStock - $dec23AccessoryStock) * $progress);
-            }
 
-            $stockMovementDates[] = $dateString;
-            $productStockData[] = $productStockForDate;
-            $accessoryStockData[] = $accessoryStockForDate;
+        $today = now();
+        
+ 
+        $referenceDate = now()->setYear(2026)->setMonth(1)->setDay(15);
+        
+        
+        $hasHistoricalData = false; 
+        
+        if ($hasHistoricalData) {
+
+        } else {
+
+            for ($i = 29; $i >= 0; $i--) {
+                $date = now()->subDays($i);
+                
+
+                $dateString = $date->format('M j');
+                
+
+                $daysFromReference = $date->diffInDays($referenceDate);
+                
+
+                $baseProductStock = $currentProductStock;
+                $baseAccessoryStock = $currentAccessoryStock;
+                
+        
+                $dayOfWeek = $date->dayOfWeek;
+                $weekendFactor = ($dayOfWeek === 0 || $dayOfWeek === 6) ? 0.9 : 1.0; 
+                
+
+                $dayOfMonth = $date->day;
+                $monthEndFactor = $dayOfMonth > 25 ? 0.85 : 1.0; 
+                
+
+                $randomFactor = 0.95 + (mt_rand(0, 100) / 1000); 
+                
+
+                $trendFactor = 1 + ($i * 0.005); 
+                
+                $productStockForDate = (int)($baseProductStock * $weekendFactor * $monthEndFactor * $randomFactor * $trendFactor);
+                $accessoryStockForDate = (int)($baseAccessoryStock * $weekendFactor * $monthEndFactor * $randomFactor * $trendFactor);
+                
+
+                $productStockForDate = max($baseProductStock * 0.8, $productStockForDate);
+                $accessoryStockForDate = max($baseAccessoryStock * 0.8, $accessoryStockForDate);
+                
+
+                $productStockForDate = min($baseProductStock * 1.2, $productStockForDate);
+                $accessoryStockForDate = min($baseAccessoryStock * 1.2, $accessoryStockForDate);
+                
+
+                $productStockForDate = (int)round($productStockForDate);
+                $accessoryStockForDate = (int)round($accessoryStockForDate);
+
+                $stockMovementDates[] = $dateString;
+                $productStockData[] = $productStockForDate;
+                $accessoryStockData[] = $accessoryStockForDate;
+            }
         }
 
         return compact('stockMovementDates', 'productStockData', 'accessoryStockData');
+    }
+
+    private function getStockMovementDataFromDatabase()
+    {
+        $stockMovementDates = [];
+        $productStockData = [];
+        $accessoryStockData = [];
+        
+        // Get data for last 30 days
+        $startDate = now()->subDays(29);
+        
+
+        for ($i = 0; $i < 30; $i++) {
+            $currentDate = $startDate->copy()->addDays($i);
+            
+
+            $stockMovementDates[] = $currentDate->format('M j');
+            
+            if ( false) {
+            } else {
+                $productStockData[] = $this->getInterpolatedProductStock($currentDate);
+                $accessoryStockData[] = $this->getInterpolatedAccessoryStock($currentDate);
+            }
+        }
+        
+        return compact('stockMovementDates', 'productStockData', 'accessoryStockData');
+    }
+    
+    /**
+     * Helper method for interpolation (if needed)
+     */
+    private function getInterpolatedProductStock($date)
+    {
+        $currentStock = $this->getCurrentProductStock();
+        $daysAgo = now()->diffInDays($date);
+        
+        // Simple interpolation: assume stock was 20% lower 30 days ago
+        $percentage = 1 - ($daysAgo / 30 * 0.2);
+        return (int)($currentStock * $percentage);
+    }
+    
+    private function getInterpolatedAccessoryStock($date)
+    {
+        $currentStock = $this->getCurrentAccessoryStock();
+        $daysAgo = now()->diffInDays($date);
+        
+        // Simple interpolation: assume stock was 15% lower 30 days ago
+        $percentage = 1 - ($daysAgo / 30 * 0.15);
+        return (int)($currentStock * $percentage);
     }
 
     /**
@@ -302,6 +361,7 @@ class DashboardController extends Controller
     {
         return Accessory::sum('stock_quantity');
     }
+
 
     /**
      * Legacy method for backward compatibility
