@@ -8,6 +8,12 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="mb-0 fw-semibold text-uppercase">Orders</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 fw-semibold">
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Orders</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
 
@@ -27,7 +33,7 @@
                                 <th>Total</th>
                                 <th>Payment</th>
                                 {{-- <th>Address</th> --}}
-                                {{-- <th>Order Date</th> --}}
+                                <th>Order Date</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -67,8 +73,8 @@
                                             </div>
                                         </form>
                                     </td>
-                                    {{-- <td>{{ Str::limit($order->shipping_address, 30) }}</td> --}}
-                                    {{-- <td>{{ $order->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }} --}}
+                                    {{-- <td>{{ Str::limit($order->shipping_address, 30) }}</td>  --}}
+                                    <td>{{ $order->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
                                     </td>
 
                                     <td class="text-center">
@@ -119,9 +125,7 @@
         }
 
         .payment-select {
-            padding: 2px 12px;
             font-weight: bolder;
-            text-align: center;
             cursor: pointer;
             min-width: 50px;
             border: 1px solid #ced4da;

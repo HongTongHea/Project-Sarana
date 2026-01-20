@@ -157,7 +157,7 @@
                                 @if ($order->items && $order->items->count() > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover mb-0">
-                                            <thead class="table-light">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th class="border-0">Product</th>
                                                     <th class="border-0 text-center">Quantity</th>
@@ -170,7 +170,7 @@
                                                     <tr>
                                                         <td class="border-0">
                                                             <div class="d-flex align-items-center">
-                                                                @if ($item->item && $item->item->image)
+                                                                {{-- @if ($item->item && $item->item->image)
                                                                     <img src="{{ Storage::url($item->item->image) }}"
                                                                         alt="{{ $item->item_name }}"
                                                                         class="rounded me-3"
@@ -181,7 +181,7 @@
                                                                         <i class="fas fa-box text-white"
                                                                             style="font-size: 0.8rem;"></i>
                                                                     </div>
-                                                                @endif
+                                                                @endif --}}
                                                                 <div>
                                                                     <h6 class="mb-0 small">
                                                                         {{ $item->item_name ?? 'Product' }}</h6>

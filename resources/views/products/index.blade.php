@@ -6,6 +6,12 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="mb-0 fw-semibold text-uppercase">Products</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 fw-semibold">
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Products</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
             <div class="card-body">
