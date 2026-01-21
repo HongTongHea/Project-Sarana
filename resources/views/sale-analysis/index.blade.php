@@ -147,7 +147,15 @@
         <!-- Top Items Tables -->
         <div class="card shadow-sm rounded-0">
             <div class="card-header">
-                <h4 class="mb-0 fw-semibold text-uppercase">Top Sale Items</h4>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-semibold text-uppercase">Top Sale Items</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 fw-semibold">
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Top Sale Items</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
             <div class="card-body p-4">
                 <div class="table-responsive">

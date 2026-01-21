@@ -18,6 +18,7 @@
                                     <p class="card-category">Total Reports</p>
                                     <h4 class="card-title" id="totalReports">{{ number_format($reports->total() ?? 0) }}
                                     </h4>
+                                    
                                 </div>
                             </div>
                         </div>
