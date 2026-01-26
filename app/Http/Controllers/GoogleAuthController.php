@@ -35,31 +35,33 @@ class GoogleAuthController extends Controller
     /**
      * Handle Google OAuth callback.
      */
-    public function callback()
-    {
-        $googleUser = Socialite::driver('google')->user();
+  public function callback()
+{
+    $googleUser = Socialite::driver('google')->user();
 
-        // Decide user role based on email domain or other logic
-        $role = $this->determineUserRole($googleUser->getEmail());
+    $role = $this->determineUserRole($googleUser->getEmail());
 
-        // Create or update user
-        $user = User::updateOrCreate(
-            ['google_id' => $googleUser->getId()],
-            [
-                'name' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-                'password' => Hash::make(Str::random(16)), // random password, since OAuth
-                'role' => $role,
-                'email_verified_at' => now(),
-            ]
-        );
+    $user = User::updateOrCreate(
+        ['google_id' => $googleUser->getId()],
+        [
+            'name' => $googleUser->getName(),
+            'email' => $googleUser->getEmail(),
+            'password' => Hash::make(Str::random(16)),
+            'role' => $role,
+            'email_verified_at' => now(),
+        ]
+    );
 
-        // Log user in
-        Auth::login($user, true);
+    Auth::login($user, true);
 
-        // Redirect based on role
-        return $this->redirectBasedOnRole($user);
+    // Check if user was trying to checkout
+    if (session()->has('intended_checkout') && in_array($user->role, ['customer', 'admin'])) {
+        session()->forget('intended_checkout');
+        return redirect()->route('checkout');
     }
+
+    return $this->redirectBasedOnRole($user);
+}
 
     /**
      * Determine user role based on email or other logic.
