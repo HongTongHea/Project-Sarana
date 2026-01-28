@@ -38,7 +38,11 @@ Route::get('/productpage', [ProductpageController::class, 'index'])->name('produ
 Route::get('/aboutpage', [AboutpageController::class, 'index'])->name('aboutpage.index');
 Route::get('/check-updates', [HomepageController::class, 'checkUpdates'])->name('check.updates');
 
-
+Route::get('/check-auth', function() {
+    return response()->json([
+        'authenticated' => Auth::check()
+    ]);
+})->name('check.auth');
 /*
 |--------------------------------------------------------------------------
 | Auth (guest) routes - accessible only when NOT authenticated as admin OR customer
@@ -147,7 +151,7 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');;
 
 // Public checkout routes (accessible by all authenticated users)
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     // Checkout Process
     Route::get('/checkout', [CheckoutOrderController::class, 'checkout'])->name('checkout');
     Route::post('/online-orders', [CheckoutOrderController::class, 'store'])->name('online-orders.store');

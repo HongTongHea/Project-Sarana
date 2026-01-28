@@ -97,7 +97,7 @@
                     </div>
                     <h3 class="empty-title">No orders yet</h3>
                     <p class="empty-description">You haven't placed any orders yet.</p>
-                    <a href="#" class="btn-start-shopping">Start Shopping</a>
+                    <a href="/" class="btn-start-shopping">Start Shopping</a>
                 </div>
             </div>
         @endif

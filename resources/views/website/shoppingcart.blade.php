@@ -57,9 +57,16 @@
     </div>
 </div>
 
-<!-- Shopping Cart Offcanvas -->
+@php
+    $isLoggedIn =
+        auth()->guard('admin')->check() ||
+        auth()->guard('manager')->check() ||
+        auth()->guard('cashier')->check() ||
+        auth()->guard('customer')->check() ||
+        auth()->check();
+@endphp
 <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas"
-    data-is-logged-in="{{ auth()->check() ? 'true' : 'false' }}">
+    data-is-logged-in="{{ $isLoggedIn ? 'true' : 'false' }}">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title"><i class="fas fa-shopping-cart me-1"></i> Your Shopping Cart</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
@@ -93,7 +100,7 @@
             </button>
         </div>
         <!-- Login Required Alert - Shown when user is not logged in -->
-        <div class="alert alert-warning mt-3 {{ auth()->check() ? 'd-none' : '' }}" id="loginRequiredAlert">
+        <div class="alert alert-warning mt-3 {{ $isLoggedIn ? 'd-none' : '' }}" id="loginRequiredAlert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             Please <a href="/login" class="alert-link">login</a> or
             <a href="/register" class="alert-link">register</a> to proceed with your purchase.

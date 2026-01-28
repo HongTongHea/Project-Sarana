@@ -2,39 +2,22 @@
 @section('title', 'ANGKOR TECH COMPUTER | Home Page')
 @section('content')
     {{-- Hero Section --}}
+
     <section class="hero-section">
         <div class="swiper heroSwiper">
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (2).png')">
-                    <div class="hero-overlay"></div>
-                    <div class="hero-content container">
-                        <h1>AngkorTech Computer</h1>
-                        <p>High Performance Laptops, PCs & Accessories</p>
-                        <a href="#" class="btn btn-primary hero-btn">Shop Now</a>
-                    </div>
-                </div>
-
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (2).png')"></div>
                 <!-- Slide 2 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (1).png')">
-                    <div class="hero-overlay"></div>
-                    <div class="hero-content container">
-                        <h1>Gaming & Office Solutions</h1>
-                        <p>Powerful machines for work and play</p>
-                        <a href="#" class="btn btn-primary hero-btn">Explore Products</a>
-                    </div>
-                </div>
-
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (1).png')"></div>
                 <!-- Slide 3 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (3).png')">
-                    <div class="hero-overlay"></div>
-                    <div class="hero-content container">
-                        <h1>Best Technology Deals</h1>
-                        <p>Original products with warranty</p>
-                        <a href="#" class="btn btn-primary hero-btn">View Offers</a>
-                    </div>
-                </div>
-
+                {{-- <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (5).png')"></div> --}}
+                <!-- Slide 4 -->
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (4).png')"></div>
+                <!-- Slide 5 -->
+                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (7).png')"></div>
+                <!-- Slide 6 -->
+                {{-- <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (11).png')"></div> --}}
             </div>
 
             <!-- Controls -->
