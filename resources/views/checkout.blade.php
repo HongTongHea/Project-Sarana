@@ -274,8 +274,10 @@
 
                         <button type="button" class="btn btn-primary w-100 mt-3 btn-md fw-bold" onclick="placeOrder()"
                             id="placeOrderBtn">
-                            Place Order
+                            <i class="bi bi-check2-circle"></i> Place Order
                         </button>
+                        <a href="/" class="btn btn-danger w-100 mt-3 btn-md fw-bold"><i class="bi bi-x"></i> Cancel
+                            Order</a>
                     </div>
                 </div>
             </div>

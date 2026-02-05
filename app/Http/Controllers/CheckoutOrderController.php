@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\OnlineOrder;
 use App\Models\OnlineOrderItem;
+use App\Models\Product;
+use App\Models\Accessory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -96,10 +98,14 @@ class CheckoutOrderController extends Controller
                     $item['price'] * (1 - $item['discount'] / 100) :
                     $item['price'];
 
+                $itemType = ($item['type'] ?? 'product') === 'accessory'
+                    ? Accessory::class
+                    : Product::class;
+
                 OnlineOrderItem::create([
                     'online_order_id' => $onlineOrder->id,
-                    'item_type' => 'App\Models\Product',
-                    'item_id' => $item['id'] ?? 0,
+                    'item_type' => $itemType, 
+                    'item_id' => $item['id'],
                     'item_name' => $item['name'],
                     'quantity' => $item['quantity'],
                     'unit_price' => $item['price'],
@@ -145,7 +151,7 @@ class CheckoutOrderController extends Controller
      */
     public function index()
     {
-        $onlineOrders = OnlineOrder::with(['user', 'items']) // Make sure 'items' is included
+        $onlineOrders = OnlineOrder::with(['user', 'items.item']) 
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -161,10 +167,11 @@ class CheckoutOrderController extends Controller
             return redirect()->route('login');
         }
 
-        $orders = OnlineOrder::where('user_id', Auth::id())
-            ->withCount('items')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+       $orders = OnlineOrder::where('user_id', Auth::id())
+        ->with(['items.item'])
+        ->withCount('items')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
         return view('website.my-orders', compact('orders'));
     }
@@ -174,7 +181,7 @@ class CheckoutOrderController extends Controller
      */
     public function show(OnlineOrder $onlineOrder)
     {
-        $onlineOrder->load(['user', 'items']);
+        $onlineOrder->load(['user', 'items.item']);
         return view('online-orders.show', compact('onlineOrder'));
     }
 
@@ -187,7 +194,7 @@ class CheckoutOrderController extends Controller
             abort(403, 'Unauthorized access to this order.');
         }
 
-        $order->load('items');
+        $order->load('items.item');
         return view('website.my-order-detail', compact('order'));
     }
 

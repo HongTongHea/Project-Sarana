@@ -13,6 +13,7 @@
                             <tr>
                                 <th>Order #</th>
                                 <th>Date</th>
+                                <th>Image</th>
                                 <th>Items</th>
                                 <th>Name</th>
                                 <th>Total</th>
@@ -27,6 +28,22 @@
                                         <strong>#{{ $order->order_number }}</strong>
                                     </td>
                                     <td class="order-date">{{ $order->created_at->format('M j, Y') }}</td>
+                                    <td>
+                                        @php
+                                            $firstItem = $order->items->first();
+                                        @endphp
+
+                                        @if ($firstItem && $firstItem->item && $firstItem->item->picture_url)
+                                            <img src="{{ Storage::url($firstItem->item->picture_url) }}"
+                                                alt="{{ $firstItem->item_name }}" class="rounded me-3"
+                                                style="width: 60px; height: 60px; object-fit: cover;">
+                                        @else
+                                            <div class="bg-secondary rounded d-flex align-items-center justify-content-center me-3"
+                                                style="width: 60px; height: 60px;">
+                                                <i class="fas fa-box text-white" style="font-size: 0.8rem;"></i>
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td class="order-items">{{ $order->items_count }} items</td>
                                     <td class="order-name">
                                         @if ($order->items->count() > 0)
@@ -80,7 +97,7 @@
                     </div>
                     <h3 class="empty-title">No orders yet</h3>
                     <p class="empty-description">You haven't placed any orders yet.</p>
-                    <a href="#" class="btn-start-shopping">Start Shopping</a>
+                    <a href="/" class="btn-start-shopping">Start Shopping</a>
                 </div>
             </div>
         @endif
