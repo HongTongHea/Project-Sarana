@@ -66,11 +66,17 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email'    => 'required|email',
+            'login'    => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $login = $request->login;
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
+        $credentials = [
+            $field => $login,
+            'password' => $request->password,
+        ];
 
         foreach (['admin', 'manager', 'cashier', 'customer'] as $guard) {
             if (Auth::guard($guard)->attempt($credentials, $request->remember)) {
@@ -119,7 +125,7 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Registration successful.');
     }
 
- 
+
     public function logout()
     {
         session()->forget(config('services.google.token_name'));

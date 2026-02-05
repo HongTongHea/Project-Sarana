@@ -163,8 +163,8 @@
                         @endif
 
                         <div class="mb-3 position-relative">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                required>
+                            <input type="text" class="form-control" id="login" name="login"
+                                placeholder="Username or Email" required>
                             <i class="fa-solid fa-envelope icon"></i>
                         </div>
 
