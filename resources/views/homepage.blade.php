@@ -6,30 +6,78 @@
     <section class="hero-section">
         <div class="swiper heroSwiper">
             <div class="swiper-wrapper">
-                <!-- Slide 1 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (2).png')"></div>
-                <!-- Slide 2 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (1).png')"></div>
-                <!-- Slide 3 -->
-                {{-- <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (5).png')"></div> --}}
-                <!-- Slide 4 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (4).png')"></div>
-                <!-- Slide 5 -->
-                <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (7).png')"></div>
-                <!-- Slide 6 -->
-                {{-- <div class="swiper-slide hero-slide" style="background-image:url('assets/img/slide (11).png')"></div> --}}
+
+                <!-- Slide -->
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
+                            <h1>Next-Gen Gaming<br>Setup</h1>
+                            <p>High performance desktop with immersive display.</p>
+                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                        </div>
+
+                        <div class="hero-image">
+                            <img src="assets/img/slide (3).png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
+                            <h1>Next-Gen Gaming<br>Setup</h1>
+                            <p>High performance desktop with immersive display.</p>
+                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                        </div>
+
+                        <div class="hero-image">
+                            <img src="assets/img/slide (3).png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
+                            <h1>Next-Gen Gaming<br>Setup</h1>
+                            <p>High performance desktop with immersive display.</p>
+                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                        </div>
+
+                        <div class="hero-image">
+                            <img src="assets/img/slide (3).png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
+                            <h1>Next-Gen Gaming<br>Setup</h1>
+                            <p>High performance desktop with immersive display.</p>
+                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                        </div>
+
+                        <div class="hero-image">
+                            <img src="assets/img/slide (3).png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Repeat for other slides -->
             </div>
 
-            <!-- Controls -->
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-pagination"></div>
         </div>
     </section>
 
+
     <div class="container">
-        <div class="row mb-4">
-            <div class="col text-start" data-aos="fade-right" data-aos-duration="1000">
+        <div class="row mb-4 mt-5">
+            <div class="text-start">
                 <h3 class="fw-bold">Browse by Categories</h3>
                 <p class="text-muted">Browse our wide range of categories</p>
             </div>
@@ -413,7 +461,8 @@
                                         <div class="service-overlay">
                                             <h5>RGB Gaming Rigs</h5>
                                             <p>Premium lighting setups</p>
-                                            <a href="" class="btn btn-outline-light"><i class="bi bi-send"></i> Contact Us</a>
+                                            <a href="" class="btn btn-outline-light"><i class="bi bi-send"></i>
+                                                Contact Us</a>
                                         </div>
                                     </div>
                                 </div>
