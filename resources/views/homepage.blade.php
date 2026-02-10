@@ -54,6 +54,21 @@
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
+                            <h1>Upgrade Your Fast<br>Typing</h1>
+                            <p>Enhance your typing speed and accuracy with our premium keyboards.</p>
+                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+
+                        <div class="hero-image">
+                            <img src="assets/img/slide (7).png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
                             <h1>Built for Elite Gaming<br>Experience</h1>
                             <p>Designed for the most demanding gamers with cutting edge performance.</p>
                             <a href="#" class="btn btn-success hero-btn">Shop Now</a>
