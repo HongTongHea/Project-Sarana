@@ -12,8 +12,9 @@
                     <div class="hero-inner">
                         <div class="hero-content">
                             <h1>Next-Gen Gaming<br>Setup</h1>
-                            <p>High performance desktop with immersive display.</p>
+                            <p>High performance desktop with immersive display, high speed graphics.</p>
                             <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
                         </div>
 
                         <div class="hero-image">
@@ -24,13 +25,28 @@
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
-                            <h1>Next-Gen Gaming<br>Setup</h1>
-                            <p>High performance desktop with immersive display.</p>
+                            <h1>Reliable Performance <br>for Office Work</h1>
+                            <p>Designed for productivity and efficiency in professional environments.</p>
                             <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
                         </div>
 
                         <div class="hero-image">
-                            <img src="assets/img/slide (3).png" alt="">
+                            <img src="assets/img/slide (9).png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
+                            <h1>Best Full Gaming<br>Setup</h1>
+                            <p>Complete gaming setup with all the essentials for an immersive experience.</p>
+                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+
+                        <div class="hero-image">
+                            <img src="assets/img/slide (8).png" alt="">
                         </div>
                     </div>
                 </div>
@@ -38,13 +54,14 @@
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
-                            <h1>Next-Gen Gaming<br>Setup</h1>
-                            <p>High performance desktop with immersive display.</p>
+                            <h1>Built for Elite Gaming<br>Experience</h1>
+                            <p>Designed for the most demanding gamers with cutting edge performance.</p>
                             <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
                         </div>
 
                         <div class="hero-image">
-                            <img src="assets/img/slide (3).png" alt="">
+                            <img src="assets/img/slide (5).png" alt="">
                         </div>
                     </div>
                 </div>
@@ -52,13 +69,14 @@
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
-                            <h1>Next-Gen Gaming<br>Setup</h1>
-                            <p>High performance desktop with immersive display.</p>
+                            <h1>Best Accessories<br>for Gamers</h1>
+                            <p>Enhance your gaming experience with our top tier accessories.</p>
                             <a href="#" class="btn btn-success hero-btn">Shop Now</a>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
                         </div>
 
                         <div class="hero-image">
-                            <img src="assets/img/slide (3).png" alt="">
+                            <img src="assets/img/slide (4).png" alt="">
                         </div>
                     </div>
                 </div>
@@ -174,7 +192,8 @@
 
                                 <button class="btn btn-outline-primary btn-sm mt-2 w-100 add-to-cart-btn"
                                     data-id="{{ $product->id }}" data-name="{{ $product->name }}"
-                                    data-price="{{ $product->price }}" data-discount="{{ $product->discount_percentage }}"
+                                    data-price="{{ $product->price }}"
+                                    data-discount="{{ $product->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $product->picture_url) }}"
                                     data-stock="{{ $product->stock_quantity }}" data-barcode="{{ $product->barcode }}"
                                     data-description="{{ $product->description }}">

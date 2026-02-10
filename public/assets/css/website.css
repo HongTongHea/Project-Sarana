@@ -97,6 +97,33 @@ body {
     max-width: 520px;
 }
 
+.hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: var(--dark-color);
+    margin-bottom: 30px;
+}
+
+.hero-content .btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--secondary-color);
+    /* controls nav button color */
+    padding: 50px;
+
+}
+
 /* RIGHT IMAGE */
 .hero-image {
     flex: 1;
