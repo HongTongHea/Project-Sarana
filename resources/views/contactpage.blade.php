@@ -65,7 +65,7 @@
                     </div>
 
                     <!-- Right Side - Contact Form -->
-                    <div class="col-lg-6 col-md-6" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="col-lg-6 col-md-6" data-aos="fade-right" data-aos-duration="1000">
                         <div class="card">
                             <div class="card-body p-4">
                                 <form method="POST" action="{{ route('contact.store') }}" class="bg-white p-0"

@@ -62,18 +62,13 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <!-- Repeat for other slides -->
             </div>
-
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-pagination"></div>
         </div>
     </section>
-
 
     <div class="container">
         <div class="row mb-4 mt-5">
@@ -81,7 +76,6 @@
                 <h3 class="fw-bold">Browse by Categories</h3>
                 <p class="text-muted">Browse our wide range of categories</p>
             </div>
-
         </div>
         <div class="row" id="categories-section" data-aos="fade-up" data-aos-duration="1000">
             @foreach ($categories as $index => $category)
@@ -200,15 +194,13 @@
                     </div>
                 </div>
             </div>
-
-
         </section>
         <!-- ROG Banner Section -->
-        <section class="rog-banner-section ">
+        <section class="rog-banner-section mb-5" data-aos="fade-right" data-aos-duration="1000">
             <div class="container py-4">
                 <div class="row g-4">
                     <!-- Left Side (Big Banner) -->
-                    <div class="col-lg-8" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="col-lg-8">
                         <div class="rog-banner-wrapper h-100">
                             <div class="swiper rogBannerSwiper rog-main-banner h-100">
                                 <div class="swiper-wrapper">
@@ -232,7 +224,7 @@
                         </div>
                     </div>
                     <!-- Right Side (Products) -->
-                    <div class="col-lg-4 mb-4 mb-lg-0" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="col-lg-4 mb-4 mb-lg-0">
                         <div class="rog-products-wrapper">
                             <div class="row g-3">
                                 @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
@@ -409,7 +401,7 @@
                         </div>
                     </div>
 
-                    <div class="row g-0 mt-3" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="row g-0 mt-3" data-aos="fade-right" data-aos-duration="1000">
                         <!-- Left Large Card -->
                         <div class="col-lg-6">
                             <div class="service-card left-card mb-2">
@@ -424,7 +416,7 @@
                         </div>
 
                         <!-- Right Side Column -->
-                        <div class="col-lg-6 ml-2" data-aos="fade-left" data-aos-duration="1000">
+                        <div class="col-lg-6 ml-2" data-aos="fade-up" data-aos-duration="1000">
                             <!-- Top Right Card -->
                             <div class="row g-0">
                                 <div class="col-12">

@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <!-- Right Side (Products) -->
-                    <div class="col-lg-4 mb-4 mb-lg-0" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="col-lg-4 mb-4 mb-lg-0" data-aos="fade-right" data-aos-duration="1000">
                         <div class="rog-products-wrapper">
                             <div class="row g-3">
                                 @foreach ($products->sortByDesc('created_at')->values() as $index => $product)
@@ -87,7 +87,7 @@
                 </div>
         </section>
         <!-- Categories Section -->
-        <div class="row mb-2" id="categories-section" data-aos="fade-left" data-aos-duration="1000">
+        <div class="row mb-2" id="categories-section" data-aos="fade-up" data-aos-duration="1000">
             @foreach ($categories as $index => $category)
                 {{-- @if ($index >= 5)
                     @break

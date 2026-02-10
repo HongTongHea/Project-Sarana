@@ -171,7 +171,7 @@
                         participation of
                         collaborative partners and several computer shops (Yeum Bunthai).</p>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
                     <div class="timeline">
                         <div class="timeline-item left">
                             <div class="timeline-content">
