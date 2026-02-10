@@ -17,7 +17,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('homepage.index') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('allproductpage.index') }}">All Products</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop & Pc</a></li>
                 {{-- <li class="nav-item"><a class="nav-link" href="{{ route('') }}">Pc</a></li> --}}
                 <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a></li>
@@ -202,7 +202,8 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('homepage.index') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('allproductpage.index') }}">All
                             Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop & Pc</a>
+                    </li>
                     {{-- <li class="nav-item"><a class="nav-link" href="{{ route('') }}">Pc</a></li> --}}
                     <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a>
