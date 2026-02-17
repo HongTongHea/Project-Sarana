@@ -1,12 +1,10 @@
 @extends('website.app')
-@section('title', 'ANGKOR TECH COMPUTER | Home Page')
+@section('title', 'Angkor Tech Computer | Home Page')
 @section('content')
     {{-- Hero Section --}}
-
     <section class="hero-section">
         <div class="swiper heroSwiper">
             <div class="swiper-wrapper">
-
                 <!-- Slide -->
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
@@ -230,8 +228,8 @@
             </div>
         </section>
         <!-- ROG Banner Section -->
-        <section class="rog-banner-section mb-5" data-aos="fade-right" data-aos-duration="1000">
-            <div class="container py-4">
+        <section class="rog-banner-section mb-5 mt-0" data-aos="fade-right" data-aos-duration="1000">
+            <div class="container">
                 <div class="row g-4">
                     <!-- Left Side (Big Banner) -->
                     <div class="col-lg-8">
