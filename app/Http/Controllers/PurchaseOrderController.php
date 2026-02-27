@@ -16,21 +16,21 @@ class PurchaseOrderController extends Controller
     public function index()
     {
         $orders      = PurchaseOrder::with(['supplier', 'creator'])->latest()->get();
-        $suppliers   = Supplier::all();
-        $products    = Product::all();
-        $accessories = Accessory::all();
-        $employees   = Employee::all();
+        $suppliers   = Supplier::latest()->get();
+        $products    = Product::latest()->get();
+        $accessories = Accessory::latest()->get();
+        $employees   = Employee::latest()->get();
 
         return view('purchase_orders.index', compact('orders', 'suppliers', 'products', 'accessories', 'employees'));
     }
 
     public function create()
     {
-        $purchaseOrders = PurchaseOrder::all();
-        $suppliers      = Supplier::all();
-        $products       = Product::all();
-        $accessories    = Accessory::all();
-        $employees      = Employee::all();
+        $purchaseOrders = PurchaseOrder::latest()->get();
+        $suppliers      = Supplier::latest()->get();
+        $products       = Product::latest()->get();
+        $accessories    = Accessory::latest()->get();
+        $employees      = Employee::latest()->get();
 
         return view('purchase_orders.create', compact(
             'suppliers',

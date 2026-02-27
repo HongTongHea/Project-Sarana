@@ -9,7 +9,7 @@ class SupplierController extends Controller
 {
     public function index()
     {
-        $suppliers = Supplier::all(); // Fetch all suppliers
+        $suppliers = Supplier::latest()->get(); // Fetch all suppliers, ordered by latest
         return view('suppliers.index', compact('suppliers'));
     }
 

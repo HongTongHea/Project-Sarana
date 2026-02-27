@@ -29,11 +29,11 @@ class SaleController extends Controller
 
     public function create()
     {
-        $customers = Customer::all();
+        $customers = Customer::latest()->get();
         $employees = Employee::where('status', 1)->get();
-        $products = \App\Models\Product::where('stock_quantity', '>', 0)->paginate(12);
-        $accessories = \App\Models\Accessory::where('stock_quantity', '>', 0)->paginate(12);
-        $categories = Category::all();
+        $products = \App\Models\Product::where('stock_quantity', '>', 0)->latest()->paginate(12);
+        $accessories = \App\Models\Accessory::where('stock_quantity', '>', 0)->latest()->paginate(12);
+        $categories = Category::latest()->get();
         return view('sales.create', compact('customers', 'employees', 'products', 'accessories', 'categories'));
     }
 
@@ -195,11 +195,11 @@ class SaleController extends Controller
         $sale = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])
             ->findOrFail($id);
 
-        $customers = Customer::all();
+        $customers = Customer::latest()->get();
         $employees = Employee::where('status', 1)->get();
         $products = Product::where('stock_quantity', '>', 0)->paginate(12);
         $accessories = Accessory::where('stock_quantity', '>', 0)->paginate(12);
-        $categories = Category::all();
+        $categories = Category::latest()->get();
 
         // Get the first payment (assuming one payment per sale)
         $payment = $sale->payments->first();
