@@ -38,7 +38,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        @if ($user->picture_url)
+                                        {{-- @if ($user->picture_url)
                                             <img src="{{ asset('storage/' . $user->picture_url) }}"
                                                 alt="{{ $user->name }}"
                                                 class="avatar-img avatar-lg rounded-5 object-fit-cover object-center"
@@ -46,6 +46,25 @@
                                         @else
                                             <div class="avatar-img rounded-5 d-flex align-items-center justify-content-center bg-secondary"
                                                 style="width: 50px; height: 50px;color: #fff; font-size: 20px; font-weight: bold;">
+                                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                                            </div>
+                                        @endif --}}
+
+                                        @if ($user->picture_url)
+                                            @php
+                                                $isExternalUrl =
+                                                    str_starts_with($user->picture_url, 'http://') ||
+                                                    str_starts_with($user->picture_url, 'https://');
+                                                $imageSrc = $isExternalUrl
+                                                    ? $user->picture_url
+                                                    : asset('storage/' . $user->picture_url);
+                                            @endphp
+                                            <img src="{{ $imageSrc }}" alt="{{ $user->name }}"
+                                                class="avatar-img rounded-5 object-fit-cover object-center"
+                                                style="width: 50px; height: 50px;">
+                                        @else
+                                            <div class="avatar-img rounded-5 d-flex align-items-center justify-content-center bg-secondary"
+                                                style="width: 50px; height: 50px; color: #fff; font-size: 20px; font-weight: bold;">
                                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                                             </div>
                                         @endif

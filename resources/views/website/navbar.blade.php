@@ -5,7 +5,7 @@
             <img src="{{ asset('assets/img/logo-Company.png') }}" alt="" height="50" class="me-2">
         </a>
 
-        {{-- Toggler (only visible on mobile) --}}
+        {{-- Toggler --}}
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -18,7 +18,6 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('allproductpage.index') }}">All Products</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop & Pc</a></li>
-                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('') }}">Pc</a></li> --}}
                 <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a></li>
             </ul>
@@ -39,6 +38,16 @@
                         Auth::guard('admin')->user() ??
                         (Auth::guard('manager')->user() ??
                             (Auth::guard('cashier')->user() ?? (Auth::guard('customer')->user() ?? Auth::user())));
+
+                    // Helper for avatar src
+                    $avatarSrc = null;
+                    if ($user && $user->picture_url) {
+                        $avatarSrc =
+                            str_starts_with($user->picture_url, 'http://') ||
+                            str_starts_with($user->picture_url, 'https://')
+                                ? $user->picture_url
+                                : asset('storage/' . $user->picture_url);
+                    }
                 @endphp
 
                 @if (!$user)
@@ -49,24 +58,22 @@
                         <i class="fas fa-user-plus me-1"></i> Sign Up
                     </a>
                 @else
-                    <div class="dropdown ">
+                    <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                             id="userDropdownDesktop" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{-- Desktop Avatar --}}
-                            @if ($user->picture_url)
-                                <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
-                                    class="avatar-img rounded-5" width="40" height="40"
-                                    style="object-fit: cover;">
+                            {{-- ✅ Desktop Avatar --}}
+                            @if ($avatarSrc)
+                                <img src="{{ $avatarSrc }}" alt="{{ $user->name }}" class="rounded-5"
+                                    style="width: 40px; height: 40px; object-fit: cover;">
                             @else
                                 <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 40px; height: 40px; font-weight: bold; color: white;">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                             @endif
-
                         </a>
+
                         <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="userDropdownDesktop">
-                            {{-- User info at top --}}
                             <li class="dropdown-header">
                                 <strong>{{ $user->name }}</strong><br>
                                 <small class="text-muted">{{ $user->email }}</small>
@@ -74,8 +81,6 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-
-                            {{-- Role-based buttons in a row --}}
                             <li class="px-3">
                                 <div class="d-flex gap-2">
                                     @if ($user->role !== 'admin')
@@ -102,7 +107,6 @@
                                         </a>
                                     @endif
 
-                                    {{-- Logout --}}
                                     <form id="logout-form-desktop" action="{{ route('logout') }}" method="POST"
                                         style="display: none;">
                                         @csrf
@@ -114,7 +118,6 @@
                                 </div>
                             </li>
                         </ul>
-
                     </div>
                 @endif
             </div>
@@ -131,7 +134,6 @@
             </div>
 
             <div class="offcanvas-body">
-                {{-- User info (Mobile) --}}
                 @if (!$user)
                     <div class="mb-3 d-flex gap-2">
                         <a href="{{ route('login') }}" class="btn btn-primary w-100 fw-bold">
@@ -143,26 +145,26 @@
                     </div>
                     <hr>
                 @endif
+
                 @if ($user)
                     <div class="d-flex align-items-center mb-3">
-
-                        @if ($user->picture_url)
-                            <img src="{{ Storage::url($user->picture_url) }}" alt="Profile Picture"
-                                class="avatar-img rounded-5 me-2" width="45" height="45"
-                                style="object-fit: cover;">
+                        {{-- ✅ Mobile Avatar --}}
+                        @if ($avatarSrc)
+                            <img src="{{ $avatarSrc }}" alt="{{ $user->name }}" class="rounded-5 me-2"
+                                style="width: 45px; height: 45px; object-fit: cover;">
                         @else
                             <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-2"
                                 style="width: 45px; height: 45px; font-weight: bold; color: white;">
                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                             </div>
                         @endif
+
                         <div>
                             <strong>{{ $user->name }}</strong><br>
                             <small class="text-muted">{{ $user->email }}</small>
                         </div>
                     </div>
 
-                    {{-- Role-based buttons --}}
                     <div class="mb-3 d-flex align-items-center justify-content-center">
                         @if ($user->role !== 'admin')
                             <a href="{{ route('my-orders.index') }}" class="btn btn-outline-primary w-100 me-2">
@@ -184,7 +186,6 @@
                             </a>
                         @endif
 
-                        {{-- Logout --}}
                         <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST"
                             style="display: none;">
                             @csrf
@@ -197,20 +198,17 @@
                     <hr>
                 @endif
 
-                {{-- Navigation Menu --}}
                 <ul class="navbar-nav fw-bold">
                     <li class="nav-item"><a class="nav-link" href="{{ route('homepage.index') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('allproductpage.index') }}">All
                             Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('productpage.index') }}">Laptop & Pc</a>
                     </li>
-                    {{-- <li class="nav-item"><a class="nav-link" href="{{ route('') }}">Pc</a></li> --}}
                     <li class="nav-item"><a class="nav-link" href="{{ route('aboutpage.index') }}">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('contact.create') }}">Contact Us</a>
                     </li>
                 </ul>
 
-                {{-- Cart (Mobile) --}}
                 <div class="d-flex align-items-center mt-3">
                     <button class="btn btn-outline-dark me-3" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#cartOffcanvas">

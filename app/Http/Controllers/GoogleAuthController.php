@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class GoogleAuthController extends Controller
 {
-    /**
+     /**
      * Redirect users after login based on role.
      */
     private function redirectBasedOnRole($user)
@@ -47,17 +47,17 @@ class GoogleAuthController extends Controller
         $role = $this->determineUserRole($googleUser->getEmail());
 
         // Create or update user
-        $user = User::updateOrCreate(
-            ['google_id' => $googleUser->getId()],
-            [
-                'name' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-                'password' => Hash::make(Str::random(16)), // random password, since OAuth
-                'role' => $role,
-                'email_verified_at' => now(),
-                'picture_url' => $googleUser->getAvatar(), // Optional: save Google profile picture
-            ]
-        );
+       $user = User::updateOrCreate(
+    ['google_id' => $googleUser->getId()],
+    [
+        'name'              => $googleUser->getName(),
+        'email'             => $googleUser->getEmail(),
+        'password'          => Hash::make(Str::random(16)),
+        'role'              => $role,
+        'email_verified_at' => now(),
+        'picture_url'       => $googleUser->getAvatar(), // This is already a full URL
+    ]
+);
 
         // **FIX: Log user in using the role-specific guard**
         $guard = $this->getGuardForRole($user->role);
