@@ -1,21 +1,269 @@
 @extends('website.app') @section('content')
-    <div class="container mt-5" style="margin-top: 100px !important; margin-bottom: 50px !important;">
-        <div class="orders-header">
-            <h1 class="fw-bold text-uppercase" style="font-size: 2.5rem;">My Orders</h1>
-            <p class="orders-subtitle">Details and manage your orders</p>
-        </div>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        .orders-wrap {
+            font-family: 'Inter', sans-serif;
+            max-width: 1320px;
+            margin: 150px auto 80px;
+            padding: 0 24px;
+        }
+
+        .orders-wrap h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #111;
+            margin: 0 0 4px;
+        }
+
+        .orders-wrap .subtitle {
+            font-size: 0.875rem;
+            color: #888;
+            margin: 0 0 40px;
+        }
+
+        /* Table */
+        .orders-card {
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            background: #FAFAFA;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #9CA3AF;
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #F3F4F6;
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #FAFAFA;
+        }
+
+        tbody td {
+            padding: 16px 20px;
+            font-size: 0.875rem;
+            color: #374151;
+            vertical-align: middle;
+        }
+
+        .order-num {
+            font-weight: 600;
+            color: #111;
+        }
+
+        .order-date {
+            color: #9CA3AF;
+            font-size: 0.82rem;
+        }
+
+        .thumb {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+            display: block;
+        }
+
+        .thumb-placeholder {
+            width: 48px;
+            height: 48px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9CA3AF;
+            font-size: 0.8rem;
+        }
+
+        .product-names {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .order-total {
+            font-weight: 600;
+            color: #111;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .status-pending {
+            background: #FEF9C3;
+            color: #854D0E;
+        }
+
+        .status-processing {
+            background: #DBEAFE;
+            color: #1D4ED8;
+        }
+
+        .status-shipped {
+            background: #E0F2FE;
+            color: #0369A1;
+        }
+
+        .status-delivered {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .status-cancelled {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .status-refunded {
+            background: #F3F4F6;
+            color: #374151;
+        }
+
+        .payment-paid {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .payment-unpaid {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .payment-pending {
+            background: #FEF9C3;
+            color: #854D0E;
+        }
+
+        .payment-refunded {
+            background: #F3F4F6;
+            color: #374151;
+        }
+
+        .payment-failed {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Pagination */
+        .pagination-wrap {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid #F3F4F6;
+        }
+
+        .orders-footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #9CA3AF;
+            margin-top: 24px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 80px 24px;
+        }
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            background: #F3F4F6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #9CA3AF;
+        }
+
+        .empty-state h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111;
+            margin: 0 0 8px;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin: 0 0 28px;
+        }
+
+        .btn-shop {
+            display: inline-block;
+            background: #111;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 11px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+
+        .btn-shop:hover {
+            opacity: 0.8;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .hide-sm {
+                display: none;
+            }
+
+            thead th,
+            tbody td {
+                padding: 12px 14px;
+            }
+        }
+    </style>
+
+    <div class="orders-wrap">
+        <h1>My Orders</h1>
+        <p class="subtitle">Track and manage your purchases</p>
 
         @if ($orders->count() > 0)
-            <div class="orders-list">
+            <div class="orders-card">
                 <div class="table-responsive">
-                    <table class="orders-table">
+                    <table>
                         <thead>
                             <tr>
-                                <th>Order #</th>
-                                <th>Date</th>
-                                <th>Image</th>
-                                <th>Items</th>
-                                <th>Name</th>
+                                <th>Order</th>
+                                <th class="hide-sm">Date</th>
+                                <th>Item</th>
+                                <th>Product</th>
                                 <th>Total</th>
                                 <th>Status</th>
                                 <th>Payment</th>
@@ -24,292 +272,70 @@
                         <tbody>
                             @foreach ($orders as $order)
                                 <tr>
-                                    <td class="order-number">
-                                        <strong>#{{ $order->order_number }}</strong>
-                                    </td>
-                                    <td class="order-date">{{ $order->created_at->format('M j, Y') }}</td>
+                                    <td class="order-num">#{{ $order->order_number }}</td>
+                                    <td class="order-date hide-sm">{{ $order->created_at->format('M j, Y') }}</td>
                                     <td>
-                                        @php
-                                            $firstItem = $order->items->first();
-                                        @endphp
-
+                                        @php $firstItem = $order->items->first(); @endphp
                                         @if ($firstItem && $firstItem->item && $firstItem->item->picture_url)
                                             <img src="{{ Storage::url($firstItem->item->picture_url) }}"
-                                                alt="{{ $firstItem->item_name }}" class="rounded me-3"
-                                                style="width: 60px; height: 60px; object-fit: cover;">
+                                                alt="{{ $firstItem->item_name }}" class="thumb">
                                         @else
-                                            <div class="bg-secondary rounded d-flex align-items-center justify-content-center me-3"
-                                                style="width: 60px; height: 60px;">
-                                                <i class="fas fa-box text-white" style="font-size: 0.8rem;"></i>
+                                            <div class="thumb-placeholder">
+                                                <i class="fas fa-box"></i>
                                             </div>
                                         @endif
                                     </td>
-                                    <td class="order-items">{{ $order->items_count }} items</td>
-                                    <td class="order-name">
-                                        @if ($order->items->count() > 0)
-                                            @foreach ($order->items as $item)
-                                                {{ $item->product->name ?? ($item->item_name ?? 'Product') }}
-                                                @if (!$loop->last)
-                                                    <br>
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td class="order-total">${{ number_format($order->total_amount, 2) }}</td>
-                                    <td class="order-status">
-                                        <span class="status-badge status-{{ strtolower($order->status) }}">
-                                            {{ ucfirst($order->status) }}
-                                        </span>
-                                    </td>
-                                    <td class="order-payment">
-                                        <span class="payment-badge payment-{{ strtolower($order->payment_status) }}">
-                                            {{ ucfirst($order->payment_status) }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="orders-pagination">
-                    {{ $orders->links() }}
-                </div>
-
-                <p class="mt-4 text-muted small text-center">
-                    Thank you for shopping with us. If you have any questions or need assistance, please don't
-                    hesitate to contact us.
-                </p>
-            </div>
-        @else
-            <div class="orders-empty">
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
+                                    <td class="product-names">
+                                        @forelse ($order->items as $item)
+                                            {{ $item->product->name ?? ($item->item_name ?? 'Product') }}@if (!$loop->last)
+                                                <br>
+                                            @endif
+                                            @empty
+                                                <span style="color:#9CA3AF">—</span>
+                                            @endforelse
+                                        </td>
+                                        <td class="order-total">${{ number_format($order->total_amount, 2) }}</td>
+                                        <td>
+                                            <span class="badge status-{{ strtolower($order->status) }}">
+                                                {{ ucfirst($order->status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge payment-{{ strtolower($order->payment_status) }}">
+                                                {{ ucfirst($order->payment_status) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <h3 class="empty-title">No orders yet</h3>
-                    <p class="empty-description">You haven't placed any orders yet.</p>
-                    <a href="/" class="btn-start-shopping">Start Shopping</a>
+
+                    <div class="pagination-wrap">
+                        {{ $orders->links() }}
+                    </div>
                 </div>
-            </div>
-        @endif
-    </div>
-    @include('website.shoppingcart')
-@endsection
 
-<style>
-    .orders-header {
-        margin-bottom: 2.5rem;
-        border-bottom: 1px solid #eaeaea;
-        padding-bottom: 1.5rem;
-    }
+                <p class="orders-footer">Need help? Contact our support team anytime.</p>
+            @else
+                <div class="orders-card">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </div>
+                        <h3>No orders yet</h3>
+                        <p>You haven't placed any orders. Start shopping to see them here.</p>
+                        <a href="/" class="btn-shop">Start Shopping</a>
+                    </div>
+                </div>
+            @endif
+        </div>
 
-    .orders-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin: 0 0 0.5rem 0;
-    }
-
-    .orders-subtitle {
-        font-size: 1rem;
-        color: #666;
-        margin: 0;
-    }
-
-
-    .table-responsive {
-        overflow-x: auto;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        border-radius: 8px;
-        border: 1px solid #eaeaea;
-    }
-
-    .orders-table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white;
-    }
-
-    .orders-table thead {
-        background-color: #f8f9fa;
-    }
-
-    .orders-table th {
-        padding: 1.125rem 1.5rem;
-        text-align: left;
-        font-weight: 600;
-        font-size: 0.875rem;
-        color: #495057;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border-bottom: 1px solid #eaeaea;
-    }
-
-    .orders-table td {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid #f0f0f0;
-        font-size: 0.95rem;
-        vertical-align: middle;
-    }
-
-    .orders-table tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-    .orders-table tbody tr:hover {
-        background-color: #fafafa;
-        transition: background-color 0.2s ease;
-    }
-
-
-    .order-number {
-        font-weight: 600;
-        color: #2c3e50;
-    }
-
-
-    .status-badge,
-    .payment-badge {
-        display: inline-block;
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-align: center;
-        min-width: 85px;
-    }
-
-    .status-pending,
-    .payment-pending {
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeaa7;
-    }
-
-    .status-processing,
-    .payment-processing {
-        background-color: #cce5ff;
-        color: #004085;
-        border: 1px solid #b8daff;
-    }
-
-    .status-completed,
-    .payment-paid,
-    .payment-completed {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .status-cancelled,
-    .payment-failed,
-    .payment-cancelled {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-
-    .status-shipped {
-        background-color: #d1ecf1;
-        color: #0c5460;
-        border: 1px solid #bee5eb;
-    }
-
-
-    .orders-pagination {
-        margin-top: 2.5rem;
-        display: flex;
-        justify-content: center;
-    }
-
-
-    .orders-empty {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 400px;
-    }
-
-    .empty-state {
-        text-align: center;
-        max-width: 400px;
-        padding: 3rem 2rem;
-    }
-
-    .empty-icon {
-        margin-bottom: 1.5rem;
-        color: #a0a0a0;
-    }
-
-    .empty-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 0.75rem;
-    }
-
-    .empty-description {
-        color: #666;
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        line-height: 1.5;
-    }
-
-    .btn-start-shopping {
-        display: inline-block;
-        padding: 0.875rem 2rem;
-        background-color: #4a6cf7;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-        border: none;
-        font-size: 1rem;
-    }
-
-    .btn-start-shopping:hover {
-        background-color: #3a5ce5;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(74, 108, 247, 0.25);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-
-
-        .orders-table th,
-        .orders-table td {
-            padding: 0.875rem 1rem;
-        }
-
-        .status-badge,
-        .payment-badge {
-            min-width: 75px;
-            padding: 0.3rem 0.6rem;
-            font-size: 0.75rem;
-        }
-
-        .btn-view-details {
-            padding: 0.4rem 0.875rem;
-            font-size: 0.8rem;
-        }
-    }
-
-    @media (max-width: 576px) {
-
-        .orders-table th:nth-child(3),
-        .orders-table td:nth-child(3) {
-            display: none;
-        }
-    }
-</style>
+        @include('website.shoppingcart')
+    @endsection

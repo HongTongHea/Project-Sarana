@@ -151,15 +151,15 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');;
 
 // Public checkout routes (accessible by all authenticated users)
-Route::middleware(['auth:admin,manager,cashier'])->group(function () {
+Route::middleware(['auth:admin,manager,cashier,customer'])->group(function () {
     // Checkout Process
     Route::get('/checkout', [CheckoutOrderController::class, 'checkout'])->name('checkout');
     Route::post('/online-orders', [CheckoutOrderController::class, 'store'])->name('online-orders.store');
     Route::get('/order-confirmation/{order}', [CheckoutOrderController::class, 'confirmation'])->name('order.confirmation');
 
     // Customer-facing routes (website) - for customers only
-    Route::get('/my-orders', [CheckoutOrderController::class, 'myOrders'])->name('my-orders.index');
     Route::get('/my-orders/{order}', [CheckoutOrderController::class, 'myOrderShow'])->name('my-orders.show');
+    Route::get('/my-orders', [CheckoutOrderController::class, 'myOrders'])->name('my-orders.index');
 });
 
 // Admin system routes (only for admin, manager, cashier)

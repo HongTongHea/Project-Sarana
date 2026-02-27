@@ -5,11 +5,27 @@
             <img src="{{ asset('assets/img/logo-Company.png') }}" alt="" height="50" class="me-2">
         </a>
 
-        {{-- Toggler --}}
+        {{-- Toggler (only visible on mobile) --}}
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        {{-- User Authentication --}}
+        @php
+            $user =
+                Auth::guard('admin')->user() ??
+                (Auth::guard('manager')->user() ??
+                    (Auth::guard('cashier')->user() ?? (Auth::guard('customer')->user() ?? Auth::user())));
+
+            // Reusable avatar logic
+            $avatarSrc = null;
+            if ($user && $user->picture_url) {
+                $isExternal =
+                    str_starts_with($user->picture_url, 'http://') || str_starts_with($user->picture_url, 'https://');
+                $avatarSrc = $isExternal ? $user->picture_url : asset('storage/' . $user->picture_url);
+            }
+        @endphp
 
         {{-- Desktop Menu --}}
         <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
@@ -32,24 +48,6 @@
                     </i>
                 </button>
 
-                {{-- User Authentication --}}
-                @php
-                    $user =
-                        Auth::guard('admin')->user() ??
-                        (Auth::guard('manager')->user() ??
-                            (Auth::guard('cashier')->user() ?? (Auth::guard('customer')->user() ?? Auth::user())));
-
-                    // Helper for avatar src
-                    $avatarSrc = null;
-                    if ($user && $user->picture_url) {
-                        $avatarSrc =
-                            str_starts_with($user->picture_url, 'http://') ||
-                            str_starts_with($user->picture_url, 'https://')
-                                ? $user->picture_url
-                                : asset('storage/' . $user->picture_url);
-                    }
-                @endphp
-
                 @if (!$user)
                     <a href="{{ route('login') }}" class="btn btn-primary me-2 fw-bold">
                         <i class="fas fa-sign-in-alt me-1"></i> Sign In
@@ -61,18 +59,17 @@
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                             id="userDropdownDesktop" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{-- ✅ Desktop Avatar --}}
+                            {{-- Desktop Avatar --}}
                             @if ($avatarSrc)
-                                <img src="{{ $avatarSrc }}" alt="{{ $user->name }}" class="rounded-5"
+                                <img src="{{ $avatarSrc }}" alt="{{ $user->name }}" class="rounded-circle me-2"
                                     style="width: 40px; height: 40px; object-fit: cover;">
                             @else
-                                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 40px; height: 40px; font-weight: bold; color: white;">
+                                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                    style="width: 40px; height: 40px; font-weight: bold; color: white; font-size: 16px;">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                             @endif
                         </a>
-
                         <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="userDropdownDesktop">
                             <li class="dropdown-header">
                                 <strong>{{ $user->name }}</strong><br>
@@ -148,13 +145,13 @@
 
                 @if ($user)
                     <div class="d-flex align-items-center mb-3">
-                        {{-- ✅ Mobile Avatar --}}
+                        {{-- Mobile Avatar --}}
                         @if ($avatarSrc)
-                            <img src="{{ $avatarSrc }}" alt="{{ $user->name }}" class="rounded-5 me-2"
+                            <img src="{{ $avatarSrc }}" alt="{{ $user->name }}" class="rounded-circle me-2"
                                 style="width: 45px; height: 45px; object-fit: cover;">
                         @else
                             <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-2"
-                                style="width: 45px; height: 45px; font-weight: bold; color: white;">
+                                style="width: 45px; height: 45px; font-weight: bold; color: white; font-size: 18px;">
                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                             </div>
                         @endif
