@@ -171,6 +171,12 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
 
 });
 
+// Notification count route (admin only)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/notifications/count', [CheckoutOrderController::class, 'getNotificationCount'])
+        ->name('notifications.count');
+});
+
 // Contact routes
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

@@ -35,28 +35,54 @@
                 </div>
             </nav>
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                <!-- Notification Bell -->
+                {{-- ======= ORDER NOTIFICATION BELL ======= --}}
+                <div class="nav-item">
+                    <a href="{{ route('online-orders.index') }}" class="nav-link position-relative">
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                        @if (($pendingOrdersCount ?? 0) > 0)
+                            <span id="order-badge"
+                                class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger">
+                                {{ $pendingOrdersCount > 99 ? '99+' : $pendingOrdersCount }}
+                                <span class="visually-hidden">pending orders</span>
+                            </span>
+                        @else
+                            <span id="order-badge"
+                                class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger d-none">
+                                0
+                            </span>
+                        @endif
+                    </a>
+                </div>
+
+                {{-- ======= MESSAGE NOTIFICATION BELL ======= --}}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle position-relative" href="#" id="notificationDropdown"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
                         <i class="fa-solid fa-bell fs-5"></i>
+
                         @php
-                            $unreadCount = \App\Models\Contact::where('read_status', false)->count();
+                            $unreadMessages = \App\Models\Contact::where('read_status', false)->count();
                         @endphp
-                        @if ($unreadCount > 0)
+
+                        @if ($unreadMessages > 0)
                             <span
                                 class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger">
-                                {{ $unreadCount }}
+                                {{ $unreadMessages > 99 ? '99+' : $unreadMessages }}
                                 <span class="visually-hidden">unread messages</span>
                             </span>
                         @endif
                     </a>
+
                     <ul class="dropdown-menu dropdown-menu-end dropdown-notification"
-                        aria-labelledby="notificationDropdown">
-                        <li class="dropdown-header">
-                            <h6 class="mb-0">Notifications</h6>
-                            @if ($unreadCount > 0)
-                                <span class="badge bg-primary">{{ $unreadCount }} unread</span>
+                        aria-labelledby="notificationDropdown" style="min-width: 320px;">
+
+                        <!-- Header -->
+                        <li class="dropdown-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Messages</h6>
+                            @if ($unreadMessages > 0)
+                                <span class="badge bg-danger">{{ $unreadMessages }} unread</span>
                             @endif
                         </li>
                         <li>
@@ -82,7 +108,7 @@
                                                 <small
                                                     class="text-muted">{{ $contact->created_at->diffForHumans() }}</small>
                                             </div>
-                                            <p class="mb-0 text-truncate" style="max-width: 250px;">
+                                            <p class="mb-0 text-truncate" style="max-width: 220px;">
                                                 {{ Str::limit($contact->message, 50) }}
                                             </p>
                                             <small class="text-muted">{{ $contact->email }}</small>
@@ -91,15 +117,15 @@
                                 </li>
                                 @if (!$loop->last)
                                     <li>
-                                        <hr class="dropdown-divider">
+                                        <hr class="dropdown-divider my-0">
                                     </li>
                                 @endif
                             @endforeach
                         @else
                             <li>
                                 <div class="dropdown-item text-center text-muted py-3">
-                                    <i class="fa-solid fa-bell-slash fs-4 mb-2"></i>
-                                    <p class="mb-0">No notifications</p>
+                                    <i class="fa-solid fa-bell-slash fs-4 mb-2 d-block"></i>
+                                    No messages
                                 </div>
                             </li>
                         @endif
@@ -108,8 +134,11 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item text-center text-primary" href="{{ route('contact.index') }}">
-                                <i class="fa-solid fa-eye me-2"></i>View All Messages
+                            <a class="dropdown-item text-center text-primary py-2" href="{{ route('contact.index') }}">
+                                <i class="fa-solid fa-eye me-1"></i> View All Messages
+                                @if ($unreadMessages > 0)
+                                    <span class="badge bg-primary ms-1">{{ $unreadMessages }}</span>
+                                @endif
                             </a>
                         </li>
                     </ul>
@@ -301,6 +330,38 @@
     }
 </style>
 <script>
+    function fetchOrderNotificationCount() {
+        fetch('{{ route('notifications.count') }}', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.json();
+            })
+            .then(data => {
+                console.log('Order count:', data); // ← check browser console
+                const badge = document.getElementById('order-badge');
+                if (!badge) {
+                    console.warn('Badge element not found!');
+                    return;
+                }
+                if (data.count > 0) {
+                    badge.textContent = data.count > 99 ? '99+' : data.count;
+                    badge.classList.remove('d-none');
+                } else {
+                    badge.classList.add('d-none');
+                }
+            })
+            .catch(err => console.error('Order notification error:', err));
+    }
+
+    fetchOrderNotificationCount();
+    setInterval(fetchOrderNotificationCount, 30000);
+</script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         // Mark notification as read when clicked
         document.querySelectorAll('.notification-item').forEach(item => {
@@ -362,6 +423,7 @@
 
         // Check for new notifications every 30 seconds
         setInterval(updateNotificationCount, 30000);
+
 
         // Fullscreen toggle functionality
         const fullscreenToggle = document.getElementById('fullscreen-toggle');

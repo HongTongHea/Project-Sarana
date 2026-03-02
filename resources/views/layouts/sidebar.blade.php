@@ -118,6 +118,9 @@
                         <a href="{{ route('online-orders.index') }}">
                             <i class="fa-solid fa-cart-shopping"></i>
                             <p>Orders</p>
+                            @if ($pendingOrdersCount > 0)
+                                <span class="badge badge-success rounded-circle">{{ $pendingOrdersCount }}</span>
+                            @endif
                         </a>
                     </li>
                 @endif

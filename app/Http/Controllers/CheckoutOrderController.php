@@ -236,4 +236,13 @@ class CheckoutOrderController extends Controller
         return redirect()->route('online-orders.index')
             ->with('success', 'Online order deleted successfully.');
     }
+
+    /**
+     * Get notification count for pending orders
+     */
+    public function getNotificationCount()
+    {
+        $count = OnlineOrder::where('status', 'pending')->count();
+        return response()->json(['count' => $count]);
+    }
 }
