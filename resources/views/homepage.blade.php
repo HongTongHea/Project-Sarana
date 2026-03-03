@@ -5,102 +5,153 @@
     <section class="hero-section">
         <div class="swiper heroSwiper">
             <div class="swiper-wrapper">
-                <!-- Slide -->
+                <!-- Slide 1 -->
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
-                            <h1>Next-Gen Gaming<br>Setup</h1>
-                            <p>High performance desktop with immersive display, high speed graphics.</p>
-                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
-                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            <div class="hero-tag"><span></span> New Arrival</div>
+                            <h1>Next-Gen Gaming<br><em>Setup</em></h1>
+                            <p>High performance desktop with immersive display and high speed graphics for the ultimate
+                                experience.</p>
+                            <div class="hero-actions">
+                                <a href="#" class="btn-shop">Shop Now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <a href="#" class="btn-ghost">Learn More</a>
+                            </div>
                         </div>
-
                         <div class="hero-image">
-                            <img src="assets/img/slide (3).png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide hero-slide">
-                    <div class="hero-inner">
-                        <div class="hero-content">
-                            <h1>Reliable Performance <br>for Office Work</h1>
-                            <p>Designed for productivity and efficiency in professional environments.</p>
-                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
-                            <a href="#" class="btn btn-outline-primary">Learn More</a>
-                        </div>
-
-                        <div class="hero-image">
-                            <img src="assets/img/slide (9).png" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide hero-slide">
-                    <div class="hero-inner">
-                        <div class="hero-content">
-                            <h1>Best Full Gaming<br>Setup</h1>
-                            <p>Complete gaming setup with all the essentials for an immersive experience.</p>
-                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
-                            <a href="#" class="btn btn-outline-primary">Learn More</a>
-                        </div>
-
-                        <div class="hero-image">
-                            <img src="assets/img/slide (8).png" alt="">
+                            <div class="hero-image-wrap">
+                                <img src="assets/img/slide (3).png" alt="Next-Gen Gaming Setup">
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Slide 2 -->
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
-                            <h1>Upgrade Your Fast<br>Typing</h1>
-                            <p>Enhance your typing speed and accuracy with our premium keyboards.</p>
-                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
-                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            <div class="hero-tag"><span></span> Office Ready</div>
+                            <h1>Reliable Performance<br>for <em>Office Work</em></h1>
+                            <p>Designed for productivity and efficiency in professional environments where every second
+                                counts.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#" class="btn-shop">Shop Now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <a href="#" class="btn-ghost">Learn More</a>
+                            </div>
                         </div>
-
                         <div class="hero-image">
-                            <img src="assets/img/slide (7).png" alt="">
+                            <div class="hero-image-wrap">
+                                <img src="assets/img/slide (9).png" alt="Office Work Setup">
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Slide 3 -->
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
-                            <h1>Built for Elite Gaming<br>Experience</h1>
-                            <p>Designed for the most demanding gamers with cutting edge performance.</p>
-                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
-                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            <div class="hero-tag"><span></span> Full Bundle</div>
+                            <h1>Best Full Gaming<br><em>Setup</em></h1>
+                            <p>Complete gaming setup with all the essentials for a truly immersive and competitive
+                                experience.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#" class="btn-shop">Shop Now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <a href="#" class="btn-ghost">Learn More</a>
+                            </div>
                         </div>
-
                         <div class="hero-image">
-                            <img src="assets/img/slide (5).png" alt="">
+                            <div class="hero-image-wrap">
+                                <img src="assets/img/slide (8).png" alt="Full Gaming Setup">
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Slide 4 -->
                 <div class="swiper-slide hero-slide">
                     <div class="hero-inner">
                         <div class="hero-content">
-                            <h1>Best Accessories<br>for Gamers</h1>
-                            <p>Enhance your gaming experience with our top tier accessories.</p>
-                            <a href="#" class="btn btn-success hero-btn">Shop Now</a>
-                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            <div class="hero-tag"><span></span> Keyboards</div>
+                            <h1>Upgrade Your Fast<br><em>Typing</em></h1>
+                            <p>Enhance your typing speed and accuracy with our premium keyboards built for performance.</p>
+                            <div class="hero-actions">
+                                <a href="#" class="btn-shop">Shop Now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <a href="#" class="btn-ghost">Learn More</a>
+                            </div>
                         </div>
-
                         <div class="hero-image">
-                            <img src="assets/img/slide (4).png" alt="">
+                            <div class="hero-image-wrap">
+                                <img src="assets/img/slide (7).png" alt="Keyboard Upgrade">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Repeat for other slides -->
-            </div>
-            <div class="swiper-button-next"></div>
+
+                <!-- Slide 5 -->
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
+                            <div class="hero-tag"><span></span> Elite Series</div>
+                            <h1>Built for <em>Elite Gaming</em><br>Experience</h1>
+                            <p>Designed for the most demanding gamers with cutting edge performance and zero compromises.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#" class="btn-shop">Shop Now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <a href="#" class="btn-ghost">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <div class="hero-image-wrap">
+                                <img src="assets/img/slide (5).png" alt="Elite Gaming">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 6 -->
+                <div class="swiper-slide hero-slide">
+                    <div class="hero-inner">
+                        <div class="hero-content">
+                            <div class="hero-tag"><span></span> Accessories</div>
+                            <h1>Best Accessories<br>for <em>Gamers</em></h1>
+                            <p>Enhance your gaming experience with our top tier accessories — precision-crafted for
+                                champions.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#" class="btn-shop">Shop Now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <a href="#" class="btn-ghost">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <div class="hero-image-wrap">
+                                <img src="assets/img/slide (4).png" alt="Gaming Accessories">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /swiper-wrapper -->
+
             <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
             <div class="swiper-pagination"></div>
         </div>
     </section>
-
     <div class="container">
         <div class="row mb-4 mt-5">
             <div class="text-start">
@@ -128,7 +179,8 @@
 
         <!-- Products Section -->
         <section class="mb-5" id="products-section">
-            <div class="d-flex justify-content-between align-items-center" data-aos="fade-right" data-aos-duration="1000">
+            <div class="d-flex justify-content-between align-items-center" data-aos="fade-right"
+                data-aos-duration="1000">
                 <div class="row mb-2">
                     <div class="col text-start">
                         <h3 class="mb-0 text-start fw-bold" id="products-title">Products</h3>
@@ -136,7 +188,8 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-2">
-                    <button class="btn btn-outline-primary btn-sm" id="see-all-btn" style="display: none;">See All</button>
+                    <button class="btn btn-outline-primary btn-sm" id="see-all-btn" style="display: none;">See
+                        All</button>
                 </div>
             </div>
             <div class="row" id="products-container" data-aos="fade-up" data-aos-duration="1000">
