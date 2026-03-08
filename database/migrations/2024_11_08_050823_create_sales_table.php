@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained();
             $table->unsignedBigInteger('employee_id');
             $table->decimal('subtotal', 10, 2)->default(0);
-            $table->decimal('item_discounts', 10, 2)->default(0); // Add this line
+            $table->decimal('item_discounts', 10, 2)->default(0);
+            $table->decimal('additional_discount', 10, 2)->default(0);
             $table->decimal('tax_amount', 10, 2)->default(0);
             $table->decimal('discount_amount', 10, 2)->default(0);
             $table->decimal('total', 10, 2)->default(0);

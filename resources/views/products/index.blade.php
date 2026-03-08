@@ -57,9 +57,10 @@
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->brand }}</td>
                                     <td>{{ $product->barcode }}</td>
-                                    <td>{{ $product->discount_percentage ? $product->discount_percentage . '%' : 'None' }}
+                                    <td class="text-danger fw-bold">
+                                        {{ $product->discount_percentage ? $product->discount_percentage . '%' : 'None' }}
                                     </td>
-                                    <td>${{ number_format($product->price, 2) }}</td>
+                                    <td class="text-warning fw-bold">${{ number_format($product->price, 2) }}</td>
                                     <td class="text-nowrap text-center">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"

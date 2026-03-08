@@ -128,7 +128,7 @@
                         </h6>
                         <div class="p-3 bg-light rounded-2">
                             @if ($accessory->description)
-                                <p class="mb-0 text-dark">{{ $accessory->description }}</p>
+                                <p class="mb-0 text-dark">{!! nl2br(e($accessory->description)) !!}</p>
                             @else
                                 <p class="mb-0 text-muted fst-italic">No description available</p>
                             @endif

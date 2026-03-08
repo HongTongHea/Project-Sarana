@@ -55,7 +55,7 @@
                                 @foreach ($employees as $employee)
                                     <option value="{{ $employee->id }}"
                                         {{ old('created_by') == $employee->id ? 'selected' : '' }}>
-                                        {{ $employee->name }}
+                                        {{ $employee->name }} ({{ $employee->position }})
                                     </option>
                                 @endforeach
                             </select>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
@@ -12,11 +13,9 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProductpageController;
 use App\Http\Controllers\AllproductpageController;
-use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\SalesReportController;
@@ -38,7 +37,7 @@ Route::get('/productpage', [ProductpageController::class, 'index'])->name('produ
 Route::get('/aboutpage', [AboutpageController::class, 'index'])->name('aboutpage.index');
 Route::get('/check-updates', [HomepageController::class, 'checkUpdates'])->name('check.updates');
 
-Route::get('/check-auth', function() {
+Route::get('/check-auth', function () {
     return response()->json([
         'authenticated' => Auth::check()
     ]);
@@ -111,7 +110,7 @@ Route::middleware(['auth:cashier'])->group(function () {
 | Admin, Manager, Cashier shared resources
 |--------------------------------------------------------------------------
 */
-  
+
 
 Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     // Shared resources with role-based authorization in controllers
@@ -127,12 +126,12 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::resource('purchase_orders', PurchaseOrderController::class);
 
     Route::post('/purchase-orders/{purchaseOrder}/mark-as-received', [PurchaseOrderController::class, 'markAsReceived'])
-    ->name('purchase_orders.markAsReceived');
+        ->name('purchase_orders.markAsReceived');
     // Sale Analysis Routes
     Route::prefix('sale-analysis')->name('sale-analysis.')->group(function () {
-    Route::get('/', [SaleAnalysisController::class, 'index'])->name('index');
-    Route::get('/report', [SaleAnalysisController::class, 'topItemsReport'])->name('report');
-    Route::get('/item/{itemType}/{itemId}', [SaleAnalysisController::class, 'itemDetail'])->name('item-detail');
+        Route::get('/', [SaleAnalysisController::class, 'index'])->name('index');
+        Route::get('/report', [SaleAnalysisController::class, 'topItemsReport'])->name('report');
+        Route::get('/item/{itemType}/{itemId}', [SaleAnalysisController::class, 'itemDetail'])->name('item-detail');
     });
 
 
@@ -140,6 +139,7 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::get('/sales-reports', [SalesReportController::class, 'index'])->name('sales-reports.index');
     Route::get('/sales-reports/{id}', [SalesReportController::class, 'show'])->name('sales-reports.show');
     Route::get('/sales-reports/{id}/data', [SalesReportController::class, 'getReportData'])->name('sales-reports.data');
+    Route::post('/sales-reports/generate-daily', [SalesReportController::class, 'generateDailyReport'])->name('sales-reports.generate-daily');
     Route::post('/sales-reports/weekly', [SalesReportController::class, 'generateWeeklyReport'])->name('sales-reports.generate-weekly');
     Route::post('/sales-reports/monthly', [SalesReportController::class, 'generateMonthlyReport'])->name('sales-reports.generate-monthly');
     Route::post('/sales-reports/yearly', [SalesReportController::class, 'generateYearlyReport'])->name('sales-reports.generate-yearly');
@@ -167,8 +167,7 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     Route::get('/online-orders', [CheckoutOrderController::class, 'index'])->name('online-orders.index');
     Route::get('/online-orders/{onlineOrder}', [CheckoutOrderController::class, 'show'])->name('online-orders.show');
     Route::delete('/online-orders/{order}', [CheckoutOrderController::class, 'destroy'])->name('online-orders.destroy');
-    Route::put('/online-orders/{order}/payment',[CheckoutOrderController::class, 'updatePayment'])->name('online-orders.payment.update');
-
+    Route::put('/online-orders/{order}/payment', [CheckoutOrderController::class, 'updatePayment'])->name('online-orders.payment.update');
 });
 
 // Notification count route (admin only)

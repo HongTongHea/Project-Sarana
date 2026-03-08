@@ -18,7 +18,6 @@
                                     <p class="card-category">Total Reports</p>
                                     <h4 class="card-title" id="totalReports">{{ number_format($reports->total() ?? 0) }}
                                     </h4>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -101,6 +100,7 @@
                         </button>
                         <select class="form-select form-select-sm" id="reportTypeFilter" style="width: 150px;">
                             <option value="">All Report Types</option>
+                            <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
                             <option value="monthly">Monthly</option>
                             <option value="yearly">Yearly</option>
@@ -130,7 +130,8 @@
                                     <td>
                                         <span
                                             class="badge 
-                                            @if ($report->report_type == 'weekly') bg-primary
+                                            @if ($report->report_type == 'daily') bg-warning text-dark
+                                            @elseif($report->report_type == 'weekly') bg-primary
                                             @elseif($report->report_type == 'monthly') bg-success
                                             @else bg-info @endif">
                                             {{ ucfirst($report->report_type) }}
@@ -260,13 +261,12 @@
                     page: page
                 },
                 beforeSend: function() {
-                    // Optional: Add loading state
                     $('#reportsTableBody').html(
                         '<tr><td colspan="8" class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>'
                     );
                 },
                 success: function(response) {
-                    console.log('Response:', response); // Debug
+                    console.log('Response:', response);
 
                     if (response.reports && response.reports.data) {
                         updateSummaryCards(response.summary);
@@ -302,7 +302,6 @@
                         confirmButtonText: 'OK'
                     });
 
-                    // Restore empty state
                     $('#reportsTableBody').html(
                         '<tr><td colspan="8" class="text-center">Failed to load reports</td></tr>'
                     );
@@ -331,8 +330,10 @@
             }
 
             reports.forEach((report, index) => {
-                const badgeClass = report.report_type === 'weekly' ? 'bg-primary' :
-                    report.report_type === 'monthly' ? 'bg-success' : 'bg-info';
+                let badgeClass = 'bg-info';
+                if (report.report_type === 'daily') badgeClass = 'bg-warning text-dark';
+                else if (report.report_type === 'weekly') badgeClass = 'bg-primary';
+                else if (report.report_type === 'monthly') badgeClass = 'bg-success';
 
                 const deleteButton = report.can_delete ? `
                     <li>
@@ -412,7 +413,6 @@
                         <ul class="pagination mb-0">
             `;
 
-            // Previous button
             if (paginationData.current_page > 1) {
                 paginationHtml += `
                     <li class="page-item">
@@ -427,7 +427,6 @@
                 `;
             }
 
-            // Page numbers
             for (let i = 1; i <= paginationData.last_page; i++) {
                 const activeClass = i === paginationData.current_page ? 'active' : '';
                 paginationHtml += `
@@ -437,7 +436,6 @@
                 `;
             }
 
-            // Next button
             if (paginationData.current_page < paginationData.last_page) {
                 paginationHtml += `
                     <li class="page-item">
@@ -481,7 +479,9 @@
             const type = $(this).data('type');
             $('#generateReportModal').modal('hide');
 
-            if (type === 'weekly') {
+            if (type === 'daily') {
+                generateDailyReport();
+            } else if (type === 'weekly') {
                 generateWeeklyReport();
             } else {
                 $('#reportTypeSelect').val(type);
@@ -519,6 +519,22 @@
                 generateYearlyReport(year);
             }
         });
+
+        // Generate daily report
+        function generateDailyReport() {
+            showLoading('Generating daily report...');
+
+            $.ajax({
+                url: '{{ route('sales-reports.generate-daily') }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                success: handleReportResponse,
+                error: handleAjaxError
+            });
+        }
 
         // Generate weekly report
         function generateWeeklyReport() {
@@ -607,7 +623,6 @@
             });
         }
 
-        // Loading functions (using SweetAlert)
         function showLoading(message = 'Loading...') {
             Swal.fire({
                 title: message,

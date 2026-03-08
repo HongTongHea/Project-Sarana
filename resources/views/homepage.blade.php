@@ -153,7 +153,7 @@
         </div>
     </section>
     <div class="container">
-        <div class="row mb-4 mt-5">
+        <div class="row mb-4 mt-5" data-aos="fade-right" data-aos-duration="1000">
             <div class="text-start">
                 <h3 class="fw-bold">Browse by Categories</h3>
                 <p class="text-muted">Browse our wide range of categories</p>

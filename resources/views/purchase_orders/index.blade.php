@@ -44,17 +44,21 @@
                                     <td>{{ $order->order_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
                                     </td>
                                     <td>
-                                        @foreach ($order->items as $item)
-                                            @if ($item->item)
-                                                @if ($item->item_type === 'App\Models\Product')
-                                                    {{ $item->item->name }}&nbsp; <br>
-                                                @elseif ($item->item_type === 'App\Models\Accessory')
-                                                    {{ $item->item->name }}
-                                                @endif
-                                            @else
-                                                Item Deleted
-                                            @endif
-                                        @endforeach
+                                        <ul class="mb-0 ps-3">
+                                            @foreach ($order->items as $item)
+                                                <li>
+                                                    @if ($item->item)
+                                                        @if ($item->item_type === 'App\Models\Product')
+                                                            {{ $item->item->name }}
+                                                        @elseif ($item->item_type === 'App\Models\Accessory')
+                                                            {{ $item->item->name }}
+                                                        @endif
+                                                    @else
+                                                        Item Deleted
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     </td>
                                     <td>
                                         {{ $order->items->sum('quantity') }}

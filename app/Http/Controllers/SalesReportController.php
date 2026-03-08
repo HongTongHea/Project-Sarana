@@ -68,7 +68,7 @@ class SalesReportController extends Controller
     {
         try {
             // Your logic to generate weekly report
-            $report = $this->createWeeklyReport();
+            $report = $this->salesReportService->generateWeeklyReport(null, null);
 
             return response()->json([
                 'success' => true,
@@ -79,6 +79,36 @@ class SalesReportController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to generate weekly report: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function generateDailyReport(Request $request): JsonResponse
+    {
+        $request->validate([
+            'date' => 'nullable|date',
+        ]);
+
+        Log::info('Generate Daily Report Request:', $request->all());
+
+        try {
+            $report = $this->salesReportService->generateDailyReport(
+                $request->date ? Carbon::parse($request->date) : null
+            );
+
+            Log::info('Daily Report Generated:', ['id' => $report->id]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Daily report generated successfully',
+                'report' => $report
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to generate daily report:', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate daily report: ' . $e->getMessage()
             ], 500);
         }
     }

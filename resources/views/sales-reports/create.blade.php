@@ -11,6 +11,17 @@
             <div class="modal-body">
                 <div class="list-group">
                     <button type="button" class="list-group-item list-group-item-action generate-report-btn"
+                        data-type="daily">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong class="d-block"> <i class="fas fa-calendar-day text-warning"></i>
+                                        <i class="bi bi-calendar-check-fill text-warning"></i> Daily Report</strong>
+                                <small class="text-muted">Generate report for today</small>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button type="button" class="list-group-item list-group-item-action generate-report-btn"
                         data-type="weekly">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>

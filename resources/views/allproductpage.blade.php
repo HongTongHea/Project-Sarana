@@ -108,7 +108,7 @@
         </section>
 
         <!-- Accessories Section -->
-        <section>
+        <section id="accessories-section" class="mt-5" data-aos="fade-up" data-aos-duration="1000">
             <div class="row" id="accessories-container">
                 @foreach ($accessories->sortByDesc('created_at')->values() as $index => $accessory)
                     <div class="col-6 col-sm-4 col-md-4 col-lg-2-4 mb-4 accessory-item">

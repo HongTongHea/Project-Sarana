@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales_reports', function (Blueprint $table) {
             $table->id();
-            $table->enum('report_type', ['weekly', 'monthly', 'yearly']);
+            $table->enum('report_type', ['daily', 'weekly', 'monthly', 'yearly']);
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('total_orders');
