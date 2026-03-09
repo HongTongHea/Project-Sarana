@@ -111,7 +111,7 @@
                             <div class="mb-4">
                                 <h5 class="section-title">Shipping Address</h5>
                                 <p class="text-muted mb-0">
-                                    {{ nl2br(e($order->shipping_address)) }}
+                                    {!! nl2br(e($order->shipping_address)) !!}
                                 </p>
                             </div>
                         @endif

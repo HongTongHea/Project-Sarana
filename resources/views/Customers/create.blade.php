@@ -29,10 +29,8 @@
                                 value="{{ old('phone') }}" required placeholder="Enter phone">
                         </div>
                         <div class="form-group col-12 col-md-12">
-                            <label for="address">Address</label>
-                            <textarea class="form-control" id="address" name="address" value="{{ old('address') }}" rows="3" required
-                                placeholder="Enter address">
-                            </textarea>
+                            <label for="address" class="form-label">Address</label>
+                            <textarea name="address" class="form-control" id="address" rows="3" required>{{ old('address') }}</textarea>
                         </div>
                     </div>
                 </div>

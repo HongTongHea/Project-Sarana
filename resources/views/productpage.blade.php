@@ -173,7 +173,7 @@
                                     data-price="{{ $product->price }}" data-discount="{{ $product->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $product->picture_url) }}"
                                     data-stock="{{ $product->stock_quantity }}" data-barcode="{{ $product->barcode }}"
-                                    data-description="{{ $product->description }}">
+                                    data-brand="{{ $product->brand }}" data-description="{{ $product->description }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
                                     Add to Cart
                                 </button>

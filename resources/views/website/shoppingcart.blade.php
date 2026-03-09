@@ -25,8 +25,12 @@
                         </p>
 
                         <p class="mb-1 small stock-status"></p>
-
                         <div class="mb-3">
+                            <h6 class="fw-semibold">Brand</h6>
+                            <p id="modalProductBrand" class="text-muted small"></p>
+                        </div>
+                        <div class="mb-3">
+
                             <h6 class="fw-semibold">Detail</h6>
                             <p id="modalProductDescription" class="text-muted small"></p>
                         </div>

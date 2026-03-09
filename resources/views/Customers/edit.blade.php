@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group col-12 col-md-12">
                             <label for="address" class="form-label">Address</label>
-                            <textarea name="address" class="form-control" id="address" rows="3">{{ old('address', $customer->address) }}</textarea>
+                            <textarea name="address" class="form-control" id="address" rows="3" required>{{ old('address', $customer->address) }}</textarea>
                         </div>
                     </div>
                 </div>

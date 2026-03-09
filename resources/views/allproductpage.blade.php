@@ -95,7 +95,7 @@
                                     data-price="{{ $product->price }}" data-discount="{{ $product->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $product->picture_url) }}"
                                     data-stock="{{ $product->stock_quantity }}" data-barcode="{{ $product->barcode }}"
-                                    data-description="{{ $product->description }}">
+                                    data-brand="{{ $product->brand }}" data-description="{{ $product->description }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
                                     Add to Cart
                                 </button>
@@ -164,7 +164,7 @@
                                     data-discount="{{ $accessory->discount_percentage }}"
                                     data-img="{{ asset('storage/' . $accessory->picture_url) }}"
                                     data-stock="{{ $accessory->stock_quantity }}"
-                                    data-barcode="{{ $accessory->barcode }}"
+                                    data-barcode="{{ $accessory->barcode }}" data-brand="{{ $accessory->brand }}"
                                     data-description="{{ $accessory->description }}">
                                     <i class="fas fa-shopping-cart me-1"></i>
                                     Add to Cart

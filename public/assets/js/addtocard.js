@@ -10,6 +10,7 @@ $(document).ready(function () {
     const modalProductPrice = $("#modalProductPrice");
     const modalProductOriginalPrice = $("#modalProductOriginalPrice");
     const modalProductDiscount = $("#modalProductDiscount");
+    const modalProductBrand = $("#modalProductBrand");
     const modalProductDescription = $("#modalProductDescription");
     const productQty = $("#productQty");
     const cartItemsContainer = $(".cart-items");
@@ -60,13 +61,17 @@ $(document).ready(function () {
             discount: parseFloat($(this).data("discount")) || 0,
             img: $(this).data("img"),
             stock: parseInt($(this).data("stock")),
+            brand: $(this).data("brand") || "",
             description: $(this).data("description") || "",
             barcode: $(this).data("barcode") || "",
-            type: $(this).closest('.accessory-item').length ? 'accessory' : 'product'
+            type: $(this).closest(".accessory-item").length
+                ? "accessory"
+                : "product",
         };
 
         modalProductImg.attr("src", currentProduct.img);
         modalProductName.text(currentProduct.name);
+        modalProductBrand.text(currentProduct.brand);
         modalProductDescription.text(currentProduct.description);
 
         const discountedPrice = currentProduct.discount
@@ -92,7 +97,7 @@ $(document).ready(function () {
             .html(
                 currentProduct.stock > 0
                     ? '<i class="fas fa-check-circle me-1"></i>In stock'
-                    : '<i class="fas fa-times-circle me-1"></i>Out stock'
+                    : '<i class="fas fa-times-circle me-1"></i>Out stock',
             );
 
         if (addToCartModal) addToCartModal.show();
@@ -125,18 +130,18 @@ $(document).ready(function () {
         }
 
         const uniqueId = `${currentProduct.type}_${currentProduct.id}`;
-        
-        const index = cart.findIndex((item) => 
-            `${item.type}_${item.id}` === uniqueId
+
+        const index = cart.findIndex(
+            (item) => `${item.type}_${item.id}` === uniqueId,
         );
-        
+
         if (index > -1) {
             cart[index].quantity += quantity;
         } else {
-            cart.push({ 
-                ...currentProduct, 
+            cart.push({
+                ...currentProduct,
                 quantity,
-                uniqueId: uniqueId
+                uniqueId: uniqueId,
             });
         }
 
@@ -145,7 +150,7 @@ $(document).ready(function () {
 
         showCartToast(
             `${currentProduct.name} (x${quantity}) added to your cart!`,
-            "success"
+            "success",
         );
 
         if (addToCartModal) addToCartModal.hide();
@@ -173,17 +178,18 @@ $(document).ready(function () {
             const originalPrice = parseFloat(item.price);
             const discount = parseFloat(item.discount) || 0;
             const quantity = parseInt(item.quantity);
-            
+
             // Calculate discounted price per unit
-            const discountedPrice = discount > 0 
-                ? originalPrice * (1 - discount / 100)
-                : originalPrice;
-            
+            const discountedPrice =
+                discount > 0
+                    ? originalPrice * (1 - discount / 100)
+                    : originalPrice;
+
             // Calculate amounts for this item
             const originalTotal = originalPrice * quantity;
             const discountedTotal = discountedPrice * quantity;
             const itemDiscountAmount = originalTotal - discountedTotal;
-            
+
             // Add to totals
             subtotal += originalTotal;
             totalDiscount += itemDiscountAmount;
@@ -194,14 +200,15 @@ $(document).ready(function () {
                         <img src="${item.img}" class="cart-item-img rounded me-3" style="width:80px;height:80px;">
                         <div class="cart-item-details flex-grow-1">
                             <p class="mb-1 fw-bold">${item.name}</p>
-                            ${discount > 0
-                                ? `
+                            ${
+                                discount > 0
+                                    ? `
                                 <p class="mb-0">
                                     <span class="fw-bold">$${discountedTotal.toFixed(2)}</span><br>
                                     <span class="text-muted text-decoration-line-through small">$${originalTotal.toFixed(2)}</span><br>
                                     <span class="badge bg-danger">-${discount}%</span>
                                 </p>`
-                                : `<p class="mb-0 fw-bold">$${originalTotal.toFixed(2)}</p>`
+                                    : `<p class="mb-0 fw-bold">$${originalTotal.toFixed(2)}</p>`
                             }
                         </div>
                     </div>
@@ -223,9 +230,12 @@ $(document).ready(function () {
         cartSubtotal.text(`$${subtotal.toFixed(2)}`);
         cartDiscount.text(`-$${totalDiscount.toFixed(2)}`);
         cartTotal.text(`$${finalTotal.toFixed(2)}`);
-        
+
         // Calculate total items in cart
-        const totalItems = cart.reduce((total, item) => total + parseInt(item.quantity), 0);
+        const totalItems = cart.reduce(
+            (total, item) => total + parseInt(item.quantity),
+            0,
+        );
         cartCount.text(totalItems);
 
         // Button actions (keep the same as your original code)
@@ -270,14 +280,16 @@ $(document).ready(function () {
 
     function filterProductsByCategory(categoryId) {
         const allProducts = $(".product-item");
-        const categoryTitle = $(`.category-item[data-category-id="${categoryId}"] h5`).text();
-        
+        const categoryTitle = $(
+            `.category-item[data-category-id="${categoryId}"] h5`,
+        ).text();
+
         let foundProducts = 0;
 
         $("#products-title").text(categoryTitle);
 
         allProducts.hide();
-        
+
         allProducts.each(function () {
             if ($(this).data("category-id") === categoryId) {
                 $(this).show();
