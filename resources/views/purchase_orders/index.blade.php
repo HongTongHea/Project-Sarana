@@ -41,7 +41,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $order->supplier->name ?? 'N/A' }}</td>
-                                    <td>{{ $order->order_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
+                                    <td>{{ $order->order_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y') }}
                                     </td>
                                     <td>
                                         <ul class="mb-0 ps-3">

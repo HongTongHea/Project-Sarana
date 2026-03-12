@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('sales_reports', function (Blueprint $table) {
             $table->id();
             $table->enum('report_type', ['daily', 'weekly', 'monthly', 'yearly']);
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
             $table->integer('total_orders');
             $table->decimal('total_sales', 15, 2);
             $table->decimal('total_tax', 15, 2);

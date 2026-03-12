@@ -30,8 +30,8 @@ class SalesReportController extends Controller
                 return [
                     'id' => $report->id,
                     'report_type' => $report->report_type,
-                    'start_date' => $report->start_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A'),
-                    'end_date' => $report->end_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A'),
+                    'start_date' => $report->start_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y'),
+                    'end_date' => $report->end_date->setTimezone('Asia/Phnom_Penh')->format('M d, Y'),
                     'total_orders' => $report->total_orders,
                     'total_sales' => $report->total_sales,
                     'average_order_value' => $report->average_order_value,

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
             $table->foreignId('created_by')->nullable()->constrained('employees')->onDelete('set null');
-            $table->date('order_date');
+            $table->timestamp('order_date');
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->enum('status', ['pending', 'received', 'canceled'])->default('pending');
             $table->timestamps();
