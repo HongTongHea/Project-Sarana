@@ -44,7 +44,7 @@
                                         placeholder="Enter price">
                                 </div>
 
-                                <div class="form-group col-12 col-md-4">
+                                <div class="form-group col-12 col-md-6">
                                     <label for="discount_percentage" class="form-label">Discount %</label>
                                     <input type="number" step="0.01" name="discount_percentage" class="form-control"
                                         id="discount_percentage"
@@ -52,7 +52,7 @@
                                         min="0" max="100" placeholder="Enter discount percentage">
                                 </div>
 
-                                <div class="form-group col-12 col-md-4">
+                                <div class="form-group col-12 col-md-6">
                                     <label for="category_id" class="form-label">Category</label>
                                     <select name="category_id" class="form-select form-control" id="category_id"
                                         required>
@@ -66,7 +66,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-12 col-md-4">
+                                <div class="form-group col-12 col-md-4​ d-none">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity', $product->stock_quantity) }}" required

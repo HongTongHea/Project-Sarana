@@ -47,7 +47,7 @@
                                         min="0" max="100" placeholder="Enter discount percentage">
                                 </div>
 
-                                <div class="form-group col-12 col-md-12">
+                                <div class="form-group col-12 col-md-12 d-none">
                                     <label for="stock_quantity" class="form-label">Stock Quantity</label>
                                     <input type="number" name="stock_quantity" class="form-control" id="stock_quantity"
                                         value="{{ old('stock_quantity', $accessory->stock_quantity) }}" required
@@ -56,7 +56,7 @@
 
                                 <div class="form-group col-12 col-md-12">
                                     <label for="description" class="form-label">Description</label>
-                                    <textarea name="description" class="form-control" id="description" rows="3">{{ old('description', $accessory->description) }}</textarea>
+                                    <textarea name="description" class="form-control" id="description" rows="7">{{ old('description', $accessory->description) }}</textarea>
                                 </div>
                             </div>
                         </div>
