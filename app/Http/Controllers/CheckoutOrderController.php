@@ -6,6 +6,7 @@ use App\Models\OnlineOrder;
 use App\Models\OnlineOrderItem;
 use App\Models\Product;
 use App\Models\Accessory;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -113,6 +114,12 @@ class CheckoutOrderController extends Controller
                     'discounted_price' => $discountedPrice,
                     'total_price' => $discountedPrice * $item['quantity'],
                 ]);
+                Stock::updateStock(
+                    $itemType,
+                    $item['id'],
+                    $item['quantity'],
+                    'sale'
+                );
             }
 
             DB::commit();
