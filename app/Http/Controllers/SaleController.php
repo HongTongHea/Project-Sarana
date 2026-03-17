@@ -31,8 +31,8 @@ class SaleController extends Controller
     {
         $customers = Customer::latest()->get();
         $employees = Employee::where('status', 1)->get();
-        $products = \App\Models\Product::where('stock_quantity', '>', 0)->latest()->paginate(12);
-        $accessories = \App\Models\Accessory::where('stock_quantity', '>', 0)->latest()->paginate(12);
+        $products = \App\Models\Product::where('stock_quantity', '>', 0)->latest()->paginate(16);
+        $accessories = \App\Models\Accessory::where('stock_quantity', '>', 0)->latest()->paginate(16);
         $categories = Category::latest()->get();
         return view('sales.create', compact('customers', 'employees', 'products', 'accessories', 'categories'));
     }
@@ -197,8 +197,8 @@ class SaleController extends Controller
 
         $customers = Customer::latest()->get();
         $employees = Employee::where('status', 1)->get();
-        $products = Product::where('stock_quantity', '>', 0)->paginate(12);
-        $accessories = Accessory::where('stock_quantity', '>', 0)->paginate(12);
+        $products = Product::where('stock_quantity', '>', 0)->paginate(16);
+        $accessories = Accessory::where('stock_quantity', '>', 0)->paginate(16);
         $categories = Category::latest()->get();
 
         // Get the first payment (assuming one payment per sale)

@@ -16,16 +16,17 @@
                 </ul>
             </div>
         @endif
+
+        <!-- Toast Notification Container -->
+        <div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 99999;"></div>
+
         <div class="row">
             <!-- Sale Column -->
             <div class="col-md-7 mb-3">
-                <div class="card rounded-0 h-100 ">
-                    <!-- Added h-100 here -->
+                <div class="card rounded-0 h-100">
                     <div class="card-body d-flex flex-column" style="height: 100vh;">
-                        <!-- Changed to flex column layout -->
                         <form action="{{ route('sales.update', $sale->id) }}" method="POST" id="sale-form"
                             class="d-flex flex-column h-100">
-                            <!-- Added flex classes -->
                             @csrf @method('PUT')
                             <div class="d-flex justify-content-start align-items-center">
                                 <button type="button" class="btn btn-primary mb-3 btn-sm me-2" data-bs-toggle="modal"
@@ -33,14 +34,13 @@
                                     <i class="fas fa-plus"></i> New Customer
                                 </button>
                                 <a href="{{ route('sales.index') }}" class="btn btn-primary mb-3 btn-sm">
-                                    <i class="bi bi-arrow-left-circle"></i> Back Sale History</a>
+                                    <i class="bi bi-arrow-left-circle"></i> Back Sale History
+                                </a>
                             </div>
                             <div class="row">
                                 <div class="form-group mb-3 col-md-6">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <i class="fa-solid fa-users-line"></i>
-                                        </span>
+                                        <span class="input-group-text"><i class="fa-solid fa-users-line"></i></span>
                                         <select name="customer_id" id="customer_id" class="form-control" required>
                                             <option value="">Enter Customer Name</option>
                                             @foreach ($customers as $customer)
@@ -54,9 +54,7 @@
                                 </div>
                                 <div class="form-group mb-3 col-md-6">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon2">
-                                            <i class="fa-solid fa-user-tie"></i>
-                                        </span>
+                                        <span class="input-group-text"><i class="fa-solid fa-user-tie"></i></span>
                                         <select name="employee_id" id="employee_id" class="form-control" required>
                                             <option value="">Select Sales Person</option>
                                             @foreach ($employees as $employee)
@@ -69,8 +67,8 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
-                                <!-- Made table scrollable -->
                                 <table class="table table-bordered" id="sale-items">
                                     <thead class="thead-dark">
                                         <tr>
@@ -83,11 +81,10 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <!-- Items will be added dynamically -->
-                                    </tbody>
+                                    <tbody></tbody>
                                 </table>
                             </div>
+
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -111,6 +108,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card mt-3">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
@@ -137,25 +135,26 @@
                                     </div>
                                 </div>
                             </div>
+
                             <input type="hidden" name="items" id="sale-items-data" value="[]">
                             <input type="hidden" name="item_types" id="sale-item-types" value="[]">
+
                             <div class="mt-auto pt-3">
-                                <!-- Added mt-auto to push to bottom -->
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale"><i
-                                            class="fas fa-times me-1"></i> Clear
+                                    <button type="button" class="btn btn-danger me-2 btn-sm" id="clear-sale">
+                                        <i class="fas fa-times me-1"></i> Clear
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale"><i
-                                            class="fa-solid fa-floppy-disk me-1"></i> Update
+                                    <button type="button" class="btn btn-primary btn-sm" id="submit-sale">
+                                        <i class="fa-solid fa-floppy-disk me-1"></i> Update
                                     </button>
                                     @include('Sales.payment')
-                                    <!-- Include payment modal -->
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+
             <!-- Product Selection Column -->
             <div class="col-md-5 mb-3">
                 <div class="card rounded-0 h-100">
@@ -170,18 +169,17 @@
                                     data-bs-target="#accessories" type="button" role="tab">Accessories</button>
                             </li>
                         </ul>
+
                         <div class="tab-content mt-3" id="productTabsContent">
+                            <!-- Products Tab -->
                             <div class="tab-pane fade show active" id="products" role="tabpanel">
                                 <div class="form-group mb-3">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <i class="fa-solid fa-magnifying-glass"></i>
-                                        </span>
+                                        <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
                                         <input type="text" id="product-search" class="form-control"
                                             placeholder="Search products...">
                                     </div>
                                 </div>
-
                                 <div id="product-results" class="row g-2" style="max-height: 800px; overflow-y: auto;">
                                     @if ($products->count() > 0)
                                         @foreach ($products as $product)
@@ -196,7 +194,6 @@
                                                     data-discount-percentage="{{ $product->discount_percentage }}"
                                                     data-type="product"
                                                     style="cursor: pointer; transition: all 0.3s ease; position: relative;">
-                                                    <!-- Stock Badge - Top Left -->
                                                     <div class="stock-badge position-absolute top-0 start-0 m-1"
                                                         data-product-id="{{ $product->id }}">
                                                         @if ($product->stock_quantity > 10)
@@ -210,7 +207,6 @@
                                                                 style="font-size: 0.65rem;">0</span>
                                                         @endif
                                                     </div>
-
                                                     <div class="card-body p-2">
                                                         <div class="text-center">
                                                             @if ($product->picture_url)
@@ -249,7 +245,7 @@
                                                             </div>
                                                             @if ($product->discount_percentage > 0)
                                                                 <span
-                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-1"
+                                                                    class="badge bg-success position-absolute top-0 end-0 m-1"
                                                                     style="font-size: 0.6rem;">
                                                                     {{ $product->discount_percentage }}% OFF
                                                                 </span>
@@ -265,26 +261,26 @@
                                         </div>
                                     @endif
                                 </div>
-
-                                <!-- Products Pagination -->
                                 @if ($products->hasPages())
-                                    <div class="mt-3">
+                                    <div class="d-flex align-items-center justify-content-between mt-3">
+                                        <span class="pagination-info">
+                                            Showing {{ $products->firstItem() }}–{{ $products->lastItem() }} of
+                                            {{ $products->total() }}
+                                        </span>
                                         {{ $products->links() }}
                                     </div>
                                 @endif
                             </div>
 
+                            <!-- Accessories Tab -->
                             <div class="tab-pane fade" id="accessories" role="tabpanel">
                                 <div class="form-group mb-3">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <i class="fa-solid fa-magnifying-glass"></i>
-                                        </span>
+                                        <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
                                         <input type="text" id="accessory-search" class="form-control"
                                             placeholder="Search accessories...">
                                     </div>
                                 </div>
-
                                 <div id="accessory-results" class="row g-2" style="max-height: 800px; overflow-y: auto;">
                                     @if ($accessories->count() > 0)
                                         @foreach ($accessories as $accessory)
@@ -298,7 +294,6 @@
                                                     data-discount-percentage="{{ $accessory->discount_percentage }}"
                                                     data-type="accessory"
                                                     style="cursor: pointer; transition: all 0.3s ease; position: relative;">
-                                                    <!-- Stock Badge - Top Left -->
                                                     <div class="stock-badge position-absolute top-0 start-0 m-1"
                                                         data-accessory-id="{{ $accessory->id }}">
                                                         @if ($accessory->stock_quantity > 10)
@@ -312,7 +307,6 @@
                                                                 style="font-size: 0.65rem;">0</span>
                                                         @endif
                                                     </div>
-
                                                     <div class="card-body p-2">
                                                         <div class="text-center">
                                                             @if ($accessory->picture_url)
@@ -351,7 +345,7 @@
                                                             </div>
                                                             @if ($accessory->discount_percentage > 0)
                                                                 <span
-                                                                    class="badge bg-success stock-badge position-absolute top-0 end-0 m-1"
+                                                                    class="badge bg-success position-absolute top-0 end-0 m-1"
                                                                     style="font-size: 0.6rem;">
                                                                     {{ $accessory->discount_percentage }}% OFF
                                                                 </span>
@@ -367,10 +361,12 @@
                                         </div>
                                     @endif
                                 </div>
-
-                                <!-- Accessories Pagination -->
                                 @if ($accessories->hasPages())
-                                    <div class="mt-3">
+                                    <div class="d-flex align-items-center justify-content-between mt-3">
+                                        <span class="pagination-info">
+                                            Showing {{ $accessories->firstItem() }}–{{ $accessories->lastItem() }} of
+                                            {{ $accessories->total() }}
+                                        </span>
                                         {{ $accessories->links() }}
                                     </div>
                                 @endif
@@ -381,9 +377,65 @@
             </div>
         </div>
     </div>
+
     @include('Customers.create')
-    <!-- Include customer creation modal -->
+
     <style>
+        /* ── Pagination ── */
+        .pagination {
+            padding-left: 0;
+            list-style: none;
+            margin-top: 0;
+            margin-bottom: 0;
+            gap: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .page-item .page-link {
+            padding: 5px 10px;
+            font-size: 15px;
+            border-radius: 5px !important;
+            border: 1px solid #dee2e6;
+            color: #0d6efd;
+            background: #fff;
+            transition: all 0.15s ease;
+            line-height: 1.5;
+        }
+
+        .page-item .page-link:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            color: #0a58ca;
+        }
+
+        .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .page-item.disabled .page-link {
+            color: #adb5bd;
+            background: #f8f9fa;
+            cursor: not-allowed;
+            border-color: #dee2e6;
+        }
+
+        /* Results text */
+        .pagination-info {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+
+
+        .product-item,
+        .accessory-item {
+            cursor: pointer;
+        }
+
         .product-item:hover,
         .accessory-item:hover {
             transform: translateY(-2px);
@@ -406,7 +458,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Stock Badge Styles */
         .stock-badge {
             z-index: 1;
         }
@@ -415,7 +466,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Pagination Styles */
         .pagination {
             margin-bottom: 0;
         }
@@ -435,9 +485,91 @@
             height: 25%;
             padding: 5px;
         }
+
+        /* ── Toast Styles ── */
+        .stock-toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-left: 5px solid #e53935;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            min-width: 300px;
+            max-width: 380px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease;
+        }
+
+        .stock-toast.out-of-stock {
+            background: #fdecea;
+            border-color: #e53935;
+            border-left-color: #b71c1c;
+        }
+
+        .stock-toast .toast-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .stock-toast .toast-body {
+            flex-grow: 1;
+        }
+
+        .stock-toast .toast-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #b71c1c;
+        }
+
+        .stock-toast .toast-msg {
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        .stock-toast .toast-close {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #888;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .stock-toast .toast-close:hover {
+            color: #333;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
     </style>
+
     <script>
-        // Mark this form as edit mode and pass existing payment data
         $('#sale-form').data('edit-mode', true);
 
         @if (isset($payment))
@@ -452,9 +584,39 @@
             };
         @endif
     </script>
+
     <script>
         let saleItems = [];
+
+        /* ─────────────────────────────────────────
+           Toast helper
+        ───────────────────────────────────────── */
+        function showStockToast(itemName, isOutOfStock = false) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'stock-toast' + (isOutOfStock ? ' out-of-stock' : '');
+            toast.innerHTML = `
+                <span class="toast-icon">${isOutOfStock ? '🚫' : '⚠️'}</span>
+                <div class="toast-body">
+                    <div class="toast-title">${isOutOfStock ? 'Out of Stock!' : 'Low Stock Warning!'}</div>
+                    <div class="toast-msg">
+                        <strong>${itemName}</strong>
+                        ${isOutOfStock
+                            ? ' has no more stock available.'
+                            : ' stock has reached zero — all units added to cart.'}
+                    </div>
+                </div>
+                <button class="toast-close" onclick="this.closest('.stock-toast').remove()">✕</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+
             // Initialize with existing sale items
             @foreach ($sale->items as $item)
                 @php
@@ -471,20 +633,16 @@
                     $pictureUrl = '';
                     $stockQuantity = 0;
 
-                    // FIX: Fetch the actual model to get the picture URL
                     if ($itemType === 'product') {
                         $itemModel = \App\Models\Product::find($item->item_id);
                     } elseif ($itemType === 'accessory') {
                         $itemModel = \App\Models\Accessory::find($item->item_id);
                     }
 
-                    // If model exists, get fresh data including picture
                     if ($itemModel) {
                         $itemName = $itemModel->name;
                         $stockNo = $itemModel->stock_no ?? '';
                         $stockQuantity = $itemModel->stock_quantity ?? 0;
-
-                        // FIX: Properly check and set picture URL
                         if (!empty($itemModel->picture_url)) {
                             $pictureUrl = asset('storage/' . $itemModel->picture_url);
                         }
@@ -513,12 +671,38 @@
                     picture_url: '{{ $pictureUrlEscaped }}',
                     existsInDb: {{ $itemModel ? 'true' : 'false' }}
                 });
+
+                // Sync the product card's stock-quantity attribute with what's already in the sale
+                @if ($itemModel)
+                    (function() {
+                        const el = document.querySelector(
+                            '.{{ $itemType === 'product' ? 'product' : 'accessory' }}-item[data-id="{{ $item->item_id }}"]'
+                        );
+                        if (el) {
+                            el.setAttribute('data-stock-quantity', '{{ $stockQuantity }}');
+                            // Also update badge
+                            const badgeWrap = document.querySelector(
+                                '.stock-badge[data-{{ $itemType === 'product' ? 'product' : 'accessory' }}-id="{{ $item->item_id }}"]'
+                            );
+                            if (badgeWrap) {
+                                const s = {{ $stockQuantity }};
+                                const cls = s > 10 ? 'bg-success' : (s > 0 ? 'bg-warning' : 'bg-danger');
+                                badgeWrap.innerHTML =
+                                    `<span class="badge ${cls}" style="font-size:0.65rem;">${s}</span>`;
+                            }
+                            if ({{ $stockQuantity }} <= 0) {
+                                el.style.opacity = '0.5';
+                                el.style.cursor = 'not-allowed';
+                            }
+                        }
+                    })();
+                @endif
             @endforeach
 
             updateSaleTable();
             calculateTotals();
 
-            // Product search functionality
+            /* ── Search ── */
             $('#product-search').on('input', function() {
                 const search = $(this).val().toLowerCase();
                 $('.product-item').each(function() {
@@ -530,7 +714,6 @@
                 });
             });
 
-            // Accessory search functionality
             $('#accessory-search').on('input', function() {
                 const search = $(this).val().toLowerCase();
                 $('.accessory-item').each(function() {
@@ -539,63 +722,46 @@
                 });
             });
 
+            /* ── Update button ── */
             $('#submit-sale').on('click', function(e) {
                 e.preventDefault();
                 if (saleItems.length === 0) {
                     alert('Please add items to the sale');
                     return;
                 }
-
-                // Validate stock before proceeding
-                let outOfStockItems = [];
-                saleItems.forEach(item => {
-                    if (item.quantity > item.originalStock) {
-                        outOfStockItems.push(
-                            `${item.name} (Requested: ${item.quantity}, Available: ${item.originalStock})`
-                        );
-                    }
-                });
-
-                if (outOfStockItems.length > 0) {
-                    alert(`The following items don't have enough stock:\n\n${outOfStockItems.join('\n')}`);
-                    return;
-                }
-
-                // Update the total amount in the modal
                 const total = parseFloat($('#total').text().replace('$', ''));
                 $('#modal-total-amount').text('$' + total.toFixed(2));
-
-                // Show the modal
                 $('#paymentModal').modal('show');
             });
 
-            // Add product/accessory to sale
+            /* ── Add item to sale ── */
             $(document).on('click', '.product-item, .accessory-item', function(e) {
                 e.preventDefault();
+
                 const itemType = $(this).data('type');
                 const itemId = $(this).data('id');
                 const itemName = $(this).data('name');
                 const itemPrice = parseFloat($(this).data('price'));
                 const stockNo = $(this).data('stock') || '';
-                const currentStock = parseInt($(this).data('stock-quantity'));
+                // *** Always read the LIVE stock-quantity ***
+                const currentStock = parseInt($(this).attr('data-stock-quantity'));
                 const pictureUrl = $(this).data('picture-url') || '';
                 const originalStock = parseInt($(this).data('original-stock'));
-                const discountPercentage = parseFloat($(this).data('discount-percentage')) || 0;
+                const discountPct = parseFloat($(this).data('discount-percentage')) || 0;
 
-                // Calculate discounted price
-                const discountedPrice = discountPercentage > 0 ? itemPrice * (1 - discountPercentage /
-                    100) : itemPrice;
+                const discountedPrice = discountPct > 0 ?
+                    itemPrice * (1 - discountPct / 100) :
+                    itemPrice;
 
-                // Check if item already exists in sale
-                const existingItem = saleItems.find(item => item.item_id === itemId && item.type ===
-                    itemType);
-                const requestedQty = existingItem ? existingItem.quantity + 1 : 1;
-
-                // Check stock availability
-                if (currentStock < requestedQty) {
-                    alert(`Not enough stock for ${itemName}. Available: ${currentStock}`);
+                // Block if out of stock
+                if (currentStock <= 0) {
+                    showStockToast(itemName, true);
                     return;
                 }
+
+                const existingItem = saleItems.find(
+                    item => item.item_id === itemId && item.type === itemType
+                );
 
                 if (existingItem) {
                     existingItem.quantity += 1;
@@ -609,116 +775,142 @@
                         stock_no: stockNo,
                         price: itemPrice,
                         discountedPrice: discountedPrice,
-                        discountPercentage: discountPercentage,
+                        discountPercentage: discountPct,
                         quantity: 1,
                         total: discountedPrice,
                         currentStock: currentStock - 1,
                         originalStock: originalStock,
-                        picture_url: pictureUrl
+                        picture_url: pictureUrl,
+                        existsInDb: true
                     });
                 }
 
-                // Update stock display
-                updateStockDisplay(itemType, itemId, currentStock - 1);
+                const newStock = currentStock - 1;
+
+                // *** Keep BOTH attribute and jQuery cache in sync ***
+                $(this).attr('data-stock-quantity', newStock);
+                $(this).data('stock-quantity', newStock);
+
+                // Show toast only when stock just hits 0
+                if (newStock === 0) {
+                    showStockToast(itemName, true);
+                }
+
+                updateStockDisplay(itemType, itemId, newStock);
                 updateSaleTable();
                 calculateTotals();
             });
 
+            /* ── Update stock badge ── */
             function updateStockDisplay(itemType, itemId, newStock) {
                 const selector = itemType === 'product' ?
                     `.stock-badge[data-product-id="${itemId}"]` :
                     `.stock-badge[data-accessory-id="${itemId}"]`;
 
                 const badge = $(selector);
-
                 if (newStock > 10) {
-                    badge.html(`<span class="badge bg-success" style="font-size: 0.65rem;">${newStock}</span>`);
+                    badge.html(`<span class="badge bg-success" style="font-size:0.65rem;">${newStock}</span>`);
                 } else if (newStock > 0) {
-                    badge.html(`<span class="badge bg-warning" style="font-size: 0.65rem;">${newStock}</span>`);
+                    badge.html(`<span class="badge bg-warning" style="font-size:0.65rem;">${newStock}</span>`);
                 } else {
-                    badge.html(`<span class="badge bg-danger" style="font-size: 0.65rem;">0</span>`);
+                    badge.html(`<span class="badge bg-danger" style="font-size:0.65rem;">0</span>`);
                 }
 
-                // Update the data attribute for the item
                 const itemElement = itemType === 'product' ?
                     $(`.product-item[data-id="${itemId}"]`) :
                     $(`.accessory-item[data-id="${itemId}"]`);
 
+                // Keep BOTH in sync
+                itemElement.attr('data-stock-quantity', newStock);
                 itemElement.data('stock-quantity', newStock);
 
-                // Update any existing items in the sale table
                 saleItems.forEach(item => {
                     if (item.item_id === itemId && item.type === itemType) {
                         item.currentStock = newStock;
                     }
                 });
 
-                // Disable item if out of stock
                 if (newStock <= 0) {
-                    itemElement.css('opacity', '0.6').css('cursor', 'not-allowed');
+                    itemElement.css({
+                        opacity: '0.5',
+                        cursor: 'not-allowed'
+                    });
                 } else {
-                    itemElement.css('opacity', '1').css('cursor', 'pointer');
+                    itemElement.css({
+                        opacity: '1',
+                        cursor: 'pointer'
+                    });
                 }
             }
 
+            /* ── Render sale table ── */
             function updateSaleTable() {
                 const tbody = $('#sale-items tbody');
                 tbody.empty();
 
                 saleItems.forEach((item, index) => {
-                    // FIX: Better image handling with proper validation
                     let imageHtml;
-                    if (item.picture_url && item.picture_url.trim() !== '' && item.picture_url !==
-                        'http://' && item.picture_url !== 'https://') {
-                        imageHtml = `<img src="${item.picture_url}" alt="${item.name}" class="img-thumbnail me-2 rounded-2" style="width: 70px; height: 70px; object-fit: cover;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="img-thumbnail me-2 d-none align-items-center justify-content-center" style="width: 70px; height: 70px; background: #f0f0f0;">
-                            <i class="fas fa-image text-muted"></i>
-                        </div>`;
+                    if (item.picture_url && item.picture_url.trim() !== '' &&
+                        item.picture_url !== 'http://' && item.picture_url !== 'https://') {
+                        imageHtml = `
+                            <img src="${item.picture_url}" alt="${item.name}"
+                                 class="img-thumbnail me-2 rounded-2"
+                                 style="width:70px;height:70px;object-fit:cover;"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="img-thumbnail me-2 d-none align-items-center justify-content-center"
+                                 style="width:70px;height:70px;background:#f0f0f0;">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>`;
                     } else {
-                        imageHtml = `<div class="img-thumbnail me-2 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: #f0f0f0;">
-                            <i class="fas fa-image text-muted"></i>
-                        </div>`;
+                        imageHtml = `
+                            <div class="img-thumbnail me-2 d-flex align-items-center justify-content-center"
+                                 style="width:70px;height:70px;background:#f0f0f0;">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>`;
                     }
 
                     const discountBadge = item.discountPercentage > 0 ?
                         `<span class="badge bg-success">${item.discountPercentage}% off</span>` : '';
-
                     const stockNoHtml = item.stock_no ? `<div><strong>${item.stock_no}</strong></div>` : '';
                     const typeLabel = item.type === 'product' ? 'Product' : 'Accessory';
                     const priceHtml = item.discountPercentage > 0 ?
                         `$${item.price.toFixed(2)}<br><span class="text-success">$${item.discountedPrice.toFixed(2)}</span>` :
                         `$${item.price.toFixed(2)}`;
+                    const stockDisplay = item.existsInDb ? item.currentStock : 'N/A';
+                    const maxAttr = item.existsInDb ? `max="${item.originalStock}"` : '';
 
-                    const row = `
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                ${imageHtml}
-                                <div>
-                                    ${stockNoHtml}
-                                    <div>${item.name} ${discountBadge}</div>
-                                    <small class="text-muted">${typeLabel}</small>
+                    tbody.append(`
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    ${imageHtml}
+                                    <div>
+                                        ${stockNoHtml}
+                                        <div>${item.name} ${discountBadge}</div>
+                                        <small class="text-muted">${typeLabel}</small>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>${priceHtml}</td>
-                        <td>${item.discountPercentage > 0 ? `${item.discountPercentage}%` : '0%'}</td>
-                        <td>
-                            <input type="number" class="form-control qty-input" data-index="${index}" value="${item.quantity}" min="1" ${item.existsInDb ? `max="${item.originalStock}"` : ''}>
-                        </td>
-                        <td>$${item.total.toFixed(2)}</td>
-                        <td>${item.existsInDb ? item.currentStock : 'N/A'}</td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-danger remove-item" data-index="${index}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>`;
-
-                    tbody.append(row);
+                            </td>
+                            <td>${priceHtml}</td>
+                            <td>${item.discountPercentage > 0 ? item.discountPercentage + '%' : '0%'}</td>
+                            <td>
+                                <input type="number" class="form-control qty-input"
+                                       data-index="${index}" value="${item.quantity}"
+                                       min="1" ${maxAttr}>
+                            </td>
+                            <td>$${item.total.toFixed(2)}</td>
+                            <td>${stockDisplay}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger remove-item"
+                                        data-index="${index}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
                 });
 
-                // Add event listeners for quantity changes
+                /* Qty change */
                 $('.qty-input').on('change', function() {
                     const index = $(this).data('index');
                     const newQty = parseInt($(this).val());
@@ -729,53 +921,48 @@
                         return;
                     }
 
-                    // Calculate the difference between new and old quantity
-                    const qtyDifference = newQty - item.quantity;
-
-                    // Check if we have enough stock
-                    const availableStock = item.currentStock + item.quantity; // Original available stock
+                    const availableStock = item.currentStock + item.quantity;
 
                     if (newQty > availableStock) {
-                        alert(`Cannot order more than available stock: ${availableStock}`);
+                        showStockToast(item.name, true);
                         $(this).val(availableStock);
                         return;
                     }
 
-                    // Update item properties
+                    const prevStock = item.currentStock;
                     item.quantity = newQty;
                     item.total = newQty * item.discountedPrice;
                     item.currentStock = availableStock - newQty;
 
-                    // Update stock display in product/accessory list
+                    if (item.currentStock === 0 && prevStock > 0) {
+                        showStockToast(item.name, true);
+                    }
+
                     updateStockDisplay(item.type, item.item_id, item.currentStock);
                     updateSaleTable();
                     calculateTotals();
                 });
 
-                // Add event listeners for remove buttons
+                /* Remove item */
                 $('.remove-item').on('click', function() {
                     const index = $(this).data('index');
                     const item = saleItems[index];
-
-                    // Restore stock quantity in product/accessory list
                     const restoredStock = item.currentStock + item.quantity;
-                    updateStockDisplay(item.type, item.item_id, restoredStock);
 
+                    updateStockDisplay(item.type, item.item_id, restoredStock);
                     saleItems.splice(index, 1);
                     updateSaleTable();
                     calculateTotals();
                 });
             }
 
+            /* ── Totals ── */
             function calculateTotals() {
-                const subtotal = saleItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const discountedSubtotal = saleItems.reduce((sum, item) => sum + item.total, 0);
+                const subtotal = saleItems.reduce((s, i) => s + i.price * i.quantity, 0);
+                const discountedSubtotal = saleItems.reduce((s, i) => s + i.total, 0);
                 const itemDiscounts = subtotal - discountedSubtotal;
                 const taxRate = parseFloat($('#tax_rate').val()) || 0;
                 const additionalDiscount = parseFloat($('#additional_discount').val()) || 0;
-
-                // Prevent division by zero in tax calculation
-                // Apply additional discount to discounted subtotal before tax
                 const taxableAmount = discountedSubtotal - additionalDiscount;
                 const tax = taxableAmount > 0 ? taxableAmount * (taxRate / 100) : 0;
                 const total = discountedSubtotal + tax - additionalDiscount;
@@ -786,41 +973,35 @@
                 $('#tax').text(`$${tax.toFixed(2)}`);
                 $('#total').text(`$${total.toFixed(2)}`);
 
-                // Update hidden fields with sale data
-                const formattedItems = saleItems.map(item => ({
-                    type: item.type,
-                    item_id: item.item_id,
-                    quantity: item.quantity,
-                    price: item.price,
-                    discount_percentage: item.discountPercentage
-                }));
-
-                $('#sale-items-data').val(JSON.stringify(formattedItems));
-                $('#sale-item-types').val(JSON.stringify(saleItems.map(item => item.type)));
+                $('#sale-items-data').val(JSON.stringify(saleItems.map(i => ({
+                    type: i.type,
+                    item_id: i.item_id,
+                    quantity: i.quantity,
+                    price: i.price,
+                    discount_percentage: i.discountPercentage
+                }))));
+                $('#sale-item-types').val(JSON.stringify(saleItems.map(i => i.type)));
             }
 
-            // Clear sale
+            /* ── Clear ── */
             $('#clear-sale').on('click', function() {
                 if (confirm('Are you sure you want to clear all items from the sale?')) {
-                    // Restore all stock quantities
                     saleItems.forEach(item => {
                         const restoredStock = item.currentStock + item.quantity;
                         updateStockDisplay(item.type, item.item_id, restoredStock);
                     });
-
                     saleItems = [];
                     updateSaleTable();
                     calculateTotals();
                     $('#customer_id').val('');
                     $('#additional_discount').val(0);
-                    $('#tax_rate').val(12);
+                    $('#tax_rate').val(0);
                 }
             });
 
-            // Recalculate when tax or discount changes
             $('#tax_rate, #additional_discount').on('change', calculateTotals);
 
-            // Handle payment form submission
+            /* ── Payment submission ── */
             $('#payment-form').on('submit', function(e) {
                 e.preventDefault();
 
@@ -839,15 +1020,13 @@
                     payment_status: $('input[name="payment_status"]:checked').val(),
                     notes: $('#payment_notes').val(),
                     received_amount: parseFloat($('#received_amount').val()) || 0,
-                    change_amount: parseFloat($('#change_amount').val()) || 0
+                    change_amount: parseFloat($('#change_amount').val()) || 0,
                 };
 
-                // Validate required fields
                 if (!formData.customer_id) {
                     alert('Please select a customer');
                     return;
                 }
-
                 if (!formData.employee_id) {
                     alert('Please select a sales person');
                     return;
@@ -865,7 +1044,6 @@
                         if (response.success) {
                             $('#paymentModal').modal('hide');
                             alert('Sale updated successfully!');
-                            // Redirect to sale details or invoice
                             window.location.href = '{{ route('sales.invoice', $sale->id) }}';
                         } else {
                             alert('Error: ' + response.message);

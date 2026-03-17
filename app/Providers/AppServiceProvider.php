@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\OnlineOrder;
 use Illuminate\Support\Facades\Gate;
 use App\Services\SalesReportService;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
         View::composer('*', function ($view) {
             if (Auth::check()) {
                 $pendingOrdersCount = OnlineOrder::where('status', 'pending')->count();

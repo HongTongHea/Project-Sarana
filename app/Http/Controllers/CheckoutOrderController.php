@@ -105,7 +105,7 @@ class CheckoutOrderController extends Controller
 
                 OnlineOrderItem::create([
                     'online_order_id' => $onlineOrder->id,
-                    'item_type' => $itemType, 
+                    'item_type' => $itemType,
                     'item_id' => $item['id'],
                     'item_name' => $item['name'],
                     'quantity' => $item['quantity'],
@@ -158,7 +158,7 @@ class CheckoutOrderController extends Controller
      */
     public function index()
     {
-        $onlineOrders = OnlineOrder::with(['user', 'items.item']) 
+        $onlineOrders = OnlineOrder::with(['user', 'items.item'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -174,11 +174,11 @@ class CheckoutOrderController extends Controller
             return redirect()->route('login');
         }
 
-       $orders = OnlineOrder::where('user_id', Auth::id())
-        ->with(['items.item'])
-        ->withCount('items')
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        $orders = OnlineOrder::where('user_id', Auth::id())
+            ->with(['items.item'])
+            ->withCount('items')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         return view('website.my-orders', compact('orders'));
     }
@@ -216,7 +216,7 @@ class CheckoutOrderController extends Controller
 
         // Auto update order status when paid
         if ($request->payment_status === 'paid') {
-            $order->status = 'processing'; // or 'completed'
+            $order->status = 'completed'; // or 'completed'
         }
 
         // If payment failed
