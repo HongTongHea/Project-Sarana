@@ -176,13 +176,14 @@ class ContactController extends Controller
     /**
      * Mark a contact message as read
      */
+  /**
+ * Mark a contact message as read
+ */
     public function markAsRead(Contact $contact)
     {
         $contact->update(['read_status' => true]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Message marked as read'
-        ]);
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Message marked as read successfully.');
     }
 }

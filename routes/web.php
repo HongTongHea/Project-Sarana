@@ -189,4 +189,6 @@ Route::middleware(['auth:admin,manager,cashier'])->group(function () {
     // Contact notification routes
     Route::get('/contacts/unread-count', [ContactController::class, 'unreadCount'])->name('contact.unread-count');
     Route::post('/admin/contacts/{contact}/mark-read', [ContactController::class, 'markAsRead'])->name('contact.mark-read');
+    Route::patch('/contact/{contact}/mark-as-read', [ContactController::class, 'markAsRead'])->name('contact.mark-as-read');
+Route::get('/contact/unread/count', [ContactController::class, 'unreadCount'])->name('contact.unread-count');
 });

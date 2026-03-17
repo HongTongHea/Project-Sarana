@@ -50,7 +50,7 @@
                                                 aria-labelledby="dropdownMenuButton{{ $contact->id }}">
                                                 <!-- View Details -->
                                                 <li>
-                                                    <button class="dropdown-item d-flex align-items-center"
+                                                    <button class="dropdown-item d-flex align-items-center" type="button"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#showModal{{ $contact->id }}">
                                                         <i class="fa-solid fa-circle-info me-2 text-info"></i>
@@ -58,11 +58,35 @@
                                                     </button>
                                                 </li>
 
+                                                <!-- Mark as Read / Read Status -->
+                                                <li>
+                                                    @if (!$contact->read_status)
+                                                        <!-- Mark as Read Form (only shows if unread) -->
+                                                        <form action="{{ route('contact.mark-as-read', $contact->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit"
+                                                                class="dropdown-item d-flex align-items-center">
+                                                                <i class="fas fa-check-circle me-2 text-success"></i>
+                                                                <span>Mark as Read</span>
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <!-- Read Already - Display as dropdown item but not clickable -->
+                                                        <div class="dropdown-item d-flex align-items-center bg-light"
+                                                            style="cursor: default;">
+                                                            <i class="fas fa-check-circle me-2 text-success"></i>
+                                                            <span class="text-success fw-bold">Read Already</span>
+                                                        </div>
+                                                    @endif
+                                                </li>
+
                                                 @if (Auth::user()->role === 'admin')
                                                     <!-- Delete - Only visible to admin -->
                                                     <li>
                                                         <button class="dropdown-item d-flex align-items-center"
-                                                            data-bs-toggle="modal"
+                                                            type="button" data-bs-toggle="modal"
                                                             data-bs-target="#deleteModal{{ $contact->id }}">
                                                             <i class="fa-solid fa-trash me-2 text-danger"></i>
                                                             Delete
@@ -75,7 +99,7 @@
                                 </tr>
 
                                 <!-- Show Modal -->
-                                {{-- @include('contact.show', ['contact' => $contact]) --}}
+                                @include('contact.show', ['contact' => $contact])
                                 <!-- Delete Modal -->
                                 @include('contact.delete', ['contact' => $contact])
                             @endforeach
