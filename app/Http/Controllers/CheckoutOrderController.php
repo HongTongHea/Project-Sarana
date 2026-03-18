@@ -211,17 +211,31 @@ class CheckoutOrderController extends Controller
             'payment_status' => 'required|in:pending,paid,failed,refunded',
         ]);
 
+        $previousPaymentStatus = $order->payment_status;
+
         // Update payment
         $order->payment_status = $request->payment_status;
 
         // Auto update order status when paid
         if ($request->payment_status === 'paid') {
-            $order->status = 'completed'; // or 'completed'
+            $order->status = 'completed';
         }
 
-        // If payment failed
-        if ($request->payment_status === 'failed') {
-            $order->status = 'pending';
+        // If payment failed (cancelled) - restore stock
+        if ($request->payment_status === 'failed' && $previousPaymentStatus !== 'failed') {
+            $order->status = 'cancelled';
+
+            // Load items if not already loaded
+            $order->load('items');
+
+            foreach ($order->items as $item) {
+                Stock::updateStock(
+                    $item->item_type,  // Product::class or Accessory::class
+                    $item->item_id,
+                    $item->quantity,   // positive = return back to stock
+                    'return'           // type = return
+                );
+            }
         }
 
         $order->save();

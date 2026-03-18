@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: successMessage,
                 confirmButtonText: "OK",
             },
-            200
+            200,
         );
     }
 
@@ -31,7 +31,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: errorMessage,
                 confirmButtonText: "OK",
             },
-            200
+            200,
         );
+    }
+    if (warningMessage) {
+        Swal.fire({
+            icon: "warning",
+            title: "Warning!",
+            text: warningMessage,
+            confirmButtonText: "OK",
+        });
     }
 });

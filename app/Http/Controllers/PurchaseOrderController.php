@@ -70,7 +70,7 @@ class PurchaseOrderController extends Controller
                 ['item_id' => $itemData['item_id']],
                 ['item_id' => "exists:{$existsRule},id"]
             );
-            
+
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
@@ -116,7 +116,7 @@ class PurchaseOrderController extends Controller
     public function update(Request $request, PurchaseOrder $purchaseOrder)
     {
         if ($purchaseOrder->status !== 'pending') {
-            return redirect()->back()->with('error', 'Only pending orders can be updated.');
+            return redirect()->back()->with('warning', 'Only pending orders can be updated.');
         }
 
         $request->validate([
@@ -147,7 +147,7 @@ class PurchaseOrderController extends Controller
                 ['item_id' => $itemData['item_id']],
                 ['item_id' => "exists:{$existsRule},id"]
             );
-            
+
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
@@ -169,7 +169,7 @@ class PurchaseOrderController extends Controller
     public function destroy(PurchaseOrder $purchaseOrder)
     {
         if ($purchaseOrder->status !== 'pending') {
-            return redirect()->back()->with('error', 'Only pending orders can be deleted.');
+            return redirect()->back()->with('warning', 'Only pending orders can be deleted.');
         }
 
         $purchaseOrder->items()->delete();
@@ -181,7 +181,7 @@ class PurchaseOrderController extends Controller
     public function markAsReceived(PurchaseOrder $purchaseOrder)
     {
         if ($purchaseOrder->markAsReceived()) {
-            
+
             return redirect()->route('purchase_orders.index')->with('success', 'Purchase order marked as received.');
         }
 

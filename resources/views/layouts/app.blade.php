@@ -139,6 +139,7 @@
     <script>
         let successMessage = @json(session('success'));
         let errorMessage = @json(session('error'));
+        let warningMessage = @json(session('warning'));
     </script>
 
 </body>

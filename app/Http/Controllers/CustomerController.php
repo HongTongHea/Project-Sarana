@@ -12,7 +12,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::latest()->get();
+        $customers = Customer::withCount('sales')->latest()->get();
         return view('customers.index', compact('customers'));
     }
 
@@ -61,6 +61,10 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
+        if ($customer->sales()->exists()) {
+            return redirect()->route('customers.index')
+                ->with('warning', 'Cannot delete this customer because they have associated sales records.');
+        }
         $customer->delete();
         return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }

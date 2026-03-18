@@ -67,8 +67,7 @@
                                                     onchange="this.form.submit()">
                                                     <option value="pending" @selected($order->payment_status == 'pending')>Pending</option>
                                                     <option value="paid" @selected($order->payment_status == 'paid')>Paid</option>
-                                                    <option value="failed" @selected($order->payment_status == 'failed')>Failed</option>
-                                                    <option value="refunded" @selected($order->payment_status == 'refunded')>Refunded</option>
+                                                    <option value="failed" @selected($order->payment_status == 'failed')>Cancel</option>
                                                 </select>
                                             </div>
                                         </form>

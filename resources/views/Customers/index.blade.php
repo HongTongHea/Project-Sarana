@@ -31,6 +31,7 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Address</th>
+                                <th>Sales</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -42,6 +43,20 @@
                                     <td>{{ $customer->email }}</td>
                                     <td>{{ $customer->phone }}</td>
                                     <td>{{ $customer->address }}</td>
+                                    <td>
+                                        @if ($customer->sales_count > 0)
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-shopping-cart me-1"></i>
+                                                {{ $customer->sales_count }}
+                                                {{ Str::plural('sale', $customer->sales_count) }}
+                                            </span>
+                                        @else
+                                            <span class="badge bg-secondary">
+                                                <i class="fas fa-minus me-1"></i>
+                                                No sales
+                                            </span>
+                                        @endif
+                                    </td>
                                     <td>
 
                                         <div class="dropdown">
