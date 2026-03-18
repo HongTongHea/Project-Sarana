@@ -4,6 +4,95 @@
 
 @section('content')
     <div class="container-fluid mt-3">
+        {{-- Summary Cards --}}
+        <div class="row mt-5">
+            <div class="col-md-6 col-lg-3">
+                <div class="card rounded-0 card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Total Revenue</p>
+                                    <h4 class="card-title">${{ number_format($sales->sum('total'), 2) }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card rounded-0 card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-big text-center icon-success bubble-shadow-small">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Total Sales</p>
+                                    <h4 class="card-title">
+                                        {{ $sales->count() }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card rounded-0 card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-big text-center icon-info bubble-shadow-small">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Items Sold</p>
+                                    <h4 class="card-title">
+                                        {{ $sales->sum(fn($s) => $s->items->sum('quantity')) }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card rounded-0 card-stats card-round">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-icon">
+                                <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                            </div>
+                            <div class="col col-stats ms-3 ms-sm-0">
+                                <div class="numbers">
+                                    <p class="card-category">Total Discounts</p>
+                                    <h4 class="card-title">
+                                        ${{ number_format($sales->sum('additional_discount') + $sales->sum('item_discounts'), 2) }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Sales Table Card --}}
         <div class="card rounded-0">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
@@ -43,7 +132,8 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>SALE-{{ str_pad($sale->id, 2, '0', STR_PAD_LEFT) }}</td>
                                     <td>{{ $sale->customer->name }}</td>
-                                    <td>{{ $sale->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}</td>
+                                    <td>{{ $sale->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}
+                                    </td>
                                     <td>
                                         <ul class="mb-0 ps-3">
                                             @foreach ($sale->items as $item)
@@ -61,10 +151,8 @@
                                             @endforeach
                                         </ul>
                                     </td>
-                                    {{-- <td>{{ $sale->items->count() }}</td> --}}
                                     <td>{{ $sale->items->sum('quantity') }}</td>
                                     <td>${{ number_format($sale->subtotal, 2) }}</td>
-                                    {{-- <td>${{ number_format($sale->tax_amount, 2) }}</td> --}}
                                     <td>${{ number_format($sale->additional_discount, 2) }}</td>
                                     <td>${{ number_format($sale->total, 2) }}</td>
                                     <td>
@@ -82,14 +170,7 @@
                                             </button>
                                             <ul class="dropdown-menu"
                                                 aria-labelledby="dropdownMenuButton{{ $sale->id }}">
-                                                <!-- View Sale -->
                                                 <li>
-                                                    {{-- <a href="{{ route('sales.show', $sale->id) }}"
-                                                        class="dropdown-item d-flex align-items-center">
-                                                        <i class="fa-solid fa-file-invoice me-2 text-info"></i>
-                                                        View Invoice
-                                                    </a> --}}
-
                                                     <button class="dropdown-item d-flex align-items-center"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#invoiceModal{{ $sale->id }}">
@@ -97,8 +178,6 @@
                                                         View Invoice
                                                     </button>
                                                 </li>
-
-                                                <!-- Edit Sale -->
                                                 <li>
                                                     <a href="{{ route('sales.edit', $sale->id) }}"
                                                         class="dropdown-item d-flex align-items-center">
@@ -106,7 +185,6 @@
                                                         Edit
                                                     </a>
                                                 </li>
-
                                                 <li>
                                                     @if (Auth::user()->role === 'admin')
                                                         <button class="dropdown-item d-flex align-items-center"
@@ -132,4 +210,14 @@
             </div>
         </div>
     </div>
+    <style>
+        .card-stats {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-stats:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2) !important;
+        }
+    </style>
 @endsection

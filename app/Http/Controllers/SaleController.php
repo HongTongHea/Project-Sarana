@@ -12,20 +12,29 @@ use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
-    public function index()
-    {
-        $categories = Category::all();
-        $customers = Customer::all();
-        $employees = Employee::where('status', 1)->get();
-        $products = Product::where('stock_quantity', '>', 0)->get();
-        $accessories = Accessory::where('stock_quantity', '>', 0)->get();
-        $sales = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->latest()->get();
+   public function index()
+{
+    $categories = Category::all();
+    $customers = Customer::all();
+    $employees = Employee::where('status', 1)->get();
+    $products = Product::where('stock_quantity', '>', 0)->get();
+    $accessories = Accessory::where('stock_quantity', '>', 0)->get();
+    $sales = Sale::with(['customer', 'employee', 'items.product', 'items.accessory', 'payments'])->latest()->get();
 
-        return view('sales.index', compact('sales', 'customers', 'employees', 'products', 'accessories', 'categories'));
-    }
+    $totalSales     = $sales->count();
+    $totalRevenue   = $sales->sum('total');
+    $totalItemsSold = $sales->sum(fn($s) => $s->items->sum('quantity'));
+    $avgOrderValue  = $sales->avg('total') ?? 0;
+
+    return view('sales.index', compact(
+        'sales', 'customers', 'employees', 'products', 'accessories', 'categories',
+        'totalSales', 'totalRevenue', 'totalItemsSold', 'avgOrderValue'
+    ));
+}
 
     public function create()
     {

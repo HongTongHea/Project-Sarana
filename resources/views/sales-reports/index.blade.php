@@ -237,7 +237,16 @@
     <!-- Include Generate Report Modal -->
     @include('sales-reports.create')
 @endsection
+<style>
+    .card-stats {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
+    .card-stats:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2) !important;
+    }
+</style>
 {{-- SheetJS for Excel export --}}
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
