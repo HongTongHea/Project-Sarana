@@ -125,7 +125,8 @@
             color: #854D0E;
         }
 
-        .status-processing {
+        .status-processing,
+        .status-completed {
             background: #DBEAFE;
             color: #1D4ED8;
         }

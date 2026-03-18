@@ -29,8 +29,37 @@
 
             </div>
             <div class="ms-md-auto py-2 py-md-0">
+                @php
+                    // Get current user from any guard
+                    $user = null;
+                    $isAdmin = false;
+                    $isCashier = false;
+                    $isManager = false;
+
+                    // Check all guards
+                    $guards = ['admin', 'manager', 'cashier', 'customer', 'web'];
+                    foreach ($guards as $guard) {
+                        if (Auth::guard($guard)->check()) {
+                            $user = Auth::guard($guard)->user();
+                            break;
+                        }
+                    }
+
+                    // Determine role - FIXED: Admin and Manager are SEPARATE
+                    if ($user) {
+                        $isAdmin = $user->role === 'admin'; // Only admin
+                        $isManager = $user->role === 'manager'; // Only manager
+                        $isCashier = $user->role === 'cashier'; // Only cashier
+                    }
+                @endphp
                 <a href="#" class="btn btn-label-info btn-round me-2 ">Manage</a>
-                <a href="{{ route('users.index') }}" class="btn btn-primary btn-round">Add User</a>
+                @if ($isAdmin)
+                    <a href="{{ route('users.index') }}" class="btn btn-primary btn-round">Add User</a>
+                @elseif ($isManager)
+                    <a href="{{ route('employees.index') }}" class="btn btn-primary btn-round">Add Employee</a>
+                @elseif ($isCashier)
+                    <a href="{{ route('customers.index') }}" class="btn btn-primary btn-round">Add Customer</a>
+                @endif
             </div>
         </div>
 

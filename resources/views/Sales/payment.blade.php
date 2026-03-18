@@ -15,8 +15,7 @@
                         <select class="form-select" id="payment-method" required style="display: none;">
                             <option value="">Select Payment Method</option>
                             <option value="cash">Cash</option>
-                            <option value="aba">ABA</option>
-                            <option value="acleda">ACLEDA</option>
+                            <option value="qr_pay">QR Pay</option>
                             <option value="credit_card">Credit Card</option>
                         </select>
 
@@ -36,13 +35,9 @@
                                     <i class="bi bi-cash-coin text-success"></i>
                                     <span>Cash</span>
                                 </div>
-                                <div class="payment-option" data-value="aba">
-                                    <i class="bi bi-credit-card-fill text-warning"></i>
-                                    <span>ABA Pay</span>
-                                </div>
-                                <div class="payment-option" data-value="acleda">
-                                    <i class="bi bi-credit-card-fill text-info"></i>
-                                    <span>ACLEDA Bank</span>
+                                <div class="payment-option" data-value="qr_pay">
+                                    <i class="bi bi-qr-code text-info"></i>
+                                    <span>QR Pay</span>
                                 </div>
                                 <div class="payment-option" data-value="credit_card">
                                     <i class="bi bi-credit-card text-danger"></i>

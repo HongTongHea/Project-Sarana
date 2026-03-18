@@ -28,7 +28,6 @@
                                 <th>Sale</th>
                                 <th>Customer</th>
                                 <th>Date</th>
-                                <th>Product</th>
                                 <th>Items</th>
                                 <th>Qty</th>
                                 <th>Subtotal</th>
@@ -46,19 +45,23 @@
                                     <td>{{ $sale->customer->name }}</td>
                                     <td>{{ $sale->created_at->setTimezone('Asia/Phnom_Penh')->format('M d, Y h:i A') }}</td>
                                     <td>
-                                        @foreach ($sale->items as $item)
-                                            @if ($item->item)
-                                                @if ($item->item_type === 'App\Models\Product')
-                                                    {{ $item->item->name }}&nbsp; <br>
-                                                @elseif ($item->item_type === 'App\Models\Accessory')
-                                                    {{ $item->item->name }}
-                                                @endif
-                                            @else
-                                                Item Deleted
-                                            @endif
-                                        @endforeach
+                                        <ul class="mb-0 ps-3">
+                                            @foreach ($sale->items as $item)
+                                                <li>
+                                                    @if ($item->item)
+                                                        @if ($item->item_type === 'App\Models\Product')
+                                                            {{ $item->item->name }}
+                                                        @elseif ($item->item_type === 'App\Models\Accessory')
+                                                            {{ $item->item->name }}
+                                                        @endif
+                                                    @else
+                                                        Item Deleted
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     </td>
-                                    <td>{{ $sale->items->count() }}</td>
+                                    {{-- <td>{{ $sale->items->count() }}</td> --}}
                                     <td>{{ $sale->items->sum('quantity') }}</td>
                                     <td>${{ number_format($sale->subtotal, 2) }}</td>
                                     {{-- <td>${{ number_format($sale->tax_amount, 2) }}</td> --}}

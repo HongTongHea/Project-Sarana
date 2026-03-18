@@ -216,20 +216,19 @@
                                         <i class="fa-solid fa-gear"></i> Account Setting
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <form action="{{ route('logout') }}" method="POST">
+                                    <form action="{{ route('logout') }}" method="POST" id="logout-form-admin">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"
-                                            onclick="return confirm('Are you sure you want to logout?')">
+                                        <button type="button" class="dropdown-item" id="logout-btn-admin">
                                             <i class="bi bi-escape"></i> Logout
                                         </button>
                                     </form>
                                 @endif
+
                                 @if ($user->role === 'manager' || $user->role === 'cashier')
                                     <div class="dropdown-divider"></div>
-                                    <form action="{{ route('logout') }}" method="POST">
+                                    <form action="{{ route('logout') }}" method="POST" id="logout-form-user">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"
-                                            onclick="return confirm('Are you sure you want to logout?')">
+                                        <button type="button" class="dropdown-item" id="logout-btn-user">
                                             <i class="bi bi-escape"></i> Logout
                                         </button>
                                     </form>
@@ -329,6 +328,27 @@
         }
     }
 </style>
+<script>
+    document.querySelectorAll('#logout-btn-admin, #logout-btn-user').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const formId = this.id === 'logout-btn-admin' ? 'logout-form-admin' : 'logout-form-user';
+            Swal.fire({
+                title: 'Logout?',
+                text: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        });
+    });
+</script>
 <script>
     function fetchOrderNotificationCount() {
         fetch('{{ route('notifications.count') }}', {

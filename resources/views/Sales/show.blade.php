@@ -63,8 +63,8 @@
                                             Cash
                                         @break
 
-                                        @case('aba')
-                                            ABA Pay
+                                        @case('qr_pay')
+                                            QR Pay
                                         @break
 
                                         @case('credit_card')
