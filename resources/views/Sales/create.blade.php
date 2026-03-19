@@ -62,7 +62,7 @@
                                             <option value="">Select Sales Person</option>
                                             @foreach ($employees as $employee)
                                                 <option value="{{ $employee->id }}">
-                                                    {{ $employee->name }} ({{ $employee->position }})
+                                                    {{ $employee->name }} - ({{ $employee->position }})
                                                 </option>
                                             @endforeach
                                         </select>

@@ -35,12 +35,12 @@
                         <div class="form-group col-12 col-md-4 mb-3">
                             <label for="created_by" class="form-label fw-semibold">Created By (Employee) <span
                                     class="text-danger">*</span></label>
-                            <select class="form-select form-control" id="created_by" name="created_by" required>
+                            <select class="form-select form-control" name="created_by" required>
                                 <option value="">Select Employee</option>
                                 @foreach ($employees as $employee)
                                     <option value="{{ $employee->id }}"
                                         {{ $employee->id == $purchaseOrder->created_by ? 'selected' : '' }}>
-                                        {{ $employee->name }}
+                                        {{ $employee->name }} - ({{ $employee->position }})
                                     </option>
                                 @endforeach
                             </select>
@@ -134,49 +134,98 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Initialize the modal when it's shown
+
         $('#editModal{{ $purchaseOrder->id }}').on('shown.bs.modal', function() {
             initPurchaseOrderEditForm();
         });
 
         function initPurchaseOrderEditForm() {
             let rowIndex = {{ $purchaseOrder->items->count() }};
-            const products = @json($products->map(fn($p) => ['id' => $p->id, 'name' => $p->name, 'price' => $p->price]));
-            const accessories = @json($accessories->map(fn($a) => ['id' => $a->id, 'name' => $a->name, 'price' => $a->unit_price]));
 
+            @php
+                $productData = $products->map(
+                    fn($p) => [
+                        'id' => $p->id,
+                        'name' => $p->name,
+                        'price' => $p->price,
+                        'code' => $p->code ?? null,
+                        'created_at' => $p->created_at,
+                    ],
+                );
+
+                $accessoryData = $accessories->map(
+                    fn($a) => [
+                        'id' => $a->id,
+                        'name' => $a->name,
+                        'price' => $a->unit_price,
+                        'code' => $a->code ?? null,
+                        'created_at' => $a->created_at,
+                    ],
+                );
+            @endphp
+
+            const products = @json($productData);
+            const accessories = @json($accessoryData);
+
+            // ✅ Check if item is new (within 7 days)
+            function isNewItem(created_at) {
+                const createdAt = new Date(created_at);
+                const now = new Date();
+                const diffDays = (now - createdAt) / (1000 * 60 * 60 * 24);
+                return diffDays <= 7;
+            }
+
+            // ✅ Populate items with NEW badge
             function populateItems(itemSelect, type, selectedId = null) {
                 itemSelect.innerHTML = '<option value="">Select Item</option>';
                 let items = type.includes('Product') ? products : accessories;
+
+                // Sort newest first
+                items = [...items].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
                 items.forEach(item => {
                     let option = document.createElement('option');
                     option.value = item.id;
-                    option.text = item.name;
+
+                    let label = item.name;
+
+                    if (item.code) {
+                        label += ' (' + item.code + ')';
+                    }
+
+                    // ✅ Add NEW badge
+                    if (isNewItem(item.created_at)) {
+                        label += ' -🆕(new)';
+                    }
+
+                    option.textContent = label;
                     option.setAttribute('data-price', item.price || 0);
-                    if (selectedId && selectedId == item.id) option.selected = true;
+
+                    if (selectedId && selectedId == item.id) {
+                        option.selected = true;
+                    }
+
                     itemSelect.appendChild(option);
                 });
             }
 
             const tableBody = document.querySelector("#itemsTable{{ $purchaseOrder->id }} tbody");
 
-            // Initialize existing rows
+            // ✅ Initialize existing rows
             tableBody.querySelectorAll("tr").forEach(row => {
                 const typeSelect = row.querySelector(".item_type");
                 const itemSelect = row.querySelector(".item_id");
                 const selectedType = row.dataset.itemType;
                 const selectedId = parseInt(row.dataset.itemId);
 
-                // Populate the item dropdown based on the selected type
                 if (selectedType) {
                     populateItems(itemSelect, selectedType, selectedId);
                 }
 
                 typeSelect.addEventListener("change", function() {
                     populateItems(itemSelect, typeSelect.value);
-                    // Recalculate price when type changes
                     const selectedOption = itemSelect.options[itemSelect.selectedIndex];
                     if (selectedOption) {
                         const unitPrice = parseFloat(selectedOption.getAttribute(
@@ -188,11 +237,10 @@
                 });
             });
 
-            // Add new row
+            // ✅ Add new row
             document.getElementById("addRow{{ $purchaseOrder->id }}").addEventListener("click", function() {
                 let newRow = tableBody.rows[0].cloneNode(true);
 
-                // Clear all data attributes
                 newRow.removeAttribute('data-item-id');
                 newRow.removeAttribute('data-item-type');
 
@@ -228,7 +276,7 @@
                 rowIndex++;
             });
 
-            // Remove row
+            // ✅ Remove row
             tableBody.addEventListener("click", function(e) {
                 if (e.target.closest(".removeRow")) {
                     const rows = tableBody.querySelectorAll("tr");
@@ -240,10 +288,10 @@
                 }
             });
 
-            // Calculate row total
+            // ✅ Calculate row total on input
             tableBody.addEventListener("input", function(e) {
                 if (e.target.classList.contains("quantity") || e.target.classList.contains(
-                        "unit_price")) {
+                    "unit_price")) {
                     const row = e.target.closest("tr");
                     const qty = parseFloat(row.querySelector(".quantity").value) || 0;
                     const price = parseFloat(row.querySelector(".unit_price").value) || 0;
@@ -251,7 +299,7 @@
                 }
             });
 
-            // Auto update price when item selected
+            // ✅ Auto update price when item selected
             tableBody.addEventListener("change", function(e) {
                 if (e.target.classList.contains("item_id") && e.target.value) {
                     const selectedOption = e.target.options[e.target.selectedIndex];

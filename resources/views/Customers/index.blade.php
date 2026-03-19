@@ -31,7 +31,7 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Address</th>
-                                <th>Sales</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>

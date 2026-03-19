@@ -178,41 +178,59 @@
         const products = @json($products);
         const accessories = @json($accessories);
 
-        // Initialize items for existing rows
-        document.querySelectorAll('.item_type').forEach((select, index) => {
+        // ✅ Function to check NEW (within 7 days)
+        function isNewItem(created_at) {
+            const createdAt = new Date(created_at);
+            const now = new Date();
+            const diffDays = (now - createdAt) / (1000 * 60 * 60 * 24);
+            return diffDays <= 7;
+        }
+
+        // ✅ Populate items with NEW tag
+        function populateItems(selectElement, type) {
+            selectElement.innerHTML = '<option value="">Select Item</option>';
+            let itemList = (type === 'product') ? products : accessories;
+
+            // 🔥 Sort newest first (optional but recommended)
+            itemList = itemList.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+            itemList.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+
+                let label = item.name;
+
+                if (item.code) {
+                    label += ' (' + item.code + ')';
+                }
+
+                // ✅ Add NEW tag
+                if (isNewItem(item.created_at)) {
+                    label += ' -🆕(new)';
+                }
+
+                option.textContent = label;
+                option.setAttribute('data-price', item.price || item.unit_price || 0);
+
+                selectElement.appendChild(option);
+            });
+        }
+
+        // ✅ Initialize existing rows
+        document.querySelectorAll('.item_type').forEach((select) => {
             const selectedType = select.value;
             const itemSelect = select.closest('tr').querySelector('.item_id');
 
             if (selectedType) {
                 populateItems(itemSelect, selectedType);
-
-                // Set the previously selected value if exists
-                const oldItemId = "{{ old('items.0.item_id') }}";
-                if (oldItemId && index === 0) {
-                    itemSelect.value = oldItemId;
-                }
             }
         });
 
-        function populateItems(selectElement, type) {
-            selectElement.innerHTML = '<option value="">Select Item</option>';
-            const itemList = (type === 'product') ? products : accessories;
-
-            itemList.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.id;
-                option.textContent = item.name + (item.code ? ' (' + item.code + ')' : '');
-                option.setAttribute('data-price', item.price || item.unit_price || 0);
-                selectElement.appendChild(option);
-            });
-        }
-
-        // Add new row
+        // ✅ Add new row
         document.getElementById("addRow").addEventListener("click", function() {
             const tableBody = document.querySelector("#itemsTable tbody");
             const newRow = tableBody.rows[0].cloneNode(true);
 
-            // Clear all values in the new row
             newRow.querySelectorAll("input, select").forEach((input) => {
                 const name = input.getAttribute("name");
                 if (name) {
@@ -236,7 +254,7 @@
             rowIndex++;
         });
 
-        // Remove row
+        // ✅ Remove row
         document.querySelector("#itemsTable").addEventListener("click", function(e) {
             if (e.target.closest(".removeRow")) {
                 const rows = document.querySelectorAll("#itemsTable tbody tr");
@@ -248,7 +266,7 @@
             }
         });
 
-        // Calculate row total
+        // ✅ Calculate total
         document.querySelector("#itemsTable").addEventListener("input", function(e) {
             if (e.target.classList.contains("quantity") || e.target.classList.contains("unit_price")) {
                 const row = e.target.closest("tr");
@@ -256,7 +274,7 @@
             }
         });
 
-        // Populate items based on type and set unit price when item is selected
+        // ✅ Handle dropdown change
         document.querySelector("#itemsTable").addEventListener("change", function(e) {
             if (e.target.classList.contains("item_type")) {
                 const row = e.target.closest("tr");
@@ -268,6 +286,7 @@
                 const selectedOption = e.target.options[e.target.selectedIndex];
                 const unitPrice = selectedOption.getAttribute('data-price') || 0;
                 const row = e.target.closest("tr");
+
                 row.querySelector('.unit_price').value = unitPrice;
                 calculateRowTotal(row);
             }
@@ -280,27 +299,25 @@
             row.querySelector(".total_price").value = total.toFixed(2);
         }
 
-        // Form validation
+        // ✅ Form validation
         document.getElementById('purchaseOrderForm').addEventListener('submit', function(e) {
             let isValid = true;
             let errorMessage = '';
 
-            // Check if at least one item is added
             const itemRows = document.querySelectorAll('#itemsTable tbody tr');
+
             if (itemRows.length === 0) {
                 isValid = false;
-                errorMessage = 'Please add at least one item to the order.';
+                errorMessage = 'Please add at least one item.';
             }
 
-            // Check if all items have valid selections
             itemRows.forEach((row, index) => {
                 const itemType = row.querySelector('.item_type').value;
                 const itemId = row.querySelector('.item_id').value;
 
                 if (!itemType || !itemId) {
                     isValid = false;
-                    errorMessage =
-                        `Please select both item type and specific item for row ${index + 1}.`;
+                    errorMessage = `Please select item type and item at row ${index + 1}`;
                 }
             });
 
